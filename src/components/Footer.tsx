@@ -40,20 +40,20 @@ export const Footer: React.FC = () => {
                 <TreePine className="w-5 h-5" />
               </div>
               <span className="text-2xl font-extrabold font-serif-title text-white">
-                Desa<span className="text-emerald-400">Wisata</span>
+                Saba<span className="text-emerald-400">Sunten</span><span className="text-sm font-sans font-semibold text-amber-400">.id</span>
               </span>
             </div>
             <p className="text-xs sm:text-sm text-stone-400 leading-relaxed max-w-sm">
-              Platform marketplace & media promosi terpadu desa wisata Indonesia. Menghubungkan wisatawan langsung dengan keotentikan budaya, homestay ramah, dan produk karya warga desa.
+              Portal pariwisata terpadu & marketplace resmi Desa Wisata Suntenjaya, Lembang, Kab. Bandung Barat. Menghubungkan wisatawan langsung dengan keotentikan budaya, homestay sejuk, sayur organik, dan kopi specialty petani lokal.
             </p>
             <div className="flex items-center gap-3 pt-2">
-              <a href="#instagram" className="w-9 h-9 rounded-full bg-stone-800 hover:bg-emerald-800 flex items-center justify-center text-stone-300 hover:text-white transition-colors">
+              <a href="https://instagram.com" target="_blank" rel="noreferrer" className="w-9 h-9 rounded-full bg-stone-800 hover:bg-emerald-800 flex items-center justify-center text-stone-300 hover:text-white transition-colors" title="Instagram">
                 <Instagram className="w-4 h-4" />
               </a>
-              <a href="#contact" className="w-9 h-9 rounded-full bg-stone-800 hover:bg-emerald-800 flex items-center justify-center text-stone-300 hover:text-white transition-colors">
+              <a href="tel:+6282122334455" className="w-9 h-9 rounded-full bg-stone-800 hover:bg-emerald-800 flex items-center justify-center text-stone-300 hover:text-white transition-colors" title="Telepon">
                 <Phone className="w-4 h-4" />
               </a>
-              <a href="#mail" className="w-9 h-9 rounded-full bg-stone-800 hover:bg-emerald-800 flex items-center justify-center text-stone-300 hover:text-white transition-colors">
+              <a href="mailto:kontak@sabasunten.id" className="w-9 h-9 rounded-full bg-stone-800 hover:bg-emerald-800 flex items-center justify-center text-stone-300 hover:text-white transition-colors" title="Email">
                 <Mail className="w-4 h-4" />
               </a>
             </div>
@@ -65,9 +65,9 @@ export const Footer: React.FC = () => {
             <ul className="space-y-2.5 text-xs text-stone-400">
               <li><button onClick={() => navigateTo('home')} className="hover:text-emerald-400 transition-colors">Beranda</button></li>
               <li><button onClick={() => navigateTo('marketplace')} className="hover:text-emerald-400 transition-colors">Semua Marketplace</button></li>
-              <li><button onClick={() => navigateTo('homestay')} className="hover:text-emerald-400 transition-colors">Daftar Homestay</button></li>
-              <li><button onClick={() => navigateTo('paket-wisata')} className="hover:text-emerald-400 transition-colors">Paket Wisata & Tour</button></li>
-              <li><button onClick={() => navigateTo('desa-detail')} className="hover:text-emerald-400 transition-colors">Profil Desa Binaan</button></li>
+              <li><button onClick={() => navigateTo('homestay')} className="hover:text-emerald-400 transition-colors">Homestay Pasir Angling</button></li>
+              <li><button onClick={() => navigateTo('paket-wisata')} className="hover:text-emerald-400 transition-colors">Paket Edukasi & Wisata</button></li>
+              <li><button onClick={() => navigateTo('desa-detail')} className="hover:text-emerald-400 transition-colors">Profil Desa Suntenjaya</button></li>
             </ul>
           </div>
 
@@ -75,37 +75,48 @@ export const Footer: React.FC = () => {
           <div>
             <h4 className="text-sm font-bold text-white uppercase tracking-wider mb-4">Kategori Produk</h4>
             <ul className="space-y-2.5 text-xs text-stone-400">
-              <li><button onClick={() => navigateTo('marketplace')} className="hover:text-emerald-400 transition-colors">Homestay & Penginapan</button></li>
-              <li><button onClick={() => navigateTo('marketplace')} className="hover:text-emerald-400 transition-colors">Suvenir & Batik Tulis</button></li>
-              <li><button onClick={() => navigateTo('marketplace')} className="hover:text-emerald-400 transition-colors">Kuliner & Kopi Adat</button></li>
-              <li><button onClick={() => navigateTo('marketplace')} className="hover:text-emerald-400 transition-colors">Paket Edukasi & Experiential</button></li>
-              <li><button onClick={() => navigateTo('marketplace')} className="hover:text-emerald-400 transition-colors">Produk UMKM Kelompok Tani</button></li>
+              <li><button onClick={() => navigateTo('homestay')} className="hover:text-emerald-400 transition-colors">Homestay & Saung Warga</button></li>
+              <li><button onClick={() => navigateTo('marketplace')} className="hover:text-emerald-400 transition-colors">Kopi Arabika Suntenjaya</button></li>
+              <li><button onClick={() => navigateTo('marketplace')} className="hover:text-emerald-400 transition-colors">Susu Murni & Olahan Desa</button></li>
+              <li><button onClick={() => navigateTo('marketplace')} className="hover:text-emerald-400 transition-colors">Sayuran Organik Segar</button></li>
+              <li><button onClick={() => navigateTo('paket-wisata')} className="hover:text-emerald-400 transition-colors">Live-In & Edukasi Tani</button></li>
             </ul>
           </div>
 
           {/* Contact & Support */}
           <div>
-            <h4 className="text-sm font-bold text-white uppercase tracking-wider mb-4">Layanan Desa</h4>
+            <h4 className="text-sm font-bold text-white uppercase tracking-wider mb-4">Pemerintah & Sekretariat Desa</h4>
             <div className="space-y-3 text-xs text-stone-400">
               <div className="flex items-start gap-2">
                 <MapPin className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
-                <span>Gedung Koperasi Pokdarwis Desa Wisata Indonesia</span>
+                <span>Jl. Maribaya Timur KM. 13,5, Desa Suntenjaya, Kec. Lembang, Kab. Bandung Barat 40391</span>
               </div>
               <div className="flex items-center gap-2">
                 <Phone className="w-4 h-4 text-emerald-400 shrink-0" />
-                <span>+62 812-3456-7890 (Hotline Desa)</span>
+                <a href="https://wa.me/6281220763734" target="_blank" rel="noreferrer" className="hover:text-emerald-300">
+                  +62 812-2076-3734 (Kantor Desa)
+                </a>
+              </div>
+              <div className="flex items-center gap-2">
+                <Phone className="w-4 h-4 text-emerald-400 shrink-0" />
+                <a href="https://wa.me/6282122334455" target="_blank" rel="noreferrer" className="hover:text-emerald-300">
+                  +62 821-2233-4455 (Pokdarwis)
+                </a>
               </div>
               <div className="flex items-center gap-2">
                 <Mail className="w-4 h-4 text-emerald-400 shrink-0" />
-                <span>info@desawisatamarketplace.id</span>
+                <span>desasuntenjaya@gmail.com</span>
               </div>
               <div className="pt-2">
-                <button 
-                  onClick={() => navigateTo('dashboard')}
-                  className="w-full py-2 bg-emerald-900/60 hover:bg-emerald-800 text-emerald-200 border border-emerald-700/50 rounded-lg text-xs font-medium transition-colors"
+                <a
+                  href="https://desasuntenjaya.site"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="w-full py-2.5 px-3 bg-emerald-900/80 hover:bg-emerald-800 text-amber-200 border border-emerald-600/50 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1.5 shadow-xs"
                 >
-                  Portal Penjual Desa
-                </button>
+                  <Sparkles className="w-3.5 h-3.5 text-amber-300" />
+                  <span>Portal Layanan SILAMOT Desa</span>
+                </a>
               </div>
             </div>
           </div>
@@ -115,14 +126,14 @@ export const Footer: React.FC = () => {
         {/* Bottom Line */}
         <div className="pt-8 border-t border-stone-800 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-stone-500">
           <p className="flex items-center gap-1 text-center sm:text-left">
-            <span>© 2026 DesaWisata. Dibuat dengan</span>
+            <span>© 2026 sabasunten.id · Desa Wisata Suntenjaya. Dibuat dengan</span>
             <Heart className="w-3.5 h-3.5 text-rose-500 fill-rose-500" />
-            <span>untuk Pengembangan Ekonomi Lokal Indonesia (UTS Prototype)</span>
+            <span>untuk Kemandirian Desa & Pariwisata Berkelanjutan</span>
           </p>
           <div className="flex items-center gap-4 text-stone-400">
-            <span className="flex items-center gap-1"><ShieldCheck className="w-3.5 h-3.5 text-emerald-400" /> Transaksi Aman</span>
+            <span className="flex items-center gap-1"><ShieldCheck className="w-3.5 h-3.5 text-emerald-400" /> Transaksi Langsung ke Warga</span>
             <span>·</span>
-            <span>QRIS & Bank Transfer</span>
+            <span>QRIS & Transfer Bank</span>
           </div>
         </div>
 

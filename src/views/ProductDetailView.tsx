@@ -20,8 +20,10 @@ import {
   Send,
   BedDouble,
   TreePine,
-  Sparkles
+  Sparkles,
+  MessageCircle
 } from 'lucide-react';
+import { WHATSAPP_PHONE, formatWhatsAppUrl, createProductWhatsAppMessage } from '../utils/whatsapp';
 
 export const ProductDetailView: React.FC = () => {
   const { 
@@ -36,10 +38,22 @@ export const ProductDetailView: React.FC = () => {
 
   const product = products.find(p => p.id === selectedProductId) || products[0];
 
+  const getTomorrowDate = () => {
+    const d = new Date();
+    d.setDate(d.getDate() + 1);
+    return d.toISOString().split('T')[0];
+  };
+
+  const getDayAfterTomorrowDate = () => {
+    const d = new Date();
+    d.setDate(d.getDate() + 2);
+    return d.toISOString().split('T')[0];
+  };
+
   const [activeImage, setActiveImage] = useState(product.image);
   const [quantity, setQuantity] = useState(1);
-  const [bookingDateStart, setBookingDateStart] = useState('2026-08-20');
-  const [bookingDateEnd, setBookingDateEnd] = useState('2026-08-21');
+  const [bookingDateStart, setBookingDateStart] = useState(getTomorrowDate());
+  const [bookingDateEnd, setBookingDateEnd] = useState(getDayAfterTomorrowDate());
   const [guestCount, setGuestCount] = useState(2);
   const [specialNotes, setSpecialNotes] = useState('');
 
@@ -51,7 +65,39 @@ export const ProductDetailView: React.FC = () => {
   const relatedProducts = products.filter(p => p.id !== product.id && (p.villageId === product.villageId || p.category === product.category)).slice(0, 3);
 
   const categoryBadge = getCategoryBadge(product.category);
-  const totalPrice = product.price * quantity;
+  
+  const calculateNights = () => {
+    if (product.category !== 'homestay') return 1;
+    if (!bookingDateStart || !bookingDateEnd) return 1;
+    const start = new Date(bookingDateStart);
+    const end = new Date(bookingDateEnd);
+    const diffTime = end.getTime() - start.getTime();
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    return diffDays > 0 ? diffDays : 1;
+  };
+
+  const nights = calculateNights();
+  const totalPrice = product.category === 'homestay'
+    ? product.price * quantity * nights
+    : product.price * quantity;
+
+  const handleShare = async () => {
+    const shareUrl = window.location.href;
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: `${product.title} - sabasunten.id`,
+          text: `Cek ${product.title} di Desa Wisata Suntenjaya:`,
+          url: shareUrl
+        });
+      } catch {
+        // user dismiss
+      }
+    } else {
+      await navigator.clipboard.writeText(shareUrl);
+      showToast('Tautan produk berhasil disalin ke clipboard!', 'info');
+    }
+  };
 
   const handleAddToCart = () => {
     addToCart(
@@ -64,9 +110,16 @@ export const ProductDetailView: React.FC = () => {
     );
   };
 
-  const handleBuyNow = () => {
-    handleAddToCart();
-    navigateTo('cart');
+  const handleOrderViaWhatsApp = () => {
+    const text = createProductWhatsAppMessage(product, {
+      quantity,
+      bookingDateStart: product.category === 'homestay' || product.category === 'paket-wisata' ? bookingDateStart : undefined,
+      bookingDateEnd: product.category === 'homestay' ? bookingDateEnd : undefined,
+      guestCount: product.category === 'homestay' || product.category === 'paket-wisata' ? guestCount : undefined,
+      notes: specialNotes
+    });
+    const url = formatWhatsAppUrl(WHATSAPP_PHONE, text);
+    window.open(url, '_blank');
   };
 
   const handleReviewSubmit = (e: React.FormEvent) => {
@@ -77,7 +130,9 @@ export const ProductDetailView: React.FC = () => {
   };
 
   const handleWhatsAppChat = () => {
-    showToast(`Membuka percakapan WhatsApp dengan ${product.sellerName}...`, 'info');
+    const text = `Halo Pengelola Saba Sunten, saya ingin bertanya tentang "${product.title}" (${product.unit}).`;
+    const url = formatWhatsAppUrl(WHATSAPP_PHONE, text);
+    window.open(url, '_blank');
   };
 
   return (
@@ -95,11 +150,12 @@ export const ProductDetailView: React.FC = () => {
 
         <div className="flex items-center gap-2">
           <button 
-            onClick={() => showToast('Tautan produk berhasil disalin!', 'info')}
-            className="p-2 rounded-xl bg-white border border-stone-200 text-stone-700 hover:bg-stone-100 transition-colors"
-            title="Bagikan"
+            onClick={handleShare}
+            className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-white border border-stone-200 text-stone-700 hover:bg-stone-100 hover:text-emerald-800 transition-colors text-xs font-bold shadow-xs"
+            title="Bagikan Produk"
           >
-            <Share2 className="w-4 h-4" />
+            <Share2 className="w-4 h-4 text-emerald-700" />
+            <span className="hidden sm:inline">Bagikan</span>
           </button>
         </div>
       </div>
@@ -470,31 +526,48 @@ export const ProductDetailView: React.FC = () => {
             </div>
 
             {/* Subtotal Calculation */}
-            <div className="pt-4 border-t border-stone-200 flex items-center justify-between">
-              <span className="text-xs font-bold text-stone-700">Total Harga:</span>
-              <span className="text-xl font-black text-emerald-800">{formatRupiah(totalPrice)}</span>
+            <div className="pt-4 border-t border-stone-200 space-y-1.5">
+              {product.category === 'homestay' && (
+                <div className="flex items-center justify-between text-xs text-stone-500">
+                  <span>Rincian ({nights} malam x {quantity} unit):</span>
+                  <span className="font-semibold text-stone-700">{formatRupiah(product.price)} x {nights} x {quantity}</span>
+                </div>
+              )}
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-bold text-stone-700">Total Biaya:</span>
+                <span className="text-xl font-black text-emerald-800">{formatRupiah(totalPrice)}</span>
+              </div>
             </div>
 
             {/* Action Buttons */}
             <div className="space-y-2.5 pt-2">
               <button
-                onClick={handleBuyNow}
-                className="w-full py-3.5 bg-emerald-800 hover:bg-emerald-900 text-amber-200 font-bold rounded-2xl text-xs sm:text-sm shadow-lg transition-all hover:scale-[1.02] flex items-center justify-center gap-2"
+                onClick={handleOrderViaWhatsApp}
+                className="w-full py-4 bg-emerald-800 hover:bg-emerald-900 text-white font-extrabold rounded-2xl text-xs sm:text-sm shadow-xl transition-all hover:scale-[1.02] flex items-center justify-center gap-2 border-2 border-amber-300"
               >
-                <ShoppingBag className="w-4 h-4" />
-                <span>Pesan Sekarang</span>
+                <MessageCircle className="w-5 h-5 fill-white text-emerald-800" />
+                <span>Pesan Sekarang via WhatsApp</span>
               </button>
 
               <button
                 onClick={handleAddToCart}
                 className="w-full py-3 bg-amber-100 hover:bg-amber-200 text-amber-950 font-bold rounded-2xl text-xs border border-amber-300 transition-colors flex items-center justify-center gap-2"
               >
-                <span>+ Tambahkan ke Keranjang</span>
+                <ShoppingBag className="w-4 h-4 text-emerald-800" />
+                <span>+ Masukkan ke Keranjang Belanja</span>
+              </button>
+
+              <button
+                onClick={handleWhatsAppChat}
+                className="w-full py-2.5 bg-stone-100 hover:bg-stone-200 text-stone-700 font-semibold rounded-2xl text-xs transition-colors flex items-center justify-center gap-1.5"
+              >
+                <Phone className="w-3.5 h-3.5 text-emerald-700" />
+                <span>Tanya Pengelola tentang Produk Ini</span>
               </button>
             </div>
 
-            <p className="text-[10px] text-stone-400 text-center font-medium">
-              🔒 Pembayaran aman via QRIS & Transfer Bank BUMDes
+            <p className="text-[10px] text-stone-500 text-center font-medium">
+              ✨ Pemesanan langsung terhubung ke pengelola resmi Pokdarwis Saba Sunten
             </p>
 
           </div>

@@ -46,8 +46,8 @@ export const SellerDashboardView: React.FC = () => {
   const [newUnit, setNewUnit] = useState('/malam');
   const [newVillageId, setNewVillageId] = useState('des-01');
   const [newDescription, setNewDescription] = useState('');
-  const [newSellerName, setNewSellerName] = useState('BUMDes Penglipuran');
-  const [newSellerBadge, setNewSellerBadge] = useState('Pengelola Pokdarwis');
+  const [newSellerName, setNewSellerName] = useState('Pokdarwis Saba Sunten');
+  const [newSellerBadge, setNewSellerBadge] = useState('Pengelola Desa Suntenjaya');
   const [newQuota, setNewQuota] = useState(10);
   const [newImage, setNewImage] = useState('https://images.unsplash.com/photo-1587061949409-02df41d5e562?auto=format&fit=crop&w=800&q=80');
 
@@ -109,25 +109,35 @@ export const SellerDashboardView: React.FC = () => {
             <Store className="w-8 h-8" />
           </div>
           <div>
-            <div className="inline-flex items-center gap-1 text-[10px] bg-emerald-500/20 text-emerald-300 px-2.5 py-0.5 rounded-full border border-emerald-500/30 mb-1">
-              <ShieldCheck className="w-3 h-3" /> Portal Pengelola BUMDes & Penjual Desa
+            <div className="inline-flex items-center gap-1.5 text-[10px] bg-emerald-500/20 text-emerald-300 px-2.5 py-0.5 rounded-full border border-emerald-500/30 mb-1 font-bold">
+              <ShieldCheck className="w-3.5 h-3.5" />
+              <span>Portal BUMDes & Pokdarwis Saba Sunten</span>
             </div>
             <h1 className="text-2xl sm:text-3xl font-extrabold font-serif-title">
-              Dashboard Penjual & UMKM Desa
+              Dashboard Pengelola & UMKM Suntenjaya
             </h1>
             <p className="text-xs text-stone-300">
-              Kelola daftar homestay, produk suvenir, paket wisata, serta pantau pesanan wisatawan secara real-time.
+              Kelola listing homestay 4 dusun, kopi specialty, olahan susu murni, dan pantau pesanan wisatawan masuk.
             </p>
           </div>
         </div>
 
-        <button
-          onClick={() => setShowAddModal(true)}
-          className="px-5 py-3 bg-amber-400 hover:bg-amber-300 text-stone-950 font-extrabold rounded-2xl text-xs shadow-lg transition-all hover:scale-105 flex items-center gap-2 shrink-0"
-        >
-          <Plus className="w-4 h-4" />
-          <span>Tambah Produk / Layanan</span>
-        </button>
+        <div className="flex flex-wrap items-center gap-3 shrink-0">
+          <button
+            onClick={() => navigateTo('marketplace')}
+            className="px-4 py-3 bg-white/10 hover:bg-white/20 text-white font-bold rounded-2xl text-xs border border-white/20 transition-all"
+          >
+            ← Lihat Katalog Publik
+          </button>
+
+          <button
+            onClick={() => setShowAddModal(true)}
+            className="px-5 py-3 bg-amber-400 hover:bg-amber-300 text-stone-950 font-extrabold rounded-2xl text-xs shadow-lg transition-all hover:scale-105 flex items-center gap-2"
+          >
+            <Plus className="w-4 h-4" />
+            <span>Tambah Produk / Layanan</span>
+          </button>
+        </div>
       </div>
 
       {/* Analytics Overview Cards */}

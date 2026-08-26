@@ -9,7 +9,7 @@ export type ProductCategory =
 export interface Village {
   id: string;
   name: string;
-  location: string; // e.g. "Gunungkidul, DI Yogyakarta"
+  location: string;
   province: string;
   rating: number;
   totalReviews: number;
@@ -24,6 +24,18 @@ export interface Village {
   instagram: string;
   managerName: string;
   totalListings: number;
+  // Official Village Government Data (desasuntenjaya.site)
+  headOfVillage?: string;
+  villageSecretary?: string;
+  villageArea?: string;
+  population?: string;
+  dusunCount?: number;
+  dusuns?: { id: string; name: string; kadus: string; description: string; highlights: string }[];
+  vision?: string;
+  missions?: string[];
+  silamotUrl?: string;
+  officeAddress?: string;
+  villageApparatus?: { role: string; name: string }[];
 }
 
 export interface Product {

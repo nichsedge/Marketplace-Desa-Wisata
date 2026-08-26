@@ -37,13 +37,13 @@ export const HomestayView: React.FC = () => {
         <div className="relative z-10 max-w-2xl space-y-3">
           <span className="px-3 py-1 rounded-full bg-indigo-500/20 text-indigo-300 border border-indigo-400/40 text-xs font-bold uppercase tracking-wider inline-flex items-center gap-1.5">
             <BedDouble className="w-4 h-4" />
-            <span>Homestay & Penginapan Adat</span>
+            <span>Homestay & Saung Warga</span>
           </span>
           <h1 className="text-2xl sm:text-4xl font-extrabold font-serif-title text-white">
-            Menginap Serasa di Rumah Yourself di Desa Wisata
+            Menginap Sejuk di Tengah Pesona Pegunungan Suntenjaya
           </h1>
           <p className="text-xs sm:text-sm text-stone-200 leading-relaxed">
-            Nikmati suasana pedesaan yang asri, udara segar, dan keramahan tuan rumah warga desa. Dilengkapi fasilitas bersih, sarapan tradisional, dan lokasi strategis.
+            Nikmati suasana pedesaan yang asri pada ketinggian 1.290 mdpl, udara pegunungan yang sejuk, dan kehangatan tuan rumah warga lokal Desa Suntenjaya Lembang. Dilengkapi air hangat, sarapan liwet hangat, dan pemandangan kebun terasering.
           </p>
         </div>
       </div>

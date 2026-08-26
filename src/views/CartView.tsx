@@ -18,10 +18,13 @@ import {
   Wallet,
   Coins,
   Download,
+  Printer,
   X,
   MapPin,
-  Sparkles
+  Sparkles,
+  MessageCircle
 } from 'lucide-react';
+import { WHATSAPP_PHONE, formatWhatsAppUrl, createCartWhatsAppMessage } from '../utils/whatsapp';
 
 export const CartView: React.FC = () => {
   const { 
@@ -39,19 +42,29 @@ export const CartView: React.FC = () => {
   const [customerName, setCustomerName] = useState(currentUser?.name || '');
   const [customerEmail, setCustomerEmail] = useState(currentUser?.email || '');
   const [customerPhone, setCustomerPhone] = useState('+62 812-3456-7890');
-  const [paymentMethod, setPaymentMethod] = useState<string>('QRIS Instant');
+  const [paymentMethod, setPaymentMethod] = useState<string>('Konfirmasi & Bayar via WhatsApp');
   const [notes, setNotes] = useState<string>('');
 
   // Order Receipt Modal
   const [completedOrder, setCompletedOrder] = useState<Order | null>(null);
 
-  const serviceFee = 5000;
-  const grandTotal = cartTotal + (cart.length > 0 ? serviceFee : 0);
+  const serviceFee = 0;
+  const grandTotal = cartTotal;
 
   const handleCheckoutSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (cart.length === 0) return;
     if (!customerName || !customerPhone) return;
+
+    // Send to WhatsApp
+    const waText = createCartWhatsAppMessage(cart, {
+      name: customerName,
+      phone: customerPhone,
+      email: customerEmail,
+      notes: notes
+    });
+    const waUrl = formatWhatsAppUrl(WHATSAPP_PHONE, waText);
+    window.open(waUrl, '_blank');
 
     const order = placeOrder(customerName, customerEmail, customerPhone, paymentMethod, notes);
     setCompletedOrder(order);
@@ -309,10 +322,10 @@ export const CartView: React.FC = () => {
 
               <button
                 type="submit"
-                className="w-full py-4 bg-emerald-800 hover:bg-emerald-900 text-amber-200 font-extrabold rounded-2xl text-xs sm:text-sm shadow-xl transition-all hover:scale-[1.02] flex items-center justify-center gap-2"
+                className="w-full py-4 bg-emerald-800 hover:bg-emerald-900 text-white font-extrabold rounded-2xl text-xs sm:text-sm shadow-xl transition-all hover:scale-[1.02] flex items-center justify-center gap-2 border-2 border-amber-300"
               >
-                <CheckCircle2 className="w-5 h-5 text-amber-300" />
-                <span>Konfirmasi & Buat Pesanan Sekarang</span>
+                <MessageCircle className="w-5 h-5 fill-white text-emerald-800" />
+                <span>Kirim Pesanan Langsung via WhatsApp</span>
               </button>
             </form>
           </div>
@@ -342,51 +355,62 @@ export const CartView: React.FC = () => {
       {/* ORDER RECEIPT E-TICKET MODAL */}
       {completedOrder && (
         <div className="fixed inset-0 z-50 bg-stone-950/80 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto animate-in fade-in">
-          <div className="bg-white max-w-lg w-full rounded-3xl p-6 sm:p-8 shadow-2xl border border-stone-200 space-y-6 relative my-8">
+          <div className="bg-white max-w-lg w-full rounded-3xl p-6 sm:p-8 shadow-2xl border border-stone-200 space-y-6 relative my-8 print:m-0 print:p-6 print:border-none print:shadow-none">
             
             <button
               onClick={() => { setCompletedOrder(null); navigateTo('home'); }}
-              className="absolute top-4 right-4 text-stone-400 hover:text-stone-700 p-1"
+              className="absolute top-4 right-4 text-stone-400 hover:text-stone-700 p-1 print:hidden"
             >
               <X className="w-6 h-6" />
             </button>
 
-            {/* Success Icon */}
-            <div className="text-center space-y-2">
-              <div className="w-16 h-16 rounded-full bg-emerald-100 text-emerald-800 flex items-center justify-center mx-auto border-4 border-emerald-50">
-                <CheckCircle2 className="w-10 h-10" />
+            {/* Official Village Header */}
+            <div className="border-b border-stone-200 pb-4 text-center space-y-1">
+              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-100 text-emerald-900 border border-emerald-300 text-[10px] font-bold uppercase tracking-wider">
+                <ShieldCheck className="w-3.5 h-3.5 text-emerald-700" />
+                <span>POKDARWIS SABA SUNTEN · DESA SUNTENJAYA</span>
               </div>
-              <span className="px-3 py-1 bg-amber-100 text-amber-900 rounded-full text-[10px] font-bold uppercase tracking-wider inline-block">
-                E-Ticket & Resi Resmi
-              </span>
-              <h2 className="text-2xl font-extrabold font-serif-title text-stone-900">
-                Pesanan Berhasil Dibuat!
+              <h2 className="text-xl sm:text-2xl font-extrabold font-serif-title text-stone-900">
+                E-Ticket & Bukti Reservasi Resmi
               </h2>
-              <p className="text-xs text-stone-500">
-                Kode Pesanan: <strong className="text-stone-900">{completedOrder.id}</strong>
+              <p className="text-[11px] text-stone-500">
+                Jl. Maribaya Timur KM. 13,5, Suntenjaya, Lembang, Kab. Bandung Barat
               </p>
             </div>
 
-            {/* QR Code Simulation */}
+            {/* Success Status & Order ID */}
+            <div className="bg-amber-50/80 border border-amber-200 rounded-2xl p-3.5 flex items-center justify-between">
+              <div>
+                <span className="text-[10px] font-bold text-amber-900 uppercase tracking-wider block">ID Reservasi:</span>
+                <span className="text-sm font-black text-stone-900 font-mono tracking-wider">{completedOrder.id}</span>
+              </div>
+              <span className="px-2.5 py-1 bg-emerald-700 text-white rounded-full text-[10px] font-bold shadow-xs">
+                Terkonfirmasi
+              </span>
+            </div>
+
+            {/* QR Code Simulation with verification note */}
             <div className="p-4 bg-stone-50 rounded-2xl border border-dashed border-stone-300 text-center space-y-2">
               <div className="w-32 h-32 bg-white border border-stone-200 p-2 rounded-xl mx-auto flex items-center justify-center shadow-xs">
                 <QrCode className="w-28 h-28 text-stone-900" />
               </div>
-              <p className="text-[11px] font-bold text-emerald-800">Tunjukkan QR Code ini kepada pengelola desa saat kedatangan</p>
+              <p className="text-[11px] font-bold text-emerald-900">
+                Tunjukkan QR Code ini kepada Pengelola Desa saat tiba di lokasi
+              </p>
             </div>
 
-            {/* Order Details */}
-            <div className="space-y-3 text-xs border-t border-stone-200 pt-4">
+            {/* Order Details Table */}
+            <div className="space-y-2.5 text-xs border-t border-stone-200 pt-4">
               <div className="flex justify-between">
-                <span className="text-stone-500 font-medium">Pemesan:</span>
+                <span className="text-stone-500 font-medium">Nama Pemesan:</span>
                 <span className="font-bold text-stone-900">{completedOrder.customerName}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-stone-500 font-medium">No. WhatsApp:</span>
+                <span className="text-stone-500 font-medium">WhatsApp:</span>
                 <span className="font-bold text-stone-900">{completedOrder.customerPhone}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-stone-500 font-medium">Metode Pembayaran:</span>
+                <span className="text-stone-500 font-medium">Metode Konfirmasi:</span>
                 <span className="font-bold text-emerald-800">{completedOrder.paymentMethod}</span>
               </div>
               <div className="flex justify-between">
@@ -395,35 +419,40 @@ export const CartView: React.FC = () => {
               </div>
 
               {/* Items Summary */}
-              <div className="pt-2 border-t border-stone-100 space-y-2">
-                <p className="font-bold text-stone-800">Daftar Produk Pesanan:</p>
+              <div className="pt-3 border-t border-stone-200 space-y-2">
+                <p className="font-bold text-stone-800 text-[11px] uppercase tracking-wider">Daftar Item & Layanan:</p>
                 {completedOrder.items.map((it, idx) => (
-                  <div key={idx} className="flex justify-between text-[11px]">
-                    <span className="text-stone-700">{it.quantity}x {it.product.title}</span>
-                    <span className="font-bold text-stone-900">{formatRupiah(it.product.price * it.quantity)}</span>
+                  <div key={idx} className="p-2.5 bg-stone-50 rounded-xl border border-stone-100 flex justify-between items-center text-xs">
+                    <div>
+                      <p className="font-bold text-stone-900">{it.product.title}</p>
+                      <p className="text-[10px] text-stone-500">
+                        {it.quantity} {it.product.unit} {it.bookingDateStart ? `• ${it.bookingDateStart}` : ''}
+                      </p>
+                    </div>
+                    <span className="font-bold text-emerald-900">{formatRupiah(it.product.price * it.quantity)}</span>
                   </div>
                 ))}
               </div>
 
-              <div className="pt-3 border-t border-stone-200 flex justify-between text-sm font-black text-stone-900">
-                <span>Total Bayar:</span>
+              <div className="pt-3 border-t border-stone-200 flex justify-between text-base font-black text-stone-900">
+                <span>Total Biaya:</span>
                 <span className="text-emerald-800">{formatRupiah(completedOrder.totalAmount)}</span>
               </div>
             </div>
 
-            {/* Actions */}
-            <div className="space-y-2 pt-2">
+            {/* Actions (Hidden when printing) */}
+            <div className="space-y-2 pt-2 print:hidden">
               <button
-                onClick={() => { alert('Memproses unduh resi E-Ticket PDF...'); setCompletedOrder(null); navigateTo('home'); }}
-                className="w-full py-3 bg-emerald-800 hover:bg-emerald-900 text-amber-200 font-bold rounded-2xl text-xs shadow-md flex items-center justify-center gap-2"
+                onClick={() => window.print()}
+                className="w-full py-3 bg-emerald-800 hover:bg-emerald-900 text-amber-200 font-bold rounded-2xl text-xs shadow-md flex items-center justify-center gap-2 transition-all hover:scale-[1.01]"
               >
-                <Download className="w-4 h-4" />
-                <span>Unduh E-Ticket / Resi Bukti (PDF)</span>
+                <Printer className="w-4 h-4" />
+                <span>Cetak / Simpan PDF (Resi Resmi)</span>
               </button>
 
               <button
                 onClick={() => { setCompletedOrder(null); navigateTo('home'); }}
-                className="w-full py-2.5 bg-stone-100 hover:bg-stone-200 text-stone-800 font-bold rounded-2xl text-xs"
+                className="w-full py-2.5 bg-stone-100 hover:bg-stone-200 text-stone-800 font-bold rounded-2xl text-xs transition-colors"
               >
                 Kembali ke Beranda
               </button>

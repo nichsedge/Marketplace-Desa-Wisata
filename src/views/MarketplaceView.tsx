@@ -92,13 +92,13 @@ export const MarketplaceView: React.FC = () => {
         <div className="space-y-2">
           <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-amber-400/20 text-amber-300 rounded-full text-xs font-semibold">
             <ShoppingBag className="w-3.5 h-3.5" />
-            <span>Katalog Lengkap Desa Wisata</span>
+            <span>Katalog Resmi sabasunten.id</span>
           </div>
           <h1 className="text-2xl sm:text-4xl font-extrabold font-serif-title">
-            Marketplace Produk & Layanan Lokal
+            Marketplace Produk & Pariwisata Desa Suntenjaya
           </h1>
           <p className="text-xs sm:text-sm text-stone-300 max-w-xl">
-            Temukan dan pesan langsung penginapan warga, paket wisata edukasi, hingga kerajinan tangan otentik khas desa wisata.
+            Pesan langsung homestay sejuk Pasir Angling, paket edukasi tani & kopi, susu sapi perah murni, hingga sayuran segar langsung dari petani warga Desa Suntenjaya.
           </p>
         </div>
 

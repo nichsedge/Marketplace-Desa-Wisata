@@ -11,8 +11,9 @@ import { HomestayView } from './views/HomestayView';
 import { TourPackagesView } from './views/TourPackagesView';
 import { VillageDetailView } from './views/VillageDetailView';
 import { CartView } from './views/CartView';
-import { SellerDashboardView } from './views/SellerDashboardView';
 import { AuthView } from './views/AuthView';
+import { SellerDashboardView } from './views/SellerDashboardView';
+import { FloatingWhatsApp } from './components/FloatingWhatsApp';
 
 const MainContent: React.FC = () => {
   const { page } = useApp();
@@ -28,11 +29,12 @@ const MainContent: React.FC = () => {
         {page === 'paket-wisata' && <TourPackagesView />}
         {page === 'desa-detail' && <VillageDetailView />}
         {page === 'cart' && <CartView />}
-        {page === 'dashboard' && <SellerDashboardView />}
         {page === 'auth' && <AuthView />}
+        {page === 'dashboard' && <SellerDashboardView />}
       </div>
       <Footer />
       <Toast />
+      <FloatingWhatsApp />
     </main>
   );
 };

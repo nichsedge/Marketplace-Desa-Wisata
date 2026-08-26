@@ -136,17 +136,9 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
           <div className="flex items-center gap-1.5">
             <button
               onClick={() => navigateTo('product-detail', product.id)}
-              className="p-2 rounded-xl bg-stone-100 hover:bg-stone-200 text-stone-700 transition-colors"
-              title="Lihat Detail"
+              className="px-3 py-2 rounded-xl bg-emerald-800 hover:bg-emerald-900 text-amber-200 font-bold text-xs shadow-sm transition-all hover:scale-105 flex items-center gap-1.5"
             >
-              <Eye className="w-4 h-4" />
-            </button>
-            <button
-              onClick={() => addToCart(product, 1)}
-              className="px-3 py-2 rounded-xl bg-emerald-800 hover:bg-emerald-900 text-white font-medium text-xs shadow-sm transition-all hover:scale-105 flex items-center gap-1"
-            >
-              <ShoppingBag className="w-3.5 h-3.5" />
-              <span>Pesan</span>
+              <span>Detail & Pesan</span>
             </button>
           </div>
         </div>

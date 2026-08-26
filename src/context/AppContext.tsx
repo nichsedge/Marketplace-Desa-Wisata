@@ -212,7 +212,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       customerEmail,
       customerPhone,
       items: [...cart],
-      totalAmount: cartTotal + 5000, // include village service fee
+      totalAmount: cartTotal,
       paymentMethod,
       status: 'diproses',
       createdAt: new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' }),
