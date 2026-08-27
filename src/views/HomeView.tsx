@@ -25,21 +25,17 @@ import { ProductCategory } from '../types';
 export const HomeView: React.FC = () => {
   const { 
     products, 
-    villages, 
     navigateTo, 
     setSearchQuery, 
-    setCategoryFilter, 
-    setVillageFilter 
+    setCategoryFilter 
   } = useApp();
 
   const [heroSearch, setHeroSearch] = useState('');
-  const [heroVillage, setHeroVillage] = useState<string>('all');
   const [heroCategory, setHeroCategory] = useState<ProductCategory | 'all'>('all');
 
   const handleHeroSearch = (e: React.FormEvent) => {
     e.preventDefault();
     setSearchQuery(heroSearch);
-    if (heroVillage !== 'all') setVillageFilter(heroVillage);
     if (heroCategory !== 'all') setCategoryFilter(heroCategory);
     navigateTo('marketplace');
   };
@@ -97,10 +93,10 @@ export const HomeView: React.FC = () => {
           {/* Interactive Search Box */}
           <form 
             onSubmit={handleHeroSearch}
-            className="bg-white/95 backdrop-blur-md p-3 sm:p-4 rounded-2xl sm:rounded-full shadow-2xl border border-stone-200 text-left max-w-4xl mx-auto grid grid-cols-1 sm:grid-cols-12 gap-2"
+            className="bg-white/95 backdrop-blur-md p-3 sm:p-4 rounded-2xl sm:rounded-full shadow-2xl border border-stone-200 text-left max-w-3xl mx-auto grid grid-cols-1 sm:grid-cols-12 gap-2"
           >
             {/* Search Input */}
-            <div className="sm:col-span-5 relative flex items-center px-3 border-b sm:border-b-0 sm:border-r border-stone-200 pb-2 sm:pb-0">
+            <div className="sm:col-span-7 relative flex items-center px-3 border-b sm:border-b-0 sm:border-r border-stone-200 pb-2 sm:pb-0">
               <Search className="w-5 h-5 text-emerald-800 mr-2 shrink-0" />
               <input
                 type="text"
@@ -111,23 +107,8 @@ export const HomeView: React.FC = () => {
               />
             </div>
 
-            {/* Select Village */}
-            <div className="sm:col-span-3 flex items-center px-3 border-b sm:border-b-0 sm:border-r border-stone-200 pb-2 sm:pb-0">
-              <MapPin className="w-4 h-4 text-emerald-800 mr-2 shrink-0" />
-              <select
-                value={heroVillage}
-                onChange={(e) => setHeroVillage(e.target.value)}
-                className="w-full bg-transparent text-xs sm:text-sm text-stone-800 focus:outline-none font-medium cursor-pointer"
-              >
-                <option value="all">Semua Desa Wisata</option>
-                {villages.map(v => (
-                  <option key={v.id} value={v.id}>{v.name}</option>
-                ))}
-              </select>
-            </div>
-
             {/* Select Category */}
-            <div className="sm:col-span-2 flex items-center px-3 pb-2 sm:pb-0">
+            <div className="sm:col-span-3 flex items-center px-3 border-b sm:border-b-0 sm:border-r border-stone-200 pb-2 sm:pb-0">
               <select
                 value={heroCategory}
                 onChange={(e) => setHeroCategory(e.target.value as ProductCategory | 'all')}

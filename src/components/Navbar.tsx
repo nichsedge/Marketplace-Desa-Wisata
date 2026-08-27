@@ -14,7 +14,8 @@ import {
   ChevronDown,
   LayoutDashboard,
   ShieldCheck,
-  LogOut
+  LogOut,
+  Phone
 } from 'lucide-react';
 
 /**
@@ -154,14 +155,15 @@ export const Navbar: React.FC = () => {
           {/* Action Buttons */}
           <div className="flex items-center gap-2 sm:gap-3">
             
-            {/* Direct WhatsApp Hotline Button */}
+            {/* Direct WhatsApp Contact Button */}
             <a
               href="https://wa.me/6282122334455?text=Halo%20Admin%20Saba%20Sunten%2C%20saya%20ingin%20tanya%20info%20Desa%20Wisata%20Suntenjaya"
               target="_blank"
               rel="noreferrer"
               className="hidden lg:flex items-center gap-1.5 px-3.5 py-2 rounded-full bg-emerald-800 hover:bg-emerald-900 text-amber-200 text-xs font-bold shadow-sm transition-all hover:scale-105 border border-amber-300/40"
             >
-              <span>Hotline Pokdarwis</span>
+              <Phone className="w-3.5 h-3.5" />
+              <span>Hubungi Kami</span>
             </a>
 
             {/* Cart Icon */}
@@ -352,7 +354,8 @@ export const Navbar: React.FC = () => {
               rel="noreferrer"
               className="w-full flex items-center justify-center gap-2 p-3 bg-emerald-800 text-amber-200 rounded-xl text-xs font-bold shadow-md"
             >
-              <span>Hubungi Pengelola via WhatsApp</span>
+              <Phone className="w-4 h-4" />
+              <span>Hubungi Kami via WhatsApp</span>
             </a>
           </div>
         </div>

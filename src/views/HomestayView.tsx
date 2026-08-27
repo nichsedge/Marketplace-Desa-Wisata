@@ -4,9 +4,8 @@ import { ProductCard, formatRupiah } from '../components/ProductCard';
 import { BedDouble, Wifi, Utensils, ShieldCheck, MapPin, Sparkles, Filter } from 'lucide-react';
 
 export const HomestayView: React.FC = () => {
-  const { products, villages, navigateTo } = useApp();
+  const { products, navigateTo } = useApp();
 
-  const [selectedVillage, setSelectedVillage] = useState<string>('all');
   const [maxPrice, setMaxPrice] = useState<number>(600000);
   const [requireWifi, setRequireWifi] = useState(false);
   const [requireBreakfast, setRequireBreakfast] = useState(false);
@@ -14,7 +13,6 @@ export const HomestayView: React.FC = () => {
   const homestays = products.filter(p => p.category === 'homestay');
 
   const filteredHomestays = homestays.filter(h => {
-    if (selectedVillage !== 'all' && h.villageId !== selectedVillage) return false;
     if (h.price > maxPrice) return false;
     if (requireWifi && !h.facilities?.some(f => f.toLowerCase().includes('wifi'))) return false;
     if (requireBreakfast && !h.facilities?.some(f => f.toLowerCase().includes('sarapan'))) return false;
@@ -60,23 +58,8 @@ export const HomestayView: React.FC = () => {
           </span>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 items-end">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 items-end">
           
-          {/* Village Filter */}
-          <div className="space-y-1.5">
-            <label className="text-xs font-bold text-stone-700">Desa Wisata</label>
-            <select
-              value={selectedVillage}
-              onChange={(e) => setSelectedVillage(e.target.value)}
-              className="w-full p-2.5 bg-stone-50 border border-stone-200 rounded-xl text-xs text-stone-800 font-medium focus:outline-none focus:ring-2 focus:ring-emerald-600"
-            >
-              <option value="all">Semua Desa Wisata</option>
-              {villages.map(v => (
-                <option key={v.id} value={v.id}>{v.name}</option>
-              ))}
-            </select>
-          </div>
-
           {/* Max Price */}
           <div className="space-y-1.5">
             <div className="flex justify-between text-xs font-bold text-stone-700">
@@ -95,7 +78,7 @@ export const HomestayView: React.FC = () => {
           </div>
 
           {/* Amenities Toggles */}
-          <div className="flex items-center gap-4 py-2">
+          <div className="flex items-center justify-around sm:justify-start gap-4 py-2 bg-stone-50 border border-stone-200 rounded-xl px-3">
             <label className="flex items-center gap-2 text-xs font-semibold text-stone-800 cursor-pointer">
               <input
                 type="checkbox"
@@ -120,7 +103,7 @@ export const HomestayView: React.FC = () => {
           {/* Reset button */}
           <div>
             <button
-              onClick={() => { setSelectedVillage('all'); setMaxPrice(600000); setRequireWifi(false); setRequireBreakfast(false); }}
+              onClick={() => { setMaxPrice(600000); setRequireWifi(false); setRequireBreakfast(false); }}
               className="w-full py-2.5 bg-stone-100 hover:bg-stone-200 text-stone-800 font-bold rounded-xl text-xs transition-colors"
             >
               Reset Filter

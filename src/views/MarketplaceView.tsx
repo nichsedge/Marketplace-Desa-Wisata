@@ -19,13 +19,10 @@ import {
 export const MarketplaceView: React.FC = () => {
   const {
     products,
-    villages,
     searchQuery,
     setSearchQuery,
     categoryFilter,
     setCategoryFilter,
-    villageFilter,
-    setVillageFilter,
     priceFilter,
     setPriceFilter,
     ratingFilter,
@@ -62,9 +59,6 @@ export const MarketplaceView: React.FC = () => {
 
     // Category filter
     if (categoryFilter !== 'all' && product.category !== categoryFilter) return false;
-
-    // Village filter
-    if (villageFilter !== 'all' && product.villageId !== villageFilter) return false;
 
     // Price filter
     if (product.price > priceFilter) return false;
@@ -157,24 +151,6 @@ export const MarketplaceView: React.FC = () => {
               <RotateCcw className="w-3 h-3" />
               <span>Reset</span>
             </button>
-          </div>
-
-          {/* Desa Wisata Filter */}
-          <div className="space-y-2">
-            <label className="text-xs font-bold text-stone-800 flex items-center gap-1.5">
-              <MapPin className="w-3.5 h-3.5 text-emerald-700" />
-              <span>Pilih Desa Wisata</span>
-            </label>
-            <select
-              value={villageFilter}
-              onChange={(e) => setVillageFilter(e.target.value)}
-              className="w-full p-2.5 bg-stone-50 border border-stone-200 rounded-xl text-xs text-stone-800 font-medium focus:outline-none focus:ring-2 focus:ring-emerald-600"
-            >
-              <option value="all">Semua Desa Wisata</option>
-              {villages.map(v => (
-                <option key={v.id} value={v.id}>{v.name}</option>
-              ))}
-            </select>
           </div>
 
           {/* Price Range Filter */}
@@ -293,20 +269,6 @@ export const MarketplaceView: React.FC = () => {
               <div className="flex items-center justify-between pb-2 border-b border-stone-200">
                 <h4 className="font-bold text-sm text-stone-900">Filter Pencarian</h4>
                 <button onClick={resetFilters} className="text-xs text-emerald-800 font-bold">Reset</button>
-              </div>
-
-              <div className="space-y-2">
-                <label className="text-xs font-bold text-stone-800">Desa Wisata</label>
-                <select
-                  value={villageFilter}
-                  onChange={(e) => setVillageFilter(e.target.value)}
-                  className="w-full p-2 bg-stone-50 border rounded-xl text-xs text-stone-800"
-                >
-                  <option value="all">Semua Desa Wisata</option>
-                  {villages.map(v => (
-                    <option key={v.id} value={v.id}>{v.name}</option>
-                  ))}
-                </select>
               </div>
 
               <div className="space-y-2">
