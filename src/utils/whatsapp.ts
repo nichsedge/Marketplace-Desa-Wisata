@@ -1,6 +1,6 @@
 import { Product, CartItem } from '../types';
 
-export const WHATSAPP_PHONE = '6282122334455'; // Hotline Pokdarwis Saba Sunten Desa Wisata Suntenjaya
+export const WHATSAPP_PHONE = '6282122334455'; // Hotline Terpadu Saba Lembang
 
 export const formatWhatsAppUrl = (phone: string, text: string) => {
   const cleanPhone = phone.replace(/[^0-9]/g, '');
@@ -20,9 +20,10 @@ export const createProductWhatsAppMessage = (
   const isHomestay = product.category === 'homestay';
   const isPackage = product.category === 'paket-wisata';
 
-  let message = `*HALO ADMIN SABA SUNTEN (sabasunten.id)*\n`;
+  let message = `*HALO ADMIN & PIC ${product.villageName.toUpperCase()} (SABA LEMBANG - sabasunten.id)*\n`;
   message += `Saya tertarik untuk memesan layanan/produk berikut:\n\n`;
   message += `📌 *Item:* ${product.title}\n`;
+  message += `🏞️ *Desa Wisata:* ${product.villageName}\n`;
   message += `🏷️ *Kategori:* ${product.category.toUpperCase()}\n`;
   message += `💰 *Harga Satuan:* Rp ${product.price.toLocaleString('id-ID')} ${product.unit}\n`;
 
@@ -46,7 +47,7 @@ export const createProductWhatsAppMessage = (
     message += `📝 *Catatan Khusus:* ${params.notes}\n`;
   }
 
-  message += `\nMohon info ketersediaan dan panduan pembayarannya. Hatur nuhun!`;
+  message += `\nMohon info ketersediaan dan panduan reservasinya dari PIC desa. Hatur nuhun!`;
 
   return message;
 };
@@ -61,11 +62,11 @@ export const createCartWhatsAppMessage = (
     notes?: string;
   }
 ) => {
-  let message = `*HALO ADMIN SABA SUNTEN (sabasunten.id)*\n`;
-  message += `Saya ingin melakukan pemesanan via website:\n\n`;
+  let message = `*HALO ADMIN SABA LEMBANG (sabasunten.id)*\n`;
+  message += `Saya ingin melakukan pemesanan wisata/produk via platform:\n\n`;
   message += `👤 *Nama Pemesan:* ${customerInfo.name}\n`;
   if (customerInfo.phone) message += `📱 *No. HP/WA:* ${customerInfo.phone}\n`;
-  if (customerInfo.address) message += `📍 *Alamat Pengiriman:* ${customerInfo.address}\n`;
+  if (customerInfo.address) message += `📍 *Alamat/Kota Asal:* ${customerInfo.address}\n`;
 
   message += `\n📋 *RINCIAN PESANAN:*\n`;
   let subtotal = 0;
@@ -73,7 +74,7 @@ export const createCartWhatsAppMessage = (
   items.forEach((item, index) => {
     const itemTotal = item.product.price * item.quantity;
     subtotal += itemTotal;
-    message += `${index + 1}. *${item.product.title}*\n`;
+    message += `${index + 1}. *${item.product.title}* (${item.product.villageName})\n`;
     message += `   - Jumlah: ${item.quantity} ${item.product.unit}\n`;
     if (item.bookingDateStart) message += `   - Tanggal: ${item.bookingDateStart} ${item.bookingDateEnd ? `s.d ${item.bookingDateEnd}` : ''}\n`;
     message += `   - Subtotal: Rp ${itemTotal.toLocaleString('id-ID')}\n`;
@@ -85,11 +86,11 @@ export const createCartWhatsAppMessage = (
     message += `📝 *Catatan:* ${customerInfo.notes}\n`;
   }
 
-  message += `\nMohon konfirmasi pesanan dan instruksi transfer/pembayarannya ya. Terima kasih!`;
+  message += `\nMohon konfirmasi pesanan dan penerbitan bukti reservasi dari PIC desa terkait. Terima kasih!`;
 
   return message;
 };
 
 export const createGeneralWhatsAppMessage = () => {
-  return `Halo Admin Pokdarwis Saba Sunten (Desa Wisata Suntenjaya),\nsaya ingin bertanya mengenai info wisata / homestay / paket edukasi di Desa Suntenjaya.`;
+  return `Halo Admin Saba Lembang (Platform Desa Wisata Kawasan Lembang),\nsaya ingin bertanya mengenai info destinasi / homestay / paket wisata di Kawasan Lembang.`;
 };

@@ -19,10 +19,13 @@ import {
 export const MarketplaceView: React.FC = () => {
   const {
     products,
+    villages,
     searchQuery,
     setSearchQuery,
     categoryFilter,
     setCategoryFilter,
+    villageFilter,
+    setVillageFilter,
     priceFilter,
     setPriceFilter,
     ratingFilter,
@@ -39,9 +42,9 @@ export const MarketplaceView: React.FC = () => {
     { id: 'all', label: 'Semua Produk' },
     { id: 'homestay', label: 'Homestay' },
     { id: 'paket-wisata', label: 'Paket Wisata' },
-    { id: 'suvenir', label: 'Suvenir & Batik' },
     { id: 'kuliner', label: 'Kuliner & Kopi' },
-    { id: 'umkm', label: 'Produk UMKM' },
+    { id: 'umkm', label: 'Sayur & Hasil Tani' },
+    { id: 'suvenir', label: 'Suvenir & Kerajinan' },
     { id: 'destinasi', label: 'Tiket Wisata' },
   ];
 
@@ -59,6 +62,9 @@ export const MarketplaceView: React.FC = () => {
 
     // Category filter
     if (categoryFilter !== 'all' && product.category !== categoryFilter) return false;
+
+    // Village filter
+    if (villageFilter !== 'all' && product.villageId !== villageFilter) return false;
 
     // Price filter
     if (product.price > priceFilter) return false;
@@ -86,13 +92,13 @@ export const MarketplaceView: React.FC = () => {
         <div className="space-y-2">
           <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-amber-400/20 text-amber-300 rounded-full text-xs font-semibold">
             <ShoppingBag className="w-3.5 h-3.5" />
-            <span>Katalog Resmi sabasunten.id</span>
+            <span>Katalog Resmi Jaringan Desa Wisata Lembang</span>
           </div>
           <h1 className="text-2xl sm:text-4xl font-extrabold font-serif-title">
-            Marketplace Produk & Pariwisata Desa Suntenjaya
+            Marketplace Desa Wisata Kawasan Lembang
           </h1>
           <p className="text-xs sm:text-sm text-stone-300 max-w-xl">
-            Pesan langsung homestay sejuk Pasir Angling, paket edukasi tani & kopi, susu sapi perah murni, hingga sayuran segar langsung dari petani warga Desa Suntenjaya.
+            Pesan langsung homestay sejuk lereng gunung, paket edukasi & offroad, kopi specialty, hingga sayuran segar langsung dari PIC resmi desa di Kawasan Lembang.
           </p>
         </div>
 
@@ -103,7 +109,7 @@ export const MarketplaceView: React.FC = () => {
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="Cari produk desa..."
+            placeholder="Cari produk / homestay..."
             className="w-full pl-10 pr-4 py-2.5 bg-white/10 backdrop-blur-md border border-white/20 rounded-xl text-xs sm:text-sm text-white placeholder-stone-400 focus:outline-none focus:ring-2 focus:ring-amber-400"
           />
           {searchQuery && (
@@ -115,6 +121,39 @@ export const MarketplaceView: React.FC = () => {
             </button>
           )}
         </div>
+      </div>
+
+      {/* Village Filter Bar (Kawasan Lembang) */}
+      <div className="bg-white p-3 sm:p-4 rounded-2xl border border-stone-200 shadow-xs flex items-center gap-2 overflow-x-auto scrollbar-none">
+        <span className="text-xs font-bold text-stone-700 flex items-center gap-1 shrink-0 mr-1">
+          <MapPin className="w-4 h-4 text-emerald-700" />
+          <span>Pilih Desa:</span>
+        </span>
+
+        <button
+          onClick={() => setVillageFilter('all')}
+          className={`px-3.5 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap transition-all ${
+            villageFilter === 'all'
+              ? 'bg-emerald-800 text-amber-200 shadow-xs'
+              : 'bg-stone-100 text-stone-700 hover:bg-stone-200'
+          }`}
+        >
+          Semua Desa
+        </button>
+
+        {villages.map(v => (
+          <button
+            key={v.id}
+            onClick={() => setVillageFilter(v.id)}
+            className={`px-3.5 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap transition-all ${
+              villageFilter === v.id
+                ? 'bg-emerald-800 text-amber-200 shadow-xs'
+                : 'bg-stone-100 text-stone-700 hover:bg-stone-200'
+            }`}
+          >
+            {v.name.replace('Desa Wisata ', '')}
+          </button>
+        ))}
       </div>
 
       {/* Category Pills Bar */}
@@ -151,6 +190,21 @@ export const MarketplaceView: React.FC = () => {
               <RotateCcw className="w-3 h-3" />
               <span>Reset</span>
             </button>
+          </div>
+
+          {/* Village Filter Sidebar */}
+          <div className="space-y-2">
+            <label className="text-xs font-bold text-stone-800 block">Desa Wisata di Lembang</label>
+            <select
+              value={villageFilter}
+              onChange={(e) => setVillageFilter(e.target.value)}
+              className="w-full px-3 py-2.5 bg-white border border-stone-300 rounded-xl text-xs font-bold text-stone-900 shadow-xs focus:outline-none focus:ring-2 focus:ring-emerald-700 cursor-pointer"
+            >
+              <option value="all">🏞️ Semua Desa di Lembang (5 Desa)</option>
+              {villages.map(v => (
+                <option key={v.id} value={v.id}>{v.name} ({v.villageAltitude || '1.250 mdpl'})</option>
+              ))}
+            </select>
           </div>
 
           {/* Price Range Filter */}
@@ -199,9 +253,9 @@ export const MarketplaceView: React.FC = () => {
 
           {/* Quick Info Box */}
           <div className="p-4 bg-emerald-50 rounded-xl border border-emerald-200/80 text-xs text-emerald-900 space-y-1">
-            <p className="font-bold">✨ Transaksi Langsung</p>
+            <p className="font-bold">✨ PIC Terhubung Langsung</p>
             <p className="text-[11px] text-emerald-800 leading-relaxed">
-              Seluruh pesanan diteruskan langsung ke pengelola BUMDes & pengrajin lokal desa wisata.
+              Setiap pesanan dihubungkan langsung ke WhatsApp PIC desa terkait untuk kemudahan konfirmasi & kedatangan.
             </p>
           </div>
         </aside>
@@ -248,13 +302,13 @@ export const MarketplaceView: React.FC = () => {
               <div className="hidden sm:flex items-center bg-stone-100 p-1 rounded-xl border border-stone-200">
                 <button
                   onClick={() => setViewMode('grid')}
-                  className={`p-1.5 rounded-lg transition-colors ${viewMode === 'grid' ? 'bg-white shadow-xs text-emerald-800' : 'text-stone-400'}`}
+                  className={`p-1.5 rounded-lg transition-colors ${viewMode === 'grid' ? 'bg-white text-emerald-800 shadow-xs' : 'text-stone-500'}`}
                 >
                   <Grid className="w-4 h-4" />
                 </button>
                 <button
                   onClick={() => setViewMode('list')}
-                  className={`p-1.5 rounded-lg transition-colors ${viewMode === 'list' ? 'bg-white shadow-xs text-emerald-800' : 'text-stone-400'}`}
+                  className={`p-1.5 rounded-lg transition-colors ${viewMode === 'list' ? 'bg-white text-emerald-800 shadow-xs' : 'text-stone-500'}`}
                 >
                   <List className="w-4 h-4" />
                 </button>
@@ -263,59 +317,30 @@ export const MarketplaceView: React.FC = () => {
 
           </div>
 
-          {/* Mobile Filter Drawer */}
-          {mobileFilterOpen && (
-            <div className="lg:hidden bg-white p-5 rounded-2xl border border-stone-200 shadow-lg space-y-4">
-              <div className="flex items-center justify-between pb-2 border-b border-stone-200">
-                <h4 className="font-bold text-sm text-stone-900">Filter Pencarian</h4>
-                <button onClick={resetFilters} className="text-xs text-emerald-800 font-bold">Reset</button>
-              </div>
-
-              <div className="space-y-2">
-                <label className="text-xs font-bold text-stone-800">Harga Maksimal: {formatRupiah(priceFilter)}</label>
-                <input
-                  type="range"
-                  min={10000}
-                  max={1000000}
-                  step={10000}
-                  value={priceFilter}
-                  onChange={(e) => setPriceFilter(Number(e.target.value))}
-                  className="w-full accent-emerald-800"
-                />
-              </div>
-
-              <button
-                onClick={() => setMobileFilterOpen(false)}
-                className="w-full py-2.5 bg-emerald-800 text-white font-bold rounded-xl text-xs"
-              >
-                Terapkan Filter
-              </button>
-            </div>
-          )}
-
-          {/* Product Grid / List Output */}
+          {/* Product Grid / List Display */}
           {sortedProducts.length > 0 ? (
-            <div className={viewMode === 'grid' ? 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6' : 'space-y-4'}>
-              {sortedProducts.map((product) => (
+            <div className={viewMode === 'grid' 
+              ? "grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6"
+              : "space-y-4"
+            }>
+              {sortedProducts.map(product => (
                 <ProductCard key={product.id} product={product} />
               ))}
             </div>
           ) : (
-            <div className="bg-white rounded-2xl p-12 text-center border border-stone-200 space-y-4">
-              <div className="w-16 h-16 rounded-full bg-amber-100 text-amber-800 flex items-center justify-center mx-auto">
-                <Search className="w-8 h-8" />
+            <div className="bg-white rounded-3xl p-12 text-center space-y-4 border border-stone-200">
+              <div className="w-16 h-16 bg-stone-100 text-stone-400 rounded-full flex items-center justify-center mx-auto">
+                <ShoppingBag className="w-8 h-8" />
               </div>
-              <div className="space-y-1">
-                <h3 className="text-lg font-bold text-stone-900">Produk Tidak Ditemukan</h3>
-                <p className="text-xs text-stone-500 max-w-md mx-auto">
-                  Coba ubah kata kunci pencarian atau bersihkan filter desa dan rentang harga Anda.
-                </p>
+              <div>
+                <h3 className="text-base font-bold text-stone-900">Tidak Ada Produk Yang Sesuai</h3>
+                <p className="text-xs text-stone-500 mt-1">Coba ubah filter desa, kategori, atau kata kunci pencarian Anda.</p>
               </div>
               <button
                 onClick={resetFilters}
-                className="px-6 py-2.5 bg-emerald-800 hover:bg-emerald-900 text-white font-bold rounded-xl text-xs shadow-md transition-all"
+                className="px-5 py-2.5 bg-emerald-800 text-amber-200 font-bold rounded-xl text-xs shadow-md"
               >
-                Bersihkan Filter
+                Reset Semua Filter
               </button>
             </div>
           )}
@@ -323,6 +348,57 @@ export const MarketplaceView: React.FC = () => {
         </div>
 
       </div>
+
+      {/* Mobile Drawer Filter */}
+      {mobileFilterOpen && (
+        <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/60 backdrop-blur-sm lg:hidden p-0 sm:p-4">
+          <div className="bg-white w-full max-w-lg rounded-t-3xl sm:rounded-3xl max-h-[85vh] overflow-y-auto p-6 space-y-6">
+            <div className="flex items-center justify-between border-b border-stone-200 pb-3">
+              <h3 className="text-base font-bold text-stone-900">Filter Produk</h3>
+              <button onClick={() => setMobileFilterOpen(false)} className="text-stone-400">✕</button>
+            </div>
+
+            {/* Village Selector Mobile */}
+            <div className="space-y-2">
+              <label className="text-xs font-bold text-stone-800">Desa Wisata di Lembang</label>
+              <select
+                value={villageFilter}
+                onChange={(e) => setVillageFilter(e.target.value)}
+                className="w-full px-3 py-2.5 bg-white border border-stone-300 rounded-xl text-xs font-bold text-stone-900 shadow-xs focus:outline-none focus:ring-2 focus:ring-emerald-700"
+              >
+                <option value="all">🏞️ Semua Desa di Lembang (5 Desa)</option>
+                {villages.map(v => (
+                  <option key={v.id} value={v.id}>{v.name} ({v.villageAltitude || '1.250 mdpl'})</option>
+                ))}
+              </select>
+            </div>
+
+            {/* Price Filter Mobile */}
+            <div className="space-y-2">
+              <div className="flex items-center justify-between text-xs font-bold text-stone-800">
+                <label>Harga Maksimal</label>
+                <span className="text-emerald-800 font-extrabold">{formatRupiah(priceFilter)}</span>
+              </div>
+              <input
+                type="range"
+                min={10000}
+                max={1000000}
+                step={10000}
+                value={priceFilter}
+                onChange={(e) => setPriceFilter(Number(e.target.value))}
+                className="w-full accent-emerald-800"
+              />
+            </div>
+
+            <button
+              onClick={() => setMobileFilterOpen(false)}
+              className="w-full py-3 bg-emerald-800 text-amber-200 font-bold rounded-xl text-xs shadow-md"
+            >
+              Terapkan Filter
+            </button>
+          </div>
+        </div>
+      )}
 
     </div>
   );

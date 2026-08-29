@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { useApp } from '../context/AppContext';
 import { formatRupiah, getCategoryBadge } from '../components/ProductCard';
-import { Product, ProductCategory, OrderStatus } from '../types';
+import { Product, ProductCategory, OrderStatus, Village } from '../types';
+import { MOCK_PICS, LEMBANG_GALLERY_PRESETS } from '../data/mockData';
 import { 
   Store, 
   Plus, 
@@ -19,7 +20,22 @@ import {
   ShieldCheck, 
   Sparkles,
   Search,
-  Filter
+  Filter,
+  Camera,
+  Image as ImageIcon,
+  ArrowLeft,
+  ArrowRight,
+  Upload,
+  Check,
+  Building2,
+  MapPin,
+  Phone,
+  Save,
+  Compass,
+  BedDouble,
+  TreePine,
+  Coffee,
+  Palette
 } from 'lucide-react';
 
 export const SellerDashboardView: React.FC = () => {
@@ -31,59 +47,154 @@ export const SellerDashboardView: React.FC = () => {
     deleteProduct, 
     updateOrderStatus, 
     villages,
+    updateVillage,
+    currentUser,
+    login,
     navigateTo,
     showToast
   } = useApp();
 
-  const [activeTab, setActiveTab] = useState<'products' | 'orders' | 'profile'>('products');
-  const [showAddModal, setShowAddModal] = useState(false);
+  const [activeTab, setActiveTab] = useState<'feed' | 'profile' | 'orders'>('feed');
+  const [feedCategoryFilter, setFeedCategoryFilter] = useState<ProductCategory | 'all'>('all');
+  
+  // Current active village for PIC
+  const activeVillageId = currentUser?.picVillageId || currentUser?.villageName ? 
+    (villages.find(v => v.name === currentUser?.villageName || v.id === currentUser?.picVillageId)?.id || 'des-01') : 'des-01';
+  
+  const currentVillage = villages.find(v => v.id === activeVillageId) || villages[0];
+  const villageProducts = products.filter(p => p.villageId === currentVillage.id);
+  const filteredVillageProducts = feedCategoryFilter === 'all' 
+    ? villageProducts 
+    : villageProducts.filter(p => p.category === feedCategoryFilter);
+
+  // Edit village profile state
+  const [editVillageName, setEditVillageName] = useState(currentVillage.name);
+  const [editVillageDesc, setEditVillageDesc] = useState(currentVillage.description);
+  const [editVillageHistory, setEditVillageHistory] = useState(currentVillage.history);
+  const [editVillagePhone, setEditVillagePhone] = useState(currentVillage.contactPhone);
+  const [editVillageManager, setEditVillageManager] = useState(currentVillage.managerName);
+  const [editVillageImage, setEditVillageImage] = useState(currentVillage.image);
+
+  // Modal Posting Flow State (Wireframe 4-step wizard)
+  const [showPostWizard, setShowPostWizard] = useState(false);
+  const [wizardStep, setWizardStep] = useState<'pick-media' | 'fill-detail'>('pick-media');
+  
+  // Post Wizard Form State
+  const [selectedImage, setSelectedImage] = useState<string>(LEMBANG_GALLERY_PRESETS[0].url);
+  const [postTitle, setPostTitle] = useState('');
+  const [postDescription, setPostDescription] = useState('');
+  const [postPrice, setPostPrice] = useState<number>(250000);
+  const [postUnit, setPostUnit] = useState('/malam');
+  const [postStock, setPostStock] = useState<number>(3);
+  const [postCategory, setPostCategory] = useState<ProductCategory>('homestay');
+  
+  // Editing existing product
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
 
-  // New product form state
-  const [newTitle, setNewTitle] = useState('');
-  const [newCategory, setNewCategory] = useState<ProductCategory>('homestay');
-  const [newPrice, setNewPrice] = useState<number>(250000);
-  const [newUnit, setNewUnit] = useState('/malam');
-  const [newVillageId, setNewVillageId] = useState('des-01');
-  const [newDescription, setNewDescription] = useState('');
-  const [newSellerName, setNewSellerName] = useState('Pokdarwis Saba Sunten');
-  const [newSellerBadge, setNewSellerBadge] = useState('Pengelola Desa Suntenjaya');
-  const [newQuota, setNewQuota] = useState(10);
-  const [newImage, setNewImage] = useState('https://images.unsplash.com/photo-1587061949409-02df41d5e562?auto=format&fit=crop&w=800&q=80');
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
-  // Stats calculation
-  const totalRevenue = orders.reduce((sum, o) => sum + o.totalAmount, 0);
-  const pendingOrders = orders.filter(o => o.status === 'menunggu' || o.status === 'diproses').length;
+  // Close modals on Escape key & manage body scroll
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        if (showPostWizard) setShowPostWizard(false);
+        if (editingProduct) setEditingProduct(null);
+      }
+    };
 
-  const handleCreateSubmit = (e: React.FormEvent) => {
+    if (showPostWizard || editingProduct) {
+      document.body.style.overflow = 'hidden';
+      window.addEventListener('keydown', handleKeyDown);
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+
+    return () => {
+      document.body.style.overflow = 'unset';
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [showPostWizard, editingProduct]);
+
+  // Handle local image file upload (Base64)
+  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        if (typeof reader.result === 'string') {
+          setSelectedImage(reader.result);
+          showToast('Foto aktual berhasil dimuat!', 'success');
+        }
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  // Switch PIC account
+  const handleSwitchPic = (pic: typeof MOCK_PICS[0]) => {
+    login(pic);
+    const targetVillage = villages.find(v => v.id === pic.picVillageId) || villages[0];
+    setEditVillageName(targetVillage.name);
+    setEditVillageDesc(targetVillage.description);
+    setEditVillageHistory(targetVillage.history);
+    setEditVillagePhone(targetVillage.contactPhone);
+    setEditVillageManager(targetVillage.managerName);
+    setEditVillageImage(targetVillage.image);
+  };
+
+  // Submit new post from wizard
+  const handlePublishPost = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!newTitle || !newDescription) return;
-
-    const village = villages.find(v => v.id === newVillageId);
+    if (!postTitle.trim()) {
+      showToast('Mohon masukkan judul postingan.', 'error');
+      return;
+    }
 
     addProduct({
-      title: newTitle,
-      category: newCategory,
-      price: Number(newPrice),
-      unit: newUnit,
-      villageId: newVillageId,
-      villageName: village?.name || 'Desa Wisata',
-      location: village?.location || 'Indonesia',
-      sellerName: newSellerName,
-      sellerBadge: newSellerBadge,
-      sellerAvatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=200&q=80',
-      sellerPhone: '+6281234567890',
-      image: newImage,
-      gallery: [newImage],
-      description: newDescription,
-      highlights: ['Produk Asli Desa', 'Sertifikasi Pokdarwis'],
-      stockQuota: Number(newQuota),
+      title: postTitle,
+      category: postCategory,
+      price: Number(postPrice),
+      unit: postUnit,
+      villageId: currentVillage.id,
+      villageName: currentVillage.name,
+      location: currentVillage.location,
+      sellerName: currentUser?.sellerName || currentUser?.name || currentVillage.managerName,
+      sellerBadge: 'PIC Terverifikasi Desa',
+      sellerAvatar: currentUser?.avatar || 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=200&q=80',
+      sellerPhone: currentUser?.phone || currentVillage.contactPhone,
+      image: selectedImage,
+      gallery: [selectedImage],
+      description: postDescription || 'Konten dan penawaran aktual dari Desa Wisata.',
+      highlights: ['Foto Asli Lokasi', 'Dikelola Langsung PIC Desa', 'Kualitas Terjamin'],
+      stockQuota: Number(postStock),
       isAvailable: true,
       isFeatured: false
     });
 
-    setShowAddModal(false);
-    resetForm();
+    setShowPostWizard(false);
+    resetWizard();
+  };
+
+  const resetWizard = () => {
+    setWizardStep('pick-media');
+    setPostTitle('');
+    setPostDescription('');
+    setPostPrice(250000);
+    setPostStock(3);
+    setPostCategory('homestay');
+  };
+
+  const handleSaveVillageProfile = (e: React.FormEvent) => {
+    e.preventDefault();
+    updateVillage({
+      ...currentVillage,
+      name: editVillageName,
+      description: editVillageDesc,
+      history: editVillageHistory,
+      contactPhone: editVillagePhone,
+      managerName: editVillageManager,
+      image: editVillageImage
+    });
   };
 
   const handleEditSubmit = (e: React.FormEvent) => {
@@ -93,16 +204,14 @@ export const SellerDashboardView: React.FC = () => {
     setEditingProduct(null);
   };
 
-  const resetForm = () => {
-    setNewTitle('');
-    setNewDescription('');
-    setNewPrice(250000);
-  };
+  // Stats calculation
+  const totalRevenue = orders.reduce((sum, o) => sum + o.totalAmount, 0);
+  const pendingOrders = orders.filter(o => o.status === 'menunggu' || o.status === 'diproses').length;
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8 pb-28 relative">
       
-      {/* Portal Header */}
+      {/* PIC Header Banner */}
       <div className="bg-gradient-to-r from-stone-900 via-emerald-950 to-stone-900 rounded-3xl p-6 sm:p-8 text-white shadow-xl flex flex-col md:flex-row items-center justify-between gap-6 border border-emerald-700/30">
         <div className="flex items-center gap-4">
           <div className="w-14 h-14 rounded-2xl bg-amber-400 text-stone-950 flex items-center justify-center font-bold shadow-lg shrink-0">
@@ -111,427 +220,845 @@ export const SellerDashboardView: React.FC = () => {
           <div>
             <div className="inline-flex items-center gap-1.5 text-[10px] bg-emerald-500/20 text-emerald-300 px-2.5 py-0.5 rounded-full border border-emerald-500/30 mb-1 font-bold">
               <ShieldCheck className="w-3.5 h-3.5" />
-              <span>Portal BUMDes & Pokdarwis Saba Sunten</span>
+              <span>Sistem PIC Resmi · Saba Lembang</span>
             </div>
             <h1 className="text-2xl sm:text-3xl font-extrabold font-serif-title">
-              Dashboard Pengelola & UMKM Suntenjaya
+              Portal PIC {currentVillage.name}
             </h1>
             <p className="text-xs text-stone-300">
-              Kelola listing homestay 4 dusun, kopi specialty, olahan susu murni, dan pantau pesanan wisatawan masuk.
+              PIC Aktif: <strong className="text-amber-300">{currentUser?.name || currentVillage.managerName}</strong> · Kelola konten riil destinasi, foto aktual, dan reservasi wisatawan.
             </p>
           </div>
         </div>
 
+        {/* PIC Village Switcher */}
         <div className="flex flex-wrap items-center gap-3 shrink-0">
-          <button
-            onClick={() => navigateTo('marketplace')}
-            className="px-4 py-3 bg-white/10 hover:bg-white/20 text-white font-bold rounded-2xl text-xs border border-white/20 transition-all"
-          >
-            ← Lihat Katalog Publik
-          </button>
+          <div className="flex items-center gap-1.5 bg-stone-800/90 border border-stone-700 px-3 py-1.5 rounded-xl text-xs">
+            <MapPin className="w-3.5 h-3.5 text-amber-400" />
+            <span className="text-stone-400 font-medium">Ganti PIC Desa:</span>
+            <select
+              value={currentUser?.id || MOCK_PICS[0].id}
+              onChange={(e) => {
+                const pic = MOCK_PICS.find(p => p.id === e.target.value);
+                if (pic) handleSwitchPic(pic);
+              }}
+              className="bg-transparent text-amber-300 font-bold focus:outline-none cursor-pointer"
+            >
+              {MOCK_PICS.map(p => (
+                <option key={p.id} value={p.id} className="bg-stone-900 text-white">
+                  {p.name} ({p.picVillageName?.replace('Desa Wisata ', '')})
+                </option>
+              ))}
+            </select>
+          </div>
 
           <button
-            onClick={() => setShowAddModal(true)}
-            className="px-5 py-3 bg-amber-400 hover:bg-amber-300 text-stone-950 font-extrabold rounded-2xl text-xs shadow-lg transition-all hover:scale-105 flex items-center gap-2"
+            onClick={() => navigateTo('marketplace')}
+            className="px-4 py-2.5 bg-white/10 hover:bg-white/20 text-white font-bold rounded-xl text-xs border border-white/20 transition-all"
           >
-            <Plus className="w-4 h-4" />
-            <span>Tambah Produk / Layanan</span>
+            ← Lihat Marketplace
           </button>
         </div>
       </div>
 
       {/* Analytics Overview Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        
-        <div className="bg-white p-5 rounded-2xl border border-stone-200 shadow-xs flex items-center gap-4">
-          <div className="w-12 h-12 rounded-xl bg-emerald-100 text-emerald-800 flex items-center justify-center">
-            <DollarSign className="w-6 h-6" />
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="bg-white p-4 sm:p-5 rounded-2xl border border-stone-200 shadow-xs flex items-center gap-3">
+          <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-emerald-100 text-emerald-800 flex items-center justify-center shrink-0">
+            <DollarSign className="w-5 h-5 sm:w-6 sm:h-6" />
           </div>
           <div>
-            <p className="text-[11px] text-stone-500 font-semibold uppercase">Total Pendapatan</p>
-            <p className="text-lg font-black text-stone-900">{formatRupiah(totalRevenue)}</p>
+            <p className="text-[10px] sm:text-[11px] text-stone-500 font-semibold uppercase">Pendapatan Desa</p>
+            <p className="text-sm sm:text-lg font-black text-stone-900">{formatRupiah(totalRevenue)}</p>
           </div>
         </div>
 
-        <div className="bg-white p-5 rounded-2xl border border-stone-200 shadow-xs flex items-center gap-4">
-          <div className="w-12 h-12 rounded-xl bg-amber-100 text-amber-900 flex items-center justify-center">
-            <Package className="w-6 h-6" />
+        <div className="bg-white p-4 sm:p-5 rounded-2xl border border-stone-200 shadow-xs flex items-center gap-3">
+          <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-amber-100 text-amber-900 flex items-center justify-center shrink-0">
+            <Package className="w-5 h-5 sm:w-6 sm:h-6" />
           </div>
           <div>
-            <p className="text-[11px] text-stone-500 font-semibold uppercase">Pesanan Aktif</p>
-            <p className="text-lg font-black text-stone-900">{pendingOrders} Pesanan</p>
+            <p className="text-[10px] sm:text-[11px] text-stone-500 font-semibold uppercase">Pesanan Aktif</p>
+            <p className="text-sm sm:text-lg font-black text-stone-900">{pendingOrders} Pesanan</p>
           </div>
         </div>
 
-        <div className="bg-white p-5 rounded-2xl border border-stone-200 shadow-xs flex items-center gap-4">
-          <div className="w-12 h-12 rounded-xl bg-sky-100 text-sky-900 flex items-center justify-center">
-            <Store className="w-6 h-6" />
+        <div className="bg-white p-4 sm:p-5 rounded-2xl border border-stone-200 shadow-xs flex items-center gap-3">
+          <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-sky-100 text-sky-900 flex items-center justify-center shrink-0">
+            <Store className="w-5 h-5 sm:w-6 sm:h-6" />
           </div>
           <div>
-            <p className="text-[11px] text-stone-500 font-semibold uppercase">Produk Diterbitkan</p>
-            <p className="text-lg font-black text-stone-900">{products.length} Listing</p>
+            <p className="text-[10px] sm:text-[11px] text-stone-500 font-semibold uppercase">Listing Desa</p>
+            <p className="text-sm sm:text-lg font-black text-stone-900">{villageProducts.length} Konten</p>
           </div>
         </div>
 
-        <div className="bg-white p-5 rounded-2xl border border-stone-200 shadow-xs flex items-center gap-4">
-          <div className="w-12 h-12 rounded-xl bg-rose-100 text-rose-900 flex items-center justify-center">
-            <TrendingUp className="w-6 h-6" />
+        <div className="bg-white p-4 sm:p-5 rounded-2xl border border-stone-200 shadow-xs flex items-center gap-3">
+          <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-rose-100 text-rose-900 flex items-center justify-center shrink-0">
+            <TrendingUp className="w-5 h-5 sm:w-6 sm:h-6" />
           </div>
           <div>
-            <p className="text-[11px] text-stone-500 font-semibold uppercase">Rating Toko Desa</p>
-            <p className="text-lg font-black text-stone-900">4.9 / 5.0 ★</p>
+            <p className="text-[10px] sm:text-[11px] text-stone-500 font-semibold uppercase">Rating {currentVillage.name}</p>
+            <p className="text-sm sm:text-lg font-black text-stone-900">{currentVillage.rating} / 5.0 ★</p>
           </div>
         </div>
-
       </div>
 
-      {/* Tabs */}
-      <div className="flex items-center gap-2 border-b border-stone-200 pb-2">
+      {/* Main Tabs Navigation */}
+      <div className="flex flex-wrap items-center gap-2 border-b border-stone-200 pb-2">
         <button
-          onClick={() => setActiveTab('products')}
-          className={`px-4 py-2 rounded-xl text-xs font-bold transition-colors ${
-            activeTab === 'products'
+          onClick={() => setActiveTab('feed')}
+          className={`px-4 py-2.5 rounded-xl text-xs font-bold transition-all flex items-center gap-2 ${
+            activeTab === 'feed'
               ? 'bg-emerald-800 text-amber-200 shadow-sm'
-              : 'bg-white text-stone-700 border border-stone-200'
+              : 'bg-white text-stone-700 border border-stone-200 hover:bg-stone-50'
           }`}
         >
-          Kelola Produk & Layanan ({products.length})
+          <Camera className="w-4 h-4" />
+          <span>Beranda Postingan PIC ({villageProducts.length})</span>
+        </button>
+
+        <button
+          onClick={() => setActiveTab('profile')}
+          className={`px-4 py-2.5 rounded-xl text-xs font-bold transition-all flex items-center gap-2 ${
+            activeTab === 'profile'
+              ? 'bg-emerald-800 text-amber-200 shadow-sm'
+              : 'bg-white text-stone-700 border border-stone-200 hover:bg-stone-50'
+          }`}
+        >
+          <Building2 className="w-4 h-4" />
+          <span>Kelola Profil & Foto Desa</span>
         </button>
 
         <button
           onClick={() => setActiveTab('orders')}
-          className={`px-4 py-2 rounded-xl text-xs font-bold transition-colors ${
+          className={`px-4 py-2.5 rounded-xl text-xs font-bold transition-all flex items-center gap-2 ${
             activeTab === 'orders'
               ? 'bg-emerald-800 text-amber-200 shadow-sm'
-              : 'bg-white text-stone-700 border border-stone-200'
+              : 'bg-white text-stone-700 border border-stone-200 hover:bg-stone-50'
           }`}
         >
-          Daftar Pesanan Masuk ({orders.length})
+          <Package className="w-4 h-4" />
+          <span>Pesanan Wisatawan ({orders.length})</span>
         </button>
       </div>
 
-      {/* Tab 1: PRODUCTS MANAGER */}
-      {activeTab === 'products' && (
-        <div className="bg-white rounded-2xl border border-stone-200 shadow-xs overflow-hidden space-y-4 p-4 sm:p-6">
-          <div className="flex items-center justify-between">
-            <h3 className="font-bold text-stone-900 text-base font-sans">Daftar Produk Desa Terdaftar</h3>
-            <span className="text-xs text-stone-500">Klik ikon pensil untuk mengubah data produk</span>
+      {/* ========================================================== */}
+      {/* TAB 1: FEED POSTINGAN PIC (FLOW WIREFRAME SESUAI GAMBAR) */}
+      {/* ========================================================== */}
+      {activeTab === 'feed' && (
+        <div className="space-y-6">
+          
+          {/* Feed Filter & Header Bar */}
+          <div className="bg-white p-4 rounded-2xl border border-stone-200 shadow-xs flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div className="flex items-center gap-2 w-full sm:w-auto">
+              <span className="text-xs font-bold text-stone-600">Filter Kategori:</span>
+              <div className="flex flex-wrap gap-1.5">
+                {(['all', 'homestay', 'paket-wisata', 'kuliner', 'umkm', 'suvenir'] as const).map((cat) => (
+                  <button
+                    key={cat}
+                    onClick={() => setFeedCategoryFilter(cat)}
+                    className={`px-3 py-1 rounded-full text-xs font-semibold transition-all ${
+                      feedCategoryFilter === cat
+                        ? 'bg-emerald-800 text-amber-200'
+                        : 'bg-stone-100 text-stone-600 hover:bg-stone-200'
+                    }`}
+                  >
+                    {cat === 'all' ? 'Semua' : cat === 'homestay' ? 'Homestay' : cat === 'paket-wisata' ? 'Paket Wisata' : cat === 'kuliner' ? 'Kuliner' : cat === 'umkm' ? 'Produk Lokal' : 'Suvenir'}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <button
+              onClick={() => {
+                resetWizard();
+                setShowPostWizard(true);
+              }}
+              className="w-full sm:w-auto px-5 py-2.5 bg-emerald-700 hover:bg-emerald-800 text-white font-bold rounded-xl text-xs shadow-md transition-all flex items-center justify-center gap-2 hover:scale-105"
+            >
+              <Plus className="w-4 h-4" />
+              <span>Tambah Postingan Baru</span>
+            </button>
+          </div>
+
+          {/* Post Grid (Wireframe Screen 1 & 4 layout) */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+            {filteredVillageProducts.map((p) => {
+              const badge = getCategoryBadge(p.category);
+              return (
+                <div 
+                  key={p.id}
+                  className="bg-white rounded-2xl border border-stone-200/90 shadow-sm overflow-hidden flex flex-col justify-between group hover:shadow-md transition-all relative"
+                >
+                  {/* Image with Verified Checkmark (matching wireframe) */}
+                  <div className="relative h-44 w-full bg-stone-100 overflow-hidden">
+                    <img 
+                      src={p.image} 
+                      alt={p.title} 
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                      referrerPolicy="no-referrer"
+                    />
+                    <div className="absolute top-2.5 left-2.5">
+                      <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold border shadow-xs ${badge.bg}`}>
+                        {badge.label}
+                      </span>
+                    </div>
+
+                    {/* Status Centang Hijau Terverifikasi PIC */}
+                    <div className="absolute top-2.5 right-2.5 bg-emerald-600 text-white p-1 rounded-full shadow-md" title="Konten Terverifikasi PIC">
+                      <Check className="w-3.5 h-3.5 stroke-[3]" />
+                    </div>
+
+                    <div className="absolute bottom-2 left-2.5 bg-stone-950/70 backdrop-blur-md px-2 py-0.5 rounded-md text-[10px] font-bold text-amber-300">
+                      {p.stockQuota} kuota tersedia
+                    </div>
+                  </div>
+
+                  {/* Body Content */}
+                  <div className="p-4 space-y-2 flex-1 flex flex-col justify-between">
+                    <div>
+                      <h4 className="font-bold text-stone-900 text-sm line-clamp-1">{p.title}</h4>
+                      <p className="text-xs text-stone-500 line-clamp-2 mt-1">{p.description}</p>
+                    </div>
+
+                    <div className="pt-3 border-t border-stone-100 flex items-center justify-between">
+                      <div>
+                        <p className="text-[10px] text-stone-400">Harga</p>
+                        <p className="text-sm font-extrabold text-emerald-800">
+                          {formatRupiah(p.price)}
+                          <span className="text-[10px] text-stone-500 font-normal"> {p.unit}</span>
+                        </p>
+                      </div>
+
+                      <div className="flex items-center gap-1">
+                        <button
+                          onClick={() => setEditingProduct(p)}
+                          className="p-1.5 bg-stone-100 hover:bg-stone-200 text-stone-700 rounded-lg transition-colors"
+                          title="Edit Post"
+                        >
+                          <Edit3 className="w-3.5 h-3.5" />
+                        </button>
+                        <button
+                          onClick={() => deleteProduct(p.id)}
+                          className="p-1.5 bg-rose-50 hover:bg-rose-100 text-rose-600 rounded-lg transition-colors"
+                          title="Hapus Post"
+                        >
+                          <Trash2 className="w-3.5 h-3.5" />
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+
+          {filteredVillageProducts.length === 0 && (
+            <div className="bg-white rounded-3xl p-12 text-center space-y-4 border border-stone-200">
+              <div className="w-16 h-16 bg-stone-100 text-stone-400 rounded-full flex items-center justify-center mx-auto">
+                <Camera className="w-8 h-8" />
+              </div>
+              <div>
+                <h3 className="text-base font-bold text-stone-900">Belum Ada Postingan untuk Kategori Ini</h3>
+                <p className="text-xs text-stone-500 mt-1">Unggah foto dan penawaran destinasi desa Anda dengan tombol tambah di bawah.</p>
+              </div>
+              <button
+                onClick={() => {
+                  resetWizard();
+                  setShowPostWizard(true);
+                }}
+                className="px-6 py-2.5 bg-emerald-800 text-amber-200 font-bold rounded-xl text-xs shadow-md"
+              >
+                + Tambah Post Sekarang
+              </button>
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* ========================================================== */}
+      {/* TAB 2: KELOLA PROFIL & FOTO DESA */}
+      {/* ========================================================== */}
+      {activeTab === 'profile' && (
+        <div className="bg-white rounded-3xl border border-stone-200 shadow-sm p-6 sm:p-8 space-y-6">
+          <div className="border-b border-stone-200 pb-4 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+            <div>
+              <h3 className="text-lg font-bold text-stone-900 font-serif-title">
+                Kelola Informasi & Data Resmi {currentVillage.name}
+              </h3>
+              <p className="text-xs text-stone-500">
+                Data ini ditampilkan secara publik kepada wisatawan di portal destinasi Lembang.
+              </p>
+            </div>
+            <span className="px-3 py-1 bg-emerald-100 text-emerald-900 rounded-full text-xs font-bold w-fit">
+              Status PIC Terverifikasi
+            </span>
+          </div>
+
+          <form onSubmit={handleSaveVillageProfile} className="space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-xs font-bold text-stone-700 mb-1">Nama Desa Wisata</label>
+                <input
+                  type="text"
+                  value={editVillageName}
+                  onChange={(e) => setEditVillageName(e.target.value)}
+                  className="w-full p-2.5 bg-stone-50 border border-stone-300 rounded-xl text-xs text-stone-900 font-medium"
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold text-stone-700 mb-1">Nama Ketua Pokdarwis / PIC</label>
+                <input
+                  type="text"
+                  value={editVillageManager}
+                  onChange={(e) => setEditVillageManager(e.target.value)}
+                  className="w-full p-2.5 bg-stone-50 border border-stone-300 rounded-xl text-xs text-stone-900 font-medium"
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold text-stone-700 mb-1">Nomor WhatsApp Resmi PIC</label>
+                <input
+                  type="text"
+                  value={editVillagePhone}
+                  onChange={(e) => setEditVillagePhone(e.target.value)}
+                  className="w-full p-2.5 bg-stone-50 border border-stone-300 rounded-xl text-xs text-stone-900 font-medium"
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold text-stone-700 mb-1">URL Foto Sampul Utama Desa</label>
+                <input
+                  type="text"
+                  value={editVillageImage}
+                  onChange={(e) => setEditVillageImage(e.target.value)}
+                  className="w-full p-2.5 bg-stone-50 border border-stone-300 rounded-xl text-xs text-stone-900 font-medium"
+                />
+              </div>
+            </div>
+
+            <div>
+              <label className="block text-xs font-bold text-stone-700 mb-1">Deskripsi Singkat Desa</label>
+              <textarea
+                rows={3}
+                value={editVillageDesc}
+                onChange={(e) => setEditVillageDesc(e.target.value)}
+                className="w-full p-2.5 bg-stone-50 border border-stone-300 rounded-xl text-xs text-stone-900 font-medium"
+              />
+            </div>
+
+            <div>
+              <label className="block text-xs font-bold text-stone-700 mb-1">Sejarah & Karakteristik Budaya</label>
+              <textarea
+                rows={3}
+                value={editVillageHistory}
+                onChange={(e) => setEditVillageHistory(e.target.value)}
+                className="w-full p-2.5 bg-stone-50 border border-stone-300 rounded-xl text-xs text-stone-900 font-medium"
+              />
+            </div>
+
+            {/* Gallery Preview of Village */}
+            <div className="space-y-3 pt-2">
+              <label className="block text-xs font-bold text-stone-700">Galeri Foto Riil Destinasi Desa</label>
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                {currentVillage.gallery.map((img, idx) => (
+                  <div key={idx} className="relative h-28 rounded-xl overflow-hidden border border-stone-200 group">
+                    <img src={img} alt="Galeri Desa" className="w-full h-full object-cover" referrerPolicy="no-referrer" />
+                    <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center text-white text-[10px] font-bold">
+                      Foto Aktual #{idx + 1}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="flex justify-end pt-4 border-t border-stone-200">
+              <button
+                type="submit"
+                className="px-6 py-3 bg-emerald-800 hover:bg-emerald-900 text-amber-200 font-bold rounded-xl text-xs shadow-md transition-all flex items-center gap-2"
+              >
+                <Save className="w-4 h-4" />
+                <span>Simpan Perubahan Profil Desa</span>
+              </button>
+            </div>
+          </form>
+        </div>
+      )}
+
+      {/* ========================================================== */}
+      {/* TAB 3: DAFTAR PESANAN WISATAWAN */}
+      {/* ========================================================== */}
+      {activeTab === 'orders' && (
+        <div className="bg-white rounded-3xl border border-stone-200 shadow-sm p-6 sm:p-8 space-y-4">
+          <div className="flex items-center justify-between border-b border-stone-200 pb-4">
+            <div>
+              <h3 className="font-bold text-stone-900 text-base font-serif-title">Pesanan Masuk Wisatawan</h3>
+              <p className="text-xs text-stone-500">Pantau reservasi homestay, paket wisata, dan belanja produk desa.</p>
+            </div>
+            <span className="text-xs font-bold text-emerald-800 bg-emerald-50 px-3 py-1 rounded-full border border-emerald-200">
+              {orders.length} Total Pesanan
+            </span>
           </div>
 
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs text-stone-800">
               <thead className="bg-stone-50 text-stone-500 font-bold uppercase border-b border-stone-200">
                 <tr>
-                  <th className="p-3">Produk</th>
-                  <th className="p-3">Kategori</th>
-                  <th className="p-3">Harga</th>
-                  <th className="p-3">Desa Wisata</th>
-                  <th className="p-3">Stok / Kuota</th>
-                  <th className="p-3 text-right">Aksi</th>
+                  <th className="p-3">ID Pesanan</th>
+                  <th className="p-3">Pemesan</th>
+                  <th className="p-3">Item Dipesan</th>
+                  <th className="p-3">Total</th>
+                  <th className="p-3">Status</th>
+                  <th className="p-3 text-right">Ubah Status</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-stone-100">
-                {products.map((p) => {
-                  const badge = getCategoryBadge(p.category);
-                  return (
-                    <tr key={p.id} className="hover:bg-stone-50/80 transition-colors">
-                      <td className="p-3">
-                        <div className="flex items-center gap-3">
-                          <img src={p.image} alt={p.title} className="w-12 h-12 rounded-xl object-cover border" referrerPolicy="no-referrer" />
-                          <div>
-                            <p className="font-bold text-stone-900 line-clamp-1">{p.title}</p>
-                            <p className="text-[10px] text-stone-400">{p.sellerName}</p>
-                          </div>
-                        </div>
-                      </td>
-                      <td className="p-3">
-                        <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold border ${badge.bg}`}>
-                          {badge.label}
-                        </span>
-                      </td>
-                      <td className="p-3 font-bold text-emerald-800">
-                        {formatRupiah(p.price)} <span className="text-[10px] text-stone-400 font-normal">{p.unit}</span>
-                      </td>
-                      <td className="p-3 text-stone-600 font-medium">{p.villageName}</td>
-                      <td className="p-3 font-semibold">{p.stockQuota} unit</td>
-                      <td className="p-3 text-right">
-                        <div className="flex items-center justify-end gap-1">
-                          <button
-                            onClick={() => setEditingProduct(p)}
-                            className="p-2 text-stone-600 hover:text-emerald-800 hover:bg-stone-100 rounded-lg transition-colors"
-                            title="Edit"
-                          >
-                            <Edit3 className="w-4 h-4" />
-                          </button>
-                          <button
-                            onClick={() => deleteProduct(p.id)}
-                            className="p-2 text-stone-400 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-colors"
-                            title="Hapus"
-                          >
-                            <Trash2 className="w-4 h-4" />
-                          </button>
-                        </div>
-                      </td>
-                    </tr>
-                  );
-                })}
+                {orders.map((o) => (
+                  <tr key={o.id} className="hover:bg-stone-50/80 transition-colors">
+                    <td className="p-3 font-mono font-bold text-stone-900">{o.id}</td>
+                    <td className="p-3">
+                      <p className="font-bold text-stone-900">{o.customerName}</p>
+                      <p className="text-[10px] text-stone-400">{o.customerPhone}</p>
+                    </td>
+                    <td className="p-3">
+                      <div className="space-y-0.5">
+                        {o.items.map((item, idx) => (
+                          <p key={idx} className="text-stone-700">
+                            • {item.quantity}x {item.product.title}
+                          </p>
+                        ))}
+                      </div>
+                    </td>
+                    <td className="p-3 font-extrabold text-emerald-800">{formatRupiah(o.totalAmount)}</td>
+                    <td className="p-3">
+                      <span className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold ${
+                        o.status === 'selesai' ? 'bg-emerald-100 text-emerald-900 border border-emerald-300' :
+                        o.status === 'diproses' ? 'bg-amber-100 text-amber-900 border border-amber-300' :
+                        'bg-stone-100 text-stone-700'
+                      }`}>
+                        {o.status.toUpperCase()}
+                      </span>
+                    </td>
+                    <td className="p-3 text-right">
+                      <select
+                        value={o.status}
+                        onChange={(e) => updateOrderStatus(o.id, e.target.value as OrderStatus)}
+                        className="p-1.5 bg-stone-50 border border-stone-300 rounded-lg text-xs font-bold focus:outline-none"
+                      >
+                        <option value="menunggu">Menunggu</option>
+                        <option value="diproses">Diproses</option>
+                        <option value="selesai">Selesai</option>
+                        <option value="dibatalkan">Dibatalkan</option>
+                      </select>
+                    </td>
+                  </tr>
+                ))}
               </tbody>
             </table>
           </div>
         </div>
       )}
 
-      {/* Tab 2: ORDERS MANAGER */}
-      {activeTab === 'orders' && (
-        <div className="bg-white rounded-2xl border border-stone-200 shadow-xs p-4 sm:p-6 space-y-4">
-          <h3 className="font-bold text-stone-900 text-base">Kelola Pesanan Wisatawan Masuk</h3>
+      {/* ========================================================== */}
+      {/* FLOATING ACTION BUTTON (FAB) + TAMBAH POST SESUAI WIREFRAME */}
+      {/* ========================================================== */}
+      <div className="fixed bottom-6 right-6 sm:right-10 z-40">
+        <button
+          onClick={() => {
+            resetWizard();
+            setShowPostWizard(true);
+          }}
+          className="px-5 py-3.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-full shadow-2xl flex items-center gap-2.5 font-extrabold text-sm border-2 border-white hover:scale-105 transition-all"
+        >
+          <div className="w-7 h-7 rounded-full bg-white/20 flex items-center justify-center">
+            <Plus className="w-5 h-5 text-white" />
+          </div>
+          <span>Tambah Post</span>
+        </button>
+      </div>
 
-          <div className="space-y-4">
-            {orders.map((o) => (
-              <div key={o.id} className="p-5 bg-stone-50 rounded-2xl border border-stone-200 space-y-3">
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-stone-200 pb-3">
+      {/* ========================================================== */}
+      {/* 4-STEP POSTING WIZARD MODAL (PERSIS SESUAI BAGAN WIREFRAME) */}
+      {/* ========================================================== */}
+      {showPostWizard && (
+        <div 
+          className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-black/75 backdrop-blur-sm"
+          onClick={(e) => {
+            if (e.target === e.currentTarget) setShowPostWizard(false);
+          }}
+        >
+          <div className="relative bg-white rounded-3xl max-w-lg w-full max-h-[90vh] sm:max-h-[85vh] flex flex-col shadow-2xl border border-stone-200 overflow-hidden animate-in fade-in zoom-in-95 duration-150">
+            
+            {/* Header Wizard (Always visible & sticky at top) */}
+            <div className="shrink-0 bg-gradient-to-r from-emerald-700 to-teal-800 p-4 sm:p-5 text-white flex items-center justify-between shadow-xs select-none">
+              <button
+                type="button"
+                onClick={() => {
+                  if (wizardStep === 'fill-detail') {
+                    setWizardStep('pick-media');
+                  } else {
+                    setShowPostWizard(false);
+                  }
+                }}
+                className="px-3 py-1.5 rounded-xl bg-white/15 hover:bg-white/25 active:bg-white/30 text-white transition-all flex items-center gap-1.5 text-xs font-bold"
+                title="Kembali"
+                aria-label="Kembali"
+              >
+                <ArrowLeft className="w-4 h-4" />
+                <span>{wizardStep === 'fill-detail' ? 'Pilih Media' : 'Kembali'}</span>
+              </button>
+              
+              <div className="text-center px-2">
+                <span className="text-[10px] uppercase font-bold tracking-widest text-emerald-200 block">
+                  {wizardStep === 'pick-media' ? 'Langkah 1: PILIH MEDIA' : 'Langkah 2: ISI DETAIL'}
+                </span>
+                <h3 className="font-extrabold text-sm sm:text-base tracking-wide uppercase">
+                  {wizardStep === 'pick-media' ? 'Upload / Pilih Foto' : 'Detail Postingan'}
+                </h3>
+              </div>
+
+              <button
+                type="button"
+                onClick={() => setShowPostWizard(false)}
+                className="p-2 rounded-xl bg-white/15 hover:bg-rose-500 hover:text-white active:bg-rose-600 transition-all text-white"
+                title="Tutup Modal"
+                aria-label="Tutup Modal"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            {/* STEP 1: PILIH MEDIA */}
+            {wizardStep === 'pick-media' && (
+              <div className="overflow-y-auto flex-1 p-5 sm:p-6 space-y-6 overscroll-contain">
+                
+                {/* Upload Camera / File Area */}
+                <div 
+                  onClick={() => fileInputRef.current?.click()}
+                  className="bg-sky-50 hover:bg-sky-100/70 border-2 border-dashed border-sky-300 rounded-3xl p-6 sm:p-8 text-center cursor-pointer transition-all flex flex-col items-center justify-center space-y-3 group"
+                >
+                  <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-sky-200/60 text-sky-700 flex items-center justify-center group-hover:scale-110 transition-transform">
+                    <Camera className="w-8 h-8 sm:w-10 sm:h-10" />
+                  </div>
                   <div>
-                    <span className="text-xs font-black text-stone-900">{o.id}</span>
-                    <span className="text-[11px] text-stone-500 ml-2">· {o.createdAt}</span>
+                    <p className="text-sm font-extrabold text-stone-900">Ambil Foto / Upload dari Perangkat</p>
+                    <p className="text-xs text-stone-500 mt-0.5">Mendukung format JPG, PNG langsung dari lokasi destinasi</p>
+                  </div>
+                  <input
+                    ref={fileInputRef}
+                    type="file"
+                    accept="image/*"
+                    onChange={handleFileUpload}
+                    className="hidden"
+                  />
+                </div>
+
+                {/* Selected Preview if any */}
+                {selectedImage && (
+                  <div className="space-y-2">
+                    <div className="flex items-center justify-between">
+                      <span className="text-xs font-bold text-stone-700">Foto Terpilih:</span>
+                      <span className="text-[10px] text-emerald-700 font-bold">Siap Digunakan ✓</span>
+                    </div>
+                    <div className="relative h-40 rounded-2xl overflow-hidden border-2 border-emerald-500 shadow-sm">
+                      <img src={selectedImage} alt="Preview" className="w-full h-full object-cover" />
+                    </div>
+                  </div>
+                )}
+
+                {/* Preset Galeri Foto Riil Lembang */}
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs font-extrabold text-stone-800 uppercase tracking-wider">
+                      GALERI FOTO AKTUAL DESA
+                    </span>
+                    <span className="text-[11px] text-stone-500">Pilih dari koleksi riil</span>
                   </div>
 
-                  {/* Status Dropdown */}
-                  <div className="flex items-center gap-2">
-                    <span className="text-xs font-bold text-stone-600">Status:</span>
-                    <select
-                      value={o.status}
-                      onChange={(e) => updateOrderStatus(o.id, e.target.value as OrderStatus)}
-                      className="p-1.5 bg-white border border-stone-300 rounded-xl text-xs font-bold focus:outline-none"
+                  <div className="grid grid-cols-3 gap-2.5 max-h-48 overflow-y-auto pr-1">
+                    {LEMBANG_GALLERY_PRESETS.map((preset) => (
+                      <div
+                        key={preset.id}
+                        onClick={() => setSelectedImage(preset.url)}
+                        className={`relative h-20 rounded-xl overflow-hidden cursor-pointer border-2 transition-all ${
+                          selectedImage === preset.url
+                            ? 'border-emerald-600 ring-2 ring-emerald-400 scale-95'
+                            : 'border-stone-200 hover:border-stone-400'
+                        }`}
+                      >
+                        <img src={preset.url} alt={preset.title} className="w-full h-full object-cover" referrerPolicy="no-referrer" />
+                        {selectedImage === preset.url && (
+                          <div className="absolute inset-0 bg-emerald-900/40 flex items-center justify-center">
+                            <Check className="w-5 h-5 text-white stroke-[3]" />
+                          </div>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Action Buttons */}
+                <div className="flex items-center gap-3 pt-2">
+                  <button
+                    type="button"
+                    onClick={() => setShowPostWizard(false)}
+                    className="px-4 py-3.5 bg-stone-100 hover:bg-stone-200 text-stone-700 font-bold rounded-2xl text-xs transition-colors"
+                  >
+                    Batal
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setWizardStep('fill-detail')}
+                    className="flex-1 py-3.5 bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold rounded-2xl text-xs sm:text-sm shadow-lg transition-all flex items-center justify-center gap-2"
+                  >
+                    <span>Lanjut Isi Detail Postingan</span>
+                    <ArrowRight className="w-4 h-4" />
+                  </button>
+                </div>
+              </div>
+            )}
+
+            {/* STEP 2: ISI DETAIL */}
+            {wizardStep === 'fill-detail' && (
+              <form onSubmit={handlePublishPost} className="overflow-y-auto flex-1 p-5 sm:p-6 space-y-4 text-left overscroll-contain">
+                
+                {/* Photo Preview in Step 2 Header */}
+                <div className="flex items-center gap-3 p-3 bg-stone-50 rounded-2xl border border-stone-200">
+                  <img src={selectedImage} alt="Foto terpilih" className="w-16 h-16 rounded-xl object-cover border" />
+                  <div className="flex-1">
+                    <p className="text-xs font-bold text-stone-900">Foto Destinasi Terpilih</p>
+                    <button
+                      type="button"
+                      onClick={() => setWizardStep('pick-media')}
+                      className="text-[11px] font-bold text-emerald-700 hover:underline mt-0.5"
                     >
-                      <option value="menunggu">Menunggu Pembayaran</option>
-                      <option value="diproses">Sedang Diproses Desa</option>
-                      <option value="selesai">Selesai / Sudah Check-in</option>
-                      <option value="dibatalkan">Dibatalkan</option>
+                      Ganti Foto Lain ↺
+                    </button>
+                  </div>
+                </div>
+
+                {/* JUDUL */}
+                <div>
+                  <label className="block text-xs font-extrabold text-stone-800 uppercase tracking-wider mb-1">
+                    JUDUL POSTINGAN
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    value={postTitle}
+                    onChange={(e) => setPostTitle(e.target.value)}
+                    placeholder="Contoh: Kamar Melati Homestay"
+                    className="w-full p-2.5 bg-stone-50 border border-stone-300 rounded-xl text-xs font-semibold text-stone-900 focus:outline-none focus:ring-2 focus:ring-emerald-600"
+                  />
+                </div>
+
+                {/* DESKRIPSI */}
+                <div>
+                  <label className="block text-xs font-extrabold text-stone-800 uppercase tracking-wider mb-1">
+                    DESKRIPSI
+                  </label>
+                  <textarea
+                    rows={2}
+                    required
+                    value={postDescription}
+                    onChange={(e) => setPostDescription(e.target.value)}
+                    placeholder="Contoh: Kamar nyaman bersih, include sarapan liwet hangat"
+                    className="w-full p-2.5 bg-stone-50 border border-stone-300 rounded-xl text-xs font-medium text-stone-900 focus:outline-none focus:ring-2 focus:ring-emerald-600"
+                  />
+                </div>
+
+                {/* HARGA (Rp) & UNIT */}
+                <div className="grid grid-cols-2 gap-2">
+                  <div>
+                    <label className="block text-xs font-extrabold text-stone-800 uppercase tracking-wider mb-1">
+                      HARGA (Rp)
+                    </label>
+                    <input
+                      type="number"
+                      required
+                      min={0}
+                      value={postPrice}
+                      onChange={(e) => setPostPrice(Number(e.target.value))}
+                      placeholder="250000"
+                      className="w-full p-2.5 bg-stone-50 border border-stone-300 rounded-xl text-xs font-semibold text-stone-900 focus:outline-none focus:ring-2 focus:ring-emerald-600"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-extrabold text-stone-800 uppercase tracking-wider mb-1">
+                      SATUAN
+                    </label>
+                    <select
+                      value={postUnit}
+                      onChange={(e) => setPostUnit(e.target.value)}
+                      className="w-full p-2.5 bg-stone-50 border border-stone-300 rounded-xl text-xs font-semibold text-stone-900 focus:outline-none focus:ring-2 focus:ring-emerald-600"
+                    >
+                      <option value="/malam">/malam (Homestay)</option>
+                      <option value="/orang">/orang (Paket Wisata)</option>
+                      <option value="/pack">/pack (Kopi/Olahan)</option>
+                      <option value="/kg">/kg (Sayur/Buah)</option>
+                      <option value="/pcs">/pcs (Suvenir/Kerajinan)</option>
                     </select>
                   </div>
                 </div>
 
-                {/* Customer Details */}
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 text-xs text-stone-700 font-medium">
-                  <div>
-                    <span className="text-[10px] text-stone-400 block font-semibold">Nama Pemesan:</span>
-                    <strong className="text-stone-900">{o.customerName}</strong>
-                  </div>
-                  <div>
-                    <span className="text-[10px] text-stone-400 block font-semibold">No. WhatsApp:</span>
-                    <span>{o.customerPhone}</span>
-                  </div>
-                  <div>
-                    <span className="text-[10px] text-stone-400 block font-semibold">Metode Bayar:</span>
-                    <span className="text-emerald-800 font-bold">{o.paymentMethod}</span>
+                {/* STOK / JUMLAH */}
+                <div>
+                  <label className="block text-xs font-extrabold text-stone-800 uppercase tracking-wider mb-1">
+                    STOK / JUMLAH KUOTA
+                  </label>
+                  <input
+                    type="number"
+                    required
+                    min={1}
+                    value={postStock}
+                    onChange={(e) => setPostStock(Number(e.target.value))}
+                    placeholder="Contoh: 3 kamar tersedia / 20 kuota"
+                    className="w-full p-2.5 bg-stone-50 border border-stone-300 rounded-xl text-xs font-semibold text-stone-900 focus:outline-none focus:ring-2 focus:ring-emerald-600"
+                  />
+                </div>
+
+                {/* PILIH KATEGORI (Checkboxes / Pills persis wireframe) */}
+                <div>
+                  <label className="block text-xs font-extrabold text-stone-800 uppercase tracking-wider mb-1.5">
+                    PILIH KATEGORI
+                  </label>
+                  <div className="grid grid-cols-3 gap-2">
+                    {[
+                      { id: 'homestay', label: 'Homestay', icon: <BedDouble className="w-3.5 h-3.5" /> },
+                      { id: 'umkm', label: 'Produk Lokal', icon: <Store className="w-3.5 h-3.5" /> },
+                      { id: 'paket-wisata', label: 'Paket Wisata', icon: <TreePine className="w-3.5 h-3.5" /> },
+                      { id: 'kuliner', label: 'Kopi & Kuliner', icon: <Coffee className="w-3.5 h-3.5" /> },
+                      { id: 'suvenir', label: 'Suvenir Kayu', icon: <Palette className="w-3.5 h-3.5" /> },
+                      { id: 'destinasi', label: 'Tiket Wisata', icon: <Compass className="w-3.5 h-3.5" /> }
+                    ].map((cat) => (
+                      <button
+                        type="button"
+                        key={cat.id}
+                        onClick={() => setPostCategory(cat.id as ProductCategory)}
+                        className={`p-2 rounded-xl text-xs font-bold border transition-all flex items-center justify-center gap-1.5 ${
+                          postCategory === cat.id
+                            ? 'bg-emerald-600 text-white border-emerald-600 shadow-xs'
+                            : 'bg-stone-50 text-stone-700 border-stone-200 hover:bg-stone-100'
+                        }`}
+                      >
+                        {cat.icon}
+                        <span>{cat.label}</span>
+                      </button>
+                    ))}
                   </div>
                 </div>
 
-                {/* Items */}
-                <div className="bg-white p-3 rounded-xl border border-stone-200 space-y-1 text-xs">
-                  <span className="text-[10px] text-stone-400 font-bold uppercase block">Rincian Item:</span>
-                  {o.items.map((it, idx) => (
-                    <div key={idx} className="flex justify-between">
-                      <span>{it.quantity}x {it.product.title}</span>
-                      <span className="font-bold">{formatRupiah(it.product.price * it.quantity)}</span>
-                    </div>
-                  ))}
-                  <div className="pt-2 border-t border-stone-100 flex justify-between font-extrabold text-stone-900">
-                    <span>Total Bayar:</span>
-                    <span className="text-emerald-800">{formatRupiah(o.totalAmount)}</span>
-                  </div>
+                {/* POSTING BUTTON */}
+                <div className="flex items-center gap-3 pt-3">
+                  <button
+                    type="button"
+                    onClick={() => setWizardStep('pick-media')}
+                    className="px-4 py-3.5 bg-stone-100 hover:bg-stone-200 text-stone-700 font-bold rounded-2xl text-xs transition-colors"
+                  >
+                    ← Ganti Foto
+                  </button>
+                  <button
+                    type="submit"
+                    className="flex-1 py-3.5 bg-sky-500 hover:bg-sky-600 text-white font-black rounded-2xl text-xs sm:text-sm shadow-xl transition-all hover:scale-[1.01] tracking-wider uppercase"
+                  >
+                    POSTING SEKARANG
+                  </button>
                 </div>
 
-              </div>
-            ))}
+              </form>
+            )}
+
           </div>
         </div>
       )}
 
-      {/* CREATE NEW PRODUCT MODAL */}
-      {showAddModal && (
-        <div className="fixed inset-0 z-50 bg-stone-950/80 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
-          <div className="bg-white max-w-2xl w-full rounded-3xl p-6 sm:p-8 shadow-2xl border border-stone-200 space-y-6 relative my-8">
-            <button
-              onClick={() => setShowAddModal(false)}
-              className="absolute top-4 right-4 text-stone-400 hover:text-stone-700"
-            >
-              <X className="w-6 h-6" />
-            </button>
+      {/* ========================================================== */}
+      {/* EDIT MODAL FOR EXISTING LISTINGS */}
+      {/* ========================================================== */}
+      {editingProduct && (
+        <div 
+          className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-black/75 backdrop-blur-sm"
+          onClick={(e) => {
+            if (e.target === e.currentTarget) setEditingProduct(null);
+          }}
+        >
+          <div className="relative bg-white rounded-3xl max-w-lg w-full max-h-[90vh] sm:max-h-[85vh] flex flex-col shadow-2xl border border-stone-200 overflow-hidden animate-in fade-in zoom-in-95 duration-150">
+            <div className="shrink-0 bg-stone-900 p-4 sm:p-5 text-white flex items-center justify-between border-b border-stone-800">
+              <h3 className="text-base font-bold text-white font-serif-title">Edit Postingan #{editingProduct.id}</h3>
+              <button 
+                onClick={() => setEditingProduct(null)} 
+                className="p-1.5 rounded-xl bg-white/10 hover:bg-rose-500 hover:text-white transition-all text-stone-300"
+                title="Tutup Modal"
+                aria-label="Tutup Modal"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
 
-            <h2 className="text-2xl font-extrabold font-serif-title text-stone-900">
-              Tambah Produk / Layanan Desa Baru
-            </h2>
-
-            <form onSubmit={handleCreateSubmit} className="space-y-4 text-xs">
-              
+            <form onSubmit={handleEditSubmit} className="overflow-y-auto flex-1 p-5 sm:p-6 space-y-4 text-left text-xs overscroll-contain">
               <div>
-                <label className="font-bold text-stone-800 block mb-1">Nama Produk / Layanan*</label>
+                <label className="font-bold text-stone-700 block mb-1">Judul</label>
                 <input
                   type="text"
                   required
-                  value={newTitle}
-                  onChange={(e) => setNewTitle(e.target.value)}
-                  placeholder="Contoh: Homestay Bambu Hijau / Kain Batik Tulis..."
-                  className="w-full p-2.5 bg-stone-50 border border-stone-200 rounded-xl font-medium focus:outline-none focus:ring-2 focus:ring-emerald-600"
-                />
-              </div>
-
-              <div className="grid grid-cols-2 gap-3">
-                <div>
-                  <label className="font-bold text-stone-800 block mb-1">Kategori*</label>
-                  <select
-                    value={newCategory}
-                    onChange={(e) => setNewCategory(e.target.value as ProductCategory)}
-                    className="w-full p-2.5 bg-stone-50 border border-stone-200 rounded-xl font-medium focus:outline-none"
-                  >
-                    <option value="homestay">Homestay / Penginapan</option>
-                    <option value="paket-wisata">Paket Wisata & Tour</option>
-                    <option value="suvenir">Suvenir & Kerajinan Batik</option>
-                    <option value="kuliner">Kuliner & Kopi Adat</option>
-                    <option value="umkm">Produk UMKM Kelompok Tani</option>
-                    <option value="destinasi">Tiket Wisata</option>
-                  </select>
-                </div>
-
-                <div>
-                  <label className="font-bold text-stone-800 block mb-1">Desa Wisata*</label>
-                  <select
-                    value={newVillageId}
-                    onChange={(e) => setNewVillageId(e.target.value)}
-                    className="w-full p-2.5 bg-stone-50 border border-stone-200 rounded-xl font-medium focus:outline-none"
-                  >
-                    {villages.map(v => (
-                      <option key={v.id} value={v.id}>{v.name}</option>
-                    ))}
-                  </select>
-                </div>
-              </div>
-
-              <div className="grid grid-cols-3 gap-3">
-                <div>
-                  <label className="font-bold text-stone-800 block mb-1">Harga (Rp)*</label>
-                  <input
-                    type="number"
-                    required
-                    value={newPrice}
-                    onChange={(e) => setNewPrice(Number(e.target.value))}
-                    className="w-full p-2.5 bg-stone-50 border border-stone-200 rounded-xl font-medium focus:outline-none"
-                  />
-                </div>
-
-                <div>
-                  <label className="font-bold text-stone-800 block mb-1">Satuan Unit*</label>
-                  <input
-                    type="text"
-                    required
-                    value={newUnit}
-                    onChange={(e) => setNewUnit(e.target.value)}
-                    placeholder="/malam, /pcs, /porsi..."
-                    className="w-full p-2.5 bg-stone-50 border border-stone-200 rounded-xl font-medium focus:outline-none"
-                  />
-                </div>
-
-                <div>
-                  <label className="font-bold text-stone-800 block mb-1">Stok / Kuota*</label>
-                  <input
-                    type="number"
-                    required
-                    value={newQuota}
-                    onChange={(e) => setNewQuota(Number(e.target.value))}
-                    className="w-full p-2.5 bg-stone-50 border border-stone-200 rounded-xl font-medium focus:outline-none"
-                  />
-                </div>
-              </div>
-
-              <div>
-                <label className="font-bold text-stone-800 block mb-1">URL Gambar Foto Produk*</label>
-                <input
-                  type="text"
-                  required
-                  value={newImage}
-                  onChange={(e) => setNewImage(e.target.value)}
-                  className="w-full p-2.5 bg-stone-50 border border-stone-200 rounded-xl font-medium focus:outline-none"
+                  value={editingProduct.title}
+                  onChange={(e) => setEditingProduct({ ...editingProduct, title: e.target.value })}
+                  className="w-full p-2.5 bg-stone-50 border border-stone-300 rounded-xl font-medium"
                 />
               </div>
 
               <div>
-                <label className="font-bold text-stone-800 block mb-1">Deskripsi Lengkap*</label>
+                <label className="font-bold text-stone-700 block mb-1">Deskripsi</label>
                 <textarea
+                  rows={2}
                   required
-                  rows={3}
-                  value={newDescription}
-                  onChange={(e) => setNewDescription(e.target.value)}
-                  placeholder="Jelaskan keunggulan dan fasilitas produk desa Anda..."
-                  className="w-full p-2.5 bg-stone-50 border border-stone-200 rounded-xl font-medium focus:outline-none"
+                  value={editingProduct.description}
+                  onChange={(e) => setEditingProduct({ ...editingProduct, description: e.target.value })}
+                  className="w-full p-2.5 bg-stone-50 border border-stone-300 rounded-xl font-medium"
                 />
               </div>
 
-              <div className="pt-2 flex gap-2">
-                <button
-                  type="submit"
-                  className="flex-1 py-3 bg-emerald-800 text-amber-200 font-bold rounded-xl text-xs shadow-md hover:bg-emerald-900"
-                >
-                  Terbitkan Produk Sekarang
-                </button>
+              <div className="grid grid-cols-2 gap-2">
+                <div>
+                  <label className="font-bold text-stone-700 block mb-1">Harga (Rp)</label>
+                  <input
+                    type="number"
+                    required
+                    value={editingProduct.price}
+                    onChange={(e) => setEditingProduct({ ...editingProduct, price: Number(e.target.value) })}
+                    className="w-full p-2.5 bg-stone-50 border border-stone-300 rounded-xl font-medium"
+                  />
+                </div>
+                <div>
+                  <label className="font-bold text-stone-700 block mb-1">Stok Kuota</label>
+                  <input
+                    type="number"
+                    required
+                    value={editingProduct.stockQuota}
+                    onChange={(e) => setEditingProduct({ ...editingProduct, stockQuota: Number(e.target.value) })}
+                    className="w-full p-2.5 bg-stone-50 border border-stone-300 rounded-xl font-medium"
+                  />
+                </div>
+              </div>
+
+              <div className="flex justify-end gap-2 pt-3 border-t border-stone-200">
                 <button
                   type="button"
-                  onClick={() => setShowAddModal(false)}
-                  className="px-4 py-3 bg-stone-100 text-stone-700 font-bold rounded-xl text-xs"
+                  onClick={() => setEditingProduct(null)}
+                  className="px-4 py-2.5 bg-stone-100 hover:bg-stone-200 text-stone-700 font-bold rounded-xl"
                 >
                   Batal
                 </button>
+                <button
+                  type="submit"
+                  className="px-5 py-2.5 bg-emerald-800 hover:bg-emerald-900 text-amber-200 font-bold rounded-xl shadow-md"
+                >
+                  Simpan Perubahan
+                </button>
               </div>
-
-            </form>
-          </div>
-        </div>
-      )}
-
-      {/* EDIT PRODUCT MODAL */}
-      {editingProduct && (
-        <div className="fixed inset-0 z-50 bg-stone-950/80 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
-          <div className="bg-white max-w-lg w-full rounded-3xl p-6 shadow-2xl border border-stone-200 space-y-4 relative">
-            <button onClick={() => setEditingProduct(null)} className="absolute top-4 right-4 text-stone-400">✕</button>
-            <h3 className="font-bold text-base font-serif-title">Edit Produk #{editingProduct.id}</h3>
-            
-            <form onSubmit={handleEditSubmit} className="space-y-3 text-xs">
-              <div>
-                <label className="font-bold text-stone-800 block mb-1">Judul Produk</label>
-                <input
-                  type="text"
-                  value={editingProduct.title}
-                  onChange={(e) => setEditingProduct({ ...editingProduct, title: e.target.value })}
-                  className="w-full p-2 bg-stone-50 border rounded-xl"
-                />
-              </div>
-
-              <div>
-                <label className="font-bold text-stone-800 block mb-1">Harga (Rp)</label>
-                <input
-                  type="number"
-                  value={editingProduct.price}
-                  onChange={(e) => setEditingProduct({ ...editingProduct, price: Number(e.target.value) })}
-                  className="w-full p-2 bg-stone-50 border rounded-xl"
-                />
-              </div>
-
-              <div>
-                <label className="font-bold text-stone-800 block mb-1">Deskripsi</label>
-                <textarea
-                  rows={3}
-                  value={editingProduct.description}
-                  onChange={(e) => setEditingProduct({ ...editingProduct, description: e.target.value })}
-                  className="w-full p-2 bg-stone-50 border rounded-xl"
-                />
-              </div>
-
-              <button
-                type="submit"
-                className="w-full py-2.5 bg-emerald-800 text-amber-200 font-bold rounded-xl text-xs"
-              >
-                Simpan Perubahan
-              </button>
             </form>
           </div>
         </div>

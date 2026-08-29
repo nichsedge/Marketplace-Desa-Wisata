@@ -36,6 +36,7 @@ export interface Village {
   silamotUrl?: string;
   officeAddress?: string;
   villageApparatus?: { role: string; name: string }[];
+  villageAltitude?: string;
 }
 
 export interface Product {
@@ -110,4 +111,9 @@ export interface User {
   avatar?: string;
   villageName?: string;
   sellerName?: string;
+  picVillageId?: string;
+  picVillageName?: string;
+  picRoleTitle?: string;
+  phone?: string;
 }
+

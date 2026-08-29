@@ -368,13 +368,13 @@ export const CartView: React.FC = () => {
             <div className="border-b border-stone-200 pb-4 text-center space-y-1">
               <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-100 text-emerald-900 border border-emerald-300 text-[10px] font-bold uppercase tracking-wider">
                 <ShieldCheck className="w-3.5 h-3.5 text-emerald-700" />
-                <span>POKDARWIS SABA SUNTEN · DESA SUNTENJAYA</span>
+                <span>SABA LEMBANG · DESA WISATA KAWASAN LEMBANG</span>
               </div>
               <h2 className="text-xl sm:text-2xl font-extrabold font-serif-title text-stone-900">
                 E-Ticket & Bukti Reservasi Resmi
               </h2>
               <p className="text-[11px] text-stone-500">
-                Jl. Maribaya Timur KM. 13,5, Suntenjaya, Lembang, Kab. Bandung Barat
+                Jaringan Pariwisata & Agrowisata Terpadu Kawasan Lembang, Kab. Bandung Barat
               </p>
             </div>
 
@@ -385,7 +385,7 @@ export const CartView: React.FC = () => {
                 <span className="text-sm font-black text-stone-900 font-mono tracking-wider">{completedOrder.id}</span>
               </div>
               <span className="px-2.5 py-1 bg-emerald-700 text-white rounded-full text-[10px] font-bold shadow-xs">
-                Terkonfirmasi
+                Terkonfirmasi PIC
               </span>
             </div>
 
@@ -395,7 +395,7 @@ export const CartView: React.FC = () => {
                 <QrCode className="w-28 h-28 text-stone-900" />
               </div>
               <p className="text-[11px] font-bold text-emerald-900">
-                Tunjukkan QR Code ini kepada Pengelola Desa saat tiba di lokasi
+                Tunjukkan QR Code ini kepada PIC Desa terkait saat tiba di lokasi
               </p>
             </div>
 

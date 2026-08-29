@@ -135,7 +135,7 @@ export const VillageDetailView: React.FC = () => {
           </div>
           <div>
             <p className="text-[11px] text-stone-500 font-medium">Ketinggian Alam</p>
-            <p className="text-sm font-bold text-stone-900">1.290 mdpl (Sejuk)</p>
+            <p className="text-sm font-bold text-stone-900">{village.villageAltitude || '1.250 mdpl (Sejuk)'}</p>
           </div>
         </div>
       </div>
@@ -162,8 +162,9 @@ export const VillageDetailView: React.FC = () => {
           }`}
         >
           <Landmark className="w-3.5 h-3.5" />
-          <span>Pemerintahan & 4 Dusun</span>
+          <span>Pemerintahan & Wilayah</span>
         </button>
+
 
         <button
           onClick={() => setActiveTab('products')}

@@ -1,12 +1,19 @@
-# Repository Guidelines & Project Context (sabasunten.id)
+# Repository Guidelines & Project Context (sabasunten.id / Saba Lembang)
 
 ## 📌 Project Background & Business Context
+- **Nama Platform:** **Saba Lembang** (Jaringan & Platform Terpadu Desa Wisata Kawasan Lembang - `sabasunten.id`)
 - **Target Pembeli / Klien Langsung:** Mahasiswa program studi **DKV (Desain Komunikasi Visual)** yang sedang menempuh Tugas Akhir / Skripsi (perancangan identitas visual, kampanye promosi digital, UI/UX portal pariwisata terpadu, dan media informasi desa wisata).
-- **Kolaborasi Nyata dengan Pemerintah Desa:** Klien (mahasiswa DKV) telah menjalin komunikasi langsung secara riil dengan jajaran **Pemerintah Desa Suntenjaya** (Kecamatan Lembang, Kabupaten Bandung Barat) dan pengurus **Pokdarwis Saba Sunten**.
-- **Kondisi Lapangan Terkini (Desa):**
-  - Rekening kas desa / BUMDes dan QRIS merchant resmi belum diterbitkan oleh pihak desa.
-  - Alur transaksi sengaja difokuskan pada **Fast-Checkout WhatsApp Terotomasi** langsung ke kontak resmi Pokdarwis Saba Sunten (`+62 821-2233-4455`), bukan payment gateway rumit. Ini merupakan alur yang paling realistis, dipercaya warga, dan bebas potongan merchant.
-  - E-Ticket dan bukti reservasi diterbitkan resmi di sisi front-end lengkap dengan kode booking unik, QR Code kedatangan, dan siap cetak PDF (`window.print()`).
+- **Cakupan Destinasi:** **Kawasan Lembang** (Kabupaten Bandung Barat), mencakup 5 Desa Wisata unggulan:
+  1. **Desa Wisata Suntenjaya** (1.290 mdpl - Pasir Angling, Megalitikum Batu Loceng, Kopi Arabika, Kadaplak, Sapi Perah)
+  2. **Desa Wisata Cibodas** (1.250 mdpl - Agrowisata Bunga Potong, Lembah Maribaya, Greenhouse Paprika)
+  3. **Desa Wisata Cikole** (1.400 mdpl - Hutan Pinus Tangkuban Parahu, Glamping, Kopi Hutan, Offroad)
+  4. **Desa Wisata Jayagiri** (1.350 mdpl - Pintu Rimba, Trekking Gunung, Perkebunan Teh Alami)
+  5. **Desa Wisata Wangunsari** (1.200 mdpl - Agrowisata Petik Stroberi, Seni Tradisi Budaya Sunda, Kerajinan Bambu)
+- **Sistem PIC Multi-Desa & Alur Posting Konten (Bagan Wireframe):**
+  - Tiap desa memiliki Person in Charge (PIC) resmi terverifikasi.
+  - PIC dapat mengunggah foto aktual langsung dari perangkat/kamera atau memilih galeri foto riil Lembang.
+  - Flow 4-step wizard: Beranda PIC (`+ Tambah Post`) ➔ Pilih Media (Kamera / File / Galeri) ➔ Isi Detail (Judul, Deskripsi, Harga, Stok, Kategori) ➔ Beranda (Status Terverifikasi Aktif).
+  - Alur transaksi fast-checkout WhatsApp menghubungkan wisatawan langsung ke kontak PIC desa terkait.
 
 ---
 
@@ -24,34 +31,23 @@
 
 ---
 
-## 🏛️ Profil & Domain Resmi Desa Suntenjaya
-Portal diselaraskan dengan data resmi Pemerintah Desa Suntenjaya dan portal kependudukan **SILAMOT** (`desasuntenjaya.site`):
-- **Kepala Desa:** H. Asep Wahyono
-- **Sekretaris Desa:** Iwan Setiawan
-- **Ketua Pokdarwis Saba Sunten:** Kang Asep Suhendar
-- **Wilayah:** 845 Ha | **Penduduk:** 12.450 Jiwa | **Ketinggian:** 1.290 mdpl
-- **4 Wilayah Dusun:**
-  1. **Dusun I (Pasir Angling):** Homestay lereng tertinggi, spot sunrise, agrowisata sayur organik terasering. (Kadus: Hilman Nugraha)
-  2. **Dusun II (Batu Loceng):** Cagar budaya megalitikum Batu Loceng, saung budaya, kebun Kopi Arabika Single Origin. (Kadus: Kiki Andrian)
-  3. **Dusun III (Cikawari & Bincarung):** Hutan pinus Taman Bincarung, sentra sapi perah murni KPSBU Lembang. (Kadus: Vicky Permana Putra)
-  4. **Dusun IV (Suntenjaya Pusat):** Kantor Desa & Layanan SILAMOT, kerajinan miniatur kereta kayu Kadaplak, olahan susu. (Kadus: Sandi Agustin E.P.)
-
----
-
 ## 🎨 Standar Desain & Estetika (DKV-Grade UI/UX)
-Karena ditujukan untuk sidang skripsi DKV dan presentasi audiensi ke jajaran kepala desa:
 1. **Tipografi Editorial & Modern:**
-   - Judul / Headline: `Playfair Display` (serif elegan bernuansa budaya luhur Sunda).
+   - Judul / Headline: `Playfair Display` (serif elegan bernuansa budaya luhur Sunda & alam pegunungan).
    - Antarmuka / Teks Isi: `Plus Jakarta Sans` (sans-serif bersih, modern, dan sangat terbaca).
 2. **Palet Warna Alam Pasundan:**
    - Hijau Zamrud Pegunungan (`emerald-800`, `emerald-900`).
    - Emas Panen Padi & Kopi (`amber-300`, `amber-400`, `amber-500`).
    - Latar Hangat Organik (`amber-50/30`, `stone-50`).
    - Abu Arang Kontras (`stone-800`, `stone-900`, `stone-950`).
-3. **Pengalih Peran Instan (Demo Mode Switcher):**
-   - Header Navbar dilengkapi tombol 1-klik untuk berganti perspektif:
-     - **Mode Wisatawan (`Budi Santoso`)**: Menjelajahi 4 dusun, kalkulasi lama inap homestay, keranjang belanja, cetak e-ticket.
-     - **Mode BUMDes (`Kang Asep Suhendar`)**: Membuka dashboard pengelola BUMDes untuk mengelola katalog produk dusun dan memantau pesanan wisatawan.
+3. **Pengalih Peran Instan (Multi-PIC & Tourist Mode Switcher):**
+   - Header Navbar & Auth dilengkapi pemilih 1-klik:
+     - **Mode Wisatawan (`Budi Santoso`)**: Jelajah 5 desa, filter kawasan, keranjang, cetak e-ticket.
+     - **PIC Suntenjaya (`Kang Asep Suhendar`)**
+     - **PIC Cibodas (`Kang Dadang Herdiana`)**
+     - **PIC Cikole (`Kang Dadan Ridwan`)**
+     - **PIC Jayagiri (`Teh Eni Rohaeni`)**
+     - **PIC Wangunsari (`Kang Sandi Permana`)**
 
 ---
 
@@ -60,21 +56,21 @@ Karena ditujukan untuk sidang skripsi DKV dan presentasi audiensi ke jajaran kep
 - **Frontend SPA:** React 19 + TypeScript + Vite 6
 - **Styling:** Tailwind CSS v4 + Motion (`framer-motion`) + Lucide React
 - **Hosting / Deployment:** Vercel SPA (Hobby tier gratis, konfigurasi rewrite di `vercel.json`).
-- **Domain Target:** `sabasunten.id` (custom domain .id ditambahkan di Vercel tanpa biaya tambahan hosting).
+- **Domain Target:** `sabasunten.id`
 
 ---
 
 ## 🧭 Key Views & Routing
 Routing dikendalikan via state terpusat `useApp().navigateTo(page: PageRoute)`:
-- `home`: Landing page hero, search pintar, kartu spotlight 4 dusun, testimoni dampak desa.
-- `marketplace`: Katalog komprehensif produk 4 dusun dengan filter kategori, harga, dan pencarian.
-- `product-detail`: Detail produk/homestay, kalkulator malam inap dinamis, share Web API, ulasan, checkout WA.
-- `homestay`: Kurasi khusus homestay lereng pegunungan 1.290 mdpl dengan filter harga & fasilitas.
-- `paket-wisata`: Aktivitas edukasi & live-in dengan filter kategori (susu, kopi, budaya, live-in).
-- `desa-detail`: Profil sejarah pemekaran Cibodas 1979, aparatur desa resmi, 4 kadus, dan tautan SILAMOT.
+- `home`: Landing page hero Kawasan Lembang, spotlight 5 desa wisata, search pintar multi-desa.
+- `marketplace`: Katalog terpadu produk 5 desa Lembang dengan filter desa, kategori, dan harga.
+- `product-detail`: Detail produk/homestay, kalkulator malam inap dinamis, share Web API, ulasan, checkout WA PIC.
+- `homestay`: Kurasi homestay & glamping pegunungan 1.200 - 1.400 mdpl dengan filter desa.
+- `paket-wisata`: Aktivitas edukasi, live-in, offroad rimba, dan trekking Tangkuban Parahu.
+- `desa-detail`: Direktori & profil lengkap 5 desa wisata di Kawasan Lembang.
 - `cart`: Ringkasan pesanan dan modal penerbitan E-Ticket resmi siap cetak (`window.print()`).
-- `auth`: Autentikasi dan pengalih peran instan demo skripsi/pemdes (Wisatawan vs BUMDes).
-- `dashboard`: Dasbor BUMDes / Pengelola Pokdarwis untuk CRUD produk dan pantau pesanan.
+- `auth`: Autentikasi dan pengalih peran instan demo (Wisatawan vs 5 Akun PIC Desa).
+- `dashboard`: Dasbor PIC Desa untuk posting konten foto aktual, kelola profil desa, dan pantau pesanan.
 
 ---
 

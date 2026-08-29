@@ -77,11 +77,12 @@ interface AppContextType {
   login: (user: User) => void;
   logout: () => void;
 
-  // Seller Dashboard Actions
+  // Seller / PIC Dashboard Actions
   addProduct: (newProd: Omit<Product, 'id' | 'rating' | 'totalReviews'>) => void;
   updateProduct: (updatedProd: Product) => void;
   deleteProduct: (productId: string) => void;
   updateOrderStatus: (orderId: string, status: OrderStatus) => void;
+  updateVillage: (updatedVillage: Village) => void;
 
   // Reviews
   addReview: (productId: string, rating: number, comment: string) => void;
@@ -108,10 +109,11 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
   // Master Data
   const [products, setProducts] = useState<Product[]>(INITIAL_PRODUCTS);
-  const [villages] = useState<Village[]>(INITIAL_VILLAGES);
+  const [villages, setVillages] = useState<Village[]>(INITIAL_VILLAGES);
   const [reviews, setReviews] = useState<Review[]>(INITIAL_REVIEWS);
   const [orders, setOrders] = useState<Order[]>(INITIAL_ORDERS);
   const [cart, setCart] = useState<CartItem[]>([]);
+
 
   // User auth state (default null or sample user)
   const [currentUser, setCurrentUser] = useState<User | null>({
@@ -263,6 +265,11 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     showToast(`Status pesanan #${orderId} diubah menjadi "${status}".`, 'success');
   };
 
+  const updateVillage = (updatedVillage: Village) => {
+    setVillages(prev => prev.map(v => v.id === updatedVillage.id ? updatedVillage : v));
+    showToast(`Data profil "${updatedVillage.name}" berhasil diperbarui.`, 'success');
+  };
+
   const addReview = (productId: string, rating: number, comment: string) => {
     const newRev: Review = {
       id: `rev-${Date.now()}`,
@@ -327,6 +334,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       updateProduct,
       deleteProduct,
       updateOrderStatus,
+      updateVillage,
       addReview,
       toast,
       showToast

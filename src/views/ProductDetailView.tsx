@@ -86,8 +86,8 @@ export const ProductDetailView: React.FC = () => {
     if (navigator.share) {
       try {
         await navigator.share({
-          title: `${product.title} - sabasunten.id`,
-          text: `Cek ${product.title} di Desa Wisata Suntenjaya:`,
+          title: `${product.title} - Saba Lembang`,
+          text: `Cek ${product.title} di ${product.villageName} (Kawasan Lembang):`,
           url: shareUrl
         });
       } catch {
@@ -118,7 +118,8 @@ export const ProductDetailView: React.FC = () => {
       guestCount: product.category === 'homestay' || product.category === 'paket-wisata' ? guestCount : undefined,
       notes: specialNotes
     });
-    const url = formatWhatsAppUrl(WHATSAPP_PHONE, text);
+    const targetPhone = product.sellerPhone || WHATSAPP_PHONE;
+    const url = formatWhatsAppUrl(targetPhone, text);
     window.open(url, '_blank');
   };
 
@@ -130,8 +131,9 @@ export const ProductDetailView: React.FC = () => {
   };
 
   const handleWhatsAppChat = () => {
-    const text = `Halo Pengelola Saba Sunten, saya ingin bertanya tentang "${product.title}" (${product.unit}).`;
-    const url = formatWhatsAppUrl(WHATSAPP_PHONE, text);
+    const text = `Halo PIC ${product.villageName} (${product.sellerName}), saya ingin bertanya tentang "${product.title}" (${product.unit}).`;
+    const targetPhone = product.sellerPhone || WHATSAPP_PHONE;
+    const url = formatWhatsAppUrl(targetPhone, text);
     window.open(url, '_blank');
   };
 

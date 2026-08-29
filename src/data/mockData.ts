@@ -1,4 +1,4 @@
-import { Village, Product, Review, Order } from '../types';
+import { Village, Product, Review, Order, User } from '../types';
 
 export const INITIAL_VILLAGES: Village[] = [
   {
@@ -8,7 +8,8 @@ export const INITIAL_VILLAGES: Village[] = [
     province: 'Jawa Barat',
     rating: 4.9,
     totalReviews: 284,
-    description: 'Desa Suntenjaya menawarkan keindahan lanskap pegunungan yang asri, udara sejuk, serta budaya masyarakat lokal yang otentik. Menjadi destinasi unggulan untuk melepas penat di Kabupaten Bandung Barat.',
+    villageAltitude: '1.290 mdpl',
+    description: 'Desa Suntenjaya menawarkan keindahan lanskap lereng Gunung Palasari, perkebunan sayur organik terasering, cagar budaya megalitikum Batu Loceng, serta kopi Arabika specialty di kawasan Lembang.',
     history: 'Desa Suntenjaya bermula dari perkampungan agraris subur di lereng Gunung Palasari, Gunung Manglayang, dan Bukit Tunggul pada ketinggian 1.290 mdpl. Merupakan hasil pemekaran dari Desa Cibodas pada tahun 1979, Suntenjaya kini tumbuh sebagai Desa Mandiri berprestasi yang harmonis menjaga kearifan alam dan budaya Sunda.',
     culture: 'Masyarakat menjunjung kearifan budaya Sunda, pelestarian Situs Bersejarah Batu Loceng, balap kereta kayu tradisional Kadaplak, seni tari Jaipong & Calung, serta tradisi gotong royong peternak sapi perah dan petani sayur organik.',
     highlights: [
@@ -29,20 +30,19 @@ export const INITIAL_VILLAGES: Village[] = [
     mapLocation: 'Jl. Maribaya Timur KM. 13,5, Desa Suntenjaya, Kec. Lembang, Kab. Bandung Barat, Jawa Barat 40391',
     contactPhone: '+62 812-2076-3734',
     instagram: '@sabasunten.id',
-    managerName: 'Kang Asep Suhendar (Pokdarwis Saba Sunten)',
-    totalListings: 16,
-    // Data Resmi Pemerintah Desa Suntenjaya (sinkron desasuntenjaya.site)
+    managerName: 'Kang Asep Suhendar (PIC Desa Suntenjaya)',
+    totalListings: 14,
     headOfVillage: 'H. Asep Wahyono',
     villageSecretary: 'Iwan Setiawan',
     villageArea: '845 Ha',
     population: '12.450 Jiwa',
     dusunCount: 4,
-    vision: 'Terwujudnya Desa Suntenjaya yang Mandiri, Sejahtera, Berbudaya, dan Berbasis Digital Terdepan di Kabupaten Bandung Barat.',
+    vision: 'Terwujudnya Desa Suntenjaya yang Mandiri, Sejahtera, Berbudaya, dan Berbasis Digital Terdepan di Kawasan Lembang.',
     missions: [
       'Meningkatkan kualitas pelayanan publik melalui digitalisasi.',
-      'Mendorong pertumbuhan ekonomi kerakyatan dan UMKM.',
-      'Melestarikan seni dan budaya lokal Sunda.',
-      'Meningkatkan pembangunan infrastruktur desa yang merata.'
+      'Mendorong pertumbuhan ekonomi kerakyatan dan UMKM desa.',
+      'Melestarikan cagar budaya dan kearifan lokal Sunda.',
+      'Membangun pariwisata berkelanjutan berbasis masyarakat.'
     ],
     silamotUrl: 'https://desasuntenjaya.site',
     officeAddress: 'Jl. Maribaya Timur KM. 13,5, Desa Suntenjaya, Kec. Lembang, Kab. Bandung Barat 40391',
@@ -84,56 +84,344 @@ export const INITIAL_VILLAGES: Village[] = [
       { role: 'Kaur Tata Usaha & Umum', name: 'Rony Fasyrah' },
       { role: 'Kasi Pemerintahan Desa', name: 'Rahmat S. M.' },
       { role: 'Kasi Pelayanan Desa', name: 'Tiarawati' },
-      { role: 'Ketua Pokdarwis Saba Sunten', name: 'Kang Asep Suhendar' }
+      { role: 'Ketua Pokdarwis / PIC', name: 'Kang Asep Suhendar' }
     ]
   },
   {
     id: 'des-02',
-    name: 'Desa Wisata Penglipuran',
-    location: 'Kabupaten Bangli, Bali',
-    province: 'Bali',
-    rating: 4.9,
-    totalReviews: 328,
-    description: 'Desa adat terbersih di dunia yang terkenal dengan tata ruang arsitektur bambu khas Bali yang lestari dan asri.',
-    history: 'Desa Penglipuran telah ada sejak zaman Kerajaan Bangli dan tetap mempertahankan konsep adat Tri Hita Karana.',
-    culture: 'Tradisi adat yang memuliakan pelestarian hutan bambu dan ritual tahunan Galungan serta Kuningan.',
-    highlights: ['Hutan Bambu Suci 75 Hektar', 'Arsitektur Rumah Tradisional', 'Minuman Khas Loloh Cemcem', 'Seni Kerajinan Bambu'],
-    image: 'https://images.unsplash.com/photo-1537996194471-e657df975ab4?auto=format&fit=crop&w=1200&q=80',
-    gallery: [
-      'https://images.unsplash.com/photo-1537996194471-e657df975ab4?auto=format&fit=crop&w=800&q=80',
-      'https://images.unsplash.com/photo-1518548419970-58e3b4079ab2?auto=format&fit=crop&w=800&q=80'
+    name: 'Desa Wisata Cibodas',
+    location: 'Kec. Lembang, Kab. Bandung Barat',
+    province: 'Jawa Barat',
+    rating: 4.8,
+    totalReviews: 215,
+    villageAltitude: '1.250 mdpl',
+    description: 'Desa Cibodas terkenal dengan lembah agrowisata bunga potong, kebun paprika hidroponik, pesona air terjun Curug Maribaya, dan homestay bernuansa alam pedesaan Lembang.',
+    history: 'Desa Cibodas merupakan desa induk di koridor Maribaya Lembang yang terkenal subur sejak era kolonial sebagai pusat holtikultura dan sumber mata air pegunungan.',
+    culture: 'Masyarakat agraris Sunda dengan tradisi tani bunga krisan, budidaya paprika greenhouse, serta seni bela diri pencak silat dan rampak kendang.',
+    highlights: [
+      'Agrowisata Bunga Potong & Krisan',
+      'Wisata Alam Lembah Maribaya',
+      'Greenhouse Paprika & Tomat Cherry',
+      'Homestay Asri Nuansa Sungai',
+      'Sentra Olahan Selai & Keripik Sayur'
     ],
-    mapLocation: 'Jl. Penglipuran, Kubu, Bangli, Bali 80611',
-    contactPhone: '+62 812-3456-7890',
-    instagram: '@penglipuran_village',
-    managerName: 'I Wayan Suparta (Ketua Pengelola Desa)',
-    totalListings: 8
+    image: 'https://images.unsplash.com/photo-1513836279014-a89f7a76ae86?auto=format&fit=crop&w=1200&q=80',
+    gallery: [
+      'https://images.unsplash.com/photo-1513836279014-a89f7a76ae86?auto=format&fit=crop&w=800&q=80',
+      'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80',
+      'https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&w=800&q=80'
+    ],
+    mapLocation: 'Jl. Maribaya Barat No. 88, Desa Cibodas, Kec. Lembang, Kab. Bandung Barat 40391',
+    contactPhone: '+62 813-9485-1122',
+    instagram: '@wisatacibodaslembang',
+    managerName: 'Kang Dadang Herdiana (PIC Desa Cibodas)',
+    totalListings: 10,
+    headOfVillage: 'Drs. H. Dedi Setiadi',
+    villageSecretary: 'Agus Rahmat, S.Sos',
+    villageArea: '720 Ha',
+    population: '14.200 Jiwa',
+    dusunCount: 4,
+    vision: 'Menjadikan Desa Cibodas sebagai Sentra Agrowisata Bunga dan Holtikultura Terdepan di Jawa Barat.',
+    missions: [
+      'Pengembangan agrowisata berbasis teknologi ramah lingkungan.',
+      'Peningkatan kapasitas petani muda dan UMKM bunga hias.',
+      'Pelestarian sumber daya air dan kelestarian alam Maribaya.'
+    ],
+    officeAddress: 'Jl. Maribaya No. 88, Cibodas, Lembang, Bandung Barat 40391',
+    villageApparatus: [
+      { role: 'Kepala Desa', name: 'Drs. H. Dedi Setiadi' },
+      { role: 'Sekretaris Desa', name: 'Agus Rahmat, S.Sos' },
+      { role: 'Ketua Pokdarwis / PIC', name: 'Kang Dadang Herdiana' }
+    ]
   },
   {
     id: 'des-03',
-    name: 'Desa Wisata Nglanggeran',
-    location: 'Gunungkidul, DI Yogyakarta',
-    province: 'DI Yogyakarta',
-    rating: 4.8,
-    totalReviews: 245,
-    description: 'Desa wisata berbasis konservasi Gunung Api Purba dengan perkebunan kakao, Embung indah, dan tradisi lokal hangat.',
-    history: 'Masyarakat Nglanggeran berhasil mentransformasi kawasan perbukitan purba menjadi Juara Desa Wisata Terbaik ASEAN.',
-    culture: 'Kesenian Reog, Jathilan, pembuatan olahan cokelat kakao tradisional, dan tradisi kenduri panen.',
-    highlights: ['Pendakian Gunung Api Purba', 'Griya Cokelat Nglanggeran', 'Embung Sunset', 'Live-in Homestay Warga'],
-    image: 'https://images.unsplash.com/photo-1596402184320-417e7178b2cd?auto=format&fit=crop&w=1200&q=80',
-    gallery: [
-      'https://images.unsplash.com/photo-1596402184320-417e7178b2cd?auto=format&fit=crop&w=800&q=80'
+    name: 'Desa Wisata Cikole',
+    location: 'Kec. Lembang, Kab. Bandung Barat',
+    province: 'Jawa Barat',
+    rating: 4.9,
+    totalReviews: 340,
+    villageAltitude: '1.400 mdpl',
+    description: 'Desa Cikole berada tepat di kaki Gunung Tangkuban Parahu, terkenal dengan hutan pinus yang megah, glamping eksklusif, kebun anggrek hutan, dan kopi lereng gunung.',
+    history: 'Cikole telah lama menjadi ikon wisata alam pegunungan Lembang dengan hamparan hutan pinus alami seluas ratusan hektar yang kini dikelola harmonis bersama masyarakat.',
+    culture: 'Budaya pelestarian hutan pinus, seni karinding bambu, tradisi kopi manual brew khas pegunungan, dan petualangan alam terbuka.',
+    highlights: [
+      'Hutan Pinus Megah Cikole',
+      'Taman Konservasi Anggrek Hutan',
+      'Wisata Kopi Lereng Tangkuban Parahu',
+      'Glamping & Camping Ground Pegunungan',
+      'Jalur Offroad & Edukasi Rimba'
     ],
-    mapLocation: 'Nglanggeran, Patuk, Gunungkidul, Yogyakarta 55862',
-    contactPhone: '+62 821-9876-5432',
-    instagram: '@nglanggeran_village',
-    managerName: 'Mas Sugeng (Pokdarwis Nglanggeran)',
-    totalListings: 6
+    image: 'https://images.unsplash.com/photo-1448375240586-882707db888b?auto=format&fit=crop&w=1200&q=80',
+    gallery: [
+      'https://images.unsplash.com/photo-1448375240586-882707db888b?auto=format&fit=crop&w=800&q=80',
+      'https://images.unsplash.com/photo-1509316975850-ff9c5deb0cd9?auto=format&fit=crop&w=800&q=80',
+      'https://images.unsplash.com/photo-1473448912268-2022ce9509d8?auto=format&fit=crop&w=800&q=80'
+    ],
+    mapLocation: 'Jl. Raya Tangkuban Parahu KM. 28, Cikole, Kec. Lembang, Kab. Bandung Barat 40391',
+    contactPhone: '+62 821-3344-9988',
+    instagram: '@cikolewisatalembang',
+    managerName: 'Kang Dadan Ridwan (PIC Desa Cikole)',
+    totalListings: 12,
+    headOfVillage: 'H. Jajat Sudrajat',
+    villageSecretary: 'Maman Suratman',
+    villageArea: '980 Ha',
+    population: '11.800 Jiwa',
+    dusunCount: 4,
+    vision: 'Mewujudkan Ekowisata Hutan Pinus dan Konservasi Alam Berkelanjutan di Kawasan Cikole Lembang.',
+    missions: [
+      'Konservasi flora fauna hutan dataran tinggi.',
+      'Pemberdayaan masyarakat pemandu wisata dan homestay hutan.',
+      'Promosi pariwisata ramah lingkungan berbasis alam bebas.'
+    ],
+    officeAddress: 'Jl. Raya Tangkuban Parahu KM 28, Cikole, Lembang 40391',
+    villageApparatus: [
+      { role: 'Kepala Desa', name: 'H. Jajat Sudrajat' },
+      { role: 'Sekretaris Desa', name: 'Maman Suratman' },
+      { role: 'Ketua Pokdarwis / PIC', name: 'Kang Dadan Ridwan' }
+    ]
+  },
+  {
+    id: 'des-04',
+    name: 'Desa Wisata Jayagiri',
+    location: 'Kec. Lembang, Kab. Bandung Barat',
+    province: 'Jawa Barat',
+    rating: 4.8,
+    totalReviews: 180,
+    villageAltitude: '1.350 mdpl',
+    description: 'Desa Jayagiri merupakan gerbang rimba legendaris menuju kawah Tangkuban Parahu, dikelilingi kebun teh asri, jalur trekking sejuk, dan peternakan domba garut.',
+    history: 'Jayagiri melegenda dalam seni dan sastra Sunda sebagai kawasan hutan alam berkabut sejuk dengan jalur lintas alam tertua di Bandung Raya.',
+    culture: 'Masyarakat penjaga mata air, perkebunan teh rakyat, tradisi seni pencak silat, dan peternakan hewan unggulan pedesaan.',
+    highlights: [
+      'Pintu Rimba Trekking Jayagiri',
+      'Hamparan Kebun Teh Hijau Alami',
+      'Homestay Rumah Panggung Sunda',
+      'Edukasi Peternakan Domba & Sayuran',
+      'Kuliner Nasi Timbel Daun Pisang'
+    ],
+    image: 'https://images.unsplash.com/photo-1544735716-392fe2489ffa?auto=format&fit=crop&w=1200&q=80',
+    gallery: [
+      'https://images.unsplash.com/photo-1544735716-392fe2489ffa?auto=format&fit=crop&w=800&q=80',
+      'https://images.unsplash.com/photo-1502082553048-f009c37129b9?auto=format&fit=crop&w=800&q=80'
+    ],
+    mapLocation: 'Jl. Jayagiri No. 12, Kec. Lembang, Kab. Bandung Barat 40391',
+    contactPhone: '+62 857-2233-7711',
+    instagram: '@jayagiri.lembang',
+    managerName: 'Teh Eni Rohaeni (PIC Desa Jayagiri)',
+    totalListings: 8,
+    headOfVillage: 'Cecep Sunandar',
+    villageSecretary: 'Endang Kusnadi',
+    villageArea: '650 Ha',
+    population: '9.850 Jiwa',
+    dusunCount: 3,
+    vision: 'Pengembangan Ekowisata Rimba dan Pelestarian Perkebunan Teh Tradisional Jayagiri.',
+    missions: [
+      'Mendorong homestay ramah lingkungan berbasis rumah warga.',
+      'Melatih generasi muda sebagai pemandu trekking bersertifikasi.',
+      'Menjaga kelestarian mata air dan kawasan resapan lereng gunung.'
+    ],
+    officeAddress: 'Jl. Jayagiri No. 12, Lembang, Bandung Barat 40391',
+    villageApparatus: [
+      { role: 'Kepala Desa', name: 'Cecep Sunandar' },
+      { role: 'Sekretaris Desa', name: 'Endang Kusnadi' },
+      { role: 'Ketua Pokdarwis / PIC', name: 'Teh Eni Rohaeni' }
+    ]
+  },
+  {
+    id: 'des-05',
+    name: 'Desa Wisata Wangunsari',
+    location: 'Kec. Lembang, Kab. Bandung Barat',
+    province: 'Jawa Barat',
+    rating: 4.8,
+    totalReviews: 165,
+    villageAltitude: '1.200 mdpl',
+    description: 'Desa Wangunsari terkenal sebagai sentra kreasi seni bambu Sunda, agrowisata petik stroberi manis, budidaya jamur tiram organik, dan kampung edukasi ramah anak.',
+    history: 'Desa Wangunsari berkembang pesat sebagai desa kreatif berbasis agribisnis dan sanggar seni budaya Sunda yang aktif membina generasi muda.',
+    culture: 'Seni degung, calung renteng, kerajinan anyaman bambu, serta kebiasaan gotong royong panen stroberi dan sayuran pekarangan.',
+    highlights: [
+      'Petik Stroberi Segar Dataran Tinggi',
+      'Sanggar Seni Budaya Sunda & Degung',
+      'Budidaya Jamur Tiram & Olahan Keripik',
+      'Workshop Anyaman Bambu Kreatif',
+      'Edukasi Pertanian Hidroponik Desa'
+    ],
+    image: 'https://images.unsplash.com/photo-1464965911861-746a04b4bca6?auto=format&fit=crop&w=1200&q=80',
+    gallery: [
+      'https://images.unsplash.com/photo-1464965911861-746a04b4bca6?auto=format&fit=crop&w=800&q=80',
+      'https://images.unsplash.com/photo-1587061949409-02df41d5e562?auto=format&fit=crop&w=800&q=80'
+    ],
+    mapLocation: 'Jl. Wangunsari Raya No. 45, Kec. Lembang, Kab. Bandung Barat 40391',
+    contactPhone: '+62 818-0911-5544',
+    instagram: '@wangunsari.lembang',
+    managerName: 'Kang Sandi Permana (PIC Desa Wangunsari)',
+    totalListings: 7,
+    headOfVillage: 'H. Diki Firmansyah',
+    villageSecretary: 'Teten Rohimat',
+    villageArea: '540 Ha',
+    population: '8.700 Jiwa',
+    dusunCount: 3,
+    vision: 'Terwujudnya Desa Wangunsari sebagai Kampung Edukasi Agrowisata Kreatif dan Berkarakter Budaya.',
+    missions: [
+      'Membina sanggar seni dan kerajinan bambu lokal.',
+      'Mengembangkan paket edukasi tani untuk pelajar dan keluarga.',
+      'Meningkatkan nilai jual produk olahan buah dan jamur desa.'
+    ],
+    officeAddress: 'Jl. Wangunsari Raya No. 45, Lembang, Bandung Barat 40391',
+    villageApparatus: [
+      { role: 'Kepala Desa', name: 'H. Diki Firmansyah' },
+      { role: 'Sekretaris Desa', name: 'Teten Rohimat' },
+      { role: 'Ketua Pokdarwis / PIC', name: 'Kang Sandi Permana' }
+    ]
+  }
+];
+
+// Presets for PIC Users across Kawasan Lembang
+export const MOCK_PICS: User[] = [
+  {
+    id: 'pic-suntenjaya',
+    name: 'Kang Asep Suhendar',
+    email: 'asep.suhendar@sabasunten.id',
+    role: 'penjual',
+    phone: '+6281220763734',
+    avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=200&q=80',
+    villageName: 'Desa Wisata Suntenjaya',
+    sellerName: 'Pokdarwis Saba Sunten / BUMDes Suntenjaya',
+    picVillageId: 'des-01',
+    picVillageName: 'Desa Wisata Suntenjaya',
+    picRoleTitle: 'PIC Pokdarwis Saba Sunten'
+  },
+  {
+    id: 'pic-cibodas',
+    name: 'Kang Dadang Herdiana',
+    email: 'dadang.cibodas@sabasunten.id',
+    role: 'penjual',
+    phone: '+6281394851122',
+    avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=200&q=80',
+    villageName: 'Desa Wisata Cibodas',
+    sellerName: 'Pokdarwis Lembah Cibodas Maribaya',
+    picVillageId: 'des-02',
+    picVillageName: 'Desa Wisata Cibodas',
+    picRoleTitle: 'PIC Desa Wisata Cibodas'
+  },
+  {
+    id: 'pic-cikole',
+    name: 'Kang Dadan Ridwan',
+    email: 'dadan.cikole@sabasunten.id',
+    role: 'penjual',
+    phone: '+6282133449988',
+    avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=200&q=80',
+    villageName: 'Desa Wisata Cikole',
+    sellerName: 'Pokdarwis Rimba Pinus Cikole',
+    picVillageId: 'des-03',
+    picVillageName: 'Desa Wisata Cikole',
+    picRoleTitle: 'PIC Desa Wisata Cikole'
+  },
+  {
+    id: 'pic-jayagiri',
+    name: 'Teh Eni Rohaeni',
+    email: 'eni.jayagiri@sabasunten.id',
+    role: 'penjual',
+    phone: '+6285722337711',
+    avatar: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=200&q=80',
+    villageName: 'Desa Wisata Jayagiri',
+    sellerName: 'Pokdarwis Rimba & Teh Jayagiri',
+    picVillageId: 'des-04',
+    picVillageName: 'Desa Wisata Jayagiri',
+    picRoleTitle: 'PIC Desa Wisata Jayagiri'
+  },
+  {
+    id: 'pic-wangunsari',
+    name: 'Kang Sandi Permana',
+    email: 'sandi.wangunsari@sabasunten.id',
+    role: 'penjual',
+    phone: '+6281809115544',
+    avatar: 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=200&q=80',
+    villageName: 'Desa Wisata Wangunsari',
+    sellerName: 'Pokdarwis Seni & Agro Wangunsari',
+    picVillageId: 'des-05',
+    picVillageName: 'Desa Wisata Wangunsari',
+    picRoleTitle: 'PIC Desa Wisata Wangunsari'
+  }
+];
+
+// Presets of authentic Lembang photos for quick gallery selection
+export const LEMBANG_GALLERY_PRESETS = [
+  {
+    id: 'photo-1',
+    title: 'Homestay Kayu Tradisional Pasir Angling',
+    category: 'homestay',
+    villageId: 'des-01',
+    villageName: 'Suntenjaya',
+    url: 'https://images.unsplash.com/photo-1587061949409-02df41d5e562?auto=format&fit=crop&w=800&q=80'
+  },
+  {
+    id: 'photo-2',
+    title: 'Kamar Melati Homestay Lereng Pegunungan',
+    category: 'homestay',
+    villageId: 'des-02',
+    villageName: 'Cibodas',
+    url: 'https://images.unsplash.com/photo-1590490360182-c33d57733427?auto=format&fit=crop&w=800&q=80'
+  },
+  {
+    id: 'photo-3',
+    title: 'Hutan Pinus Sejuk Cikole Tangkuban Parahu',
+    category: 'paket-wisata',
+    villageId: 'des-03',
+    villageName: 'Cikole',
+    url: 'https://images.unsplash.com/photo-1448375240586-882707db888b?auto=format&fit=crop&w=800&q=80'
+  },
+  {
+    id: 'photo-4',
+    title: 'Kebun Kopi Arabika Suntenjaya',
+    category: 'kuliner',
+    villageId: 'des-01',
+    villageName: 'Suntenjaya',
+    url: 'https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?auto=format&fit=crop&w=800&q=80'
+  },
+  {
+    id: 'photo-5',
+    title: 'Susu Sapi Murni Lembang KPSBU',
+    category: 'kuliner',
+    villageId: 'des-01',
+    villageName: 'Suntenjaya',
+    url: 'https://images.unsplash.com/photo-1546445317-29f4545e9d53?auto=format&fit=crop&w=800&q=80'
+  },
+  {
+    id: 'photo-6',
+    title: 'Kebun Sayur & Terasering Maribaya',
+    category: 'umkm',
+    villageId: 'des-02',
+    villageName: 'Cibodas',
+    url: 'https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=800&q=80'
+  },
+  {
+    id: 'photo-7',
+    title: 'Petik Stroberi Segar Wangunsari',
+    category: 'umkm',
+    villageId: 'des-05',
+    villageName: 'Wangunsari',
+    url: 'https://images.unsplash.com/photo-1464965911861-746a04b4bca6?auto=format&fit=crop&w=800&q=80'
+  },
+  {
+    id: 'photo-8',
+    title: 'Jalur Trekking Teh Jayagiri',
+    category: 'paket-wisata',
+    villageId: 'des-04',
+    villageName: 'Jayagiri',
+    url: 'https://images.unsplash.com/photo-1544735716-392fe2489ffa?auto=format&fit=crop&w=800&q=80'
+  },
+  {
+    id: 'photo-9',
+    title: 'Kerajinan Kayu Kadaplak & Anyaman Bambu',
+    category: 'suvenir',
+    villageId: 'des-01',
+    villageName: 'Suntenjaya',
+    url: 'https://images.unsplash.com/photo-1513519245088-0e12902e5a38?auto=format&fit=crop&w=800&q=80'
   }
 ];
 
 export const INITIAL_PRODUCTS: Product[] = [
-  // --- HOMESTAY DESA SUNTENJAYA ---
+  // --- DESA WISATA SUNTENJAYA (KEC. LEMBANG) ---
   {
     id: 'prod-01',
     title: 'Homestay Saung Pasir Angling Suntenjaya',
@@ -146,410 +434,337 @@ export const INITIAL_PRODUCTS: Product[] = [
     location: 'Lembang, Bandung Barat',
     rating: 4.9,
     totalReviews: 52,
-    sellerName: 'Kang Dadang & Keluarga',
-    sellerBadge: 'Tuan Rumah Ramah Desa',
+    sellerName: 'Kang Dadang (Dusun I)',
+    sellerBadge: 'Tuan Rumah Terverifikasi',
     sellerAvatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=200&q=80',
-    sellerPhone: '+6282122334455',
+    sellerPhone: '+6281220763734',
     image: 'https://images.unsplash.com/photo-1587061949409-02df41d5e562?auto=format&fit=crop&w=800&q=80',
     gallery: [
       'https://images.unsplash.com/photo-1587061949409-02df41d5e562?auto=format&fit=crop&w=800&q=80',
-      'https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=800&q=80',
-      'https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=800&q=80'
+      'https://images.unsplash.com/photo-1590490360182-c33d57733427?auto=format&fit=crop&w=800&q=80',
+      'https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=800&q=80'
     ],
-    description: 'Homestay kayu bernuansa Sunda otentik di Kampung Pasir Angling, Desa Suntenjaya pada ketinggian 1.290 mdpl. Menikmati sejuknya udara pegunungan, pemandangan kebun sayur terasering, serta sarapan nasi liwet khas Sunda dan susu sapi perah segar.',
-    highlights: [
-      'Udara Sangat Sejuk 17-20°C',
-      'Sarapan Nasi Liwet & Susu Segar',
-      'Pemandangan Kebun & Lereng Palasari',
-      'Akses Langsung ke Kebun Kopi & Sayur'
-    ],
-    facilities: ['Kamar Mandi Dalam Air Panas', 'Kasur Nyaman Queen Bed', 'WiFi Cepat', 'Sarapan Khas Sunda', 'Kopi Arabika Suntenjaya Gratis', 'Parkir Aman'],
-    stockQuota: 5,
+    description: 'Homestay kayu alami di titik tertinggi Dusun Pasir Angling Suntenjaya (1.290 mdpl). Menghadap langsung ke lembah hijau dengan panorama sunrise menakjubkan.',
+    highlights: ['Pemandangan Sunrise Gunung', 'Udara Dingin Sejuk Alami', 'Termasuk Sarapan Liwet Sunda', 'Dekat Kebun Sayur Organik'],
+    facilities: ['Kamar Tidur Nyaman', 'Air Hangat Water Heater', 'Sarapan Nasi Liwet', 'Free WiFi', 'Parkir Aman'],
+    stockQuota: 4,
     isAvailable: true,
     isFeatured: true
   },
   {
     id: 'prod-02',
-    title: 'Griya Palasari Mountain View Lodge',
-    category: 'homestay',
-    price: 320000,
-    originalPrice: 400000,
-    unit: '/malam',
-    villageId: 'des-01',
-    villageName: 'Desa Wisata Suntenjaya',
-    location: 'Lembang, Bandung Barat',
-    rating: 4.9,
-    totalReviews: 39,
-    sellerName: 'Ibu Nenden Suntenjaya',
-    sellerBadge: 'Homestay Binaan Pokdarwis',
-    sellerAvatar: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=200&q=80',
-    sellerPhone: '+6282122334455',
-    image: 'https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=800&q=80',
-    gallery: [
-      'https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=800&q=80',
-      'https://images.unsplash.com/photo-1596394516093-501ba68a0ba6?auto=format&fit=crop&w=800&q=80'
-    ],
-    description: 'Penginapan keluarga luas berlatar belakang panorama Gunung Palasari dan Gunung Manglayang. Sangat cocok untuk healing dan melepas penat bersama keluarga tercinta.',
-    highlights: ['Balkon Panoramic Gunung', 'Water Heater', 'Area Api Unggun Malam', 'Welcome Drink Teh Daun Kopi'],
-    facilities: ['2 Bed King Size', 'Kamar Mandi Air Hangat', 'Dapur Bersama', 'Balkon View Gunung', 'WiFi', 'Area Parkir Luas'],
-    stockQuota: 3,
-    isAvailable: true,
-    isFeatured: true
-  },
-  {
-    id: 'prod-03',
-    title: 'Saung Bambu Batu Loceng Eco-Stay',
-    category: 'homestay',
-    price: 220000,
-    unit: '/malam',
-    villageId: 'des-01',
-    villageName: 'Desa Wisata Suntenjaya',
-    location: 'Lembang, Bandung Barat',
-    rating: 4.8,
-    totalReviews: 27,
-    sellerName: 'Pak Dedi Batu Loceng',
-    sellerBadge: 'Pengelola Homestay Adat',
-    sellerAvatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=200&q=80',
-    sellerPhone: '+6282122334455',
-    image: 'https://images.unsplash.com/photo-1596394516093-501ba68a0ba6?auto=format&fit=crop&w=800&q=80',
-    gallery: [
-      'https://images.unsplash.com/photo-1596394516093-501ba68a0ba6?auto=format&fit=crop&w=800&q=80'
-    ],
-    description: 'Bilik saung bambu alami dekat dengan kawasan Situs Budaya Batu Loceng. Rasakan suasana hening khas pedesaan Sunda dan suara gemericik air pegunungan yang menenangkan.',
-    highlights: ['Dekat Situs Sejarah Batu Loceng', 'Suasana Sejuk Tenang', 'Termasuk Sarapan Tradisional'],
-    facilities: ['Kamar Bersih & Nyaman', 'Kamar Mandi Bersih', 'Sarapan Surabi & Teh Hangat', 'Spot Api Unggun'],
-    stockQuota: 4,
-    isAvailable: true
-  },
-
-  // --- PAKET WISATA & EDUKASI SUNTENJAYA ---
-  {
-    id: 'prod-04',
-    title: 'Paket Live-In Edukasi Pasir Angling (2 Hari 1 Malam)',
-    category: 'paket-wisata',
-    price: 350000,
-    originalPrice: 420000,
-    unit: '/orang',
-    villageId: 'des-01',
-    villageName: 'Desa Wisata Suntenjaya',
-    location: 'Lembang, Bandung Barat',
-    rating: 5.0,
-    totalReviews: 76,
-    sellerName: 'Pokdarwis Saba Sunten',
-    sellerBadge: 'Pemandu Resmi Desa Suntenjaya',
-    sellerAvatar: 'https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?auto=format&fit=crop&w=200&q=80',
-    sellerPhone: '+6282122334455',
-    image: 'https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=800&q=80',
-    gallery: [
-      'https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=800&q=80',
-      'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=800&q=80'
-    ],
-    description: 'Pengalaman autentik tinggal bersama keluarga warga Desa Suntenjaya. Wisatawan diajak memerah susu sapi perah di pagi hari, memetik sayuran organik langsung di ladang terasering, serta memproses biji kopi Arabika khas Pasir Angling.',
-    highlights: [
-      'Edukasi Perah Susu Sapi Segar',
-      'Petik Sayur Organik Bawa Pulang',
-      'Workshop Kopi Arabika Suntenjaya',
-      'Makan Liwet Tampah Bareng Warga',
-      'Menginap 1 Malam di Homestay Warga'
-    ],
-    itinerary: [
-      { time: 'Hari 1 - 13:00', activity: 'Tiba di Sekretariat Saba Sunten, Welcome Drink Susu Segar & Check-in Homestay' },
-      { time: 'Hari 1 - 14:30', activity: 'Jelajah Agrowisata & Praktik Petik Sayur Organik di Ladang Warga' },
-      { time: 'Hari 1 - 16:30', activity: 'Workshop Edukasi Kopi Arabika Pasir Angling (Roasting & Cupping)' },
-      { time: 'Hari 1 - 19:00', activity: 'Makan Malam Liwet Kastrol khas Sunda & Api Unggun' },
-      { time: 'Hari 2 - 06:00', activity: 'Edukasi Praktik Memerah Susu Sapi Perah di Kandang Peternak Warga' },
-      { time: 'Hari 2 - 08:30', activity: 'Sarapan Pagi, Pembagian Hasil Panen Sayur & Sayonara' }
-    ],
-    facilities: ['Akomodasi Homestay 1 Malam', 'Makan 3x (Liwet Tradisional)', 'Sayur Organik 2kg Bawa Pulang', 'Kopi Arabika Sample Pack', 'Guide Lokal', 'Asuransi'],
-    stockQuota: 25,
-    isAvailable: true,
-    isFeatured: true
-  },
-  {
-    id: 'prod-05',
-    title: 'Trekking Situs Batu Loceng & Hutan Pinus Bincarung',
-    category: 'paket-wisata',
-    price: 95000,
-    originalPrice: 120000,
-    unit: '/orang',
-    villageId: 'des-01',
-    villageName: 'Desa Wisata Suntenjaya',
-    location: 'Lembang, Bandung Barat',
-    rating: 4.9,
-    totalReviews: 48,
-    sellerName: 'Komunitas Pemandu Batu Loceng',
-    sellerBadge: 'Pemandu Budaya Terdaftar',
-    sellerAvatar: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=200&q=80',
-    sellerPhone: '+6282122334455',
-    image: 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=800&q=80',
-    gallery: [
-      'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=800&q=80'
-    ],
-    description: 'Eksplorasi situs sejarah megalitikum Batu Loceng di Kampung Batu Loceng, napak tilas sejarah leluhur desa, mencoba permainan tradisional Sunda Kadaplak, dan menyusuri hutan pinus sejuk Taman Bincarung.',
-    highlights: ['Pemandu Cerita Sejarah Situs', 'Mencoba Permainan Kadaplak', 'Foto Spot Hutan Pinus Bincarung', 'Snack & Kopi Tradisional'],
-    itinerary: [
-      { time: '08:30', activity: 'Kumpul di Gapura Situs Batu Loceng & Doa Pembuka' },
-      { time: '09:00 - 10:30', activity: 'Eksplorasi Situs Batu Loceng & Mengenal Tradisi Sunda' },
-      { time: '10:30 - 11:30', activity: 'Permainan Tradisional Kadaplak & Games Seru' },
-      { time: '11:30 - 13:00', activity: 'Trekking Hutan Pinus Taman Bincarung & Rehat Kopi/Bandrek' }
-    ],
-    facilities: ['Tiket Masuk Semua Lokasi', 'Pemandu Sejarah', 'Kopi Arabika / Bandrek Hangat', 'Rebusan Ubi & Jagung Manis'],
-    stockQuota: 30,
-    isAvailable: true,
-    isFeatured: true
-  },
-  {
-    id: 'prod-06',
-    title: 'Edukasi Kopi Arabika Suntenjaya & Barista Tani',
-    category: 'paket-wisata',
-    price: 125000,
-    unit: '/orang',
-    villageId: 'des-01',
-    villageName: 'Desa Wisata Suntenjaya',
-    location: 'Lembang, Bandung Barat',
-    rating: 4.8,
-    totalReviews: 34,
-    sellerName: 'Kelompok Tani Kopi Pasir Angling',
-    sellerBadge: 'Petani Kopi Juara',
-    sellerAvatar: 'https://images.unsplash.com/photo-1501196354995-cbb51c65aaea?auto=format&fit=crop&w=200&q=80',
-    sellerPhone: '+6282122334455',
-    image: 'https://images.unsplash.com/photo-1559056199-641a0ac8b55e?auto=format&fit=crop&w=800&q=80',
-    gallery: [
-      'https://images.unsplash.com/photo-1559056199-641a0ac8b55e?auto=format&fit=crop&w=800&q=80'
-    ],
-    description: 'Belajar proses dari biji hingga cangkir (bean to cup) kopi Arabika yang tumbuh di lereng Gunung Palasari 1.290 mdpl. Termasuk praktik roasting manual di atas wajan tanah liat dan teknik manual brew V60.',
-    highlights: ['Petik Ceri Kopi Merah', 'Roasting Tradisional Wajan Tanah', 'Seduh Manual V60 & Cupping', 'Bawa Pulang Kopi 100g'],
-    stockQuota: 20,
-    isAvailable: true
-  },
-
-  // --- KULINER & PRODUK KHAS SUNTENJAYA ---
-  {
-    id: 'prod-07',
-    title: 'Kopi Arabika Suntenjaya Single Origin (250g)',
+    title: 'Kopi Arabika Single Origin Suntenjaya (250g)',
     category: 'kuliner',
-    price: 75000,
-    originalPrice: 90000,
-    unit: '/pouch',
+    price: 65000,
+    originalPrice: 75000,
+    unit: '/pack',
     villageId: 'des-01',
     villageName: 'Desa Wisata Suntenjaya',
     location: 'Lembang, Bandung Barat',
     rating: 5.0,
-    totalReviews: 88,
-    sellerName: 'Koperasi Kopi Pasir Angling',
-    sellerBadge: 'UMKM Unggulan Suntenjaya',
-    sellerAvatar: 'https://images.unsplash.com/photo-1501196354995-cbb51c65aaea?auto=format&fit=crop&w=200&q=80',
-    sellerPhone: '+6282122334455',
-    image: 'https://images.unsplash.com/photo-1559056199-641a0ac8b55e?auto=format&fit=crop&w=800&q=80',
+    totalReviews: 89,
+    sellerName: 'Kelompok Tani Kopi Batu Loceng',
+    sellerBadge: 'Petani Binaan Pokdarwis',
+    sellerAvatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=200&q=80',
+    sellerPhone: '+6281220763734',
+    image: 'https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?auto=format&fit=crop&w=800&q=80',
     gallery: [
+      'https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?auto=format&fit=crop&w=800&q=80',
       'https://images.unsplash.com/photo-1559056199-641a0ac8b55e?auto=format&fit=crop&w=800&q=80'
     ],
-    description: 'Kopi Arabika spesialti hasil panen petani Pasir Angling Desa Suntenjaya di ketinggian 1.290 mdpl. Memiliki citarasa asam buah yang lembut (fruity notes), aroma karamel manis, dan aftertaste yang bersih.',
-    highlights: ['100% Arabika Lereng Palasari', 'Medium Roast Fresh', 'Tersedia Biji / Bubuk Halus'],
+    description: 'Kopi Arabika asli lereng Gunung Palasari Desa Suntenjaya yang dipetik merah sempurna (full wash & honey process) dengan citarasa floral segar dan manis karamel.',
+    highlights: ['100% Arabika Grade 1', 'Ditanam di 1.290 mdpl', 'Roasting Fresh Tiap Minggu'],
     stockQuota: 45,
     isAvailable: true,
     isFeatured: true
   },
   {
-    id: 'prod-08',
-    title: 'Susu Sapi Segar Murni Suntenjaya Lembang (1 Liter)',
-    category: 'kuliner',
-    price: 18000,
-    unit: '/botol',
+    id: 'prod-03',
+    title: 'Paket Edukasi Sapi Perah & Live-in 2H1M Suntenjaya',
+    category: 'paket-wisata',
+    price: 350000,
+    unit: '/orang',
     villageId: 'des-01',
     villageName: 'Desa Wisata Suntenjaya',
     location: 'Lembang, Bandung Barat',
     rating: 4.9,
     totalReviews: 64,
-    sellerName: 'Kelompok Peternak Sapi Suntenjaya',
-    sellerBadge: 'Peternak Sapi Mandiri',
+    sellerName: 'Pokdarwis Saba Sunten',
+    sellerBadge: 'Pengelola Resmi Desa',
     sellerAvatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=200&q=80',
-    sellerPhone: '+6282122334455',
-    image: 'https://images.unsplash.com/photo-1550583724-b2692b85b150?auto=format&fit=crop&w=800&q=80',
+    sellerPhone: '+6281220763734',
+    image: 'https://images.unsplash.com/photo-1546445317-29f4545e9d53?auto=format&fit=crop&w=800&q=80',
     gallery: [
-      'https://images.unsplash.com/photo-1550583724-b2692b85b150?auto=format&fit=crop&w=800&q=80'
+      'https://images.unsplash.com/photo-1546445317-29f4545e9d53?auto=format&fit=crop&w=800&q=80',
+      'https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=800&q=80'
     ],
-    description: 'Susu murni segar hasil perahan langsung peternak sapi Desa Suntenjaya Lembang. Dipasteurisasi higienis tanpa tambahan air dan tanpa bahan pengawet.',
-    highlights: ['100% Susu Murni Segar', 'Kaya Kalsium & Nutrisi Alami', 'Pasteurisasi Higienis'],
-    stockQuota: 60,
+    description: 'Paket wisata edukasi lengkap mencakup menginap di homestay warga, praktik perah susu sapi murni KPSBU, panen sayur organik di kebun terasering, dan susur cagar budaya Batu Loceng.',
+    highlights: ['Menginap 1 Malam di Homestay', 'Praktek Perah Susu Sapi', 'Petik Sayur Organik', '3x Makan Tradisional Sunda'],
+    stockQuota: 20,
+    isAvailable: true,
+    isFeatured: true
+  },
+  {
+    id: 'prod-04',
+    title: 'Miniatur Permainan Kayu Kadaplak Suntenjaya',
+    category: 'suvenir',
+    price: 85000,
+    unit: '/pcs',
+    villageId: 'des-01',
+    villageName: 'Desa Wisata Suntenjaya',
+    location: 'Lembang, Bandung Barat',
+    rating: 4.8,
+    totalReviews: 29,
+    sellerName: 'Bengkel Kayu Dusun IV',
+    sellerBadge: 'Pengrajin Lokal',
+    sellerAvatar: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=200&q=80',
+    sellerPhone: '+6281220763734',
+    image: 'https://images.unsplash.com/photo-1513519245088-0e12902e5a38?auto=format&fit=crop&w=800&q=80',
+    gallery: ['https://images.unsplash.com/photo-1513519245088-0e12902e5a38?auto=format&fit=crop&w=800&q=80'],
+    description: 'Miniatur pajangan kereta kayu Kadaplak (permainan balap papan luncur kayu tradisional Sunda yang legendaris di Suntenjaya). Dibuat manual dari kayu mahoni pilihan.',
+    highlights: ['100% Handmade Kayu Mahoni', 'Ikon Permainan Tradisional Desa', 'Finishing Halus & Alami'],
+    stockQuota: 25,
+    isAvailable: true
+  },
+
+  // --- DESA WISATA CIBODAS (KEC. LEMBANG) ---
+  {
+    id: 'prod-05',
+    title: 'Kamar Melati Homestay Lembah Maribaya',
+    category: 'homestay',
+    price: 250000,
+    originalPrice: 300000,
+    unit: '/malam',
+    villageId: 'des-02',
+    villageName: 'Desa Wisata Cibodas',
+    location: 'Cibodas, Lembang',
+    rating: 4.8,
+    totalReviews: 41,
+    sellerName: 'Ibu Nenden & Keluarga',
+    sellerBadge: 'Tuan Rumah Ramah Cibodas',
+    sellerAvatar: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=200&q=80',
+    sellerPhone: '+6281394851122',
+    image: 'https://images.unsplash.com/photo-1590490360182-c33d57733427?auto=format&fit=crop&w=800&q=80',
+    gallery: [
+      'https://images.unsplash.com/photo-1590490360182-c33d57733427?auto=format&fit=crop&w=800&q=80',
+      'https://images.unsplash.com/photo-1587061949409-02df41d5e562?auto=format&fit=crop&w=800&q=80'
+    ],
+    description: 'Kamar nyaman bersih include sarapan pagi hangat khas pedesaan Cibodas. Berlokasi strategis dekat perkebunan bunga dan wisata air terjun Maribaya.',
+    highlights: ['Kamar Bersih & Nyaman', 'Include Sarapan Hangat', 'Dekat Curug Maribaya', 'Suasana Tenang Alami'],
+    facilities: ['Kasur Queen Bed', 'Water Heater', 'Sarapan Pagi', 'WiFi Gratis', 'Parkir Mobil'],
+    stockQuota: 3,
+    isAvailable: true,
+    isFeatured: true
+  },
+  {
+    id: 'prod-06',
+    title: 'Paprika Segar Hidroponik Greenhouse Cibodas (1 Kg)',
+    category: 'umkm',
+    price: 38000,
+    unit: '/kg',
+    villageId: 'des-02',
+    villageName: 'Desa Wisata Cibodas',
+    location: 'Cibodas, Lembang',
+    rating: 4.9,
+    totalReviews: 38,
+    sellerName: 'Kelompok Tani Paprika Cibodas',
+    sellerBadge: 'Petani Mitra BUMDes',
+    sellerAvatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=200&q=80',
+    sellerPhone: '+6281394851122',
+    image: 'https://images.unsplash.com/photo-1563565375-f3fdfdbefa83?auto=format&fit=crop&w=800&q=80',
+    gallery: ['https://images.unsplash.com/photo-1563565375-f3fdfdbefa83?auto=format&fit=crop&w=800&q=80'],
+    description: 'Paprika merah, kuning, dan hijau segar kualitas ekspor dipanen langsung dari greenhouse hidroponik Desa Cibodas. Renyah, manis, dan bebas pestisida kimia berbahaya.',
+    highlights: ['Petik Langsung Dari Pohon', 'Bebas Residu Pestisida', 'Pilihan Campur Warna'],
+    stockQuota: 30,
+    isAvailable: true
+  },
+  {
+    id: 'prod-07',
+    title: 'Paket Tour Agrowisata Bunga Krisan & Curug Maribaya',
+    category: 'paket-wisata',
+    price: 175000,
+    unit: '/orang',
+    villageId: 'des-02',
+    villageName: 'Desa Wisata Cibodas',
+    location: 'Cibodas, Lembang',
+    rating: 4.9,
+    totalReviews: 47,
+    sellerName: 'Pokdarwis Lembah Cibodas',
+    sellerBadge: 'Pemandu Lokal Resmi',
+    sellerAvatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=200&q=80',
+    sellerPhone: '+6281394851122',
+    image: 'https://images.unsplash.com/photo-1513836279014-a89f7a76ae86?auto=format&fit=crop&w=800&q=80',
+    gallery: ['https://images.unsplash.com/photo-1513836279014-a89f7a76ae86?auto=format&fit=crop&w=800&q=80'],
+    description: 'Jelajah pesona kebun bunga potong warna-warni, belajar merangkai bunga krisan, dan susur sungai asri menuju lembah Curug Maribaya bersama pemandu lokal.',
+    highlights: ['Tiket Masuk Kebun Bunga & Curug', 'Workshop Rangkai Bunga', 'Makan Siang Nasi Timbel', 'Pemandu Lokal Ramah'],
+    stockQuota: 25,
+    isAvailable: true
+  },
+
+  // --- DESA WISATA CIKOLE (KEC. LEMBANG) ---
+  {
+    id: 'prod-08',
+    title: 'Glamping Hutan Pinus Lereng Tangkuban Cikole',
+    category: 'homestay',
+    price: 450000,
+    originalPrice: 550000,
+    unit: '/malam',
+    villageId: 'des-03',
+    villageName: 'Desa Wisata Cikole',
+    location: 'Cikole, Lembang',
+    rating: 4.9,
+    totalReviews: 76,
+    sellerName: 'Pengelola Wisata Rimba Cikole',
+    sellerBadge: 'Pengelola Berpengalaman',
+    sellerAvatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=200&q=80',
+    sellerPhone: '+6282133449988',
+    image: 'https://images.unsplash.com/photo-1448375240586-882707db888b?auto=format&fit=crop&w=800&q=80',
+    gallery: [
+      'https://images.unsplash.com/photo-1448375240586-882707db888b?auto=format&fit=crop&w=800&q=80',
+      'https://images.unsplash.com/photo-1509316975850-ff9c5deb0cd9?auto=format&fit=crop&w=800&q=80'
+    ],
+    description: 'Tenda glamping mewah di tengah kanopi hutan pinus Cikole yang sejuk (1.400 mdpl). Dilengkapi kasur springbed empuk, api unggun malam, dan fasilitas air hangat.',
+    highlights: ['Tenda Glamping Nyaman', 'Api Unggun & Jagung Bakar', 'Water Heater & Kamar Mandi Bersih', 'Udara Super Sejuk'],
+    facilities: ['Springbed 2 Orang', 'Kamar Mandi Privat', 'Sarapan & Welcome Drink', 'Peralatan BBQ', 'Area Parkir'],
+    stockQuota: 6,
     isAvailable: true,
     isFeatured: true
   },
   {
     id: 'prod-09',
-    title: 'Yoghurt Probiotik Khas Desa Suntenjaya (500ml)',
+    title: 'Kopi Hutan Robusta & Arabika Cikole Blend (200g)',
     category: 'kuliner',
-    price: 28000,
-    unit: '/botol',
-    villageId: 'des-01',
-    villageName: 'Desa Wisata Suntenjaya',
-    location: 'Lembang, Bandung Barat',
-    rating: 4.9,
-    totalReviews: 41,
-    sellerName: 'Olahan Susu Mandiri Suntenjaya',
-    sellerBadge: 'UMKM Binaan Desa',
-    sellerAvatar: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=200&q=80',
-    sellerPhone: '+6282122334455',
-    image: 'https://images.unsplash.com/photo-1546173159-315724a31696?auto=format&fit=crop&w=800&q=80',
-    gallery: [
-      'https://images.unsplash.com/photo-1546173159-315724a31696?auto=format&fit=crop&w=800&q=80'
-    ],
-    description: 'Yoghurt fermentasi kental dari susu sapi murni Desa Suntenjaya dengan sari buah stroberi dan mangga asli. Asam segar alami dan menyehatkan pencernaan.',
-    highlights: ['Bakteri Probiotik Baik', 'Tanpa Pemanis Buatan', 'Varian Stroberi & Original'],
+    price: 55000,
+    unit: '/pack',
+    villageId: 'des-03',
+    villageName: 'Desa Wisata Cikole',
+    location: 'Cikole, Lembang',
+    rating: 4.8,
+    totalReviews: 33,
+    sellerName: 'Kopi Rimba Cikole',
+    sellerBadge: 'UMKM Kopi Desa',
+    sellerAvatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=200&q=80',
+    sellerPhone: '+6282133449988',
+    image: 'https://images.unsplash.com/photo-1559056199-641a0ac8b55e?auto=format&fit=crop&w=800&q=80',
+    gallery: ['https://images.unsplash.com/photo-1559056199-641a0ac8b55e?auto=format&fit=crop&w=800&q=80'],
+    description: 'Blend istimewa biji kopi pilihan lereng Tangkuban Parahu dengan citarasa cokelat pekat dan aroma kayu pinus yang khas.',
+    highlights: ['Medium Dark Roast', 'Aroma Cokelat & Herbal', 'Kemasan Pouch Zipper Valve'],
     stockQuota: 35,
     isAvailable: true
   },
-
-  // --- PRODUK UMKM TANI ORGANIK SUNTENJAYA ---
   {
     id: 'prod-10',
-    title: 'Paket Sayuran Organik Segar Pasir Angling (Box 3kg)',
-    category: 'umkm',
-    price: 55000,
-    originalPrice: 65000,
-    unit: '/box',
-    villageId: 'des-01',
-    villageName: 'Desa Wisata Suntenjaya',
-    location: 'Lembang, Bandung Barat',
+    title: 'Paket Offroad Land Rover & Trekking Hutan Cikole',
+    category: 'paket-wisata',
+    price: 275000,
+    unit: '/orang',
+    villageId: 'des-03',
+    villageName: 'Desa Wisata Cikole',
+    location: 'Cikole, Lembang',
     rating: 5.0,
-    totalReviews: 92,
-    sellerName: 'Kelompok Tani Sayur Organik Suntenjaya',
-    sellerBadge: 'Pertanian Bersertifikat Organik',
-    sellerAvatar: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=200&q=80',
-    sellerPhone: '+6282122334455',
-    image: 'https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=800&q=80',
-    gallery: [
-      'https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=800&q=80'
-    ],
-    description: 'Paket aneka sayuran segar dipetik langsung saat order: Brokoli hijau, Pakcoy mini, Wortel manis Lembang, Tomat Cherry segar, dan Selada Air. Ditanam tanpa pestisida kimia di tanah vulkanik subur.',
-    highlights: ['Dipetik Pagi Hari Pengiriman', '100% Bebas Pestisida Kimia', 'Isi Box 5 Macam Sayuran'],
-    stockQuota: 30,
-    isAvailable: true,
-    isFeatured: true
-  },
-  {
-    id: 'prod-11',
-    title: 'Keripik Bayam & Rempeyek Gurih Ibu-ibu Desa (Pack 200g)',
-    category: 'umkm',
-    price: 20000,
-    unit: '/pack',
-    villageId: 'des-01',
-    villageName: 'Desa Wisata Suntenjaya',
-    location: 'Lembang, Bandung Barat',
-    rating: 4.8,
-    totalReviews: 36,
-    sellerName: 'KWT (Kelompok Wanita Tani) Suntenjaya',
-    sellerBadge: 'Ibu-Ibu Berdaya',
-    sellerAvatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80',
-    sellerPhone: '+6282122334455',
-    image: 'https://images.unsplash.com/photo-1568571780765-9276ac8b75a2?auto=format&fit=crop&w=800&q=80',
-    gallery: [
-      'https://images.unsplash.com/photo-1568571780765-9276ac8b75a2?auto=format&fit=crop&w=800&q=80'
-    ],
-    description: 'Camilan renyah gurih olahan daun bayam organik petik kebun warga dengan bumbu rempah Sunda warisan leluhur. Renyah, tidak berminyak, dan sangat gurih.',
-    highlights: ['Renyah & Gurih Alami', 'Tanpa Bahan Pengawet', 'Kemasan Klip Kedap Udara'],
-    stockQuota: 50,
+    totalReviews: 62,
+    sellerName: 'Komunitas Landy Cikole',
+    sellerBadge: 'Driver & Guide Profesional',
+    sellerAvatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=200&q=80',
+    sellerPhone: '+6282133449988',
+    image: 'https://images.unsplash.com/photo-1509316975850-ff9c5deb0cd9?auto=format&fit=crop&w=800&q=80',
+    gallery: ['https://images.unsplash.com/photo-1509316975850-ff9c5deb0cd9?auto=format&fit=crop&w=800&q=80'],
+    description: 'Petualangan seru membelah jalur berlumpur hutan pinus Tangkuban Parahu dengan mobil 4x4 Land Rover klasik, diakhiri dengan seduhan kopi hangat di tengah hutan.',
+    highlights: ['Mobil 4x4 Land Rover + Driver', 'Safety Helmet & Jas Hujan', 'Seduh Kopi Hutan Gratis', 'Dokumentasi Foto'],
+    stockQuota: 15,
     isAvailable: true
   },
 
-  // --- TIKET & DESTINASI WISATA SUNTENJAYA ---
+  // --- DESA WISATA JAYAGIRI (KEC. LEMBANG) ---
   {
-    id: 'prod-12',
-    title: 'Tiket Wisata Alam Taman Bincarung & Camping Spot',
-    category: 'destinasi',
-    price: 20000,
-    unit: '/orang',
-    villageId: 'des-01',
-    villageName: 'Desa Wisata Suntenjaya',
-    location: 'Lembang, Bandung Barat',
+    id: 'prod-11',
+    title: 'Homestay Rumah Panggung Sunda Jayagiri',
+    category: 'homestay',
+    price: 220000,
+    unit: '/malam',
+    villageId: 'des-04',
+    villageName: 'Desa Wisata Jayagiri',
+    location: 'Jayagiri, Lembang',
     rating: 4.8,
-    totalReviews: 73,
-    sellerName: 'BUMDes Karya Mandiri Suntenjaya',
-    sellerBadge: 'Official Ticket Saba Sunten',
-    sellerAvatar: 'https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?auto=format&fit=crop&w=200&q=80',
-    sellerPhone: '+6282122334455',
-    image: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80',
-    gallery: [
-      'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80'
-    ],
-    description: 'Tiket masuk ke spot wisata alam Taman Bincarung Desa Suntenjaya. Menikmati hutan pinus yang tenang, pemandangan lembah hijau, serta area bersantai keluarga.',
-    highlights: ['Akses Hutan Pinus', 'Spot Foto Instagramable', 'Area Hammock & Gazebo'],
-    stockQuota: 200,
+    totalReviews: 31,
+    sellerName: 'Abah Engkos Jayagiri',
+    sellerBadge: 'Sesepuh Desa',
+    sellerAvatar: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=200&q=80',
+    sellerPhone: '+6285722337711',
+    image: 'https://images.unsplash.com/photo-1544735716-392fe2489ffa?auto=format&fit=crop&w=800&q=80',
+    gallery: ['https://images.unsplash.com/photo-1544735716-392fe2489ffa?auto=format&fit=crop&w=800&q=80'],
+    description: 'Homestay arsitektur rumah panggung Sunda tradisional berbahan kayu dan anyaman bambu sasak di tepi hutan rimba Jayagiri yang tenang dan menyejukkan.',
+    highlights: ['Arsitektur Tradisional Asli', 'Udara Segar Alami Rimba', 'Teh Poci Herbal Gratis', 'Dekat Jalur Lintas Alam'],
+    facilities: ['Kamar Tidur Bersih', 'Kamar Mandi Luar Bersih', 'Dapur Bersama', 'Teras Menghadap Hutan'],
+    stockQuota: 3,
     isAvailable: true
   },
   {
-    id: 'prod-13',
-    title: 'Miniatur Kadaplak & Kerajinan Bambu Pasir Angling',
-    category: 'suvenir',
-    price: 65000,
-    originalPrice: 80000,
-    unit: '/pcs',
-    villageId: 'des-01',
-    villageName: 'Desa Wisata Suntenjaya',
-    location: 'Lembang, Bandung Barat',
+    id: 'prod-12',
+    title: 'Paket Trekking Pintu Rimba Jayagiri ke Kawah Ratu',
+    category: 'paket-wisata',
+    price: 150000,
+    unit: '/orang',
+    villageId: 'des-04',
+    villageName: 'Desa Wisata Jayagiri',
+    location: 'Jayagiri, Lembang',
     rating: 4.9,
-    totalReviews: 29,
-    sellerName: 'Pengrajin Seni Sunda Suntenjaya',
-    sellerBadge: 'Pengrajin Lokal Asli',
-    sellerAvatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=200&q=80',
-    sellerPhone: '+6282122334455',
-    image: 'https://images.unsplash.com/photo-1590874103328-eac38a683ce7?auto=format&fit=crop&w=800&q=80',
-    gallery: [
-      'https://images.unsplash.com/photo-1590874103328-eac38a683ce7?auto=format&fit=crop&w=800&q=80'
-    ],
-    description: 'Souvenir miniatur Kadaplak (permainan papan luncur kayu tradisional Sunda yang legendaris di Desa Suntenjaya) dan hiasan anyaman bambu petung buatan pengrajin desa.',
-    highlights: ['Kerajinan Tangan Kayu & Bambu', 'Ikon Permainan Tradisional Kadaplak', 'Finishing Halus & Ramah Lingkungan'],
+    totalReviews: 48,
+    sellerName: 'Pokdarwis Rimba Jayagiri',
+    sellerBadge: 'Ranger Desa Bersertifikat',
+    sellerAvatar: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=200&q=80',
+    sellerPhone: '+6285722337711',
+    image: 'https://images.unsplash.com/photo-1502082553048-f009c37129b9?auto=format&fit=crop&w=800&q=80',
+    gallery: ['https://images.unsplash.com/photo-1502082553048-f009c37129b9?auto=format&fit=crop&w=800&q=80'],
+    description: 'Trekking menyusuri jalur legendaris hutan Jayagiri yang rimbun dan berkabut hingga ke bibir Kawah Ratu Tangkuban Parahu dipandu oleh ranger lokal ramah.',
+    highlights: ['Pemandu Jalur Berpengalaman', 'Tiket Masuk Rimba', 'Snack Rebusan & Air Mineral', 'First Aid / P3K Siaga'],
     stockQuota: 20,
     isAvailable: true
   },
 
-  // --- PRODUK DARI DESA MITRA ---
+  // --- DESA WISATA WANGUNSARI (KEC. LEMBANG) ---
   {
-    id: 'prod-14',
-    title: 'Tas Anyaman Bambu Penglipuran Petung',
-    category: 'suvenir',
-    price: 145000,
-    unit: '/pcs',
-    villageId: 'des-02',
-    villageName: 'Desa Wisata Penglipuran',
-    location: 'Bangli, Bali',
-    rating: 4.8,
-    totalReviews: 31,
-    sellerName: 'Koperasi Bambu Penglipuran',
-    sellerBadge: 'Pengrajin Mitra',
-    sellerAvatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80',
-    sellerPhone: '+6281234567890',
-    image: 'https://images.unsplash.com/photo-1590874103328-eac38a683ce7?auto=format&fit=crop&w=800&q=80',
-    gallery: [
-      'https://images.unsplash.com/photo-1590874103328-eac38a683ce7?auto=format&fit=crop&w=800&q=80'
-    ],
-    description: 'Tas etnik anyaman bambu petung pilihan khas desa adat Penglipuran.',
-    highlights: ['Anyaman Tangan Rapi', 'Strap Kulit Sintetis'],
-    stockQuota: 10,
+    id: 'prod-13',
+    title: 'Stroberi Segar Dataran Tinggi Wangunsari (1 Keranjang)',
+    category: 'umkm',
+    price: 45000,
+    unit: '/keranjang',
+    villageId: 'des-05',
+    villageName: 'Desa Wisata Wangunsari',
+    location: 'Wangunsari, Lembang',
+    rating: 4.9,
+    totalReviews: 40,
+    sellerName: 'Kebun Stroberi Ibu Rita',
+    sellerBadge: 'Petani Stroberi Organik',
+    sellerAvatar: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=200&q=80',
+    sellerPhone: '+6281809115544',
+    image: 'https://images.unsplash.com/photo-1464965911861-746a04b4bca6?auto=format&fit=crop&w=800&q=80',
+    gallery: ['https://images.unsplash.com/photo-1464965911861-746a04b4bca6?auto=format&fit=crop&w=800&q=80'],
+    description: 'Buah stroberi segar manis ranum dipetik saat pesanan masuk dari kebun pekarangan Desa Wangunsari. Sangat segar kaya vitamin C.',
+    highlights: ['Manis Segar Alami', 'Dipetik di Hari yang Sama', 'Kemasan Keranjang Anyaman Tradisional'],
+    stockQuota: 25,
     isAvailable: true
   },
   {
-    id: 'prod-15',
-    title: 'Kain Batik Tulis Motif Alam Nglanggeran',
+    id: 'prod-14',
+    title: 'Kerajinan Anyaman Bambu Kreatif & Suvenir Sunda',
     category: 'suvenir',
-    price: 325000,
+    price: 60000,
     unit: '/pcs',
-    villageId: 'des-03',
-    villageName: 'Desa Wisata Nglanggeran',
-    location: 'Gunungkidul, Yogyakarta',
-    rating: 5.0,
-    totalReviews: 18,
-    sellerName: 'Sanggar Batik Ibu Sri',
-    sellerBadge: 'Pengrajin Batik Mitra',
-    sellerAvatar: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=200&q=80',
-    sellerPhone: '+6282198765432',
-    image: 'https://images.unsplash.com/photo-1606760227091-3dd870d97f1d?auto=format&fit=crop&w=800&q=80',
-    gallery: [
-      'https://images.unsplash.com/photo-1606760227091-3dd870d97f1d?auto=format&fit=crop&w=800&q=80'
-    ],
-    description: 'Kain batik tulis halus katun primisima dengan pewarna alam ramah lingkungan.',
-    highlights: ['100% Batik Tulis Manual', 'Pewarna Alam'],
-    stockQuota: 8,
+    villageId: 'des-05',
+    villageName: 'Desa Wisata Wangunsari',
+    location: 'Wangunsari, Lembang',
+    rating: 4.8,
+    totalReviews: 24,
+    sellerName: 'Sanggar Bambu Wangunsari',
+    sellerBadge: 'Pengrajin Seni Budaya',
+    sellerAvatar: 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=200&q=80',
+    sellerPhone: '+6281809115544',
+    image: 'https://images.unsplash.com/photo-1590874103328-eac38a683ce7?auto=format&fit=crop&w=800&q=80',
+    gallery: ['https://images.unsplash.com/photo-1590874103328-eac38a683ce7?auto=format&fit=crop&w=800&q=80'],
+    description: 'Peralatan rumah tangga etnik dan kap lampu cantik dari anyaman bambu petung karya pengrajin sanggar desa Wangunsari.',
+    highlights: ['Anyaman Halus & Kuat', 'Pernis Natural Anti Rayap', 'Desain Etnik Modern'],
+    stockQuota: 18,
     isAvailable: true
   }
 ];
@@ -557,7 +772,7 @@ export const INITIAL_PRODUCTS: Product[] = [
 export const INITIAL_REVIEWS: Review[] = [
   {
     id: 'rev-01',
-    productId: 'prod-04',
+    productId: 'prod-03',
     authorName: 'Rian Prasetya',
     authorAvatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=150&q=80',
     rating: 5,
@@ -567,12 +782,12 @@ export const INITIAL_REVIEWS: Review[] = [
   },
   {
     id: 'rev-02',
-    productId: 'prod-07',
+    productId: 'prod-02',
     authorName: 'Budi Kurniawan',
     authorAvatar: 'https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?auto=format&fit=crop&w=150&q=80',
     rating: 5,
     date: '3 hari lalu',
-    comment: 'Kopi Arabika Suntenjaya karakternya sangat harum, ada wangi floral dan manis karamel. Bangga bisa beli langsung dari petani desa lewat website sabasunten.id ini!',
+    comment: 'Kopi Arabika Suntenjaya karakternya sangat harum, ada wangi floral dan manis karamel. Luar biasa kopi pegunungan Lembang!',
     userRole: 'Pencinta Kopi Asal Bandung'
   },
   {
@@ -582,8 +797,18 @@ export const INITIAL_REVIEWS: Review[] = [
     authorAvatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=150&q=80',
     rating: 5,
     date: '1 minggu lalu',
-    comment: 'Homestay Saung Pasir Angling bersih, air hangatnya lancar, dan pemandangan paginya berkabut indah banget. Tuan rumah Kang Dadang sekeluarga sangat ramah melayani kami.',
+    comment: 'Homestay Saung Pasir Angling bersih, air hangatnya lancar, dan pemandangan paginya berkabut indah banget. Tuan rumah sekeluarga sangat ramah melayani kami.',
     userRole: 'Wisatawan Asal Tangerang'
+  },
+  {
+    id: 'rev-04',
+    productId: 'prod-05',
+    authorName: 'Fajar Nugraha',
+    authorAvatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=150&q=80',
+    rating: 5,
+    date: '4 hari lalu',
+    comment: 'Kamar Melati Homestay di Cibodas sangat bersih dan sarapannya enak. Tempatnya dekat ke Maribaya, pelayanan PIC ramah dan informatif.',
+    userRole: 'Wisatawan Asal Bekasi'
   }
 ];
 
@@ -603,8 +828,8 @@ export const INITIAL_ORDERS: Order[] = [
         notes: 'Minta sarapan nasi liwet hangat jam 07.00 WIB'
       }
     ],
-    totalAmount: 505000,
-    paymentMethod: 'QRIS Instant',
+    totalAmount: 500000,
+    paymentMethod: 'WhatsApp Fast Checkout',
     status: 'diproses',
     createdAt: '24 Aug 2026, 09:30',
     notes: 'Pemesan minta jam check-in sekitar 14.00 WIB di Pasir Angling'
@@ -616,16 +841,16 @@ export const INITIAL_ORDERS: Order[] = [
     customerPhone: '+6285678901234',
     items: [
       {
-        product: INITIAL_PRODUCTS[6],
+        product: INITIAL_PRODUCTS[1],
         quantity: 2
       },
       {
-        product: INITIAL_PRODUCTS[9],
-        quantity: 1
+        product: INITIAL_PRODUCTS[5],
+        quantity: 2
       }
     ],
-    totalAmount: 210000,
-    paymentMethod: 'Transfer BCA',
+    totalAmount: 206000,
+    paymentMethod: 'WhatsApp Fast Checkout',
     status: 'selesai',
     createdAt: '22 Aug 2026, 16:15'
   }
