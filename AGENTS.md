@@ -40,14 +40,26 @@
    - Emas Panen Padi & Kopi (`amber-300`, `amber-400`, `amber-500`).
    - Latar Hangat Organik (`amber-50/30`, `stone-50`).
    - Abu Arang Kontras (`stone-800`, `stone-900`, `stone-950`).
-3. **Pengalih Peran Instan (Multi-PIC & Tourist Mode Switcher):**
-   - Header Navbar & Auth dilengkapi pemilih 1-klik:
-     - **Mode Wisatawan (`Budi Santoso`)**: Jelajah 5 desa, filter kawasan, keranjang, cetak e-ticket.
-     - **PIC Suntenjaya (`Kang Asep Suhendar`)**
-     - **PIC Cibodas (`Kang Dadang Herdiana`)**
-     - **PIC Cikole (`Kang Dadan Ridwan`)**
-     - **PIC Jayagiri (`Teh Eni Rohaeni`)**
-     - **PIC Wangunsari (`Kang Sandi Permana`)**
+3. **Akses Pengguna & Autentikasi PIC Desa (Direct `/login` URL):**
+   - **Default View (Wisatawan / Pembeli):** Antarmuka publik murni untuk pembeli umum tanpa tombol login yang mengganggu. Pengunjung dapat menjelajah 5 desa, melihat detail produk, menambahkan ke keranjang, dan checkout WhatsApp langsung tanpa perlu login.
+   - **Akses Langsung Admin / PIC (`/login` / `#login`):**
+     - Pengelola/PIC desa masuk dengan langsung mengetikkan rute `/login` (atau `/#login`, `/admin`) pada address bar browser.
+     - **Tampilan Standar Produksi Asli (100% Client-Side Static):**
+       - Tampilan login card profesional dan minimalis setara platform web produksi modern (tanpa watermark prototype atau tabel demo yang terlihat di UI).
+       - Field Username/Email, Kata Sandi, Ingat Saya, dan bantuan Lupa Kata Sandi.
+       - Validasi autentikasi instan dengan animasi loading spinner bersih.
+       - Akun pengelola yang terdaftar di sistem:
+         - **PIC Suntenjaya:** `pic.suntenjaya` / `suntenjaya123` (*Kang Asep Suhendar*)
+         - **PIC Cibodas:** `pic.cibodas` / `cibodas123` (*Kang Dadang Herdiana*)
+         - **PIC Cikole:** `pic.cikole` / `cikole123` (*Kang Dadan Ridwan*)
+         - **PIC Jayagiri:** `pic.jayagiri` / `jayagiri123` (*Teh Eni Rohaeni*)
+         - **PIC Wangunsari:** `pic.wangunsari` / `wangunsari123` (*Kang Sandi Permana*)
+         - **Super Admin Kawasan:** `admin.lembang` / `lembang2026`
+     - **Otorisasi Berbasis Peran & Desa (Strict Scope):**
+       - Setiap akun PIC hanya memiliki hak akses untuk mengelola katalog, foto aktual, profil desa, dan pesanan masuk khusus untuk desa yang menjadi tanggung jawabnya (misal: *Kang Asep Suhendar* hanya mengelola Desa Wisata Suntenjaya).
+       - Tidak ada widget atau dropdown *Ganti PIC (Demo)* di UI. Penggantian akun dilakukan secara resmi melalui alur *Keluar Akun* dan *Login* kembali.
+     - Dasbor PIC dilindungi barrier guard sehingga pengguna publik tidak dapat mengedit katalog desa.
+     - Saat PIC telah login, menu profil PIC dan tombol logout akan muncul di header.
 
 ---
 

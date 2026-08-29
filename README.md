@@ -21,13 +21,23 @@ Platform pariwisata terpadu dan marketplace resmi untuk **Desa Wisata di Kawasan
 5. **Desa Wisata Wangunsari (1.200 mdpl):** Sentra Seni Budaya Sunda, Agrowisata Petik Stroberi Manis, Budidaya Jamur & Anyaman Bambu. (PIC: *Kang Sandi Permana*)
 
 ## 🚀 Fitur Utama & Sistem PIC Desa
-
+ 
+- 🎒 **Mode Pembeli Terbuka (Tanpa Tombol Login di UI):** Antarmuka publik murni berorientasi wisatawan. Pengunjung dapat langsung menjelajahi katalog 5 desa, menggunakan filter cerdas, menambahkan produk/homestay ke keranjang, memberi ulasan, dan memesan via WhatsApp tanpa perlu login atau registrasi akun.
+- 🔐 **Portal Login PIC & Admin (`/login` / `sabasunten.id/login`):**
+  - **Akses URL Khusus:** Admin & PIC desa dapat membuka halaman login dengan mengetikkan langsung `/login`, `/#login`, atau `/admin` pada address bar browser.
+  - **Tampilan Bersih & Standar Produksi (100% Client-Side Static):** Tampilan login otentik layaknya web app produksi profesional tanpa watermark prototype/demo.
+  - **Daftar Kredensial Pengelola:**
+    - **Desa Suntenjaya:** `pic.suntenjaya` / `suntenjaya123` (*Kang Asep Suhendar*)
+    - **Desa Cibodas:** `pic.cibodas` / `cibodas123` (*Kang Dadang Herdiana*)
+    - **Desa Cikole:** `pic.cikole` / `cikole123` (*Kang Dadan Ridwan*)
+    - **Desa Jayagiri:** `pic.jayagiri` / `jayagiri123` (*Teh Eni Rohaeni*)
+    - **Desa Wangunsari:** `pic.wangunsari` / `wangunsari123` (*Kang Sandi Permana*)
+    - **Super Admin Kawasan:** `admin.lembang` / `lembang2026`
 - 📸 **Alur Posting Media PIC Interaktif (4-Step Wizard):**
   - **Beranda PIC:** Feed postingan desa aktif + Tombol FAB `+ Tambah Post`.
   - **Pilih Media:** Tombol Kamera / Upload Foto dari perangkat (JPG/PNG langsung dari lokasi) + Galeri Preset Foto Riil Lembang.
   - **Isi Detail:** Preview foto terpilih, Judul, Deskripsi, Harga (Rp), Stok/Kuota, dan Pemilih Kategori (Homestay, Produk Lokal, Paket Wisata, Tiket Destinasi).
   - **Posting & Verifikasi:** Postingan langsung terdaftar dengan centang hijau verifikasi PIC dan aktif secara instan di marketplace publik.
-- 👥 **Pengalih Peran Instan (Demo Mode Switcher):** Berpindah peran dalam 1-klik antara **Wisatawan (`Budi Santoso`)** dan **5 Akun PIC Desa Resmi** langsung dari header navbar atau halaman autentikasi.
 - 🏞️ **Manajemen Profil Desa:** PIC dapat memperbarui informasi sejarah, visi misi, aparatur desa, kontak telepon resmi, serta galeri foto aktual desa.
 - 🏡 **Katalog Homestay & Glamping:** Filter per desa, rentang harga, fasilitas (WiFi, sarapan, air hangat).
 - 🎒 **Paket Wisata & Live-In:** Paket edukasi perah susu sapi, petik sayur, offroad kanopi pinus Cikole, trekking rimba Jayagiri.

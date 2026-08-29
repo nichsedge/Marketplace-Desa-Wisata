@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { useApp } from '../context/AppContext';
 import { formatRupiah, getCategoryBadge } from '../components/ProductCard';
 import { Product, ProductCategory, OrderStatus, Village } from '../types';
-import { MOCK_PICS, LEMBANG_GALLERY_PRESETS } from '../data/mockData';
+import { LEMBANG_GALLERY_PRESETS } from '../data/mockData';
 import { 
   Store, 
   Plus, 
@@ -35,7 +35,13 @@ import {
   BedDouble,
   TreePine,
   Coffee,
-  Palette
+  Palette,
+  Lock,
+  LogOut,
+  ExternalLink,
+  Layers,
+  Tag,
+  UploadCloud
 } from 'lucide-react';
 
 export const SellerDashboardView: React.FC = () => {
@@ -50,6 +56,7 @@ export const SellerDashboardView: React.FC = () => {
     updateVillage,
     currentUser,
     login,
+    logout,
     navigateTo,
     showToast
   } = useApp();
@@ -88,10 +95,20 @@ export const SellerDashboardView: React.FC = () => {
   const [postStock, setPostStock] = useState<number>(3);
   const [postCategory, setPostCategory] = useState<ProductCategory>('homestay');
   
-  // Editing existing product
+  // Editing existing product state
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
+  const [editImageTab, setEditImageTab] = useState<'gallery' | 'upload' | 'url'>('gallery');
+  const [editHighlightsText, setEditHighlightsText] = useState<string>('');
 
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const editFileInputRef = useRef<HTMLInputElement>(null);
+
+  // Synchronize highlights text whenever editingProduct opens
+  const openEditProductModal = (product: Product) => {
+    setEditingProduct({ ...product });
+    setEditHighlightsText(product.highlights?.join(', ') || '');
+    setEditImageTab('gallery');
+  };
 
   // Close modals on Escape key & manage body scroll
   useEffect(() => {
@@ -115,7 +132,7 @@ export const SellerDashboardView: React.FC = () => {
     };
   }, [showPostWizard, editingProduct]);
 
-  // Handle local image file upload (Base64)
+  // Handle local image file upload for new post (Base64)
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
@@ -130,16 +147,34 @@ export const SellerDashboardView: React.FC = () => {
     }
   };
 
-  // Switch PIC account
-  const handleSwitchPic = (pic: typeof MOCK_PICS[0]) => {
-    login(pic);
-    const targetVillage = villages.find(v => v.id === pic.picVillageId) || villages[0];
-    setEditVillageName(targetVillage.name);
-    setEditVillageDesc(targetVillage.description);
-    setEditVillageHistory(targetVillage.history);
-    setEditVillagePhone(targetVillage.contactPhone);
-    setEditVillageManager(targetVillage.managerName);
-    setEditVillageImage(targetVillage.image);
+  // Handle local image file upload for editing product (Base64)
+  const handleEditFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file && editingProduct) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        if (typeof reader.result === 'string') {
+          const newImg = reader.result;
+          setEditingProduct({
+            ...editingProduct,
+            image: newImg,
+            gallery: [newImg, ...(editingProduct.gallery?.filter(g => g !== newImg) || [])]
+          });
+          showToast('Foto aktual produk berhasil diperbarui!', 'success');
+        }
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleEditSelectGalleryPreset = (imgUrl: string) => {
+    if (!editingProduct) return;
+    setEditingProduct({
+      ...editingProduct,
+      image: imgUrl,
+      gallery: [imgUrl, ...(editingProduct.gallery?.filter(g => g !== imgUrl) || [])]
+    });
+    showToast('Foto dari galeri Lembang dipilih!', 'info');
   };
 
   // Submit new post from wizard
@@ -200,13 +235,76 @@ export const SellerDashboardView: React.FC = () => {
   const handleEditSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!editingProduct) return;
-    updateProduct(editingProduct);
+    if (!editingProduct.title.trim()) {
+      showToast('Judul produk tidak boleh kosong.', 'error');
+      return;
+    }
+
+    const parsedHighlights = editHighlightsText
+      .split(',')
+      .map(h => h.trim())
+      .filter(h => h.length > 0);
+
+    const updated: Product = {
+      ...editingProduct,
+      highlights: parsedHighlights.length > 0 ? parsedHighlights : editingProduct.highlights,
+      gallery: editingProduct.image 
+        ? [editingProduct.image, ...(editingProduct.gallery?.filter(g => g !== editingProduct.image) || [])]
+        : editingProduct.gallery
+    };
+
+    updateProduct(updated);
+    showToast(`Data produk "${updated.title}" dan foto berhasil diperbarui!`, 'success');
     setEditingProduct(null);
   };
 
+  // Village-specific orders & revenue based on PIC role
+  const villageOrders = (currentUser?.picVillageId === 'all' || currentUser?.role === 'admin')
+    ? orders
+    : orders.filter(o => o.items.some(item => item.product.villageId === currentVillage.id));
+
   // Stats calculation
-  const totalRevenue = orders.reduce((sum, o) => sum + o.totalAmount, 0);
-  const pendingOrders = orders.filter(o => o.status === 'menunggu' || o.status === 'diproses').length;
+  const totalRevenue = villageOrders.reduce((sum, o) => sum + o.totalAmount, 0);
+  const pendingOrders = villageOrders.filter(o => o.status === 'menunggu' || o.status === 'diproses').length;
+
+  // Access Control Guard: Only authenticated PICs/Admins can manage catalogues
+  if (!currentUser || currentUser.role !== 'penjual') {
+    return (
+      <div className="max-w-xl mx-auto px-4 py-16 text-center space-y-6 animate-in fade-in duration-200">
+        <div className="w-16 h-16 rounded-3xl bg-amber-100 border border-amber-300 text-amber-900 flex items-center justify-center mx-auto shadow-md">
+          <Lock className="w-8 h-8 text-amber-700" />
+        </div>
+        <div className="space-y-2">
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-100 text-amber-900 text-xs font-bold border border-amber-300">
+            <ShieldCheck className="w-3.5 h-3.5 text-amber-700" />
+            <span>Akses Terbatas: Khusus PIC / Admin Desa</span>
+          </div>
+          <h1 className="text-2xl sm:text-3xl font-extrabold font-serif-title text-stone-900">
+            Dasbor Pengelola Desa Wisata
+          </h1>
+          <p className="text-xs sm:text-sm text-stone-600 max-w-md mx-auto leading-relaxed">
+            Halaman ini khusus diperuntukkan bagi PIC resmi 5 Desa Wisata di Kawasan Lembang untuk mengelola katalog, foto aktual, dan reservasi. Wisatawan umum dapat langsung berbelanja tanpa perlu login.
+          </p>
+        </div>
+        
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2">
+          <button
+            onClick={() => navigateTo('auth')}
+            className="w-full sm:w-auto px-6 py-3.5 bg-emerald-800 hover:bg-emerald-900 text-amber-200 font-bold rounded-xl text-xs sm:text-sm shadow-md transition-all hover:scale-105 flex items-center justify-center gap-2 cursor-pointer"
+          >
+            <Lock className="w-4 h-4" />
+            <span>Masuk ke Portal PIC Desa</span>
+          </button>
+          <button
+            onClick={() => navigateTo('home')}
+            className="w-full sm:w-auto px-5 py-3.5 bg-stone-100 hover:bg-stone-200 text-stone-700 font-semibold rounded-xl text-xs sm:text-sm transition-colors cursor-pointer"
+          >
+            Kembali ke Beranda
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8 pb-28 relative">
@@ -231,32 +329,22 @@ export const SellerDashboardView: React.FC = () => {
           </div>
         </div>
 
-        {/* PIC Village Switcher */}
+        {/* Actions */}
         <div className="flex flex-wrap items-center gap-3 shrink-0">
-          <div className="flex items-center gap-1.5 bg-stone-800/90 border border-stone-700 px-3 py-1.5 rounded-xl text-xs">
-            <MapPin className="w-3.5 h-3.5 text-amber-400" />
-            <span className="text-stone-400 font-medium">Ganti PIC Desa:</span>
-            <select
-              value={currentUser?.id || MOCK_PICS[0].id}
-              onChange={(e) => {
-                const pic = MOCK_PICS.find(p => p.id === e.target.value);
-                if (pic) handleSwitchPic(pic);
-              }}
-              className="bg-transparent text-amber-300 font-bold focus:outline-none cursor-pointer"
-            >
-              {MOCK_PICS.map(p => (
-                <option key={p.id} value={p.id} className="bg-stone-900 text-white">
-                  {p.name} ({p.picVillageName?.replace('Desa Wisata ', '')})
-                </option>
-              ))}
-            </select>
-          </div>
-
           <button
             onClick={() => navigateTo('marketplace')}
-            className="px-4 py-2.5 bg-white/10 hover:bg-white/20 text-white font-bold rounded-xl text-xs border border-white/20 transition-all"
+            className="px-4 py-2.5 bg-white/10 hover:bg-white/20 text-white font-bold rounded-xl text-xs border border-white/20 transition-all cursor-pointer"
           >
             ← Lihat Marketplace
+          </button>
+
+          <button
+            onClick={() => logout()}
+            className="px-3.5 py-2.5 bg-rose-600/80 hover:bg-rose-600 text-white font-bold rounded-xl text-xs transition-all flex items-center gap-1.5 cursor-pointer shadow-xs"
+            title="Keluar dari akun pengelola"
+          >
+            <LogOut className="w-3.5 h-3.5" />
+            <span>Keluar Akun</span>
           </button>
         </div>
       </div>
@@ -422,29 +510,43 @@ export const SellerDashboardView: React.FC = () => {
                       <p className="text-xs text-stone-500 line-clamp-2 mt-1">{p.description}</p>
                     </div>
 
-                    <div className="pt-3 border-t border-stone-100 flex items-center justify-between">
-                      <div>
-                        <p className="text-[10px] text-stone-400">Harga</p>
-                        <p className="text-sm font-extrabold text-emerald-800">
-                          {formatRupiah(p.price)}
-                          <span className="text-[10px] text-stone-500 font-normal"> {p.unit}</span>
-                        </p>
-                      </div>
-
-                      <div className="flex items-center gap-1">
+                    <div className="pt-3 border-t border-stone-100 flex flex-col gap-2">
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <p className="text-[10px] text-stone-400 font-semibold uppercase">Harga Pemesanan</p>
+                          <p className="text-sm font-extrabold text-emerald-800">
+                            {formatRupiah(p.price)}
+                            <span className="text-[10px] text-stone-500 font-normal"> {p.unit}</span>
+                          </p>
+                        </div>
                         <button
-                          onClick={() => setEditingProduct(p)}
-                          className="p-1.5 bg-stone-100 hover:bg-stone-200 text-stone-700 rounded-lg transition-colors"
-                          title="Edit Post"
-                        >
-                          <Edit3 className="w-3.5 h-3.5" />
-                        </button>
-                        <button
+                          type="button"
                           onClick={() => deleteProduct(p.id)}
-                          className="p-1.5 bg-rose-50 hover:bg-rose-100 text-rose-600 rounded-lg transition-colors"
-                          title="Hapus Post"
+                          className="p-1.5 bg-rose-50 hover:bg-rose-100 text-rose-600 rounded-lg transition-colors cursor-pointer"
+                          title="Hapus Listing"
                         >
                           <Trash2 className="w-3.5 h-3.5" />
+                        </button>
+                      </div>
+
+                      <div className="grid grid-cols-2 gap-1.5 pt-1">
+                        <button
+                          type="button"
+                          onClick={() => openEditProductModal(p)}
+                          className="w-full py-2 px-2 bg-emerald-800 hover:bg-emerald-900 text-amber-200 text-xs font-bold rounded-xl flex items-center justify-center gap-1.5 shadow-xs transition-transform hover:scale-102 cursor-pointer"
+                          title="Edit Detail & Foto Produk"
+                        >
+                          <Edit3 className="w-3.5 h-3.5" />
+                          <span>Edit Detail</span>
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => navigateTo('product-detail', p.id)}
+                          className="w-full py-2 px-2 bg-stone-100 hover:bg-stone-200 text-stone-700 text-xs font-semibold rounded-xl flex items-center justify-center gap-1 transition-colors cursor-pointer"
+                          title="Buka Tampilan Publik"
+                        >
+                          <ExternalLink className="w-3.5 h-3.5 text-stone-500" />
+                          <span>Lihat</span>
                         </button>
                       </div>
                     </div>
@@ -598,7 +700,7 @@ export const SellerDashboardView: React.FC = () => {
               <p className="text-xs text-stone-500">Pantau reservasi homestay, paket wisata, dan belanja produk desa.</p>
             </div>
             <span className="text-xs font-bold text-emerald-800 bg-emerald-50 px-3 py-1 rounded-full border border-emerald-200">
-              {orders.length} Total Pesanan
+              {villageOrders.length} Pesanan Masuk
             </span>
           </div>
 
@@ -615,7 +717,7 @@ export const SellerDashboardView: React.FC = () => {
                 </tr>
               </thead>
               <tbody className="divide-y divide-stone-100">
-                {orders.map((o) => (
+                {villageOrders.map((o) => (
                   <tr key={o.id} className="hover:bg-stone-50/80 transition-colors">
                     <td className="p-3 font-mono font-bold text-stone-900">{o.id}</td>
                     <td className="p-3">
@@ -976,90 +1078,413 @@ export const SellerDashboardView: React.FC = () => {
       )}
 
       {/* ========================================================== */}
-      {/* EDIT MODAL FOR EXISTING LISTINGS */}
+      {/* ADVANCED EDIT MODAL FOR LISTINGS & PHOTO UPDATE */}
       {/* ========================================================== */}
       {editingProduct && (
         <div 
-          className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-black/75 backdrop-blur-sm"
+          className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-black/80 backdrop-blur-md animate-in fade-in duration-200"
           onClick={(e) => {
             if (e.target === e.currentTarget) setEditingProduct(null);
           }}
         >
-          <div className="relative bg-white rounded-3xl max-w-lg w-full max-h-[90vh] sm:max-h-[85vh] flex flex-col shadow-2xl border border-stone-200 overflow-hidden animate-in fade-in zoom-in-95 duration-150">
-            <div className="shrink-0 bg-stone-900 p-4 sm:p-5 text-white flex items-center justify-between border-b border-stone-800">
-              <h3 className="text-base font-bold text-white font-serif-title">Edit Postingan #{editingProduct.id}</h3>
+          <div className="relative bg-white rounded-3xl max-w-4xl w-full max-h-[92vh] flex flex-col shadow-2xl border border-stone-200 overflow-hidden animate-in zoom-in-95 duration-150">
+            
+            {/* Modal Header */}
+            <div className="shrink-0 bg-gradient-to-r from-stone-900 via-emerald-950 to-stone-900 p-4 sm:p-5 text-white flex items-center justify-between border-b border-emerald-800/40">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-xl bg-amber-400 text-stone-950 flex items-center justify-center font-bold shadow-md shrink-0">
+                  <Edit3 className="w-5 h-5" />
+                </div>
+                <div>
+                  <div className="flex items-center gap-2">
+                    <span className="text-[10px] font-bold text-amber-300 uppercase tracking-wider bg-emerald-900/80 px-2 py-0.5 rounded-md border border-emerald-700/50">
+                      PIC {currentVillage.name}
+                    </span>
+                    <span className="text-[10px] text-stone-400">ID: #{editingProduct.id}</span>
+                  </div>
+                  <h3 className="text-base sm:text-lg font-bold text-white font-serif-title truncate max-w-md mt-0.5">
+                    Edit Detail & Foto: {editingProduct.title || 'Produk'}
+                  </h3>
+                </div>
+              </div>
+              
               <button 
+                type="button"
                 onClick={() => setEditingProduct(null)} 
-                className="p-1.5 rounded-xl bg-white/10 hover:bg-rose-500 hover:text-white transition-all text-stone-300"
+                className="p-2 rounded-xl bg-white/10 hover:bg-rose-600 text-stone-300 hover:text-white transition-all cursor-pointer"
                 title="Tutup Modal"
-                aria-label="Tutup Modal"
               >
                 <X className="w-5 h-5" />
               </button>
             </div>
 
-            <form onSubmit={handleEditSubmit} className="overflow-y-auto flex-1 p-5 sm:p-6 space-y-4 text-left text-xs overscroll-contain">
-              <div>
-                <label className="font-bold text-stone-700 block mb-1">Judul</label>
-                <input
-                  type="text"
-                  required
-                  value={editingProduct.title}
-                  onChange={(e) => setEditingProduct({ ...editingProduct, title: e.target.value })}
-                  className="w-full p-2.5 bg-stone-50 border border-stone-300 rounded-xl font-medium"
-                />
-              </div>
+            {/* Modal Content - 2 Column Responsive Grid */}
+            <form onSubmit={handleEditSubmit} className="overflow-y-auto flex-1 p-4 sm:p-6 space-y-6 text-left text-xs overscroll-contain">
+              
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+                
+                {/* Left 7 Cols: Form Inputs */}
+                <div className="lg:col-span-7 space-y-5">
+                  
+                  {/* --- PHOTO MANAGER SECTION --- */}
+                  <div className="bg-stone-50 p-4 sm:p-5 rounded-2xl border border-stone-200 space-y-4">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-2">
+                        <Camera className="w-4 h-4 text-emerald-800" />
+                        <span className="font-extrabold text-stone-900 text-xs uppercase tracking-wider">
+                          1. Foto Aktual Produk / Homestay
+                        </span>
+                      </div>
+                      <span className="text-[10px] bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded-full">
+                        Resolusi Tinggi
+                      </span>
+                    </div>
 
-              <div>
-                <label className="font-bold text-stone-700 block mb-1">Deskripsi</label>
-                <textarea
-                  rows={2}
-                  required
-                  value={editingProduct.description}
-                  onChange={(e) => setEditingProduct({ ...editingProduct, description: e.target.value })}
-                  className="w-full p-2.5 bg-stone-50 border border-stone-300 rounded-xl font-medium"
-                />
-              </div>
+                    {/* Active Photo Preview & Controls */}
+                    <div className="relative rounded-2xl overflow-hidden border-2 border-dashed border-emerald-600/40 bg-stone-900 h-48 group">
+                      <img
+                        src={editingProduct.image}
+                        alt={editingProduct.title}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                        referrerPolicy="no-referrer"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-stone-950/80 via-transparent to-transparent flex items-end justify-between p-3">
+                        <div className="text-white">
+                          <p className="text-[10px] text-amber-300 font-bold uppercase">Foto Utama Aktif</p>
+                          <p className="text-xs font-semibold truncate max-w-[200px]">{editingProduct.title}</p>
+                        </div>
+                        <button
+                          type="button"
+                          onClick={() => editFileInputRef.current?.click()}
+                          className="px-3 py-1.5 bg-amber-400 hover:bg-amber-300 text-stone-950 font-bold rounded-xl text-[11px] flex items-center gap-1.5 shadow-md transition-transform hover:scale-105 cursor-pointer"
+                        >
+                          <UploadCloud className="w-3.5 h-3.5" />
+                          <span>Ganti dari File</span>
+                        </button>
+                      </div>
+                    </div>
 
-              <div className="grid grid-cols-2 gap-2">
-                <div>
-                  <label className="font-bold text-stone-700 block mb-1">Harga (Rp)</label>
-                  <input
-                    type="number"
-                    required
-                    value={editingProduct.price}
-                    onChange={(e) => setEditingProduct({ ...editingProduct, price: Number(e.target.value) })}
-                    className="w-full p-2.5 bg-stone-50 border border-stone-300 rounded-xl font-medium"
-                  />
+                    {/* Hidden file input */}
+                    <input
+                      ref={editFileInputRef}
+                      type="file"
+                      accept="image/*"
+                      onChange={handleEditFileUpload}
+                      className="hidden"
+                    />
+
+                    {/* Photo Source Selector Tabs */}
+                    <div className="space-y-2">
+                      <div className="flex bg-stone-200/80 p-1 rounded-xl gap-1">
+                        <button
+                          type="button"
+                          onClick={() => setEditImageTab('gallery')}
+                          className={`flex-1 py-1.5 text-[11px] font-bold rounded-lg transition-all cursor-pointer ${
+                            editImageTab === 'gallery' ? 'bg-white text-emerald-900 shadow-xs' : 'text-stone-600'
+                          }`}
+                        >
+                          🏞️ Galeri Lembang ({LEMBANG_GALLERY_PRESETS.length})
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => setEditImageTab('upload')}
+                          className={`flex-1 py-1.5 text-[11px] font-bold rounded-lg transition-all cursor-pointer ${
+                            editImageTab === 'upload' ? 'bg-white text-emerald-900 shadow-xs' : 'text-stone-600'
+                          }`}
+                        >
+                          📸 Kamera / Upload
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => setEditImageTab('url')}
+                          className={`flex-1 py-1.5 text-[11px] font-bold rounded-lg transition-all cursor-pointer ${
+                            editImageTab === 'url' ? 'bg-white text-emerald-900 shadow-xs' : 'text-stone-600'
+                          }`}
+                        >
+                          🔗 URL Gambar
+                        </button>
+                      </div>
+
+                      {/* Tab 1: Galeri Lembang */}
+                      {editImageTab === 'gallery' && (
+                        <div className="space-y-2 pt-1">
+                          <p className="text-[10px] text-stone-500 font-medium">
+                            Pilih salah satu foto riil destinasi & homestay di Kawasan Lembang:
+                          </p>
+                          <div className="grid grid-cols-4 gap-2 max-h-36 overflow-y-auto p-1 bg-white rounded-xl border border-stone-200">
+                            {LEMBANG_GALLERY_PRESETS.map((preset) => {
+                              const isSelected = editingProduct.image === preset.url;
+                              return (
+                                <button
+                                  key={preset.id}
+                                  type="button"
+                                  onClick={() => handleEditSelectGalleryPreset(preset.url)}
+                                  className={`relative h-16 rounded-lg overflow-hidden border-2 transition-all cursor-pointer group ${
+                                    isSelected ? 'border-amber-500 ring-2 ring-amber-400' : 'border-transparent hover:border-emerald-600'
+                                  }`}
+                                >
+                                  <img
+                                    src={preset.url}
+                                    alt={preset.title}
+                                    className="w-full h-full object-cover group-hover:scale-110 transition-transform"
+                                  />
+                                  {isSelected && (
+                                    <div className="absolute inset-0 bg-emerald-900/60 flex items-center justify-center text-amber-300 font-black text-xs">
+                                      <Check className="w-4 h-4 stroke-[3]" />
+                                    </div>
+                                  )}
+                                </button>
+                              );
+                            })}
+                          </div>
+                        </div>
+                      )}
+
+                      {/* Tab 2: Upload Device */}
+                      {editImageTab === 'upload' && (
+                        <div className="p-4 bg-white rounded-xl border border-stone-200 text-center space-y-2">
+                          <p className="text-xs text-stone-600">
+                            Unggah foto aktual langsung dari galeri HP, kamera, atau komputer Anda:
+                          </p>
+                          <button
+                            type="button"
+                            onClick={() => editFileInputRef.current?.click()}
+                            className="px-4 py-2 bg-emerald-800 hover:bg-emerald-900 text-amber-200 font-bold rounded-xl text-xs flex items-center justify-center gap-2 mx-auto cursor-pointer shadow-xs"
+                          >
+                            <Camera className="w-4 h-4" />
+                            <span>Buka Kamera / Pilih File Foto</span>
+                          </button>
+                        </div>
+                      )}
+
+                      {/* Tab 3: URL Input */}
+                      {editImageTab === 'url' && (
+                        <div className="space-y-1 pt-1">
+                          <label className="text-[10px] font-bold text-stone-600">Tautan Gambar Langsung (HTTPS URL):</label>
+                          <input
+                            type="url"
+                            value={editingProduct.image}
+                            onChange={(e) => setEditingProduct({ ...editingProduct, image: e.target.value })}
+                            placeholder="https://images.unsplash.com/..."
+                            className="w-full p-2.5 bg-white border border-stone-300 rounded-xl text-xs focus:ring-2 focus:ring-emerald-700 focus:outline-none"
+                          />
+                        </div>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* --- BASIC INFORMATION --- */}
+                  <div className="bg-white p-4 sm:p-5 rounded-2xl border border-stone-200 space-y-4">
+                    <span className="font-extrabold text-stone-900 text-xs uppercase tracking-wider block">
+                      2. Informasi Utama Produk
+                    </span>
+
+                    <div>
+                      <label className="font-bold text-stone-800 block mb-1">Judul Produk / Homestay*</label>
+                      <input
+                        type="text"
+                        required
+                        value={editingProduct.title}
+                        onChange={(e) => setEditingProduct({ ...editingProduct, title: e.target.value })}
+                        placeholder="Contoh: Kopi Arabika Specialty Suntenjaya 250gr"
+                        className="w-full p-2.5 bg-stone-50 border border-stone-300 rounded-xl font-semibold text-stone-900 focus:bg-white focus:ring-2 focus:ring-emerald-700 focus:outline-none"
+                      />
+                    </div>
+
+                    {/* Category Selector Pills */}
+                    <div>
+                      <label className="font-bold text-stone-800 block mb-1.5">Kategori Produk</label>
+                      <div className="grid grid-cols-3 gap-1.5">
+                        {[
+                          { id: 'homestay', label: '🏡 Homestay' },
+                          { id: 'paket-wisata', label: '🌲 Paket Wisata' },
+                          { id: 'kuliner', label: '🍲 Kuliner' },
+                          { id: 'umkm', label: '📦 Produk Lokal' },
+                          { id: 'suvenir', label: '🎁 Suvenir' },
+                          { id: 'destinasi', label: '🎫 Destinasi' }
+                        ].map((cat) => (
+                          <button
+                            key={cat.id}
+                            type="button"
+                            onClick={() => setEditingProduct({ ...editingProduct, category: cat.id as ProductCategory })}
+                            className={`py-2 px-2 text-center text-[11px] font-bold rounded-xl border transition-all cursor-pointer ${
+                              editingProduct.category === cat.id
+                                ? 'bg-emerald-800 text-amber-200 border-emerald-900 shadow-xs'
+                                : 'bg-stone-50 hover:bg-stone-100 text-stone-700 border-stone-200'
+                            }`}
+                          >
+                            {cat.label}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div>
+                      <label className="font-bold text-stone-800 block mb-1">Deskripsi Lengkap*</label>
+                      <textarea
+                        rows={3}
+                        required
+                        value={editingProduct.description}
+                        onChange={(e) => setEditingProduct({ ...editingProduct, description: e.target.value })}
+                        placeholder="Jelaskan keunikan, fasilitas, atau rasa dari produk/destinasi ini..."
+                        className="w-full p-2.5 bg-stone-50 border border-stone-300 rounded-xl text-stone-900 font-medium focus:bg-white focus:ring-2 focus:ring-emerald-700 focus:outline-none leading-relaxed"
+                      />
+                    </div>
+                  </div>
+
+                  {/* --- PRICE, STOCK & UNIT --- */}
+                  <div className="bg-white p-4 sm:p-5 rounded-2xl border border-stone-200 space-y-4">
+                    <span className="font-extrabold text-stone-900 text-xs uppercase tracking-wider block">
+                      3. Harga, Satuan & Stok
+                    </span>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                      <div>
+                        <label className="font-bold text-stone-800 block mb-1">Harga Jual (Rp)*</label>
+                        <input
+                          type="number"
+                          required
+                          min={0}
+                          value={editingProduct.price}
+                          onChange={(e) => setEditingProduct({ ...editingProduct, price: Number(e.target.value) })}
+                          className="w-full p-2.5 bg-stone-50 border border-stone-300 rounded-xl font-bold text-emerald-800 focus:bg-white focus:ring-2 focus:ring-emerald-700 focus:outline-none"
+                        />
+                      </div>
+
+                      <div>
+                        <label className="font-bold text-stone-800 block mb-1">Satuan</label>
+                        <select
+                          value={editingProduct.unit}
+                          onChange={(e) => setEditingProduct({ ...editingProduct, unit: e.target.value })}
+                          className="w-full p-2.5 bg-stone-50 border border-stone-300 rounded-xl font-semibold text-stone-800 focus:bg-white focus:ring-2 focus:ring-emerald-700 focus:outline-none cursor-pointer"
+                        >
+                          <option value="/malam">/malam (Homestay)</option>
+                          <option value="/paket">/paket (Wisata/Tour)</option>
+                          <option value="/pcs">/pcs (Barang/Suvenir)</option>
+                          <option value="/porsi">/porsi (Kuliner)</option>
+                          <option value="/kg">/kg (Sayur/Kopi)</option>
+                          <option value="/orang">/orang (Tiket/Peserta)</option>
+                          <option value="/botol">/botol (Susu/Minuman)</option>
+                        </select>
+                      </div>
+
+                      <div>
+                        <label className="font-bold text-stone-800 block mb-1">Stok / Kuota*</label>
+                        <input
+                          type="number"
+                          required
+                          min={0}
+                          value={editingProduct.stockQuota}
+                          onChange={(e) => setEditingProduct({ ...editingProduct, stockQuota: Number(e.target.value) })}
+                          className="w-full p-2.5 bg-stone-50 border border-stone-300 rounded-xl font-bold text-stone-900 focus:bg-white focus:ring-2 focus:ring-emerald-700 focus:outline-none"
+                        />
+                      </div>
+                    </div>
+
+                    {/* Highlights / Fasilitas */}
+                    <div>
+                      <label className="font-bold text-stone-800 block mb-1">
+                        Poin Keunggulan / Fasilitas (Pisahkan dengan koma):
+                      </label>
+                      <input
+                        type="text"
+                        value={editHighlightsText}
+                        onChange={(e) => setEditHighlightsText(e.target.value)}
+                        placeholder="Contoh: Single Origin, Pemandangan Lereng, WiFi, Sarapan Sunda"
+                        className="w-full p-2.5 bg-stone-50 border border-stone-300 rounded-xl font-medium text-stone-800 focus:bg-white focus:ring-2 focus:ring-emerald-700 focus:outline-none"
+                      />
+                    </div>
+                  </div>
+
                 </div>
-                <div>
-                  <label className="font-bold text-stone-700 block mb-1">Stok Kuota</label>
-                  <input
-                    type="number"
-                    required
-                    value={editingProduct.stockQuota}
-                    onChange={(e) => setEditingProduct({ ...editingProduct, stockQuota: Number(e.target.value) })}
-                    className="w-full p-2.5 bg-stone-50 border border-stone-300 rounded-xl font-medium"
-                  />
+
+                {/* Right 5 Cols: Live Card Preview & Info */}
+                <div className="lg:col-span-5 space-y-4 lg:sticky lg:top-2">
+                  
+                  <div className="bg-amber-50/80 p-4 rounded-2xl border border-amber-200 space-y-2">
+                    <div className="flex items-center gap-2 text-amber-900 font-extrabold text-xs">
+                      <Sparkles className="w-4 h-4 text-amber-600" />
+                      <span>Live Marketplace Preview</span>
+                    </div>
+                    <p className="text-[11px] text-stone-600">
+                      Begini tampilan produk yang akan dilihat langsung oleh wisatawan di halaman katalog:
+                    </p>
+                  </div>
+
+                  {/* Card Simulation */}
+                  <div className="bg-white rounded-3xl border border-stone-200 shadow-lg overflow-hidden flex flex-col group">
+                    <div className="relative h-48 w-full bg-stone-100 overflow-hidden">
+                      <img
+                        src={editingProduct.image}
+                        alt={editingProduct.title}
+                        className="w-full h-full object-cover"
+                        referrerPolicy="no-referrer"
+                      />
+                      <div className="absolute top-2.5 left-2.5">
+                        <span className="px-2.5 py-1 rounded-full text-[10px] font-bold bg-emerald-800 text-amber-200 shadow-md">
+                          {editingProduct.category}
+                        </span>
+                      </div>
+                      <div className="absolute top-2.5 right-2.5 bg-emerald-600 text-white p-1 rounded-full shadow-md" title="Konten Terverifikasi PIC">
+                        <Check className="w-3.5 h-3.5 stroke-[3]" />
+                      </div>
+                      <div className="absolute bottom-2.5 left-2.5 bg-stone-950/75 backdrop-blur-md px-2.5 py-0.5 rounded-lg text-[10px] font-bold text-amber-300">
+                        {editingProduct.stockQuota} kuota tersedia
+                      </div>
+                    </div>
+
+                    <div className="p-4 space-y-3">
+                      <div>
+                        <span className="text-[10px] font-bold text-emerald-800 uppercase tracking-wider block">
+                          {currentVillage.name}
+                        </span>
+                        <h4 className="font-bold text-stone-900 text-sm mt-0.5 line-clamp-1">
+                          {editingProduct.title || 'Judul Produk'}
+                        </h4>
+                        <p className="text-xs text-stone-500 line-clamp-2 mt-1 leading-relaxed">
+                          {editingProduct.description || 'Deskripsi produk...'}
+                        </p>
+                      </div>
+
+                      <div className="pt-3 border-t border-stone-100 flex items-center justify-between">
+                        <div>
+                          <p className="text-[10px] text-stone-400 font-semibold uppercase">Harga Pemesanan</p>
+                          <p className="text-base font-extrabold text-emerald-800">
+                            {formatRupiah(editingProduct.price)}
+                            <span className="text-xs text-stone-500 font-normal"> {editingProduct.unit}</span>
+                          </p>
+                        </div>
+                        <span className="text-[10px] bg-amber-100 text-amber-900 font-bold px-2.5 py-1 rounded-lg">
+                          Aktif PIC
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+
                 </div>
+
               </div>
 
-              <div className="flex justify-end gap-2 pt-3 border-t border-stone-200">
+              {/* Modal Footer Controls */}
+              <div className="flex flex-col sm:flex-row items-center justify-end gap-3 pt-4 border-t border-stone-200">
                 <button
                   type="button"
                   onClick={() => setEditingProduct(null)}
-                  className="px-4 py-2.5 bg-stone-100 hover:bg-stone-200 text-stone-700 font-bold rounded-xl"
+                  className="w-full sm:w-auto px-5 py-3 bg-stone-100 hover:bg-stone-200 text-stone-700 font-bold rounded-xl text-xs transition-colors cursor-pointer"
                 >
                   Batal
                 </button>
                 <button
                   type="submit"
-                  className="px-5 py-2.5 bg-emerald-800 hover:bg-emerald-900 text-amber-200 font-bold rounded-xl shadow-md"
+                  className="w-full sm:w-auto px-6 py-3 bg-emerald-800 hover:bg-emerald-900 text-amber-200 font-bold rounded-xl text-xs sm:text-sm shadow-md transition-all hover:scale-105 flex items-center justify-center gap-2 cursor-pointer"
                 >
-                  Simpan Perubahan
+                  <Save className="w-4 h-4" />
+                  <span>Simpan Perubahan & Foto</span>
                 </button>
               </div>
+
             </form>
+
           </div>
         </div>
       )}

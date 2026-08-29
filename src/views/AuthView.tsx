@@ -1,184 +1,295 @@
 import React, { useState } from 'react';
 import { useApp } from '../context/AppContext';
-import { User, UserRole } from '../types';
-import { MOCK_PICS } from '../data/mockData';
-import { User as UserIcon, Store, ShieldCheck, TreePine, ArrowRight, CheckCircle2, MapPin } from 'lucide-react';
+import { 
+  TreePine, 
+  Lock, 
+  User as UserIcon, 
+  KeyRound, 
+  ArrowRight, 
+  AlertCircle,
+  Eye, 
+  EyeOff, 
+  Loader2,
+  ChevronLeft,
+  HelpCircle,
+  X
+} from 'lucide-react';
 
 export const AuthView: React.FC = () => {
-  const { login, navigateTo } = useApp();
+  const { loginWithCredentials, navigateTo } = useApp();
 
-  const [role, setRole] = useState<UserRole>('wisatawan');
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
+  const [usernameOrEmail, setUsernameOrEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const [rememberMe, setRememberMe] = useState(true);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [showForgotModal, setShowForgotModal] = useState(false);
 
-  const handleCustomLogin = (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!name || !email) return;
+    setErrorMessage(null);
 
-    const newUser: User = {
-      id: `usr-${Date.now()}`,
-      name,
-      email,
-      role,
-      avatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=150&q=80',
-      sellerName: role === 'penjual' ? `PIC / UMKM ${name}` : undefined
-    };
+    if (!usernameOrEmail.trim() || !password.trim()) {
+      setErrorMessage('Mohon masukkan username/email dan kata sandi.');
+      return;
+    }
 
-    login(newUser);
-    navigateTo(role === 'penjual' ? 'dashboard' : 'home');
-  };
+    setIsLoading(true);
 
-  const handleQuickTouristLogin = () => {
-    login({
-      id: 'usr-tourist-01',
-      name: 'Budi Santoso (Wisatawan)',
-      email: 'budi.santoso@wisatawan.id',
-      role: 'wisatawan',
-      avatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=150&q=80'
-    });
-    navigateTo('home');
-  };
-
-  const handleQuickPicLogin = (picUser: typeof MOCK_PICS[0]) => {
-    login(picUser);
-    navigateTo('dashboard');
+    // Realistic brief loading before auth verification
+    setTimeout(() => {
+      const success = loginWithCredentials(usernameOrEmail, password);
+      setIsLoading(false);
+      if (!success) {
+        setErrorMessage('Username atau kata sandi yang Anda masukkan salah. Silakan coba lagi.');
+      }
+    }, 400);
   };
 
   return (
-    <div className="max-w-lg mx-auto px-4 py-12 space-y-8">
+    <div className="min-h-[calc(100vh-80px)] flex items-center justify-center py-10 px-4 sm:px-6 lg:px-8 bg-stone-100/60">
       
-      {/* Card Header */}
-      <div className="bg-white p-6 sm:p-8 rounded-3xl border border-stone-200 shadow-xl text-center space-y-6">
+      <div className="max-w-4xl w-full bg-white rounded-3xl shadow-xl border border-stone-200 overflow-hidden grid grid-cols-1 lg:grid-cols-12">
         
-        <div className="w-14 h-14 rounded-2xl bg-emerald-800 text-amber-300 flex items-center justify-center mx-auto shadow-md">
-          <TreePine className="w-8 h-8" />
-        </div>
+        {/* Left Side: Brand Visual (Desktop Only) */}
+        <div className="hidden lg:flex lg:col-span-5 relative bg-emerald-950 text-white p-8 flex-col justify-between overflow-hidden">
+          {/* Background Image with Dark Emerald Overlay */}
+          <div 
+            className="absolute inset-0 bg-cover bg-center opacity-30 mix-blend-overlay"
+            style={{ 
+              backgroundImage: `url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1000&q=80')` 
+            }}
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-emerald-950 via-emerald-950/80 to-transparent" />
 
-        <div className="space-y-1">
-          <h1 className="text-2xl font-extrabold font-serif-title text-stone-900">
-            Masuk / Autentikasi Sistem
-          </h1>
-          <p className="text-xs text-stone-500">
-            Akses portal Saba Lembang sebagai wisatawan umum atau PIC pengelola desa wisata.
-          </p>
-        </div>
-
-        {/* Quick Demo Login Preset Buttons */}
-        <div className="p-4 bg-amber-50 rounded-2xl border border-amber-200/80 space-y-3 text-left">
-          <div className="flex items-center justify-between">
-            <span className="text-[11px] font-bold text-amber-900 uppercase tracking-wider block">
-              ⚡ Masuk Cepat Demo (Wisatawan & PIC Desa):
-            </span>
-            <span className="text-[10px] bg-amber-200 text-amber-950 font-bold px-2 py-0.5 rounded-full">
-              Saba Lembang
-            </span>
-          </div>
-          
-          <div className="space-y-2">
-            {/* Tourist preset */}
-            <button
-              onClick={handleQuickTouristLogin}
-              className="w-full py-2.5 px-3 bg-white hover:bg-stone-50 border border-stone-300 rounded-xl text-xs font-bold text-stone-800 flex items-center justify-between transition-colors shadow-xs group"
-            >
-              <div className="flex items-center gap-2">
-                <UserIcon className="w-4 h-4 text-emerald-700" />
-                <span>Masuk sebagai Wisatawan (Budi Santoso)</span>
+          {/* Brand Top */}
+          <div className="relative z-10 space-y-3">
+            <div className="flex items-center gap-2.5">
+              <div className="w-10 h-10 rounded-2xl bg-amber-400 text-emerald-950 flex items-center justify-center shadow-md font-bold">
+                <TreePine className="w-6 h-6" />
               </div>
-              <ArrowRight className="w-3.5 h-3.5 text-stone-400 group-hover:translate-x-1 transition-transform" />
-            </button>
+              <div>
+                <span className="text-xs font-black tracking-widest text-amber-300 uppercase block">
+                  SABA LEMBANG
+                </span>
+                <span className="text-[11px] text-emerald-200">
+                  Desa Wisata Terpadu
+                </span>
+              </div>
+            </div>
 
-            {/* 5 Village PIC Presets */}
-            <div className="pt-2 border-t border-amber-200/60 space-y-1.5">
-              <span className="text-[10px] font-bold text-stone-500 uppercase tracking-wider block">
-                Pilih Akun PIC Desa:
+            <div className="pt-6">
+              <h2 className="text-2xl font-bold font-serif-title leading-snug text-white">
+                Portal Pengelola Kawasan Lembang
+              </h2>
+              <p className="text-xs text-emerald-200/90 leading-relaxed mt-2">
+                Sistem pengelolaan terpadu katalog komoditas, reservasi homestay, dan informasi destinasi 5 desa wisata di Kawasan Lembang.
+              </p>
+            </div>
+          </div>
+
+          {/* Bottom Security / Trust Notice */}
+          <div className="relative z-10 pt-8 border-t border-emerald-800/60 text-[11px] text-emerald-300/80 space-y-1">
+            <p className="font-semibold text-white">Jaringan Desa Wisata Lembang</p>
+            <p className="text-[10px] text-emerald-300/70">Suntenjaya · Cibodas · Cikole · Jayagiri · Wangunsari</p>
+          </div>
+        </div>
+
+        {/* Right Side: Clean Login Form */}
+        <div className="lg:col-span-7 p-6 sm:p-10 flex flex-col justify-between">
+          
+          <div className="space-y-6">
+            
+            {/* Top Logo for Mobile */}
+            <div className="flex lg:hidden items-center gap-2 mb-2">
+              <div className="w-8 h-8 rounded-xl bg-emerald-900 text-amber-300 flex items-center justify-center font-bold">
+                <TreePine className="w-5 h-5" />
+              </div>
+              <span className="text-xs font-black tracking-widest text-emerald-900 uppercase">
+                SABA LEMBANG
               </span>
-              {MOCK_PICS.map((pic) => (
-                <button
-                  key={pic.id}
-                  onClick={() => handleQuickPicLogin(pic)}
-                  className="w-full py-2 px-3 bg-emerald-900 hover:bg-emerald-950 text-amber-200 rounded-xl text-xs font-bold flex items-center justify-between transition-colors shadow-xs group"
-                >
-                  <div className="flex items-center gap-2">
-                    <Store className="w-3.5 h-3.5 text-amber-300" />
-                    <span>{pic.name} · <span className="text-stone-300 font-normal">{pic.picVillageName?.replace('Desa Wisata ', '')}</span></span>
-                  </div>
-                  <ArrowRight className="w-3.5 h-3.5 text-amber-300 group-hover:translate-x-1 transition-transform" />
-                </button>
-              ))}
+            </div>
+
+            {/* Header */}
+            <div>
+              <h1 className="text-2xl font-black font-serif-title text-stone-900">
+                Masuk ke Akun Pengelola
+              </h1>
+              <p className="text-xs text-stone-500 mt-1">
+                Silakan masukkan username atau email akun PIC Anda untuk melanjutkan.
+              </p>
+            </div>
+
+            {/* Error Alert */}
+            {errorMessage && (
+              <div className="p-3.5 bg-rose-50 border border-rose-200 text-rose-800 rounded-2xl text-xs flex items-start gap-2.5 animate-in fade-in duration-150">
+                <AlertCircle className="w-4 h-4 shrink-0 text-rose-600 mt-0.5" />
+                <div className="flex-1">
+                  <p className="font-semibold">{errorMessage}</p>
+                </div>
+              </div>
+            )}
+
+            {/* Form */}
+            <form onSubmit={handleSubmit} className="space-y-4">
+              
+              {/* Username Field */}
+              <div>
+                <label className="text-xs font-bold text-stone-700 block mb-1.5">
+                  Username atau Email
+                </label>
+                <div className="relative">
+                  <input
+                    type="text"
+                    required
+                    value={usernameOrEmail}
+                    onChange={(e) => {
+                      setUsernameOrEmail(e.target.value);
+                      if (errorMessage) setErrorMessage(null);
+                    }}
+                    placeholder="Masukkan username atau email"
+                    className="w-full pl-10 pr-4 py-3 bg-stone-50 border border-stone-300 rounded-xl text-xs text-stone-900 font-medium focus:outline-none focus:ring-2 focus:ring-emerald-800 focus:bg-white transition-all"
+                  />
+                  <UserIcon className="w-4 h-4 text-stone-400 absolute left-3.5 top-3.5" />
+                </div>
+              </div>
+
+              {/* Password Field */}
+              <div>
+                <div className="flex items-center justify-between mb-1.5">
+                  <label className="text-xs font-bold text-stone-700">
+                    Kata Sandi
+                  </label>
+                  <button
+                    type="button"
+                    onClick={() => setShowForgotModal(true)}
+                    className="text-[11px] text-emerald-800 font-semibold hover:underline cursor-pointer"
+                  >
+                    Lupa kata sandi?
+                  </button>
+                </div>
+                <div className="relative">
+                  <input
+                    type={showPassword ? 'text' : 'password'}
+                    required
+                    value={password}
+                    onChange={(e) => {
+                      setPassword(e.target.value);
+                      if (errorMessage) setErrorMessage(null);
+                    }}
+                    placeholder="Masukkan kata sandi"
+                    className="w-full pl-10 pr-10 py-3 bg-stone-50 border border-stone-300 rounded-xl text-xs text-stone-900 font-medium focus:outline-none focus:ring-2 focus:ring-emerald-800 focus:bg-white transition-all"
+                  />
+                  <KeyRound className="w-4 h-4 text-stone-400 absolute left-3.5 top-3.5" />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="p-1 text-stone-400 hover:text-stone-700 absolute right-3 top-3 cursor-pointer"
+                    tabIndex={-1}
+                    aria-label={showPassword ? 'Sembunyikan kata sandi' : 'Tampilkan kata sandi'}
+                  >
+                    {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                  </button>
+                </div>
+              </div>
+
+              {/* Remember Me */}
+              <div className="flex items-center justify-between pt-1">
+                <label className="flex items-center gap-2 text-xs text-stone-600 cursor-pointer select-none">
+                  <input
+                    type="checkbox"
+                    checked={rememberMe}
+                    onChange={(e) => setRememberMe(e.target.checked)}
+                    className="rounded text-emerald-800 focus:ring-emerald-800 w-4 h-4"
+                  />
+                  <span>Ingat saya di perangkat ini</span>
+                </label>
+              </div>
+
+              {/* Submit Button */}
+              <button
+                type="submit"
+                disabled={isLoading}
+                className="w-full py-3.5 bg-emerald-800 hover:bg-emerald-900 text-amber-200 font-bold rounded-xl text-xs sm:text-sm shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-75 mt-2"
+              >
+                {isLoading ? (
+                  <>
+                    <Loader2 className="w-4 h-4 animate-spin text-amber-300" />
+                    <span>Memverifikasi...</span>
+                  </>
+                ) : (
+                  <>
+                    <Lock className="w-4 h-4" />
+                    <span>Masuk</span>
+                    <ArrowRight className="w-4 h-4" />
+                  </>
+                )}
+              </button>
+
+            </form>
+
+          </div>
+
+          {/* Footer Back Link */}
+          <div className="pt-8 mt-6 border-t border-stone-100 flex items-center justify-between text-xs text-stone-500">
+            <button
+              type="button"
+              onClick={() => navigateTo('home')}
+              className="flex items-center gap-1 font-semibold text-stone-600 hover:text-emerald-800 transition-colors cursor-pointer"
+            >
+              <ChevronLeft className="w-4 h-4" />
+              <span>Kembali ke Beranda</span>
+            </button>
+            <span>© 2026 Saba Lembang</span>
+          </div>
+
+        </div>
+
+      </div>
+
+      {/* Forgot Password Modal */}
+      {showForgotModal && (
+        <div 
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-in fade-in duration-150"
+          onClick={(e) => {
+            if (e.target === e.currentTarget) setShowForgotModal(false);
+          }}
+        >
+          <div className="bg-white rounded-3xl max-w-sm w-full p-6 space-y-4 shadow-2xl border border-stone-200">
+            <div className="flex items-center justify-between pb-3 border-b border-stone-100">
+              <div className="flex items-center gap-2">
+                <div className="p-2 rounded-xl bg-amber-100 text-amber-900">
+                  <HelpCircle className="w-5 h-5" />
+                </div>
+                <h4 className="text-sm font-bold text-stone-900">Lupa Kata Sandi</h4>
+              </div>
+              <button
+                onClick={() => setShowForgotModal(false)}
+                className="p-1 rounded-lg text-stone-400 hover:text-stone-700 cursor-pointer"
+                aria-label="Tutup"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+
+            <p className="text-xs text-stone-600 leading-relaxed">
+              Untuk keamanan akun pengelola desa wisata, reset kata sandi dilakukan melalui konfirmasi administrator kawasan. Silakan hubungi pusat bantuan pengelola untuk pemulihan akses.
+            </p>
+
+            <div className="pt-2">
+              <a
+                href="https://wa.me/6282122334455?text=Halo%20Admin%20Saba%20Lembang%2C%20saya%20PIC%20Desa%20ingin%20meminta%20bantuan%20reset%20kata%20sandi."
+                target="_blank"
+                rel="noreferrer"
+                className="w-full py-2.5 bg-emerald-800 hover:bg-emerald-900 text-amber-200 text-xs font-bold rounded-xl shadow-xs flex items-center justify-center gap-1.5 transition-colors"
+              >
+                Hubungi Bantuan via WhatsApp
+              </a>
             </div>
           </div>
         </div>
-
-        <div className="relative">
-          <div className="absolute inset-0 flex items-center"><div className="w-full border-t border-stone-200"></div></div>
-          <div className="relative text-[10px] text-stone-400 bg-white px-2 uppercase font-bold">atau isi form manual</div>
-        </div>
-
-        {/* Role Toggle Form */}
-        <form onSubmit={handleCustomLogin} className="space-y-4 text-left text-xs">
-          
-          <div className="flex bg-stone-100 p-1 rounded-xl border border-stone-200">
-            <button
-              type="button"
-              onClick={() => setRole('wisatawan')}
-              className={`flex-1 py-2 text-xs font-bold rounded-lg transition-colors ${
-                role === 'wisatawan' ? 'bg-white text-emerald-800 shadow-xs' : 'text-stone-500'
-              }`}
-            >
-              Wisatawan
-            </button>
-            <button
-              type="button"
-              onClick={() => setRole('penjual')}
-              className={`flex-1 py-2 text-xs font-bold rounded-lg transition-colors ${
-                role === 'penjual' ? 'bg-white text-emerald-800 shadow-xs' : 'text-stone-500'
-              }`}
-            >
-              PIC Desa / Pengelola
-            </button>
-          </div>
-
-          <div>
-            <label className="font-bold text-stone-800 block mb-1">Nama Lengkap*</label>
-            <input
-              type="text"
-              required
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              placeholder="Masukkan nama Anda"
-              className="w-full p-2.5 bg-stone-50 border border-stone-200 rounded-xl font-medium focus:outline-none focus:ring-2 focus:ring-emerald-600"
-            />
-          </div>
-
-          <div>
-            <label className="font-bold text-stone-800 block mb-1">Alamat Email*</label>
-            <input
-              type="email"
-              required
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="email@example.com"
-              className="w-full p-2.5 bg-stone-50 border border-stone-200 rounded-xl font-medium focus:outline-none focus:ring-2 focus:ring-emerald-600"
-            />
-          </div>
-
-          <button
-            type="submit"
-            className="w-full py-3 bg-emerald-800 hover:bg-emerald-900 text-amber-200 font-bold rounded-xl text-xs shadow-md transition-all hover:scale-105"
-          >
-            Masuk Sekarang
-          </button>
-
-          <button
-            type="button"
-            onClick={() => navigateTo('home')}
-            className="w-full py-2.5 bg-stone-100 hover:bg-stone-200 text-stone-700 font-semibold rounded-xl text-xs transition-colors"
-          >
-            ← Kembali ke Beranda
-          </button>
-        </form>
-
-      </div>
+      )}
 
     </div>
   );

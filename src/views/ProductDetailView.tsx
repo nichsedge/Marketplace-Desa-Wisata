@@ -60,6 +60,7 @@ export const ProductDetailView: React.FC = () => {
   // Review Form
   const [newRating, setNewRating] = useState(5);
   const [newComment, setNewComment] = useState('');
+  const [reviewAuthorName, setReviewAuthorName] = useState('');
 
   const productReviews = reviews.filter(r => r.productId === product.id);
   const relatedProducts = products.filter(p => p.id !== product.id && (p.villageId === product.villageId || p.category === product.category)).slice(0, 3);
@@ -126,8 +127,9 @@ export const ProductDetailView: React.FC = () => {
   const handleReviewSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!newComment.trim()) return;
-    addReview(product.id, newRating, newComment);
+    addReview(product.id, newRating, newComment, reviewAuthorName.trim() || undefined);
     setNewComment('');
+    setReviewAuthorName('');
   };
 
   const handleWhatsAppChat = () => {
@@ -343,19 +345,32 @@ export const ProductDetailView: React.FC = () => {
             <form onSubmit={handleReviewSubmit} className="bg-stone-50 p-4 rounded-xl border border-stone-200 space-y-3">
               <p className="text-xs font-bold text-stone-800">Tulis Ulasan Pengalaman Anda</p>
               
-              <div className="flex items-center gap-2">
-                <span className="text-xs text-stone-600 font-medium">Bintang:</span>
-                <div className="flex gap-1">
-                  {[1, 2, 3, 4, 5].map((star) => (
-                    <button
-                      key={star}
-                      type="button"
-                      onClick={() => setNewRating(star)}
-                      className="p-1 hover:scale-110 transition-transform"
-                    >
-                      <Star className={`w-5 h-5 ${star <= newRating ? 'fill-amber-400 text-amber-400' : 'text-stone-300'}`} />
-                    </button>
-                  ))}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                <div>
+                  <label className="text-[11px] font-bold text-stone-700 block mb-1">Nama Anda (Opsional):</label>
+                  <input
+                    type="text"
+                    value={reviewAuthorName}
+                    onChange={(e) => setReviewAuthorName(e.target.value)}
+                    placeholder="Contoh: Budi Santoso / Wisatawan Jakarta"
+                    className="w-full p-2.5 bg-white border border-stone-300 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-emerald-600"
+                  />
+                </div>
+                <div>
+                  <label className="text-[11px] font-bold text-stone-700 block mb-1">Beri Nilai Bintang:</label>
+                  <div className="flex items-center gap-1 h-9">
+                    {[1, 2, 3, 4, 5].map((star) => (
+                      <button
+                        key={star}
+                        type="button"
+                        onClick={() => setNewRating(star)}
+                        className="p-1 hover:scale-110 transition-transform cursor-pointer"
+                      >
+                        <Star className={`w-5 h-5 ${star <= newRating ? 'fill-amber-400 text-amber-400' : 'text-stone-300'}`} />
+                      </button>
+                    ))}
+                    <span className="text-xs font-bold text-stone-600 ml-2">({newRating} / 5)</span>
+                  </div>
                 </div>
               </div>
 
@@ -364,12 +379,13 @@ export const ProductDetailView: React.FC = () => {
                 onChange={(e) => setNewComment(e.target.value)}
                 placeholder="Bagikan ulasan pengalaman Anda saat tinggal atau menggunakan produk ini..."
                 rows={3}
+                required
                 className="w-full p-3 bg-white border border-stone-300 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-emerald-600"
               />
 
               <button
                 type="submit"
-                className="px-4 py-2 bg-emerald-800 hover:bg-emerald-900 text-white font-bold rounded-xl text-xs flex items-center gap-1.5 shadow-xs"
+                className="px-4 py-2 bg-emerald-800 hover:bg-emerald-900 text-white font-bold rounded-xl text-xs flex items-center gap-1.5 shadow-xs cursor-pointer"
               >
                 <Send className="w-3.5 h-3.5" />
                 <span>Kirim Ulasan</span>

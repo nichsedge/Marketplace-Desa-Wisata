@@ -1,6 +1,6 @@
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext, useState, useEffect } from 'react';
 import { Product, Village, CartItem, Order, Review, User, ProductCategory, OrderStatus } from '../types';
-import { INITIAL_PRODUCTS, INITIAL_VILLAGES, INITIAL_REVIEWS, INITIAL_ORDERS } from '../data/mockData';
+import { INITIAL_PRODUCTS, INITIAL_VILLAGES, INITIAL_REVIEWS, INITIAL_ORDERS, MOCK_PICS } from '../data/mockData';
 
 export type PageRoute = 
   | 'home' 
@@ -72,9 +72,10 @@ interface AppContextType {
     notes?: string
   ) => Order;
 
-  // User Auth
+  // User Auth (Admin / PIC only)
   currentUser: User | null;
   login: (user: User) => void;
+  loginWithCredentials: (usernameOrEmail: string, password: string) => boolean;
   logout: () => void;
 
   // Seller / PIC Dashboard Actions
@@ -85,7 +86,7 @@ interface AppContextType {
   updateVillage: (updatedVillage: Village) => void;
 
   // Reviews
-  addReview: (productId: string, rating: number, comment: string) => void;
+  addReview: (productId: string, rating: number, comment: string, authorName?: string) => void;
 
   // Toast
   toast: ToastState | null;
@@ -94,8 +95,43 @@ interface AppContextType {
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
 
+const getInitialPage = (): PageRoute => {
+  if (typeof window === 'undefined') return 'home';
+  const hash = window.location.hash.replace('#', '').toLowerCase();
+  const searchParams = new URLSearchParams(window.location.search);
+  const pageParam = searchParams.get('page') || searchParams.get('route');
+  const pathname = window.location.pathname.toLowerCase();
+
+  if (
+    hash === 'login' || 
+    hash === 'auth' || 
+    hash === 'admin' || 
+    pageParam === 'auth' || 
+    pageParam === 'login' || 
+    pageParam === 'admin' ||
+    pathname === '/login' || 
+    pathname.startsWith('/login') ||
+    pathname === '/admin' || 
+    pathname.startsWith('/admin') ||
+    pathname === '/auth' ||
+    pathname.startsWith('/auth')
+  ) {
+    return 'auth';
+  }
+  if (hash === 'dashboard' || pageParam === 'dashboard' || pathname === '/dashboard' || pathname.startsWith('/dashboard')) {
+    return 'dashboard';
+  }
+  if (hash === 'marketplace' || pageParam === 'marketplace' || pathname === '/marketplace' || pathname.startsWith('/marketplace')) return 'marketplace';
+  if (hash === 'homestay' || pageParam === 'homestay' || pathname === '/homestay' || pathname.startsWith('/homestay')) return 'homestay';
+  if (hash === 'paket-wisata' || pageParam === 'paket-wisata' || pathname === '/paket-wisata' || pathname.startsWith('/paket-wisata')) return 'paket-wisata';
+  if (hash === 'desa-detail' || pageParam === 'desa-detail' || pathname === '/desa-detail' || pathname.startsWith('/desa-detail')) return 'desa-detail';
+  if (hash === 'cart' || pageParam === 'cart' || pathname === '/cart' || pathname.startsWith('/cart')) return 'cart';
+
+  return 'home';
+};
+
 export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [page, setPage] = useState<PageRoute>('home');
+  const [page, setPage] = useState<PageRoute>(getInitialPage());
   const [selectedProductId, setSelectedProductId] = useState<string | null>(null);
   const [selectedVillageId, setSelectedVillageId] = useState<string | null>(null);
 
@@ -114,15 +150,8 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   const [orders, setOrders] = useState<Order[]>(INITIAL_ORDERS);
   const [cart, setCart] = useState<CartItem[]>([]);
 
-
-  // User auth state (default null or sample user)
-  const [currentUser, setCurrentUser] = useState<User | null>({
-    id: 'usr-demo-01',
-    name: 'Budi Wisatawan',
-    email: 'budi@example.com',
-    role: 'wisatawan',
-    avatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=150&q=80'
-  });
+  // User auth state: Default is null (Regular Buyer/Guest doesn't need login)
+  const [currentUser, setCurrentUser] = useState<User | null>(null);
 
   // Toast state
   const [toast, setToast] = useState<ToastState | null>(null);
@@ -134,12 +163,34 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     }, 3500);
   };
 
+  // Synchronize browser history / URL with page changes
   const navigateTo = (route: PageRoute, productId?: string, villageId?: string) => {
     setPage(route);
     if (productId) setSelectedProductId(productId);
     if (villageId) setSelectedVillageId(villageId);
+
+    if (typeof window !== 'undefined') {
+      try {
+        const cleanPath = route === 'home' ? '/' : route === 'auth' ? '/login' : `/${route}`;
+        window.history.pushState({ route, productId, villageId }, '', cleanPath);
+      } catch {
+        // ignore navigation history error
+      }
+    }
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
+
+  useEffect(() => {
+    const handleLocationChange = () => {
+      setPage(getInitialPage());
+    };
+    window.addEventListener('popstate', handleLocationChange);
+    window.addEventListener('hashchange', handleLocationChange);
+    return () => {
+      window.removeEventListener('popstate', handleLocationChange);
+      window.removeEventListener('hashchange', handleLocationChange);
+    };
+  }, []);
 
   const resetFilters = () => {
     setSearchQuery('');
@@ -233,9 +284,49 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     showToast(`Selamat datang kembali, ${user.name}!`, 'success');
   };
 
+  const loginWithCredentials = (usernameOrEmail: string, pass: string): boolean => {
+    const cleanId = usernameOrEmail.trim().toLowerCase();
+    const cleanPass = pass.trim();
+
+    // Check Super Admin Kawasan master login
+    if (
+      (cleanId === 'admin.lembang' || cleanId === 'admin@sabasunten.id' || cleanId === 'admin') &&
+      (cleanPass === 'lembang2026' || cleanPass === 'admin123')
+    ) {
+      const superAdminPic: User = {
+        ...MOCK_PICS[0],
+        name: 'Admin Kawasan Saba Lembang',
+        picRoleTitle: 'Super Administrator Kawasan Lembang'
+      };
+      setCurrentUser(superAdminPic);
+      showToast('Login berhasil! Selamat datang Admin Kawasan Lembang.', 'success');
+      navigateTo('dashboard');
+      return true;
+    }
+
+    // Match against official PIC accounts
+    const matchedPic = MOCK_PICS.find(p => {
+      const userMatch = (p.username && p.username.toLowerCase() === cleanId) || 
+                        (p.email && p.email.toLowerCase() === cleanId);
+      const passMatch = p.password === cleanPass;
+      return userMatch && passMatch;
+    });
+
+    if (matchedPic) {
+      setCurrentUser(matchedPic);
+      showToast(`Login berhasil! Selamat datang ${matchedPic.name} (${matchedPic.picVillageName?.replace('Desa Wisata ', '')}).`, 'success');
+      navigateTo('dashboard');
+      return true;
+    }
+
+    showToast('Username atau password PIC salah. Silakan periksa kredensial demo.', 'error');
+    return false;
+  };
+
   const logout = () => {
     setCurrentUser(null);
-    showToast('Anda telah keluar dari akun.', 'info');
+    showToast('Anda telah keluar dari sesi PIC/Admin.', 'info');
+    navigateTo('home');
   };
 
   // Seller Dashboard Actions
@@ -329,6 +420,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       placeOrder,
       currentUser,
       login,
+      loginWithCredentials,
       logout,
       addProduct,
       updateProduct,

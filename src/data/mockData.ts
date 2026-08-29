@@ -275,11 +275,13 @@ export const INITIAL_VILLAGES: Village[] = [
   }
 ];
 
-// Presets for PIC Users across Kawasan Lembang
+// Presets for PIC Users across Kawasan Lembang (with demo credentials for authentications)
 export const MOCK_PICS: User[] = [
   {
     id: 'pic-suntenjaya',
     name: 'Kang Asep Suhendar',
+    username: 'pic.suntenjaya',
+    password: 'suntenjaya123',
     email: 'asep.suhendar@sabasunten.id',
     role: 'penjual',
     phone: '+6281220763734',
@@ -293,6 +295,8 @@ export const MOCK_PICS: User[] = [
   {
     id: 'pic-cibodas',
     name: 'Kang Dadang Herdiana',
+    username: 'pic.cibodas',
+    password: 'cibodas123',
     email: 'dadang.cibodas@sabasunten.id',
     role: 'penjual',
     phone: '+6281394851122',
@@ -306,6 +310,8 @@ export const MOCK_PICS: User[] = [
   {
     id: 'pic-cikole',
     name: 'Kang Dadan Ridwan',
+    username: 'pic.cikole',
+    password: 'cikole123',
     email: 'dadan.cikole@sabasunten.id',
     role: 'penjual',
     phone: '+6282133449988',
@@ -319,6 +325,8 @@ export const MOCK_PICS: User[] = [
   {
     id: 'pic-jayagiri',
     name: 'Teh Eni Rohaeni',
+    username: 'pic.jayagiri',
+    password: 'jayagiri123',
     email: 'eni.jayagiri@sabasunten.id',
     role: 'penjual',
     phone: '+6285722337711',
@@ -332,6 +340,8 @@ export const MOCK_PICS: User[] = [
   {
     id: 'pic-wangunsari',
     name: 'Kang Sandi Permana',
+    username: 'pic.wangunsari',
+    password: 'wangunsari123',
     email: 'sandi.wangunsari@sabasunten.id',
     role: 'penjual',
     phone: '+6281809115544',
@@ -341,6 +351,68 @@ export const MOCK_PICS: User[] = [
     picVillageId: 'des-05',
     picVillageName: 'Desa Wisata Wangunsari',
     picRoleTitle: 'PIC Desa Wisata Wangunsari'
+  }
+];
+
+// Helper demo credentials list for display on Auth view
+export const DEMO_PIC_ACCOUNTS = [
+  {
+    village: 'Desa Wisata Suntenjaya',
+    picName: 'Kang Asep Suhendar',
+    username: 'pic.suntenjaya',
+    password: 'suntenjaya123',
+    roleTitle: 'PIC Pokdarwis Saba Sunten',
+    account: MOCK_PICS[0]
+  },
+  {
+    village: 'Desa Wisata Cibodas',
+    picName: 'Kang Dadang Herdiana',
+    username: 'pic.cibodas',
+    password: 'cibodas123',
+    roleTitle: 'PIC Desa Wisata Cibodas',
+    account: MOCK_PICS[1]
+  },
+  {
+    village: 'Desa Wisata Cikole',
+    picName: 'Kang Dadan Ridwan',
+    username: 'pic.cikole',
+    password: 'cikole123',
+    roleTitle: 'PIC Desa Wisata Cikole',
+    account: MOCK_PICS[2]
+  },
+  {
+    village: 'Desa Wisata Jayagiri',
+    picName: 'Teh Eni Rohaeni',
+    username: 'pic.jayagiri',
+    password: 'jayagiri123',
+    roleTitle: 'PIC Desa Wisata Jayagiri',
+    account: MOCK_PICS[3]
+  },
+  {
+    village: 'Desa Wisata Wangunsari',
+    picName: 'Kang Sandi Permana',
+    username: 'pic.wangunsari',
+    password: 'wangunsari123',
+    roleTitle: 'PIC Desa Wisata Wangunsari',
+    account: MOCK_PICS[4]
+  },
+  {
+    village: 'Kawasan Lembang Terpadu',
+    picName: 'Admin Kawasan Lembang',
+    username: 'admin.lembang',
+    password: 'lembang2026',
+    roleTitle: 'Super Administrator Kawasan',
+    account: {
+      ...MOCK_PICS[0],
+      id: 'admin-master',
+      name: 'Admin Kawasan Saba Lembang',
+      email: 'admin@sabasunten.id',
+      username: 'admin.lembang',
+      role: 'penjual',
+      picRoleTitle: 'Super Administrator Kawasan Lembang',
+      picVillageName: 'Kawasan Lembang (5 Desa)',
+      picVillageId: 'des-01'
+    }
   }
 ];
 
