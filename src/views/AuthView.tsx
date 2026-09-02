@@ -117,7 +117,7 @@ export const AuthView: React.FC = () => {
                 Masuk ke Akun Pengelola
               </h1>
               <p className="text-xs text-stone-500 mt-1">
-                Silakan masukkan username atau email akun PIC Anda untuk melanjutkan.
+                Silakan masukkan username atau email akun Admin Desa Anda untuk melanjutkan.
               </p>
             </div>
 
@@ -279,7 +279,7 @@ export const AuthView: React.FC = () => {
 
             <div className="pt-2">
               <a
-                href="https://wa.me/6282122334455?text=Halo%20Admin%20Saba%20Lembang%2C%20saya%20PIC%20Desa%20ingin%20meminta%20bantuan%20reset%20kata%20sandi."
+                href="https://wa.me/6282122334455?text=Halo%20Admin%20Saba%20Lembang%2C%20saya%20Admin%20Desa%20ingin%20meminta%20bantuan%20reset%20kata%20sandi."
                 target="_blank"
                 rel="noreferrer"
                 className="w-full py-2.5 bg-emerald-800 hover:bg-emerald-900 text-amber-200 text-xs font-bold rounded-xl shadow-xs flex items-center justify-center gap-1.5 transition-colors"

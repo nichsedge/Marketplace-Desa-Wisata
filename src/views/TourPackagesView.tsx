@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useApp } from '../context/AppContext';
 import { ProductCard } from '../components/ProductCard';
 import { TreePine, Compass, Calendar, Sparkles, CheckCircle2, Search, Filter, MapPin } from 'lucide-react';
+import { matchProductSearch } from '../utils/search';
 
 export const TourPackagesView: React.FC = () => {
   const { products, villages, navigateTo } = useApp();
@@ -10,20 +11,18 @@ export const TourPackagesView: React.FC = () => {
   const [filterType, setFilterType] = useState<string>('all');
   const [searchWord, setSearchWord] = useState<string>('');
 
-  const packages = products.filter(p => p.category === 'paket-wisata');
+  const packages = products.filter(p => p.category === 'paket-wisata' || p.category === 'wisata-alam');
 
   const filteredPackages = packages.filter(pkg => {
     if (selectedVillageId !== 'all' && pkg.villageId !== selectedVillageId) return false;
     
     if (searchWord.trim()) {
-      const q = searchWord.toLowerCase();
-      const match = pkg.title.toLowerCase().includes(q) || pkg.description.toLowerCase().includes(q) || pkg.villageName.toLowerCase().includes(q);
-      if (!match) return false;
+      if (!matchProductSearch(pkg, searchWord)) return false;
     }
-    if (filterType === 'susu' && !pkg.title.toLowerCase().includes('susu') && !pkg.description.toLowerCase().includes('susu') && !pkg.description.toLowerCase().includes('paprika') && !pkg.description.toLowerCase().includes('sayur')) return false;
+    if (filterType === 'susu' && !pkg.title.toLowerCase().includes('susu') && !pkg.description.toLowerCase().includes('susu') && !pkg.description.toLowerCase().includes('paprika') && !pkg.description.toLowerCase().includes('sayur') && !pkg.description.toLowerCase().includes('agro') && !pkg.description.toLowerCase().includes('kebun')) return false;
     if (filterType === 'kopi' && !pkg.title.toLowerCase().includes('kopi') && !pkg.description.toLowerCase().includes('kopi')) return false;
-    if (filterType === 'offroad' && !pkg.title.toLowerCase().includes('offroad') && !pkg.description.toLowerCase().includes('offroad') && !pkg.title.toLowerCase().includes('trekking') && !pkg.description.toLowerCase().includes('trekking')) return false;
-    if (filterType === 'livein' && !pkg.title.toLowerCase().includes('live-in') && !pkg.description.toLowerCase().includes('live-in') && !pkg.title.toLowerCase().includes('glamping')) return false;
+    if (filterType === 'offroad' && !pkg.title.toLowerCase().includes('offroad') && !pkg.description.toLowerCase().includes('offroad') && !pkg.title.toLowerCase().includes('trekking') && !pkg.description.toLowerCase().includes('trekking') && !pkg.title.toLowerCase().includes('pinus') && !pkg.description.toLowerCase().includes('pinus')) return false;
+    if (filterType === 'livein' && !pkg.title.toLowerCase().includes('live-in') && !pkg.description.toLowerCase().includes('live-in') && !pkg.title.toLowerCase().includes('glamping') && !pkg.title.toLowerCase().includes('camping') && !pkg.title.toLowerCase().includes('tenda') && !pkg.description.toLowerCase().includes('camping') && !pkg.description.toLowerCase().includes('tenda')) return false;
     return true;
   });
 
@@ -66,7 +65,7 @@ export const TourPackagesView: React.FC = () => {
               onChange={(e) => setSelectedVillageId(e.target.value)}
               className="px-3 py-2 bg-white border border-stone-300 rounded-xl text-xs sm:text-sm font-bold text-stone-900 shadow-xs focus:outline-none focus:ring-2 focus:ring-emerald-700 cursor-pointer"
             >
-              <option value="all">🏞️ Semua Desa di Lembang (5 Kawasan)</option>
+              <option value="all">🏞️ Semua Desa Wisata di Lembang (8 Desa)</option>
               {villages.map(v => (
                 <option key={v.id} value={v.id}>{v.name} ({v.villageAltitude || '1.250 mdpl'})</option>
               ))}
@@ -116,7 +115,7 @@ export const TourPackagesView: React.FC = () => {
       </div>
 
       {/* Packages Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {filteredPackages.map((product) => (
           <ProductCard key={product.id} product={product} />
         ))}

@@ -385,7 +385,7 @@ export const CartView: React.FC = () => {
                 <span className="text-sm font-black text-stone-900 font-mono tracking-wider">{completedOrder.id}</span>
               </div>
               <span className="px-2.5 py-1 bg-emerald-700 text-white rounded-full text-[10px] font-bold shadow-xs">
-                Terkonfirmasi PIC
+                Terkonfirmasi Admin Desa
               </span>
             </div>
 
@@ -395,7 +395,7 @@ export const CartView: React.FC = () => {
                 <QrCode className="w-28 h-28 text-stone-900" />
               </div>
               <p className="text-[11px] font-bold text-emerald-900">
-                Tunjukkan QR Code ini kepada PIC Desa terkait saat tiba di lokasi
+                Tunjukkan QR Code ini kepada Admin / Pengelola Desa terkait saat tiba di lokasi
               </p>
             </div>
 

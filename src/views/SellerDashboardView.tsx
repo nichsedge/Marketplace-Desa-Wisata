@@ -194,13 +194,13 @@ export const SellerDashboardView: React.FC = () => {
       villageName: currentVillage.name,
       location: currentVillage.location,
       sellerName: currentUser?.sellerName || currentUser?.name || currentVillage.managerName,
-      sellerBadge: 'PIC Terverifikasi Desa',
+      sellerBadge: 'Admin Desa Terverifikasi',
       sellerAvatar: currentUser?.avatar || 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=200&q=80',
       sellerPhone: currentUser?.phone || currentVillage.contactPhone,
       image: selectedImage,
       gallery: [selectedImage],
       description: postDescription || 'Konten dan penawaran aktual dari Desa Wisata.',
-      highlights: ['Foto Asli Lokasi', 'Dikelola Langsung PIC Desa', 'Kualitas Terjamin'],
+      highlights: ['Foto Asli Lokasi', 'Dikelola Langsung Admin Desa', 'Kualitas Terjamin'],
       stockQuota: Number(postStock),
       isAvailable: true,
       isFeatured: false
@@ -270,36 +270,30 @@ export const SellerDashboardView: React.FC = () => {
   // Access Control Guard: Only authenticated PICs/Admins can manage catalogues
   if (!currentUser || currentUser.role !== 'penjual') {
     return (
-      <div className="max-w-xl mx-auto px-4 py-16 text-center space-y-6 animate-in fade-in duration-200">
-        <div className="w-16 h-16 rounded-3xl bg-amber-100 border border-amber-300 text-amber-900 flex items-center justify-center mx-auto shadow-md">
-          <Lock className="w-8 h-8 text-amber-700" />
+      <div className="max-w-md mx-auto my-12 p-8 bg-white rounded-3xl border border-stone-200 shadow-xl text-center space-y-5">
+        <div className="w-16 h-16 rounded-2xl bg-amber-100 text-amber-900 flex items-center justify-center mx-auto shadow-inner">
+          <Lock className="w-8 h-8" />
         </div>
         <div className="space-y-2">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-100 text-amber-900 text-xs font-bold border border-amber-300">
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-amber-50 text-amber-900 rounded-full text-xs font-bold border border-amber-200">
             <ShieldCheck className="w-3.5 h-3.5 text-amber-700" />
-            <span>Akses Terbatas: Khusus PIC / Admin Desa</span>
+            <span>Akses Terbatas: Khusus Admin Desa</span>
           </div>
-          <h1 className="text-2xl sm:text-3xl font-extrabold font-serif-title text-stone-900">
+          <h2 className="text-xl sm:text-2xl font-black font-serif-title text-stone-900">
             Dasbor Pengelola Desa Wisata
-          </h1>
-          <p className="text-xs sm:text-sm text-stone-600 max-w-md mx-auto leading-relaxed">
-            Halaman ini khusus diperuntukkan bagi PIC resmi 5 Desa Wisata di Kawasan Lembang untuk mengelola katalog, foto aktual, dan reservasi. Wisatawan umum dapat langsung berbelanja tanpa perlu login.
+          </h2>
+          <p className="text-xs text-stone-600 leading-relaxed">
+            Halaman ini khusus diperuntukkan bagi Admin Desa resmi di Kawasan Lembang untuk mengelola katalog, foto aktual, dan pesanan. Wisatawan umum dapat langsung berbelanja tanpa perlu login.
           </p>
         </div>
-        
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2">
+
+        <div className="pt-2">
           <button
             onClick={() => navigateTo('auth')}
-            className="w-full sm:w-auto px-6 py-3.5 bg-emerald-800 hover:bg-emerald-900 text-amber-200 font-bold rounded-xl text-xs sm:text-sm shadow-md transition-all hover:scale-105 flex items-center justify-center gap-2 cursor-pointer"
+            className="w-full py-3.5 bg-emerald-800 hover:bg-emerald-900 text-amber-200 font-bold rounded-xl text-xs sm:text-sm shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer"
           >
             <Lock className="w-4 h-4" />
-            <span>Masuk ke Portal PIC Desa</span>
-          </button>
-          <button
-            onClick={() => navigateTo('home')}
-            className="w-full sm:w-auto px-5 py-3.5 bg-stone-100 hover:bg-stone-200 text-stone-700 font-semibold rounded-xl text-xs sm:text-sm transition-colors cursor-pointer"
-          >
-            Kembali ke Beranda
+            <span>Masuk ke Portal Admin Desa</span>
           </button>
         </div>
       </div>
@@ -307,26 +301,26 @@ export const SellerDashboardView: React.FC = () => {
   }
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8 pb-28 relative">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
       
-      {/* PIC Header Banner */}
-      <div className="bg-gradient-to-r from-stone-900 via-emerald-950 to-stone-900 rounded-3xl p-6 sm:p-8 text-white shadow-xl flex flex-col md:flex-row items-center justify-between gap-6 border border-emerald-700/30">
-        <div className="flex items-center gap-4">
-          <div className="w-14 h-14 rounded-2xl bg-amber-400 text-stone-950 flex items-center justify-center font-bold shadow-lg shrink-0">
-            <Store className="w-8 h-8" />
-          </div>
-          <div>
-            <div className="inline-flex items-center gap-1.5 text-[10px] bg-emerald-500/20 text-emerald-300 px-2.5 py-0.5 rounded-full border border-emerald-500/30 mb-1 font-bold">
-              <ShieldCheck className="w-3.5 h-3.5" />
-              <span>Sistem PIC Resmi · Saba Lembang</span>
+      {/* Admin Desa Header Banner */}
+      <div className="bg-gradient-to-r from-emerald-950 via-stone-900 to-emerald-900 rounded-3xl p-6 sm:p-10 text-white shadow-2xl border border-emerald-800/40 flex flex-col md:flex-row md:items-center justify-between gap-6">
+        <div className="space-y-3">
+          <div className="flex flex-wrap items-center gap-2">
+            <span className="px-3 py-1 bg-amber-400 text-stone-950 font-bold rounded-full text-xs shadow-xs">
+              {currentVillage.villageAltitude || '1.250 mdpl'}
+            </span>
+            <div className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-emerald-900/80 text-emerald-200 text-xs font-medium border border-emerald-400/30">
+              <ShieldCheck className="w-3.5 h-3.5 text-amber-400" />
+              <span>Sistem Admin Desa Resmi · Saba Lembang</span>
             </div>
-            <h1 className="text-2xl sm:text-3xl font-extrabold font-serif-title">
-              Portal PIC {currentVillage.name}
-            </h1>
-            <p className="text-xs text-stone-300">
-              PIC Aktif: <strong className="text-amber-300">{currentUser?.name || currentVillage.managerName}</strong> · Kelola konten riil destinasi, foto aktual, dan reservasi wisatawan.
-            </p>
           </div>
+          <h1 className="text-2xl sm:text-4xl font-extrabold font-serif-title">
+            Portal Admin {currentVillage.name}
+          </h1>
+          <p className="text-xs sm:text-sm text-stone-300 max-w-xl leading-relaxed">
+            Admin Aktif: <strong className="text-amber-300">{currentUser?.name || currentVillage.managerName}</strong> · Kelola konten riil destinasi, foto aktual, dan pesanan wisatawan.
+          </p>
         </div>
 
         {/* Actions */}
@@ -403,7 +397,7 @@ export const SellerDashboardView: React.FC = () => {
           }`}
         >
           <Camera className="w-4 h-4" />
-          <span>Beranda Postingan PIC ({villageProducts.length})</span>
+          <span>Postingan Desa ({villageProducts.length})</span>
         </button>
 
         <button
@@ -432,7 +426,7 @@ export const SellerDashboardView: React.FC = () => {
       </div>
 
       {/* ========================================================== */}
-      {/* TAB 1: FEED POSTINGAN PIC (FLOW WIREFRAME SESUAI GAMBAR) */}
+      {/* TAB 1: FEED POSTINGAN DESA (FLOW WIREFRAME SESUAI GAMBAR) */}
       {/* ========================================================== */}
       {activeTab === 'feed' && (
         <div className="space-y-6">
@@ -493,8 +487,8 @@ export const SellerDashboardView: React.FC = () => {
                       </span>
                     </div>
 
-                    {/* Status Centang Hijau Terverifikasi PIC */}
-                    <div className="absolute top-2.5 right-2.5 bg-emerald-600 text-white p-1 rounded-full shadow-md" title="Konten Terverifikasi PIC">
+                    {/* Status Centang Hijau Terverifikasi Admin */}
+                    <div className="absolute top-2.5 right-2.5 bg-emerald-600 text-white p-1 rounded-full shadow-md" title="Konten Terverifikasi Admin Desa">
                       <Check className="w-3.5 h-3.5 stroke-[3]" />
                     </div>
 
@@ -594,7 +588,7 @@ export const SellerDashboardView: React.FC = () => {
               </p>
             </div>
             <span className="px-3 py-1 bg-emerald-100 text-emerald-900 rounded-full text-xs font-bold w-fit">
-              Status PIC Terverifikasi
+              Status Admin Desa Terverifikasi
             </span>
           </div>
 
@@ -611,7 +605,7 @@ export const SellerDashboardView: React.FC = () => {
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-stone-700 mb-1">Nama Ketua Pokdarwis / PIC</label>
+                <label className="block text-xs font-bold text-stone-700 mb-1">Nama Admin / Pengelola Desa</label>
                 <input
                   type="text"
                   value={editVillageManager}
@@ -621,7 +615,7 @@ export const SellerDashboardView: React.FC = () => {
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-stone-700 mb-1">Nomor WhatsApp Resmi PIC</label>
+                <label className="block text-xs font-bold text-stone-700 mb-1">Nomor WhatsApp Resmi Admin Desa</label>
                 <input
                   type="text"
                   value={editVillagePhone}
@@ -1098,7 +1092,7 @@ export const SellerDashboardView: React.FC = () => {
                 <div>
                   <div className="flex items-center gap-2">
                     <span className="text-[10px] font-bold text-amber-300 uppercase tracking-wider bg-emerald-900/80 px-2 py-0.5 rounded-md border border-emerald-700/50">
-                      PIC {currentVillage.name}
+                      Admin {currentVillage.name}
                     </span>
                     <span className="text-[10px] text-stone-400">ID: #{editingProduct.id}</span>
                   </div>
@@ -1425,7 +1419,7 @@ export const SellerDashboardView: React.FC = () => {
                           {editingProduct.category}
                         </span>
                       </div>
-                      <div className="absolute top-2.5 right-2.5 bg-emerald-600 text-white p-1 rounded-full shadow-md" title="Konten Terverifikasi PIC">
+                      <div className="absolute top-2.5 right-2.5 bg-emerald-600 text-white p-1 rounded-full shadow-md" title="Konten Terverifikasi Admin Desa">
                         <Check className="w-3.5 h-3.5 stroke-[3]" />
                       </div>
                       <div className="absolute bottom-2.5 left-2.5 bg-stone-950/75 backdrop-blur-md px-2.5 py-0.5 rounded-lg text-[10px] font-bold text-amber-300">
@@ -1455,7 +1449,7 @@ export const SellerDashboardView: React.FC = () => {
                           </p>
                         </div>
                         <span className="text-[10px] bg-amber-100 text-amber-900 font-bold px-2.5 py-1 rounded-lg">
-                          Aktif PIC
+                          Aktif Admin Desa
                         </span>
                       </div>
                     </div>

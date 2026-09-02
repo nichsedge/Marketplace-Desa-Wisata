@@ -7,17 +7,27 @@ export const HomestayView: React.FC = () => {
   const { products, villages, navigateTo } = useApp();
 
   const [selectedVillageId, setSelectedVillageId] = useState<string>('all');
-  const [maxPrice, setMaxPrice] = useState<number>(600000);
+  const [maxPrice, setMaxPrice] = useState<number>(1000000);
   const [requireWifi, setRequireWifi] = useState(false);
   const [requireBreakfast, setRequireBreakfast] = useState(false);
 
-  const homestays = products.filter(p => p.category === 'homestay');
+  const homestays = products.filter(p => p.category === 'homestay' || p.category === 'penginapan-lokal');
 
   const filteredHomestays = homestays.filter(h => {
     if (selectedVillageId !== 'all' && h.villageId !== selectedVillageId) return false;
     if (h.price > maxPrice) return false;
-    if (requireWifi && !h.facilities?.some(f => f.toLowerCase().includes('wifi'))) return false;
-    if (requireBreakfast && !h.facilities?.some(f => f.toLowerCase().includes('sarapan'))) return false;
+    if (requireWifi) {
+      const hasWifi = (h.facilities && h.facilities.some(f => f.toLowerCase().includes('wifi'))) ||
+                      (h.highlights && h.highlights.some(f => f.toLowerCase().includes('wifi'))) ||
+                      h.description.toLowerCase().includes('wifi');
+      if (!hasWifi) return false;
+    }
+    if (requireBreakfast) {
+      const hasBreakfast = (h.facilities && h.facilities.some(f => f.toLowerCase().includes('sarapan') || f.toLowerCase().includes('liwet') || f.toLowerCase().includes('makan'))) ||
+                           (h.highlights && h.highlights.some(f => f.toLowerCase().includes('sarapan') || f.toLowerCase().includes('liwet'))) ||
+                           h.description.toLowerCase().includes('sarapan') || h.description.toLowerCase().includes('liwet');
+      if (!hasBreakfast) return false;
+    }
     return true;
   });
 
@@ -73,7 +83,7 @@ export const HomestayView: React.FC = () => {
               onChange={(e) => setSelectedVillageId(e.target.value)}
               className="w-full px-3 py-2.5 bg-white border border-stone-300 rounded-xl text-xs sm:text-sm font-bold text-stone-900 shadow-xs focus:outline-none focus:ring-2 focus:ring-emerald-700 cursor-pointer"
             >
-              <option value="all">🏞️ Semua Desa di Lembang (5 Kawasan)</option>
+              <option value="all">🏞️ Semua Desa Wisata di Lembang (8 Desa)</option>
               {villages.map(v => (
                 <option key={v.id} value={v.id}>{v.name} ({v.villageAltitude || '1.250 mdpl'})</option>
               ))}
@@ -124,7 +134,7 @@ export const HomestayView: React.FC = () => {
       </div>
 
       {/* Homestay Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {filteredHomestays.map((product) => (
           <ProductCard key={product.id} product={product} />
         ))}

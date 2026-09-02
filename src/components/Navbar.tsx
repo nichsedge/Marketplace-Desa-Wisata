@@ -19,14 +19,17 @@ import {
   ArrowRight,
   Sparkles
 } from 'lucide-react';
+import { scoreProductSearch } from '../utils/search';
 
 const POPULAR_SEARCH_TAGS = [
   '☕ Kopi Arabika Suntenjaya',
-  '🏡 Homestay Maribaya',
+  '🏡 Homestay Maribaya Cibodas',
   '🌲 Glamping Pinus Cikole',
-  '🧗 Trekking Jayagiri',
-  '🍓 Petik Stroberi Wangunsari',
-  '🚜 Offroad Tangkuban Parahu'
+  '🧗 Trekking Rimba Jayagiri',
+  '🍲 Tahu Susu Wangunsari',
+  '🍓 Stroberi Manis Cikahuripan',
+  '🚜 Offroad Tangkuban Parahu',
+  '🥛 Olahan Susu Sukajaya'
 ];
 
 export const Navbar: React.FC = () => {
@@ -39,6 +42,8 @@ export const Navbar: React.FC = () => {
     logout,
     searchQuery, 
     setSearchQuery,
+    setCategoryFilter,
+    setVillageFilter,
     products
   } = useApp();
 
@@ -58,24 +63,22 @@ export const Navbar: React.FC = () => {
     }
   }, [searchModalOpen, searchQuery]);
 
-  // Filter produk instan untuk live modal search
+  // Filter produk instan untuk live modal search dengan smart relevance scoring
   const modalMatches = (modalSearchText && modalSearchText.trim().length > 0 && Array.isArray(products))
-    ? products.filter(p => {
-        const q = modalSearchText.toLowerCase().trim();
-        return (
-          (p.title && p.title.toLowerCase().includes(q)) ||
-          (p.villageName && p.villageName.toLowerCase().includes(q)) ||
-          (p.category && p.category.toLowerCase().includes(q)) ||
-          (p.description && p.description.toLowerCase().includes(q)) ||
-          (p.location && p.location.toLowerCase().includes(q))
-        );
-      }).slice(0, 5)
+    ? products
+        .map(p => ({ product: p, score: scoreProductSearch(p, modalSearchText) }))
+        .filter(item => item.score > 0)
+        .sort((a, b) => b.score - a.score)
+        .map(item => item.product)
+        .slice(0, 6)
     : [];
 
   const handleModalSubmit = (e?: React.FormEvent) => {
     if (e) e.preventDefault();
     if (modalSearchText.trim()) {
       setSearchQuery(modalSearchText.trim());
+      setCategoryFilter('all');
+      setVillageFilter('all');
       setSearchModalOpen(false);
       navigateTo('marketplace');
     }
@@ -84,6 +87,8 @@ export const Navbar: React.FC = () => {
   const handleTagClick = (tag: string) => {
     const cleanedTag = tag.replace(/^[^\w\s]+/, '').trim();
     setSearchQuery(cleanedTag);
+    setCategoryFilter('all');
+    setVillageFilter('all');
     setSearchModalOpen(false);
     navigateTo('marketplace');
   };
@@ -177,13 +182,13 @@ export const Navbar: React.FC = () => {
               )}
             </button>
 
-            {/* PIC Session Menu (Only visible when logged in as PIC/Admin via /login) */}
+            {/* Admin Desa Session Menu (Only visible when logged in as Admin Desa via /login) */}
             {currentUser && currentUser.role === 'penjual' && (
               <div className="relative shrink-0">
                 <button
                   onClick={() => setUserDropdownOpen(!userDropdownOpen)}
                   className="flex items-center gap-1 sm:gap-2 py-1 px-1.5 sm:py-1.5 sm:px-2.5 rounded-full bg-emerald-900 text-amber-200 border border-emerald-700/80 hover:bg-emerald-950 transition-all shadow-xs shrink-0 cursor-pointer"
-                  title="Sesi PIC Aktif · Klik untuk menu pengelola"
+                  title="Sesi Admin Desa Aktif · Klik untuk menu pengelola"
                 >
                   <img
                     src={currentUser.avatar || 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=150&q=80'}
@@ -194,7 +199,7 @@ export const Navbar: React.FC = () => {
                   <div className="hidden sm:flex flex-col text-left text-xs leading-none pr-1">
                     <span className="font-bold text-white truncate max-w-[120px]">{currentUser.name}</span>
                     <span className="text-[10px] font-semibold text-amber-300 mt-0.5">
-                      ⭐ PIC {currentUser.picVillageName?.replace('Desa Wisata ', '') || 'Desa'}
+                      ⭐ Admin {currentUser.picVillageName?.replace('Desa Wisata ', '') || 'Desa'}
                     </span>
                   </div>
                   <ChevronDown className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-amber-200 shrink-0" />
@@ -205,7 +210,7 @@ export const Navbar: React.FC = () => {
                   <div className="px-4 pb-3 border-b border-stone-100">
                     <div className="inline-flex items-center gap-1 text-[10px] font-bold text-emerald-800 uppercase tracking-wider bg-emerald-50 px-2 py-0.5 rounded-full mb-1">
                       <ShieldCheck className="w-3 h-3" />
-                      <span>PIC Resmi Terverifikasi</span>
+                      <span>Admin Desa Terverifikasi</span>
                     </div>
                     <p className="text-sm font-bold text-stone-900 truncate mt-0.5">{currentUser.name}</p>
                     <p className="text-xs text-stone-500 truncate">{currentUser.picVillageName || currentUser.villageName}</p>
@@ -217,14 +222,14 @@ export const Navbar: React.FC = () => {
                       className="w-full flex items-center gap-2 px-3 py-2 text-xs font-bold text-emerald-900 hover:bg-emerald-50 rounded-xl transition-colors text-left cursor-pointer"
                     >
                       <LayoutDashboard className="w-4 h-4 text-emerald-700" />
-                      <span>Buka Dasbor PIC ({currentUser.picVillageName?.replace('Desa Wisata ', '') || currentUser.villageName})</span>
+                      <span>Buka Dasbor ({currentUser.picVillageName?.replace('Desa Wisata ', '') || currentUser.villageName})</span>
                     </button>
                     <button
                       onClick={() => { logout(); setUserDropdownOpen(false); }}
                       className="w-full flex items-center gap-2 px-3 py-2 text-xs font-medium text-rose-600 hover:bg-rose-50 rounded-xl transition-colors text-left cursor-pointer"
                     >
                       <LogOut className="w-4 h-4" />
-                      <span>Keluar Sesi PIC</span>
+                      <span>Keluar Sesi Admin Desa</span>
                     </button>
                   </div>
                 </div>
@@ -286,14 +291,14 @@ export const Navbar: React.FC = () => {
                   className="w-full flex items-center justify-center gap-2 p-3 bg-emerald-900 text-amber-200 rounded-xl text-xs font-bold shadow-md cursor-pointer"
                 >
                   <LayoutDashboard className="w-4 h-4" />
-                  <span>Buka Dasbor PIC ({currentUser.picVillageName?.replace('Desa Wisata ', '') || currentUser.villageName})</span>
+                  <span>Buka Dasbor ({currentUser.picVillageName?.replace('Desa Wisata ', '') || currentUser.villageName})</span>
                 </button>
                 <button
                   onClick={() => { logout(); setMobileMenuOpen(false); }}
                   className="w-full flex items-center justify-center gap-2 p-2.5 bg-rose-50 text-rose-700 rounded-xl text-xs font-semibold border border-rose-200 cursor-pointer"
                 >
                   <LogOut className="w-4 h-4" />
-                  <span>Keluar Sesi PIC</span>
+                  <span>Keluar Sesi Admin Desa</span>
                 </button>
               </div>
             )}

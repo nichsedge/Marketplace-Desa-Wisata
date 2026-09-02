@@ -1,7 +1,7 @@
 import React from 'react';
 import { Product } from '../types';
 import { useApp } from '../context/AppContext';
-import { Star, MapPin, ShoppingBag, Eye, ShieldCheck } from 'lucide-react';
+import { Star, MapPin, ShoppingBag, Eye, ShieldCheck, Sparkles } from 'lucide-react';
 
 interface ProductCardProps {
   product: Product;
@@ -17,20 +17,32 @@ export const formatRupiah = (number: number) => {
 
 export const getCategoryBadge = (category: string) => {
   switch (category) {
-    case 'homestay':
-      return { label: 'Homestay', bg: 'bg-indigo-100 text-indigo-900 border-indigo-200' };
-    case 'paket-wisata':
-      return { label: 'Paket Wisata', bg: 'bg-emerald-100 text-emerald-900 border-emerald-200' };
-    case 'suvenir':
-      return { label: 'Suvenir & Batik', bg: 'bg-amber-100 text-amber-900 border-amber-200' };
+    case 'sembako':
+      return { label: 'Sembako', bg: 'bg-emerald-100 text-emerald-950 border-emerald-300' };
+    case 'tanaman-hias':
+      return { label: 'Tanaman Hias', bg: 'bg-teal-100 text-teal-950 border-teal-300' };
+    case 'minuman-komoditas':
+      return { label: 'Minuman & Komoditas', bg: 'bg-amber-100 text-amber-950 border-amber-300' };
+    case 'buah-herba':
+      return { label: 'Buah & Herba', bg: 'bg-lime-100 text-lime-950 border-lime-300' };
     case 'kuliner':
-      return { label: 'Kuliner Lokal', bg: 'bg-rose-100 text-rose-900 border-rose-200' };
+      return { label: 'Kuliner', bg: 'bg-rose-100 text-rose-950 border-rose-300' };
+    case 'olahan-susu':
+      return { label: 'Olahan Susu Kemasan', bg: 'bg-sky-100 text-sky-950 border-sky-300' };
+    case 'wisata-alam':
+    case 'paket-wisata':
+      return { label: 'Wisata Alam', bg: 'bg-emerald-100 text-emerald-900 border-emerald-300' };
+    case 'penginapan-lokal':
+    case 'homestay':
+      return { label: 'Penginapan Lokal', bg: 'bg-indigo-100 text-indigo-950 border-indigo-300' };
+    case 'suvenir':
+      return { label: 'Suvenir & Kriya', bg: 'bg-orange-100 text-orange-900 border-orange-200' };
     case 'umkm':
-      return { label: 'Produk UMKM', bg: 'bg-sky-100 text-sky-900 border-sky-200' };
+      return { label: 'Produk UMKM', bg: 'bg-cyan-100 text-cyan-900 border-cyan-200' };
     case 'destinasi':
-      return { label: 'Tiket Wisata', bg: 'bg-teal-100 text-teal-900 border-teal-200' };
+      return { label: 'Tiket Wisata', bg: 'bg-stone-100 text-stone-900 border-stone-300' };
     default:
-      return { label: 'Lokal Desa', bg: 'bg-stone-100 text-stone-800 border-stone-200' };
+      return { label: 'Produk Desa', bg: 'bg-stone-100 text-stone-800 border-stone-200' };
   }
 };
 
@@ -56,23 +68,27 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
         {/* Gradient Overlay */}
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/10 opacity-80 group-hover:opacity-90 transition-opacity" />
 
-        {/* Category Badge Top Left */}
-        <div className="absolute top-3 left-3 flex flex-wrap gap-1.5">
-          <span className={`px-2.5 py-1 text-[11px] font-bold rounded-full border shadow-xs ${categoryBadge.bg}`}>
-            {categoryBadge.label}
-          </span>
-          {product.isFeatured && (
-            <span className="px-2.5 py-1 text-[11px] font-bold rounded-full bg-amber-400 text-stone-900 shadow-xs">
-              Unggulan Desa
+        {/* Top Badges Bar (Unified Flex to Prevent Any Overlap) */}
+        <div className="absolute top-3 inset-x-3 flex items-start justify-between gap-2 pointer-events-none z-10">
+          {/* Left: Category & Featured Tag (Stacked Vertically) */}
+          <div className="flex flex-col items-start gap-1 max-w-[calc(100%-85px)]">
+            <span className={`px-2.5 py-0.5 text-[10px] sm:text-[11px] font-extrabold rounded-full border shadow-xs truncate max-w-full backdrop-blur-xs ${categoryBadge.bg}`}>
+              {categoryBadge.label}
             </span>
-          )}
-        </div>
+            {product.isFeatured && (
+              <span className="inline-flex items-center gap-1 px-2 py-0.5 text-[10px] font-extrabold rounded-full bg-amber-400 text-stone-950 shadow-xs border border-amber-300">
+                <Sparkles className="w-2.5 h-2.5 text-stone-950 fill-stone-950 shrink-0" />
+                <span>Unggulan</span>
+              </span>
+            )}
+          </div>
 
-        {/* Rating Badge Top Right */}
-        <div className="absolute top-3 right-3 flex items-center gap-1 px-2.5 py-1 rounded-full bg-stone-900/80 backdrop-blur-md text-amber-300 text-xs font-bold border border-white/20">
-          <Star className="w-3.5 h-3.5 fill-amber-300" />
-          <span>{product.rating}</span>
-          <span className="text-[10px] text-stone-300 font-normal">({product.totalReviews})</span>
+          {/* Right: Rating Badge */}
+          <div className="flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-stone-900/85 backdrop-blur-md text-amber-300 text-xs font-bold border border-white/20 shrink-0 shadow-xs">
+            <Star className="w-3 h-3 fill-amber-300 shrink-0" />
+            <span>{product.rating}</span>
+            <span className="text-[10px] text-stone-300 font-normal">({product.totalReviews})</span>
+          </div>
         </div>
 
         {/* Village Location Bottom */}

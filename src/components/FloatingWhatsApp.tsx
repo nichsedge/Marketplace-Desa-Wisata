@@ -16,11 +16,11 @@ export const FloatingWhatsApp: React.FC = () => {
   };
 
   return (
-    <div className="fixed bottom-6 left-6 z-50 flex flex-col items-start print:hidden">
+    <div className="fixed bottom-4 left-4 sm:bottom-6 sm:left-6 z-50 flex flex-col items-start print:hidden">
       
       {/* Chat Popover */}
       {isOpen && (
-        <div className="mb-3 w-80 sm:w-96 bg-white rounded-3xl shadow-2xl border border-stone-200 overflow-hidden animate-in fade-in slide-in-from-bottom-4 duration-300">
+        <div className="mb-3 w-[calc(100vw-2rem)] sm:w-96 max-w-sm bg-white rounded-3xl shadow-2xl border border-stone-200 overflow-hidden animate-in fade-in slide-in-from-bottom-4 duration-300">
           
           {/* Header */}
           <div className="bg-gradient-to-r from-emerald-800 via-stone-900 to-emerald-950 p-4 text-white flex items-center justify-between">
@@ -49,33 +49,33 @@ export const FloatingWhatsApp: React.FC = () => {
             <div className="bg-white p-3.5 rounded-2xl rounded-tl-none border border-stone-200 shadow-xs space-y-1.5 max-w-[90%]">
               <p className="font-semibold text-emerald-900">Sampurasun! 🙏</p>
               <p className="text-stone-700 leading-relaxed">
-                Ada yang bisa kami bantu seputar homestay, paket wisata edukasi, atau produk lokal 5 desa wisata di Kawasan Lembang?
+                Ada yang bisa kami bantu seputar produk komoditas, homestay, atau paket wisata desa di Kawasan Lembang?
               </p>
-              <span className="text-[10px] text-stone-400 block text-right">PIC Online</span>
+              <span className="text-[10px] text-stone-400 block text-right">Admin Online</span>
             </div>
 
             {/* Quick Prompt Suggestions */}
             <div className="flex flex-wrap gap-1.5 pt-1">
               <button
                 type="button"
-                onClick={() => setCustomMsg('Halo Admin Saba Lembang, saya ingin tanya ketersediaan Homestay sejuk di Kawasan Lembang akhir pekan ini.')}
+                onClick={() => setCustomMsg('Halo Admin Saba Lembang, saya ingin tanya ketersediaan Penginapan & Homestay di Kawasan Lembang.')}
                 className="px-2.5 py-1 bg-white border border-stone-200 hover:border-emerald-700 text-stone-700 rounded-full text-[11px] transition-colors"
               >
-                🏡 Homestay Lembang
+                🏡 Penginapan & Homestay
               </button>
               <button
                 type="button"
-                onClick={() => setCustomMsg('Halo Admin Saba Lembang, saya ingin info Paket Wisata Live-in, Offroad Cikole, atau Trekking Jayagiri.')}
+                onClick={() => setCustomMsg('Halo Admin Saba Lembang, saya ingin info Paket Wisata Alam, Camping & Offroad Cikole/Cikahuripan.')}
                 className="px-2.5 py-1 bg-white border border-stone-200 hover:border-emerald-700 text-stone-700 rounded-full text-[11px] transition-colors"
               >
-                🎒 Paket Wisata
+                🎒 Paket Wisata Alam
               </button>
               <button
                 type="button"
-                onClick={() => setCustomMsg('Halo Admin Saba Lembang, saya ingin konsultasi produk Kopi Specialty & Hasil Tani dari desa wisata.')}
+                onClick={() => setCustomMsg('Halo Admin Saba Lembang, saya ingin konsultasi produk Kopi, Sayuran Organik, & Olahan Susu desa wisata.')}
                 className="px-2.5 py-1 bg-white border border-stone-200 hover:border-emerald-700 text-stone-700 rounded-full text-[11px] transition-colors"
               >
-                ☕ Kopi & Hasil Tani
+                ☕ Kopi & Komoditas
               </button>
             </div>
           </div>
@@ -104,15 +104,15 @@ export const FloatingWhatsApp: React.FC = () => {
       {/* Floating Trigger Button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center gap-2.5 px-4 py-3 bg-emerald-700 hover:bg-emerald-800 text-white rounded-full shadow-2xl transition-all duration-300 hover:scale-105 border-2 border-white group"
-        title="Bantuan WhatsApp PIC Desa"
+        className="flex items-center gap-2.5 px-4 py-3 bg-emerald-700 hover:bg-emerald-800 text-white rounded-full shadow-2xl transition-all duration-300 hover:scale-105 border-2 border-white group cursor-pointer"
+        title="Bantuan WhatsApp Admin Desa"
       >
         <div className="relative">
           <MessageCircle className="w-6 h-6 fill-white text-emerald-700" />
           <span className="absolute -top-1 -right-1 w-2.5 h-2.5 bg-amber-400 rounded-full animate-ping"></span>
         </div>
         <span className="text-xs font-bold font-sans tracking-wide">
-          {isOpen ? 'Tutup Chat' : 'Tanya PIC Wisata'}
+          {isOpen ? 'Tutup Chat' : 'Tanya Admin Desa'}
         </span>
       </button>
 

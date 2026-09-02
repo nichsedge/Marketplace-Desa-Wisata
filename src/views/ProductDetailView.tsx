@@ -133,7 +133,7 @@ export const ProductDetailView: React.FC = () => {
   };
 
   const handleWhatsAppChat = () => {
-    const text = `Halo PIC ${product.villageName} (${product.sellerName}), saya ingin bertanya tentang "${product.title}" (${product.unit}).`;
+    const text = `Halo Admin ${product.villageName} (${product.sellerName}), saya ingin bertanya tentang "${product.title}" (${product.unit}).`;
     const targetPhone = product.sellerPhone || WHATSAPP_PHONE;
     const url = formatWhatsAppUrl(targetPhone, text);
     window.open(url, '_blank');

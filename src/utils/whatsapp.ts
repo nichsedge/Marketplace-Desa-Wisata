@@ -20,7 +20,7 @@ export const createProductWhatsAppMessage = (
   const isHomestay = product.category === 'homestay';
   const isPackage = product.category === 'paket-wisata';
 
-  let message = `*HALO ADMIN & PIC ${product.villageName.toUpperCase()} (SABA LEMBANG - sabasunten.id)*\n`;
+  let message = `*HALO ADMIN ${product.villageName.toUpperCase()} (SABA LEMBANG - sabasunten.id)*\n`;
   message += `Saya tertarik untuk memesan layanan/produk berikut:\n\n`;
   message += `📌 *Item:* ${product.title}\n`;
   message += `🏞️ *Desa Wisata:* ${product.villageName}\n`;
@@ -47,7 +47,7 @@ export const createProductWhatsAppMessage = (
     message += `📝 *Catatan Khusus:* ${params.notes}\n`;
   }
 
-  message += `\nMohon info ketersediaan dan panduan reservasinya dari PIC desa. Hatur nuhun!`;
+  message += `\nMohon info ketersediaan dan panduan reservasinya dari Admin Desa. Hatur nuhun!`;
 
   return message;
 };
@@ -86,7 +86,7 @@ export const createCartWhatsAppMessage = (
     message += `📝 *Catatan:* ${customerInfo.notes}\n`;
   }
 
-  message += `\nMohon konfirmasi pesanan dan penerbitan bukti reservasi dari PIC desa terkait. Terima kasih!`;
+  message += `\nMohon konfirmasi pesanan dan penerbitan bukti reservasi dari Admin Desa terkait. Terima kasih!`;
 
   return message;
 };

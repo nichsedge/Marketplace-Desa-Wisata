@@ -1,8 +1,15 @@
 export type ProductCategory = 
-  | 'homestay'
-  | 'suvenir'
+  | 'sembako'
+  | 'tanaman-hias'
+  | 'minuman-komoditas'
+  | 'buah-herba'
   | 'kuliner'
+  | 'olahan-susu'
+  | 'wisata-alam'
+  | 'penginapan-lokal'
+  | 'homestay'
   | 'paket-wisata'
+  | 'suvenir'
   | 'umkm'
   | 'destinasi';
 
@@ -20,23 +27,25 @@ export interface Village {
   image: string;
   gallery: string[];
   mapLocation: string;
+  officeAddress?: string;
+  officeMapEmbedUrl?: string;
+  googleMapsUrl?: string;
   contactPhone: string;
+  contactPerson?: string;
   instagram: string;
   managerName: string;
   totalListings: number;
-  // Official Village Government Data (desasuntenjaya.site)
-  headOfVillage?: string;
-  villageSecretary?: string;
+  villageAltitude?: string;
   villageArea?: string;
   population?: string;
   dusunCount?: number;
   dusuns?: { id: string; name: string; kadus: string; description: string; highlights: string }[];
   vision?: string;
   missions?: string[];
+  headOfVillage?: string;
+  villageSecretary?: string;
   silamotUrl?: string;
-  officeAddress?: string;
   villageApparatus?: { role: string; name: string }[];
-  villageAltitude?: string;
 }
 
 export interface Product {
