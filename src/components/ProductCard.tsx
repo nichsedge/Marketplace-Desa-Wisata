@@ -116,8 +116,28 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
           </p>
         </div>
 
+        {/* Trust Badges Bar: Sales Count, Net Weight, Certification P-IRT / Halal */}
+        <div className="flex flex-wrap items-center gap-1.5 pt-2 border-t border-stone-100 text-[10px]">
+          {product.soldCount && (
+            <span className="px-2 py-0.5 rounded-md bg-amber-50 text-amber-900 border border-amber-200 font-bold">
+              Terjual {product.soldCount}+
+            </span>
+          )}
+          {product.netWeight && (
+            <span className="px-2 py-0.5 rounded-md bg-stone-100 text-stone-700 font-semibold border border-stone-200">
+              {product.netWeight}
+            </span>
+          )}
+          {(product.pirtNumber || product.halalCert) && (
+            <span className="px-2 py-0.5 rounded-md bg-emerald-50 text-emerald-800 font-bold border border-emerald-200 flex items-center gap-1">
+              <ShieldCheck className="w-3 h-3 text-emerald-700" />
+              <span>Lolos Sertifikasi</span>
+            </span>
+          )}
+        </div>
+
         {/* Seller Info */}
-        <div className="flex items-center gap-2 pt-2 border-t border-stone-100">
+        <div className="flex items-center gap-2 pt-1">
           <img
             src={product.sellerAvatar}
             alt={product.sellerName}

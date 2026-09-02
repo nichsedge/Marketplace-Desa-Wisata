@@ -157,6 +157,12 @@ export const Navbar: React.FC = () => {
               <Search className="w-4 h-4 sm:w-5 sm:h-5 text-emerald-800" />
             </button>
 
+            {/* Live Weather & Elevation Pill Indicator */}
+            <div className="hidden xl:flex items-center gap-2 px-3 py-1.5 bg-emerald-900/90 text-amber-300 rounded-full text-[11px] font-bold border border-amber-400/30 shadow-xs shrink-0">
+              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
+              <span>1.280 mdpl • 18°C Sejuk</span>
+            </div>
+
             {/* Direct WhatsApp Contact Button */}
             <a
               href="https://wa.me/6282122334455?text=Halo%20Admin%20Saba%20Lembang%2C%20saya%20ingin%20tanya%20info%20Desa%20Wisata%20Kawasan%20Lembang"

@@ -236,6 +236,56 @@ export const ProductDetailView: React.FC = () => {
             </div>
           </div>
 
+          {/* Specifications & Authenticity Table */}
+          <div className="bg-white p-6 rounded-2xl border border-stone-200 shadow-xs space-y-4">
+            <h3 className="font-bold text-stone-900 text-sm font-sans uppercase tracking-wider flex items-center gap-2">
+              <ShieldCheck className="w-4 h-4 text-emerald-700" />
+              <span>Spesifikasi & Sertifikasi Resmi Produksi Desa</span>
+            </h3>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+              <div className="p-3 bg-stone-50 rounded-xl border border-stone-200">
+                <span className="text-stone-400 font-semibold block text-[10px] uppercase">Produsen Resmi</span>
+                <span className="font-bold text-stone-800">{product.sellerName} ({product.producerType || 'BUMDes'})</span>
+              </div>
+
+              {product.netWeight && (
+                <div className="p-3 bg-stone-50 rounded-xl border border-stone-200">
+                  <span className="text-stone-400 font-semibold block text-[10px] uppercase">Berat Bersih / Isi</span>
+                  <span className="font-bold text-stone-800">{product.netWeight}</span>
+                </div>
+              )}
+
+              {product.shelfLife && (
+                <div className="p-3 bg-stone-50 rounded-xl border border-stone-200">
+                  <span className="text-stone-400 font-semibold block text-[10px] uppercase">Masa Simpan / Ketahanan</span>
+                  <span className="font-bold text-stone-800">{product.shelfLife}</span>
+                </div>
+              )}
+
+              {product.pirtNumber && (
+                <div className="p-3 bg-emerald-50/80 rounded-xl border border-emerald-200">
+                  <span className="text-emerald-800 font-bold block text-[10px] uppercase">Izin P-IRT Dinkes</span>
+                  <span className="font-mono font-bold text-emerald-900">{product.pirtNumber}</span>
+                </div>
+              )}
+
+              {product.halalCert && (
+                <div className="p-3 bg-emerald-50/80 rounded-xl border border-emerald-200">
+                  <span className="text-emerald-800 font-bold block text-[10px] uppercase">Sertifikat Halal BPJPH</span>
+                  <span className="font-mono font-bold text-emerald-900">{product.halalCert}</span>
+                </div>
+              )}
+
+              {product.harvestSchedule && (
+                <div className="p-3 bg-amber-50/80 rounded-xl border border-amber-200">
+                  <span className="text-amber-900 font-bold block text-[10px] uppercase">Jadwal Panen / Produksi</span>
+                  <span className="font-bold text-amber-950">{product.harvestSchedule}</span>
+                </div>
+              )}
+            </div>
+          </div>
+
           {/* Description */}
           <div className="bg-white p-6 rounded-2xl border border-stone-200 shadow-xs space-y-3">
             <h3 className="font-bold text-stone-900 text-sm font-sans uppercase tracking-wider">

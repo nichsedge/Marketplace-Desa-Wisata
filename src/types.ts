@@ -73,6 +73,14 @@ export interface Product {
   stockQuota: number;
   isAvailable: boolean;
   isFeatured?: boolean;
+  // Authentic product metadata & trust indicators
+  soldCount?: number;
+  netWeight?: string;
+  shelfLife?: string;
+  pirtNumber?: string;
+  halalCert?: string;
+  producerType?: 'BUMDes' | 'Kelompok Tani' | 'Peternak Lokal' | 'Pengrajin Mandiri' | 'Pengelola Wisata';
+  harvestSchedule?: string;
 }
 
 export interface CartItem {

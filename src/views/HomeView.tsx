@@ -354,8 +354,8 @@ export const HomeView: React.FC = () => {
         </div>
       </section>
 
-      {/* STATS COUNTER BAR */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      {/* STATS & TRUST CERTIFICATION BADGES BAR */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-4">
         <div className="bg-white rounded-3xl p-6 sm:p-8 border border-stone-200 shadow-md grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
           <div className="space-y-1">
             <p className="text-2xl sm:text-4xl font-black font-serif-title text-emerald-800">{villages.length} Desa</p>
@@ -370,8 +370,27 @@ export const HomeView: React.FC = () => {
             <p className="text-xs sm:text-sm text-stone-600 font-medium">Ketinggian Alam Pegunungan</p>
           </div>
           <div className="space-y-1">
-            <p className="text-2xl sm:text-4xl font-black font-serif-title text-emerald-800">Langsung</p>
-            <p className="text-xs sm:text-sm text-stone-600 font-medium">Ke Petani & Warga Desa</p>
+            <p className="text-2xl sm:text-4xl font-black font-serif-title text-emerald-800">100% Resmi</p>
+            <p className="text-xs sm:text-sm text-stone-600 font-medium">Terverifikasi BUMDes & Pokdarwis</p>
+          </div>
+        </div>
+
+        {/* Real Certification Trust Bar */}
+        <div className="bg-emerald-900/90 text-amber-200 rounded-2xl p-4 border border-amber-400/30 shadow-sm flex flex-wrap items-center justify-between gap-4 text-xs font-bold">
+          <div className="flex items-center gap-2">
+            <ShieldCheck className="w-5 h-5 text-amber-300 shrink-0" />
+            <span>Terintegrasi Sertifikasi Resmi UMKM Lembang:</span>
+          </div>
+          <div className="flex flex-wrap items-center gap-2">
+            <span className="px-3 py-1 bg-emerald-800 rounded-lg border border-amber-400/40 text-amber-200">
+              ✓ Izin P-IRT Dinkes Kab. Bandung Barat
+            </span>
+            <span className="px-3 py-1 bg-emerald-800 rounded-lg border border-amber-400/40 text-amber-200">
+              ✓ Sertifikasi Halal BPJPH
+            </span>
+            <span className="px-3 py-1 bg-emerald-800 rounded-lg border border-amber-400/40 text-amber-200">
+              ✓ Binaan BUMDes & Kelompok Tani
+            </span>
           </div>
         </div>
       </section>

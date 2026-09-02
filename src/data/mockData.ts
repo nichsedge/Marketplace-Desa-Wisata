@@ -484,7 +484,14 @@ export const INITIAL_PRODUCTS: Product[] = [
     highlights: ['Dipetik Pagi Saat Pesanan Masuk', '100% Bebas Pestisida Kimia', 'Kemasan Higienis Ramah Lingkungan'],
     stockQuota: 40,
     isAvailable: true,
-    isFeatured: true
+    isFeatured: true,
+    soldCount: 142,
+    netWeight: '1,5 kg (5 Jenis Sayur)',
+    shelfLife: '3-5 hari dalam lemari pendingin',
+    pirtNumber: 'P-IRT 208321701024-28',
+    halalCert: 'ID32110001827360422',
+    producerType: 'Kelompok Tani',
+    harvestSchedule: 'Panen Pagi Tiap Hari (06.00 WIB)'
   },
   {
     id: 'prod-sembako-02',
@@ -508,7 +515,14 @@ export const INITIAL_PRODUCTS: Product[] = [
     highlights: ['Susu Perah Segar Harian', 'Kaya Nutrisi & Kalsium', 'Pasteurisasi Higienis Aman Konsumsi'],
     stockQuota: 60,
     isAvailable: true,
-    isFeatured: true
+    isFeatured: true,
+    soldCount: 380,
+    netWeight: '1.000 ml',
+    shelfLife: '4 hari (Dingin 4°C)',
+    pirtNumber: 'P-IRT 201321702011-27',
+    halalCert: 'ID32110001928370523',
+    producerType: 'Peternak Lokal',
+    harvestSchedule: 'Perah Pagi (05.30 WIB) & Sore (15.00 WIB)'
   },
   {
     id: 'prod-sembako-03',
@@ -663,7 +677,14 @@ export const INITIAL_PRODUCTS: Product[] = [
     highlights: ['100% Arabika Specialty Grade 1', 'Pouch Valve Zipper Kedap Udara', 'Pilihan Biji Utuh / Gilingan'],
     stockQuota: 85,
     isAvailable: true,
-    isFeatured: true
+    isFeatured: true,
+    soldCount: 265,
+    netWeight: '250 gram',
+    shelfLife: '12 bulan (kemasan kedap)',
+    pirtNumber: 'P-IRT 510321703008-26',
+    halalCert: 'ID32110000451290321',
+    producerType: 'Kelompok Tani',
+    harvestSchedule: 'Panen Selektif Biji Merah Ketinggian 1.290 mdpl'
   },
   {
     id: 'prod-kopi-02',
@@ -832,7 +853,14 @@ export const INITIAL_PRODUCTS: Product[] = [
     highlights: ['Super Lembut & Gurih', 'Bahan Susu Murni Segar', 'Diproduksi Fresh Tiap Hari'],
     stockQuota: 55,
     isAvailable: true,
-    isFeatured: true
+    isFeatured: true,
+    soldCount: 512,
+    netWeight: '500 gram (Isi 10 Pcs)',
+    shelfLife: '2-3 hari suhu ruang / 7 hari kulkas',
+    pirtNumber: 'P-IRT 215321704019-27',
+    halalCert: 'ID32110000892010222',
+    producerType: 'BUMDes',
+    harvestSchedule: 'Produksi Fresh Pagi Hari'
   },
   {
     id: 'prod-kuliner-w02',
@@ -999,7 +1027,13 @@ export const INITIAL_PRODUCTS: Product[] = [
     highlights: ['Kaya Bakteri Probiotik Baik', 'Dibuat Dari Susu Murni Segar', 'Tanpa Pemanis Buatan'],
     stockQuota: 50,
     isAvailable: true,
-    isFeatured: true
+    isFeatured: true,
+    soldCount: 310,
+    netWeight: '500 ml',
+    shelfLife: '14 hari dalam lemari pendingin',
+    pirtNumber: 'P-IRT 201321708005-28',
+    halalCert: 'ID32110001209380123',
+    producerType: 'BUMDes'
   },
   {
     id: 'prod-susu-02',
