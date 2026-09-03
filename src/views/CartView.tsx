@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useApp } from '../context/AppContext';
 import { formatRupiah } from '../components/ProductCard';
+import { getCartItemTotal, getCartItemNights } from '../utils/booking';
 import { Order } from '../types';
 import { 
   ShoppingBag, 
@@ -163,9 +164,11 @@ export const CartView: React.FC = () => {
                     </div>
 
                     <div className="text-right">
-                      <p className="text-xs font-bold text-stone-900">Subtotal:</p>
+                      <p className="text-xs font-bold text-stone-900">
+                        Subtotal {getCartItemNights(item) > 1 ? `(${getCartItemNights(item)} malam)` : ''}:
+                      </p>
                       <p className="text-sm font-extrabold text-emerald-800">
-                        {formatRupiah(item.product.price * item.quantity)}
+                        {formatRupiah(getCartItemTotal(item))}
                       </p>
                     </div>
 
@@ -421,17 +424,20 @@ export const CartView: React.FC = () => {
               {/* Items Summary */}
               <div className="pt-3 border-t border-stone-200 space-y-2">
                 <p className="font-bold text-stone-800 text-[11px] uppercase tracking-wider">Daftar Item & Layanan:</p>
-                {completedOrder.items.map((it, idx) => (
-                  <div key={idx} className="p-2.5 bg-stone-50 rounded-xl border border-stone-100 flex justify-between items-center text-xs">
-                    <div>
-                      <p className="font-bold text-stone-900">{it.product.title}</p>
-                      <p className="text-[10px] text-stone-500">
-                        {it.quantity} {it.product.unit} {it.bookingDateStart ? `• ${it.bookingDateStart}` : ''}
-                      </p>
+                {completedOrder.items.map((it, idx) => {
+                  const itNights = getCartItemNights(it);
+                  return (
+                    <div key={idx} className="p-2.5 bg-stone-50 rounded-xl border border-stone-100 flex justify-between items-center text-xs">
+                      <div>
+                        <p className="font-bold text-stone-900">{it.product.title}</p>
+                        <p className="text-[10px] text-stone-500">
+                          {it.quantity} {it.product.unit} {itNights > 1 ? `• ${itNights} malam` : ''} {it.bookingDateStart ? `• Tgl ${it.bookingDateStart}` : ''}
+                        </p>
+                      </div>
+                      <span className="font-bold text-emerald-900">{formatRupiah(getCartItemTotal(it))}</span>
                     </div>
-                    <span className="font-bold text-emerald-900">{formatRupiah(it.product.price * it.quantity)}</span>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
 
               <div className="pt-3 border-t border-stone-200 flex justify-between text-base font-black text-stone-900">

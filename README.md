@@ -2,7 +2,7 @@
 <img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
 </div>
 
-# Saba Lembang (sabasunten.id) - Platform Desa Wisata Kawasan Lembang
+# Saba Lembang - Platform Desa Wisata Kawasan Lembang
 
 Platform pariwisata terpadu dan marketplace resmi untuk **Desa Wisata di Kawasan Lembang**, Kabupaten Bandung Barat, Jawa Barat.
 
@@ -42,7 +42,7 @@ Platform pariwisata terpadu dan marketplace resmi untuk **Desa Wisata di Kawasan
 ## 🚀 Portal Admin Desa & Keamanan Sistem
 
 - 🎒 **Mode Pengunjung Bebas:** Pengunjung dapat langsung menjelajahi katalog 8 desa, mencari produk/layanan, menambah ke keranjang, dan order WhatsApp tanpa perlu login.
-- 🔐 **Portal Login Admin Desa (`/login` / `sabasunten.id/login`):**
+- 🔐 **Portal Login Admin Desa (`/login`):**
   - **Daftar Kredensial Pengelola:**
     - **Super Admin Kawasan:** `admin.lembang` / `lembang2026`
     - **Desa Suntenjaya:** `pic.suntenjaya` / `suntenjaya123` (*Kang Asep Suhendar*)
@@ -53,6 +53,9 @@ Platform pariwisata terpadu dan marketplace resmi untuk **Desa Wisata di Kawasan
     - **Desa Cikahuripan:** `pic.cikahuripan` / `cikahuripan123` (*Kang Cecep Mulyana*)
     - **Desa Gudangkahuripan:** `pic.gudangkahuripan` / `gudang123` (*Kang Agus Hidayat*)
     - **Desa Sukajaya:** `pic.sukajaya` / `sukajaya123` (*Ibu Siti Maryam*)
+
+## 📦 Aset Visual Lokal (Offline-Ready)
+Seluruh foto katalog produk, homestay, avatar Admin Desa, dan lanskap 8 desa telah diunduh dan tersimpan secara lokal di folder `public/images/`. Platform tidak bergantung pada koneksi gambar eksternal (Unsplash), sehingga aman dari risiko gambar hilang atau lambat saat demo dan presentasi.
 
 ## 🛠️ Cara Menjalankan Aplikasi
 

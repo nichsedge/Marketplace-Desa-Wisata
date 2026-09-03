@@ -1,16 +1,17 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { Product, Village, CartItem, Order, Review, User, ProductCategory, OrderStatus } from '../types';
 import { INITIAL_PRODUCTS, INITIAL_VILLAGES, INITIAL_REVIEWS, INITIAL_ORDERS, MOCK_PICS } from '../data/mockData';
+import { getCartItemTotal } from '../utils/booking';
 
-export type PageRoute = 
-  | 'home' 
-  | 'marketplace' 
-  | 'homestay' 
-  | 'paket-wisata' 
-  | 'desa-detail' 
-  | 'product-detail' 
-  | 'cart' 
-  | 'dashboard' 
+export type PageRoute =
+  | 'home'
+  | 'marketplace'
+  | 'homestay'
+  | 'paket-wisata'
+  | 'desa-detail'
+  | 'product-detail'
+  | 'cart'
+  | 'dashboard'
   | 'auth';
 
 interface ToastState {
@@ -46,15 +47,15 @@ interface AppContextType {
   villages: Village[];
   reviews: Review[];
   orders: Order[];
-  
+
   // Cart
   cart: CartItem[];
   addToCart: (
-    product: Product, 
-    quantity?: number, 
-    dateStart?: string, 
-    dateEnd?: string, 
-    guestCount?: number, 
+    product: Product,
+    quantity?: number,
+    dateStart?: string,
+    dateEnd?: string,
+    guestCount?: number,
     notes?: string
   ) => void;
   removeFromCart: (productId: string) => void;
@@ -65,10 +66,10 @@ interface AppContextType {
 
   // Checkout
   placeOrder: (
-    customerName: string, 
-    customerEmail: string, 
-    customerPhone: string, 
-    paymentMethod: string, 
+    customerName: string,
+    customerEmail: string,
+    customerPhone: string,
+    paymentMethod: string,
     notes?: string
   ) => Order;
 
@@ -103,15 +104,15 @@ const getInitialPage = (): PageRoute => {
   const pathname = window.location.pathname.toLowerCase();
 
   if (
-    hash === 'login' || 
-    hash === 'auth' || 
-    hash === 'admin' || 
-    pageParam === 'auth' || 
-    pageParam === 'login' || 
+    hash === 'login' ||
+    hash === 'auth' ||
+    hash === 'admin' ||
+    pageParam === 'auth' ||
+    pageParam === 'login' ||
     pageParam === 'admin' ||
-    pathname === '/login' || 
+    pathname === '/login' ||
     pathname.startsWith('/login') ||
-    pathname === '/admin' || 
+    pathname === '/admin' ||
     pathname.startsWith('/admin') ||
     pathname === '/auth' ||
     pathname.startsWith('/auth')
@@ -203,11 +204,11 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
   // Cart Operations
   const addToCart = (
-    product: Product, 
-    quantity = 1, 
-    bookingDateStart?: string, 
-    bookingDateEnd?: string, 
-    guestCount?: number, 
+    product: Product,
+    quantity = 1,
+    bookingDateStart?: string,
+    bookingDateEnd?: string,
+    guestCount?: number,
     notes?: string
   ) => {
     setCart(prevCart => {
@@ -225,7 +226,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         return updated;
       } else {
         return [
-          ...prevCart, 
+          ...prevCart,
           { product, quantity, bookingDateStart, bookingDateEnd, guestCount, notes }
         ];
       }
@@ -248,15 +249,15 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
   const clearCart = () => setCart([]);
 
-  const cartTotal = cart.reduce((acc, item) => acc + (item.product.price * item.quantity), 0);
+  const cartTotal = cart.reduce((acc, item) => acc + getCartItemTotal(item), 0);
   const cartCount = cart.reduce((acc, item) => acc + item.quantity, 0);
 
   // Place Order
   const placeOrder = (
-    customerName: string, 
-    customerEmail: string, 
-    customerPhone: string, 
-    paymentMethod: string, 
+    customerName: string,
+    customerEmail: string,
+    customerPhone: string,
+    paymentMethod: string,
     notes?: string
   ) => {
     const newOrder: Order = {
@@ -290,7 +291,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
     // Check Super Admin Kawasan master login
     if (
-      (cleanId === 'admin.lembang' || cleanId === 'admin@sabasunten.id' || cleanId === 'admin') &&
+      (cleanId === 'admin.lembang' || cleanId === 'admin@sabalembang.id' || cleanId === 'admin@sabalembang.id' || cleanId === 'admin') &&
       (cleanPass === 'lembang2026' || cleanPass === 'admin123')
     ) {
       const superAdminPic: User = {
@@ -304,11 +305,18 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       return true;
     }
 
-    // Match against official PIC accounts
+    // Match against official PIC accounts (supports pic.* or admin.* and gudang123/gudangkahuripan123)
     const matchedPic = MOCK_PICS.find(p => {
-      const userMatch = (p.username && p.username.toLowerCase() === cleanId) || 
-                        (p.email && p.email.toLowerCase() === cleanId);
-      const passMatch = p.password === cleanPass;
+      const userMatch =
+        (p.username && p.username.toLowerCase() === cleanId) ||
+        (p.email && p.email.toLowerCase() === cleanId) ||
+        (cleanId.startsWith('pic.') && p.username && p.username.toLowerCase() === cleanId.replace('pic.', 'admin.')) ||
+        (cleanId.startsWith('admin.') && p.username && p.username.toLowerCase() === cleanId.replace('admin.', 'pic.'));
+
+      const passMatch =
+        p.password === cleanPass ||
+        (p.username === 'admin.gudangkahuripan' && (cleanPass === 'gudang123' || cleanPass === 'gudangkahuripan123'));
+
       return userMatch && passMatch;
     });
 
@@ -366,14 +374,14 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       id: `rev-${Date.now()}`,
       productId,
       authorName: currentUser ? currentUser.name : 'Wisatawan',
-      authorAvatar: currentUser?.avatar || 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=150&q=80',
+      authorAvatar: currentUser?.avatar || '/images/unsplash/photo-1535713875002-d1d0cf377fde_w150.jpg',
       rating,
       date: 'Baru saja',
       comment,
       userRole: 'Wisatawan Terverifikasi'
     };
     setReviews(prev => [newRev, ...prev]);
-    
+
     // update product rating & review count
     setProducts(prev => prev.map(p => {
       if (p.id === productId) {

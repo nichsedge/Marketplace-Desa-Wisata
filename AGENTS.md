@@ -1,7 +1,7 @@
-# Repository Guidelines & Project Context (sabasunten.id / Saba Lembang)
+# Repository Guidelines & Project Context (Saba Lembang)
 
 ## 📌 Project Background & Business Context
-- **Nama Platform:** **Saba Lembang** (Jaringan & Platform Terpadu Desa Wisata Kawasan Lembang - `sabasunten.id`)
+- **Nama Platform:** **Saba Lembang** (Jaringan & Platform Terpadu Desa Wisata Kawasan Lembang)
 - **Target Pembeli / Klien Langsung:** Mahasiswa program studi **DKV (Desain Komunikasi Visual)** yang sedang menempuh Tugas Akhir / Skripsi (perancangan identitas visual, kampanye promosi digital, UI/UX portal pariwisata terpadu, dan media informasi desa wisata).
 - **Cakupan Destinasi:** **Kawasan Lembang** (Kabupaten Bandung Barat), mencakup 8 Desa Wisata:
   1. **Desa Wisata Suntenjaya** (1.290 mdpl - Minuman & Komoditas: Kopi Arabika/Robusta premium, Kadaplak, Megalitikum Batu Loceng)
@@ -68,7 +68,8 @@
 - **Frontend SPA:** React 19 + TypeScript + Vite 6
 - **Styling:** Tailwind CSS v4 + Motion (`framer-motion`) + Lucide React
 - **Hosting / Deployment:** Vercel SPA (Hobby tier gratis, konfigurasi rewrite di `vercel.json`).
-- **Domain Target:** `sabasunten.id`
+- **Domain Target:** Menyesuaikan konfigurasi domain klien (*Custom Domain*)
+- **Aset Gambar Lokal (Offline-Ready):** Seluruh aset foto katalog produk, avatar Admin Desa, dan galeri desa tersimpan lokal di `public/images/` untuk menjamin tampilan tidak pernah hilang atau lambat saat demo / presentasi.
 
 ---
 

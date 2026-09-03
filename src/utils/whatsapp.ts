@@ -1,4 +1,5 @@
 import { Product, CartItem } from '../types';
+import { calculateNights, getCartItemNights, getCartItemTotal } from './booking';
 
 export const WHATSAPP_PHONE = '6282122334455'; // Hotline Terpadu Saba Lembang
 
@@ -17,10 +18,11 @@ export const createProductWhatsAppMessage = (
     notes?: string;
   }
 ) => {
-  const isHomestay = product.category === 'homestay';
-  const isPackage = product.category === 'paket-wisata';
+  const isHomestay = product.category === 'homestay' || product.category === 'penginapan-lokal';
+  const isPackage = product.category === 'paket-wisata' || product.category === 'wisata-alam';
+  const nights = isHomestay ? calculateNights(params.bookingDateStart, params.bookingDateEnd) : 1;
 
-  let message = `*HALO ADMIN ${product.villageName.toUpperCase()} (SABA LEMBANG - sabasunten.id)*\n`;
+  let message = `*HALO ADMIN ${product.villageName.toUpperCase()} (SABA LEMBANG)*\n`;
   message += `Saya tertarik untuk memesan layanan/produk berikut:\n\n`;
   message += `📌 *Item:* ${product.title}\n`;
   message += `🏞️ *Desa Wisata:* ${product.villageName}\n`;
@@ -30,6 +32,7 @@ export const createProductWhatsAppMessage = (
   if (isHomestay) {
     if (params.bookingDateStart) message += `📅 *Check-In:* ${params.bookingDateStart}\n`;
     if (params.bookingDateEnd) message += `📅 *Check-Out:* ${params.bookingDateEnd}\n`;
+    if (nights > 1) message += `🌙 *Durasi Menginap:* ${nights} malam\n`;
     if (params.guestCount) message += `👥 *Jumlah Tamu:* ${params.guestCount} orang\n`;
     if (params.quantity) message += `🚪 *Jumlah Kamar/Unit:* ${params.quantity} unit\n`;
   } else if (isPackage) {
@@ -40,7 +43,7 @@ export const createProductWhatsAppMessage = (
     if (params.quantity) message += `📦 *Jumlah Pesanan:* ${params.quantity} ${product.unit}\n`;
   }
 
-  const total = product.price * (params.quantity || 1);
+  const total = product.price * (params.quantity || 1) * (isHomestay ? nights : 1);
   message += `💵 *Estimasi Total:* Rp ${total.toLocaleString('id-ID')}\n`;
 
   if (params.notes) {
@@ -62,7 +65,7 @@ export const createCartWhatsAppMessage = (
     notes?: string;
   }
 ) => {
-  let message = `*HALO ADMIN SABA LEMBANG (sabasunten.id)*\n`;
+  let message = `*HALO ADMIN SABA LEMBANG*\n`;
   message += `Saya ingin melakukan pemesanan wisata/produk via platform:\n\n`;
   message += `👤 *Nama Pemesan:* ${customerInfo.name}\n`;
   if (customerInfo.phone) message += `📱 *No. HP/WA:* ${customerInfo.phone}\n`;
@@ -72,10 +75,11 @@ export const createCartWhatsAppMessage = (
   let subtotal = 0;
 
   items.forEach((item, index) => {
-    const itemTotal = item.product.price * item.quantity;
+    const itemTotal = getCartItemTotal(item);
+    const nights = getCartItemNights(item);
     subtotal += itemTotal;
     message += `${index + 1}. *${item.product.title}* (${item.product.villageName})\n`;
-    message += `   - Jumlah: ${item.quantity} ${item.product.unit}\n`;
+    message += `   - Jumlah: ${item.quantity} ${item.product.unit}${nights > 1 ? ` (${nights} malam)` : ''}\n`;
     if (item.bookingDateStart) message += `   - Tanggal: ${item.bookingDateStart} ${item.bookingDateEnd ? `s.d ${item.bookingDateEnd}` : ''}\n`;
     message += `   - Subtotal: Rp ${itemTotal.toLocaleString('id-ID')}\n`;
   });

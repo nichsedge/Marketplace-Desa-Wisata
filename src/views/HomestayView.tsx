@@ -37,7 +37,7 @@ export const HomestayView: React.FC = () => {
       {/* Banner */}
       <div className="relative rounded-3xl overflow-hidden min-h-[260px] flex items-center p-8 sm:p-12 text-white shadow-xl border border-stone-200">
         <img
-          src="https://images.unsplash.com/photo-1587061949409-02df41d5e562?auto=format&fit=crop&w=1600&q=80"
+          src="/images/unsplash/photo-1587061949409-02df41d5e562_w1600.jpg"
           alt="Homestay Desa Kawasan Lembang"
           className="absolute inset-0 w-full h-full object-cover"
           referrerPolicy="no-referrer"

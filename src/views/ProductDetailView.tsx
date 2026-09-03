@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useApp } from '../context/AppContext';
 import { formatRupiah, getCategoryBadge, ProductCard } from '../components/ProductCard';
+import { calculateNights } from '../utils/booking';
 import { 
   Star, 
   MapPin, 
@@ -57,6 +58,17 @@ export const ProductDetailView: React.FC = () => {
   const [guestCount, setGuestCount] = useState(2);
   const [specialNotes, setSpecialNotes] = useState('');
 
+  // Keep state in sync when switching between products
+  useEffect(() => {
+    setActiveImage(product.image);
+    setQuantity(1);
+    setBookingDateStart(getTomorrowDate());
+    setBookingDateEnd(getDayAfterTomorrowDate());
+    setGuestCount(2);
+    setSpecialNotes('');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, [product.id, product.image]);
+
   // Review Form
   const [newRating, setNewRating] = useState(5);
   const [newComment, setNewComment] = useState('');
@@ -66,21 +78,14 @@ export const ProductDetailView: React.FC = () => {
   const relatedProducts = products.filter(p => p.id !== product.id && (p.villageId === product.villageId || p.category === product.category)).slice(0, 3);
 
   const categoryBadge = getCategoryBadge(product.category);
-  
-  const calculateNights = () => {
-    if (product.category !== 'homestay') return 1;
-    if (!bookingDateStart || !bookingDateEnd) return 1;
-    const start = new Date(bookingDateStart);
-    const end = new Date(bookingDateEnd);
-    const diffTime = end.getTime() - start.getTime();
-    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-    return diffDays > 0 ? diffDays : 1;
-  };
-
-  const nights = calculateNights();
-  const totalPrice = product.category === 'homestay'
+  const isHomestay = product.category === 'homestay' || product.category === 'penginapan-lokal';
+  const nights = isHomestay ? calculateNights(bookingDateStart, bookingDateEnd) : 1;
+  const totalPrice = isHomestay
     ? product.price * quantity * nights
     : product.price * quantity;
+
+  // Deduplicate gallery images so main image doesn't repeat
+  const allGalleryImages = Array.from(new Set([product.image, ...(product.gallery || [])]));
 
   const handleShare = async () => {
     const shareUrl = window.location.href;
@@ -185,25 +190,18 @@ export const ProductDetailView: React.FC = () => {
             </div>
 
             {/* Gallery Thumbnails */}
-            {product.gallery && product.gallery.length > 0 && (
+            {allGalleryImages.length > 1 && (
               <div className="flex items-center gap-3 overflow-x-auto pb-1">
-                <button
-                  onClick={() => setActiveImage(product.image)}
-                  className={`w-20 h-20 rounded-xl overflow-hidden border-2 shrink-0 transition-all ${
-                    activeImage === product.image ? 'border-emerald-700 scale-105' : 'border-stone-200 opacity-70'
-                  }`}
-                >
-                  <img src={product.image} alt="main" className="w-full h-full object-cover" referrerPolicy="no-referrer" />
-                </button>
-                {product.gallery.map((imgUrl, i) => (
+                {allGalleryImages.map((imgUrl, i) => (
                   <button
                     key={i}
+                    type="button"
                     onClick={() => setActiveImage(imgUrl)}
-                    className={`w-20 h-20 rounded-xl overflow-hidden border-2 shrink-0 transition-all ${
-                      activeImage === imgUrl ? 'border-emerald-700 scale-105' : 'border-stone-200 opacity-70'
+                    className={`w-20 h-20 rounded-xl overflow-hidden border-2 shrink-0 transition-all cursor-pointer ${
+                      activeImage === imgUrl ? 'border-emerald-700 scale-105 shadow-md' : 'border-stone-200 opacity-70 hover:opacity-100'
                     }`}
                   >
-                    <img src={imgUrl} alt={`gallery-${i}`} className="w-full h-full object-cover" referrerPolicy="no-referrer" />
+                    <img src={imgUrl} alt={`${product.title} ${i + 1}`} className="w-full h-full object-cover" referrerPolicy="no-referrer" />
                   </button>
                 ))}
               </div>
@@ -585,7 +583,7 @@ export const ProductDetailView: React.FC = () => {
             </div>
 
             <p className="text-[10px] text-stone-500 text-center font-medium">
-              ✨ Pemesanan langsung terhubung ke pengelola resmi Pokdarwis Saba Sunten
+              ✨ Pemesanan langsung terhubung ke Admin Desa resmi Saba Lembang
             </p>
 
           </div>

@@ -109,7 +109,7 @@ export const HomeView: React.FC = () => {
         {/* Background Image & Gradient */}
         <div className="absolute inset-0 rounded-2xl sm:rounded-3xl overflow-hidden pointer-events-none">
           <img
-            src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=2000&q=80"
+            src="/images/unsplash/photo-1506744038136-46273834b3fb_w2000.jpg"
             alt="Desa Wisata Kawasan Lembang Lanskap Pegunungan"
             className="w-full h-full object-cover object-center scale-105 animate-pulse duration-[10000ms]"
             referrerPolicy="no-referrer"
@@ -538,7 +538,7 @@ export const HomeView: React.FC = () => {
             </p>
             <div className="flex items-center gap-3 pt-2 border-t border-stone-700">
               <img
-                src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=150&q=80"
+                src="/images/unsplash/photo-1500648767791-00dcc994a43e_w150.jpg"
                 alt="Kang Dadang Herdiana"
                 className="w-10 h-10 rounded-full object-cover border border-amber-300"
                 referrerPolicy="no-referrer"
@@ -556,7 +556,7 @@ export const HomeView: React.FC = () => {
             </p>
             <div className="flex items-center gap-3 pt-2 border-t border-stone-700">
               <img
-                src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=150&q=80"
+                src="/images/unsplash/photo-1507003211169-0a1dd7228f2d_w150.jpg"
                 alt="Kang Asep Suhendar"
                 className="w-10 h-10 rounded-full object-cover border border-amber-300"
                 referrerPolicy="no-referrer"
@@ -574,7 +574,7 @@ export const HomeView: React.FC = () => {
             </p>
             <div className="flex items-center gap-3 pt-2 border-t border-stone-700">
               <img
-                src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=150&q=80"
+                src="/images/unsplash/photo-1494790108377-be9c29b29330_w150.jpg"
                 alt="Siti Rahmawati"
                 className="w-10 h-10 rounded-full object-cover border border-amber-300"
                 referrerPolicy="no-referrer"

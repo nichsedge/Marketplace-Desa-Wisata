@@ -82,6 +82,16 @@ export const SellerDashboardView: React.FC = () => {
   const [editVillageManager, setEditVillageManager] = useState(currentVillage.managerName);
   const [editVillageImage, setEditVillageImage] = useState(currentVillage.image);
 
+  // Sync profile fields when switching between different Admin Desa accounts
+  useEffect(() => {
+    setEditVillageName(currentVillage.name);
+    setEditVillageDesc(currentVillage.description);
+    setEditVillageHistory(currentVillage.history);
+    setEditVillagePhone(currentVillage.contactPhone);
+    setEditVillageManager(currentVillage.managerName);
+    setEditVillageImage(currentVillage.image);
+  }, [currentVillage.id]);
+
   // Modal Posting Flow State (Wireframe 4-step wizard)
   const [showPostWizard, setShowPostWizard] = useState(false);
   const [wizardStep, setWizardStep] = useState<'pick-media' | 'fill-detail'>('pick-media');
@@ -195,7 +205,7 @@ export const SellerDashboardView: React.FC = () => {
       location: currentVillage.location,
       sellerName: currentUser?.sellerName || currentUser?.name || currentVillage.managerName,
       sellerBadge: 'Admin Desa Terverifikasi',
-      sellerAvatar: currentUser?.avatar || 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=200&q=80',
+      sellerAvatar: currentUser?.avatar || '/images/unsplash/photo-1507003211169-0a1dd7228f2d_w200.jpg',
       sellerPhone: currentUser?.phone || currentVillage.contactPhone,
       image: selectedImage,
       gallery: [selectedImage],
@@ -1259,7 +1269,7 @@ export const SellerDashboardView: React.FC = () => {
                             type="url"
                             value={editingProduct.image}
                             onChange={(e) => setEditingProduct({ ...editingProduct, image: e.target.value })}
-                            placeholder="https://images.unsplash.com/..."
+                            placeholder="Masukkan URL foto (contoh: /images/...)"
                             className="w-full p-2.5 bg-white border border-stone-300 rounded-xl text-xs focus:ring-2 focus:ring-emerald-700 focus:outline-none"
                           />
                         </div>

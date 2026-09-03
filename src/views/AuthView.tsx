@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useApp } from '../context/AppContext';
+import { MOCK_PICS } from '../data/mockData';
 import { 
   TreePine, 
   Lock, 
@@ -12,7 +13,8 @@ import {
   Loader2,
   ChevronLeft,
   HelpCircle,
-  X
+  X,
+  Sparkles
 } from 'lucide-react';
 
 export const AuthView: React.FC = () => {
@@ -58,7 +60,7 @@ export const AuthView: React.FC = () => {
           <div 
             className="absolute inset-0 bg-cover bg-center opacity-30 mix-blend-overlay"
             style={{ 
-              backgroundImage: `url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1000&q=80')` 
+              backgroundImage: `url('/images/unsplash/photo-1506744038136-46273834b3fb_w1000.jpg')` 
             }}
           />
           <div className="absolute inset-0 bg-gradient-to-t from-emerald-950 via-emerald-950/80 to-transparent" />
@@ -84,15 +86,15 @@ export const AuthView: React.FC = () => {
                 Portal Pengelola Kawasan Lembang
               </h2>
               <p className="text-xs text-emerald-200/90 leading-relaxed mt-2">
-                Sistem pengelolaan terpadu katalog komoditas, reservasi homestay, dan informasi destinasi 5 desa wisata di Kawasan Lembang.
+                Sistem pengelolaan terpadu katalog komoditas, reservasi homestay, dan informasi destinasi 8 desa wisata di Kawasan Lembang.
               </p>
             </div>
           </div>
 
           {/* Bottom Security / Trust Notice */}
           <div className="relative z-10 pt-8 border-t border-emerald-800/60 text-[11px] text-emerald-300/80 space-y-1">
-            <p className="font-semibold text-white">Jaringan Desa Wisata Lembang</p>
-            <p className="text-[10px] text-emerald-300/70">Suntenjaya · Cibodas · Cikole · Jayagiri · Wangunsari</p>
+            <p className="font-semibold text-white">Jaringan 8 Desa Wisata Lembang</p>
+            <p className="text-[10px] text-emerald-300/70">Suntenjaya · Cibodas · Cikole · Jayagiri · Wangunsari · Cikahuripan · Gudangkahuripan · Sukajaya</p>
           </div>
         </div>
 
@@ -228,6 +230,41 @@ export const AuthView: React.FC = () => {
               </button>
 
             </form>
+
+            {/* Quick Demo Credentials Assistant */}
+            <div className="pt-4 border-t border-stone-100 space-y-2">
+              <div className="flex items-center justify-between">
+                <span className="text-[11px] font-bold text-stone-500 uppercase tracking-wider flex items-center gap-1">
+                  <Sparkles className="w-3.5 h-3.5 text-amber-500" />
+                  <span>Akun Demo Admin Desa:</span>
+                </span>
+                <span className="text-[10px] text-emerald-800 font-semibold bg-emerald-50 px-2 py-0.5 rounded-md">
+                  Klik untuk Isi Otomatis
+                </span>
+              </div>
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-1.5">
+                {MOCK_PICS.map((pic) => (
+                  <button
+                    key={pic.id}
+                    type="button"
+                    onClick={() => {
+                      setUsernameOrEmail(pic.username || '');
+                      setPassword(pic.password || '');
+                      setErrorMessage(null);
+                    }}
+                    className="p-2 text-left bg-stone-50 hover:bg-emerald-50 hover:border-emerald-300 border border-stone-200 rounded-xl transition-all cursor-pointer group"
+                    title={`Masuk sebagai ${pic.name} (${pic.username})`}
+                  >
+                    <span className="block text-[11px] font-bold text-stone-800 group-hover:text-emerald-900 truncate">
+                      {pic.picVillageName?.replace('Desa Wisata ', '') || pic.name}
+                    </span>
+                    <span className="block text-[10px] text-stone-400 font-mono truncate">
+                      {pic.username}
+                    </span>
+                  </button>
+                ))}
+              </div>
+            </div>
 
           </div>
 

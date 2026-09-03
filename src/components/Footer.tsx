@@ -57,7 +57,7 @@ export const Footer: React.FC = () => {
                 <TreePine className="w-5 h-5" />
               </div>
               <span className="text-2xl font-extrabold font-serif-title text-white">
-                Saba<span className="text-emerald-400">Lembang</span><span className="text-sm font-sans font-semibold text-amber-400">.id</span>
+                Saba<span className="text-emerald-400">Lembang</span>
               </span>
             </div>
             <p className="text-xs sm:text-sm text-stone-400 leading-relaxed max-w-md">
@@ -128,7 +128,7 @@ export const Footer: React.FC = () => {
         {/* Bottom Line */}
         <div className="pt-8 border-t border-stone-800 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-stone-500">
           <p className="flex items-center gap-1 text-center sm:text-left">
-            <span>© 2026 sabasunten.id · Saba Lembang. Dibuat dengan</span>
+            <span>© 2026 Saba Lembang. Dibuat dengan</span>
             <Heart className="w-3.5 h-3.5 text-rose-500 fill-rose-500" />
             <span>untuk Kemandirian Desa & Pariwisata Berkelanjutan</span>
           </p>

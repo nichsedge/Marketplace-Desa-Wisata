@@ -116,7 +116,7 @@ export const Navbar: React.FC = () => {
             </div>
             <div className="shrink-0">
               <span className="text-base sm:text-xl xl:text-2xl font-extrabold font-serif-title tracking-tight text-stone-900 group-hover:text-emerald-800 transition-colors">
-                Saba<span className="text-emerald-700">Lembang</span><span className="text-xs sm:text-sm font-sans font-semibold text-amber-600">.id</span>
+                Saba<span className="text-emerald-700">Lembang</span>
               </span>
               <span className="hidden 2xl:block text-[10px] font-medium tracking-widest text-amber-800 uppercase font-sans">
                 Platform Desa Wisata Kawasan Lembang
@@ -191,7 +191,7 @@ export const Navbar: React.FC = () => {
                   title="Sesi Admin Desa Aktif · Klik untuk menu pengelola"
                 >
                   <img
-                    src={currentUser.avatar || 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=150&q=80'}
+                    src={currentUser.avatar || '/images/unsplash/photo-1507003211169-0a1dd7228f2d_w150.jpg'}
                     alt={currentUser.name}
                     className="w-6 h-6 sm:w-7 sm:h-7 rounded-full object-cover border border-amber-300 shrink-0"
                     referrerPolicy="no-referrer"
