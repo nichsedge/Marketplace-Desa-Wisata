@@ -20,12 +20,12 @@ export const INITIAL_VILLAGES: Village[] = [
       'Wisata Lereng Pasir Angling',
       'Kerajinan Tradisional Kadaplak'
     ],
-    image: '/images/unsplash/photo-1506744038136-46273834b3fb_w1200.jpg',
+    image: '/images/client/pasir-angling/hero-valley-panorama.webp',
     gallery: [
-      '/images/unsplash/photo-1506744038136-46273834b3fb_w800.jpg',
-      '/images/unsplash/photo-1500382017468-9049fed747ef_w800.jpg',
-      '/images/unsplash/photo-1464822759023-fed622ff2c3b_w800.jpg',
-      '/images/unsplash/photo-1542314831-068cd1dbfeeb_w800.jpg'
+      '/images/client/pasir-angling/hero-valley-panorama.webp',
+      '/images/client/kopi-angling/coffee-plantation-view.webp',
+      '/images/client/pasir-angling/camping-ridge-view.webp',
+      '/images/client/kopi-angling/hero-pouch-v60.webp'
     ],
     mapLocation: 'Jl. Maribaya Timur KM. 13,5, Desa Suntenjaya, Kec. Lembang, Kab. Bandung Barat 40391',
     officeAddress: 'Kantor Desa Suntenjaya, Jl. Maribaya Timur KM. 13,5, Desa Suntenjaya, Kec. Lembang, Kab. Bandung Barat, Jawa Barat 40391',
@@ -54,11 +54,12 @@ export const INITIAL_VILLAGES: Village[] = [
       'Agrowisata Bunga Potong & Krisan',
       'Pesona Alam Lembah Maribaya'
     ],
-    image: '/images/unsplash/photo-1513836279014-a89f7a76ae86_w1200.jpg',
+    image: '/images/real/cibodas-maribaya.jpg',
     gallery: [
-      '/images/unsplash/photo-1513836279014-a89f7a76ae86_w800.jpg',
-      '/images/unsplash/photo-1507525428034-b723cf961d3e_w800.jpg',
-      '/images/unsplash/photo-1470071459604-3b5ec3a7fe05_w800.jpg'
+      '/images/real/cibodas-maribaya.jpg',
+      '/images/unsplash/photo-1574943320219-553eb213f72d_w800.jpg',
+      '/images/unsplash/photo-1550583724-b2692b85b150_w800.jpg',
+      '/images/real/homestay-gudangkahuripan-asri.jpg'
     ],
     mapLocation: 'Jl. Maribaya No. 88, Desa Cibodas, Kec. Lembang, Kab. Bandung Barat 40391',
     officeAddress: 'Kantor Desa Cibodas, Jl. Maribaya No. 88, Desa Cibodas, Kec. Lembang, Kab. Bandung Barat, Jawa Barat 40391',
@@ -87,11 +88,12 @@ export const INITIAL_VILLAGES: Village[] = [
       'Tiket Wahana & Spot Alam Sejuk',
       'Udara Super Sejuk 1.400 mdpl'
     ],
-    image: '/images/unsplash/photo-1448375240586-882707db888b_w1200.jpg',
+    image: '/images/client/offroad-cikole/convoy-pine-trail.webp',
     gallery: [
-      '/images/unsplash/photo-1448375240586-882707db888b_w800.jpg',
-      '/images/unsplash/photo-1509316975850-ff9c5deb0cd9_w800.jpg',
-      '/images/unsplash/photo-1473448912268-2022ce9509d8_w800.jpg'
+      '/images/client/offroad-cikole/convoy-pine-trail.webp',
+      '/images/client/offroad-cikole/hero-abah-dadan-landy.webp',
+      '/images/client/offroad-cikole/mud-splash-adventure.webp',
+      '/images/unsplash/photo-1509316975850-ff9c5deb0cd9_w800.jpg'
     ],
     mapLocation: 'Jl. Raya Tangkuban Parahu KM. 28, Cikole, Kec. Lembang, Kab. Bandung Barat 40391',
     officeAddress: 'Kantor Desa Cikole, Jl. Raya Tangkuban Parahu KM. 28, Cikole, Kec. Lembang, Kab. Bandung Barat, Jawa Barat 40391',
@@ -110,20 +112,22 @@ export const INITIAL_VILLAGES: Village[] = [
     rating: 4.8,
     totalReviews: 180,
     villageAltitude: '1.350 mdpl',
-    description: 'Desa Jayagiri merupakan pusat pembudidayaan tanaman hias, aneka sukulen cantik, media tanam bernutrisi, pot tembikar kreatif, serta gerbang lintas alam pegunungan Lembang.',
-    history: 'Jayagiri melegenda dalam seni dan sastra Sunda sebagai kawasan hutan alam berkabut sejuk dengan para petani yang ahli membudidayakan tanaman hias dataran tinggi.',
-    culture: 'Masyarakat agraris penjaga kelestarian lereng gunung, pengrajin pot, pembudidaya tanaman hias krisan, sukulen, dan kaktus hias.',
+    description: 'Desa Jayagiri berada di lereng Gunung Tangkuban Parahu, terkenal dengan panorama samudra awan Gunung Putri, hutan pinus asri, jalur lintas alam legendaris, dan sentra tanaman hias pegunungan.',
+    history: 'Jayagiri melegenda dalam seni dan sastra Sunda sebagai kawasan hutan alam berkabut sejuk dengan jalur pendakian bersejarah menuju kawah Tangkuban Parahu dan benteng peninggalan kolonial.',
+    culture: 'Masyarakat agraris penjaga kelestarian lereng gunung, pemandu lintas alam, pengrajin pot, serta pembudidaya tanaman hias bunga dan daun tropis dataran tinggi.',
     highlights: [
-      'Tanaman Hias & Sukulen Cantik',
-      'Media Tanam Organik Subur',
-      'Pot Keramik & Tembikar Tanaman',
-      'Pintu Rimba Trekking Tangkuban',
-      'Perkebunan Teh Dataran Tinggi'
+      'Pesona Samudra Awan Gunung Putri',
+      'Jalur Rimba Trekking Tangkuban Parahu',
+      'Sentra Tanaman Hias & Media Tanam',
+      'Camping Ground Hutan Pinus Sejuk',
+      'Situs Bersejarah Benteng Jayagiri'
     ],
-    image: '/images/unsplash/photo-1544735716-392fe2489ffa_w1200.jpg',
+    image: '/images/real/gunung-putri-jayagiri.jpg',
     gallery: [
-      '/images/unsplash/photo-1544735716-392fe2489ffa_w800.jpg',
-      '/images/unsplash/photo-1502082553048-f009c37129b9_w800.jpg'
+      '/images/real/gunung-putri-jayagiri.jpg',
+      '/images/real/jayagiri-camping.jpg',
+      '/images/unsplash/photo-1448375240586-882707db888b_w800.jpg',
+      '/images/unsplash/photo-1485955900006-10f4d324d411_w800.jpg'
     ],
     mapLocation: 'Jl. Jayagiri No. 12, Jayagiri, Kec. Lembang, Kab. Bandung Barat 40391',
     officeAddress: 'Kantor Desa Jayagiri, Jl. Jayagiri No. 12, Jayagiri, Kec. Lembang, Kab. Bandung Barat, Jawa Barat 40391',
@@ -152,10 +156,12 @@ export const INITIAL_VILLAGES: Village[] = [
       'Kerajinan Tangan Anyaman Bambu',
       'Sentra UMKM Kuliner Oleh-oleh'
     ],
-    image: '/images/unsplash/photo-1464965911861-746a04b4bca6_w1200.jpg',
+    image: '/images/tahu-susu-1200.jpg',
     gallery: [
-      '/images/unsplash/photo-1464965911861-746a04b4bca6_w800.jpg',
-      '/images/unsplash/photo-1587061949409-02df41d5e562_w800.jpg'
+      '/images/tahu-susu-goreng.jpg',
+      '/images/tahu-susu-800.jpg',
+      '/images/real/gudangkahuripan-pusat-oleh-oleh.jpg',
+      '/images/unsplash/photo-1590874103328-eac38a683ce7_w800.jpg'
     ],
     mapLocation: 'Jl. Wangunsari Raya No. 45, Wangunsari, Kec. Lembang, Kab. Bandung Barat 40391',
     officeAddress: 'Kantor Desa Wangunsari, Jl. Wangunsari Raya No. 45, Wangunsari, Kec. Lembang, Kab. Bandung Barat, Jawa Barat 40391',
@@ -184,9 +190,11 @@ export const INITIAL_VILLAGES: Village[] = [
       'Paket Camping & Sewa Tenda',
       'Sewa Offroad Jalur Cikahuripan'
     ],
-    image: '/images/unsplash/photo-1530595467537-0b5996c41f2d_w1200.jpg',
+    image: '/images/real/kebun-jeruk-cikahuripan.jpg',
     gallery: [
-      '/images/unsplash/photo-1530595467537-0b5996c41f2d_w800.jpg',
+      '/images/real/kebun-jeruk-cikahuripan.jpg',
+      '/images/real/kebun-stroberi-cikahuripan.jpg',
+      '/images/unsplash/photo-1596040033229-a9821ebd058d_w800.jpg',
       '/images/unsplash/photo-1506744038136-46273834b3fb_w800.jpg'
     ],
     mapLocation: 'Jl. Bukanagara, Cikahuripan, Kec. Lembang, Kab. Bandung Barat 40391',
@@ -216,10 +224,12 @@ export const INITIAL_VILLAGES: Village[] = [
       'Kerajinan Tangan Suvenir Khas',
       'Lokasi Strategis Pusat Lembang'
     ],
-    image: '/images/unsplash/photo-1555396273-367ea4eb4db5_w1200.jpg',
+    image: '/images/real/gudangkahuripan-pusat-oleh-oleh.jpg',
     gallery: [
-      '/images/unsplash/photo-1555396273-367ea4eb4db5_w800.jpg',
-      '/images/unsplash/photo-1509440159596-0249088772ff_w800.jpg'
+      '/images/real/gudangkahuripan-pusat-oleh-oleh.jpg',
+      '/images/tahu-susu-800.jpg',
+      '/images/tahu-susu-goreng.jpg',
+      '/images/unsplash/photo-1513519245088-0e12902e5a38_w800.jpg'
     ],
     mapLocation: 'Jl. Raya Lembang No. 145, Gudangkahuripan, Kec. Lembang, Kab. Bandung Barat 40391',
     officeAddress: 'Kantor Desa Gudangkahuripan, Jl. Raya Lembang No. 145, Gudangkahuripan, Kec. Lembang, Kab. Bandung Barat, Jawa Barat 40391',
@@ -248,10 +258,12 @@ export const INITIAL_VILLAGES: Village[] = [
       'Edukasi Pengolahan Susu Kemasan',
       'Kualitas Susu Sapi Perah Higienis'
     ],
-    image: '/images/unsplash/photo-1571212515416-fef01fc43637_w1200.jpg',
+    image: '/images/unsplash/photo-1570042225831-d98fa7577f1e_w1200.jpg',
     gallery: [
+      '/images/unsplash/photo-1570042225831-d98fa7577f1e_w800.jpg',
       '/images/unsplash/photo-1571212515416-fef01fc43637_w800.jpg',
-      '/images/unsplash/photo-1550583724-b2692b85b150_w800.jpg'
+      '/images/unsplash/photo-1550583724-b2692b85b150_w800.jpg',
+      '/images/unsplash/photo-1486297678162-eb2a19b0a32d_w800.jpg'
     ],
     mapLocation: 'Jl. Sukajaya No. 18, Sukajaya, Kec. Lembang, Kab. Bandung Barat 40391',
     officeAddress: 'Kantor Desa Sukajaya, Jl. Sukajaya No. 18, Sukajaya, Kec. Lembang, Kab. Bandung Barat, Jawa Barat 40391',
@@ -392,11 +404,11 @@ export const MOCK_PICS: User[] = [
 export const LEMBANG_GALLERY_PRESETS = [
   {
     id: 'photo-1',
-    title: 'Homestay Kayu Tradisional Lereng Sejuk',
+    title: 'Homestay Asri Nuansa Tradisional Lereng Sejuk',
     category: 'penginapan-lokal',
     villageId: 'des-02',
     villageName: 'Cibodas',
-    url: '/images/unsplash/photo-1587061949409-02df41d5e562_w800.jpg'
+    url: '/images/real/homestay-gudangkahuripan-asri.jpg'
   },
   {
     id: 'photo-2',
@@ -436,7 +448,7 @@ export const LEMBANG_GALLERY_PRESETS = [
     category: 'buah-herba',
     villageId: 'des-06',
     villageName: 'Cikahuripan',
-    url: '/images/unsplash/photo-1530595467537-0b5996c41f2d_w800.jpg'
+    url: '/images/unsplash/photo-1587496679742-bad502958fbf_w800.jpg'
   },
   {
     id: 'photo-7',
@@ -444,7 +456,7 @@ export const LEMBANG_GALLERY_PRESETS = [
     category: 'kuliner',
     villageId: 'des-05',
     villageName: 'Wangunsari',
-    url: '/images/unsplash/photo-1555396273-367ea4eb4db5_w800.jpg'
+    url: '/images/tahu-susu-goreng.jpg'
   },
   {
     id: 'photo-8',
@@ -627,7 +639,7 @@ export const INITIAL_MOCK_PRODUCTS: Product[] = [
     image: '/images/unsplash/photo-1502082553048-f009c37129b9_w800.jpg',
     gallery: [
       '/images/unsplash/photo-1502082553048-f009c37129b9_w800.jpg',
-      '/images/unsplash/photo-1544735716-392fe2489ffa_w800.jpg'
+      '/images/unsplash/photo-1448375240586-882707db888b_w800.jpg'
     ],
     description: 'Petualangan susur jalur lintas alam legendaris hutan pinus berkabut Jayagiri menembus lereng Gunung Tangkuban Parahu dipandu warga lokal profesional, include briefing keamanan, tongkat hiking, dan camilan tradisional.',
     highlights: ['Pemandu Lokal Berlisensi', 'Jalur Rimba Hutan Sejuk', 'Spot Panorama Tangkuban Parahu', 'Aman Untuk Pemula & Keluarga'],
@@ -655,10 +667,11 @@ export const INITIAL_MOCK_PRODUCTS: Product[] = [
     sellerBadge: 'Petani Kopi Juara',
     sellerAvatar: '/images/unsplash/photo-1507003211169-0a1dd7228f2d_w200.jpg',
     sellerPhone: '+6281220763734',
-    image: '/images/unsplash/photo-1514432324607-a09d9b4aefdd_w800.jpg',
+    image: '/images/client/kopi-angling/hero-pouch-v60.webp',
     gallery: [
-      '/images/unsplash/photo-1514432324607-a09d9b4aefdd_w800.jpg',
-      '/images/unsplash/photo-1559056199-641a0ac8b55e_w800.jpg'
+      '/images/client/kopi-angling/hero-pouch-v60.webp',
+      '/images/client/kopi-angling/coffee-plantation-view.webp',
+      '/images/client/kopi-angling/coffee-cherries-tree.webp'
     ],
     description: 'Biji kopi Arabika premium single origin yang ditanam di ketinggian 1.290 mdpl lereng Gunung Palasari Suntenjaya. Dipetik merah sempurna dengan profil rasa floral lembut, asam segar citrus, dan manis karamel.',
     highlights: ['100% Arabika Specialty Grade 1', 'Pouch Valve Zipper Kedap Udara', 'Pilihan Biji Utuh / Gilingan'],
@@ -756,8 +769,8 @@ export const INITIAL_MOCK_PRODUCTS: Product[] = [
     sellerBadge: 'Petani Buah Binaan',
     sellerAvatar: '/images/unsplash/photo-1506794778202-cad84cf45f1d_w200.jpg',
     sellerPhone: '+6282219405566',
-    image: '/images/unsplash/photo-1530595467537-0b5996c41f2d_w800.jpg',
-    gallery: ['/images/unsplash/photo-1530595467537-0b5996c41f2d_w800.jpg'],
+    image: '/images/unsplash/photo-1587496679742-bad502958fbf_w800.jpg',
+    gallery: ['/images/unsplash/photo-1587496679742-bad502958fbf_w800.jpg'],
     description: 'Lemon California berkulit mulus kuning cerah kaya air dan sari vitamin C segar yang dipanen langsung dari perkebunan lereng Cikahuripan.',
     highlights: ['Air Lemon Melimpah', 'Bebas Lilin Pengawet', 'Dipetik Langsung Dari Pohon'],
     stockQuota: 45,
@@ -801,8 +814,8 @@ export const INITIAL_MOCK_PRODUCTS: Product[] = [
     sellerBadge: 'Pengolah Herba Alami',
     sellerAvatar: '/images/unsplash/photo-1534528741775-53994a69daeb_w200.jpg',
     sellerPhone: '+6282219405566',
-    image: '/images/unsplash/photo-1544735716-392fe2489ffa_w800.jpg',
-    gallery: ['/images/unsplash/photo-1544735716-392fe2489ffa_w800.jpg'],
+    image: '/images/unsplash/photo-1596040033229-a9821ebd058d_w800.jpg',
+    gallery: ['/images/unsplash/photo-1596040033229-a9821ebd058d_w800.jpg'],
     description: 'Kombinasi simplisia jahe merah, serai wangi, temulawak, kapulaga, dan kayu manis pegunungan untuk menghangatkan tubuh dan menjaga daya tahan tubuh.',
     highlights: ['100% Rempah Murni Pilihan', 'Tanpa Tambahan Bahan Kimia', 'Mudah Diseduh Hangat'],
     stockQuota: 50,
@@ -850,8 +863,8 @@ export const INITIAL_MOCK_PRODUCTS: Product[] = [
     sellerBadge: 'UMKM Kuliner Desa',
     sellerAvatar: '/images/unsplash/photo-1519085360753-af0119f7cbe7_w200.jpg',
     sellerPhone: '+6281809115544',
-    image: '/images/unsplash/photo-1509440159596-0249088772ff_w800.jpg',
-    gallery: ['/images/unsplash/photo-1509440159596-0249088772ff_w800.jpg'],
+    image: '/images/real/gudangkahuripan-pusat-oleh-oleh.jpg',
+    gallery: ['/images/real/gudangkahuripan-pusat-oleh-oleh.jpg', '/images/tahu-susu-goreng.jpg'],
     description: 'Kue bolu kukus susu bertabur keju melimpah dengan aroma harum manis lembut yang disukai seluruh anggota keluarga.',
     highlights: ['Tekstur Empuk & Mengembang', 'Taburan Keju Melimpah', 'Cocok Teman Minum Teh/Kopi'],
     stockQuota: 40,
@@ -941,8 +954,8 @@ export const INITIAL_MOCK_PRODUCTS: Product[] = [
     sellerBadge: 'UMKM Kuliner Oleh-oleh',
     sellerAvatar: '/images/unsplash/photo-1534528741775-53994a69daeb_w200.jpg',
     sellerPhone: '+6281233447788',
-    image: '/images/unsplash/photo-1509440159596-0249088772ff_w800.jpg',
-    gallery: ['/images/unsplash/photo-1509440159596-0249088772ff_w800.jpg'],
+    image: '/images/real/gudangkahuripan-pusat-oleh-oleh.jpg',
+    gallery: ['/images/real/gudangkahuripan-pusat-oleh-oleh.jpg', '/images/tahu-susu-goreng.jpg'],
     description: 'Bolu panggang legit harum mentega dipadukan dengan pilihan camilan kering renyah cocok untuk buah tangan keluarga.',
     highlights: ['Harum Butter Mentega Asli', 'Tekstur Lembut Legit', 'Tahan Beberapa Hari'],
     stockQuota: 45,
@@ -1091,8 +1104,12 @@ export const INITIAL_MOCK_PRODUCTS: Product[] = [
     sellerBadge: 'Driver Profesional Berlisensi',
     sellerAvatar: '/images/unsplash/photo-1472099645785-5658abf4ff4e_w200.jpg',
     sellerPhone: '+6282133449988',
-    image: '/images/unsplash/photo-1509316975850-ff9c5deb0cd9_w800.jpg',
-    gallery: ['/images/unsplash/photo-1509316975850-ff9c5deb0cd9_w800.jpg'],
+    image: '/images/client/offroad-cikole/hero-abah-dadan-landy.webp',
+    gallery: [
+      '/images/client/offroad-cikole/hero-abah-dadan-landy.webp',
+      '/images/client/offroad-cikole/convoy-pine-trail.webp',
+      '/images/client/offroad-cikole/mud-splash-adventure.webp'
+    ],
     description: 'Petualangan memacu adrenalin membelah jalur berlumpur hutan pinus Tangkuban Parahu dengan mobil 4x4 Land Rover klasik dipandu driver berpengalaman.',
     highlights: ['Mobil 4x4 + Driver Berpengalaman', 'Safety Helmet & Perlengkapan Standar', 'Spot Foto Hutan Pinus Eksklusif'],
     stockQuota: 12,
@@ -1261,7 +1278,7 @@ export const INITIAL_MOCK_PRODUCTS: Product[] = [
     image: '/images/unsplash/photo-1590490360182-c33d57733427_w800.jpg',
     gallery: [
       '/images/unsplash/photo-1590490360182-c33d57733427_w800.jpg',
-      '/images/unsplash/photo-1587061949409-02df41d5e562_w800.jpg'
+      '/images/real/homestay-saung-santai.jpg'
     ],
     description: 'Kamar homestay bersih dan hangat di rumah warga lokal Cibodas dekat lembah Maribaya. Dilengkapi fasilitas air panas water heater dan sarapan nasi liwet khas Sunda.',
     highlights: ['Kamar Nyaman Bersih Kasur Queen', 'Air Panas Water Heater', 'Termasuk Sarapan Hangat', 'Dekat Curug & Kebun Bunga'],
@@ -1286,10 +1303,10 @@ export const INITIAL_MOCK_PRODUCTS: Product[] = [
     sellerBadge: 'Pengelola Homestay Desa',
     sellerAvatar: '/images/unsplash/photo-1500648767791-00dcc994a43e_w200.jpg',
     sellerPhone: '+6281394851122',
-    image: '/images/unsplash/photo-1587061949409-02df41d5e562_w800.jpg',
+    image: '/images/real/homestay-gudangkahuripan-asri.jpg',
     gallery: [
-      '/images/unsplash/photo-1587061949409-02df41d5e562_w800.jpg',
-      '/images/unsplash/photo-1590490360182-c33d57733427_w800.jpg'
+      '/images/real/homestay-gudangkahuripan-asri.jpg',
+      '/images/real/homestay-kamar-keluarga.jpg'
     ],
     description: 'Sewa satu unit rumah warga asri bernuansa kayu di Cibodas berkapasitas 6-10 orang keluarga. Memiliki 3 kamar tidur luas, ruang tamu, dapur lengkap, teras asri, dan halaman parkir.',
     highlights: ['Sewa 1 Rumah Penuh Privat', '3 Kamar Tidur + Dapur Lengkap', 'Halaman Luas & Garasi Mobil', 'Suasana Tenang Sejuk'],

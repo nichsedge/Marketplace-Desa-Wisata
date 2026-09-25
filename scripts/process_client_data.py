@@ -742,10 +742,11 @@ def generate_real_products(media_map: dict) -> list[dict]:
             "sellerBadge": "Pengelola Homestay Terverifikasi",
             "sellerAvatar": "/images/unsplash/photo-1506794778202-cad84cf45f1d_w200.jpg",
             "sellerPhone": "6282130532424",
-            "image": "/images/unsplash/photo-1587061949409-02df41d5e562_w1600.jpg",
+            "image": "/images/real/homestay-gudangkahuripan-asri.jpg",
             "gallery": [
-                "/images/unsplash/photo-1587061949409-02df41d5e562_w800.jpg",
-                "/images/unsplash/photo-1542314831-068cd1dbfeeb_w800.jpg"
+                "/images/real/homestay-gudangkahuripan-asri.jpg",
+                "/images/real/homestay-saung-santai.jpg",
+                "/images/real/homestay-kamar-keluarga.jpg"
             ],
             "description": (
                 "Rumah inap warga bernuansa teduh dan asri di Gudangkahuripan. "
@@ -820,9 +821,9 @@ def generate_real_products(media_map: dict) -> list[dict]:
             "sellerBadge": "Pengrajin Kicimpring Tradisional",
             "sellerAvatar": "/images/unsplash/photo-1494790108377-be9c29b29330_w150.jpg",
             "sellerPhone": "6282216508602",
-            "image": "/images/unsplash/photo-1509440159596-0249088772ff_w800.jpg",
+            "image": "/images/real/kicimpring.jpg",
             "gallery": [
-                "/images/unsplash/photo-1509440159596-0249088772ff_w800.jpg"
+                "/images/real/kicimpring.jpg"
             ],
             "description": (
                 "Kerupuk kicimpring olahan singkong khas Pasundan buatan tangan Bu Agustian. "
@@ -858,9 +859,9 @@ def generate_real_products(media_map: dict) -> list[dict]:
             "sellerBadge": "Pengrajin Ranginang Tradisional",
             "sellerAvatar": "/images/unsplash/photo-1544005313-94ddf0286df2_w200.jpg",
             "sellerPhone": "6287887614185",
-            "image": "/images/unsplash/photo-1509440159596-0249088772ff_w800.jpg",
+            "image": "/images/real/ranginang.jpg",
             "gallery": [
-                "/images/unsplash/photo-1509440159596-0249088772ff_w800.jpg"
+                "/images/real/ranginang.jpg"
             ],
             "description": (
                 "Ranginang beras ketan premium pilihan yang diolah secara higienis dengan bumbu terasi gurih khas Sunda. "
