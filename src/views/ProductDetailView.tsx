@@ -58,6 +58,10 @@ export const ProductDetailView: React.FC = () => {
   const [guestCount, setGuestCount] = useState(2);
   const [specialNotes, setSpecialNotes] = useState('');
 
+  const [selectedPackageIndex, setSelectedPackageIndex] = useState<number | null>(
+    product.packages && product.packages.length > 0 ? 0 : null
+  );
+
   // Keep state in sync when switching between products
   useEffect(() => {
     setActiveImage(product.image);
@@ -66,8 +70,9 @@ export const ProductDetailView: React.FC = () => {
     setBookingDateEnd(getDayAfterTomorrowDate());
     setGuestCount(2);
     setSpecialNotes('');
+    setSelectedPackageIndex(product.packages && product.packages.length > 0 ? 0 : null);
     window.scrollTo({ top: 0, behavior: 'smooth' });
-  }, [product.id, product.image]);
+  }, [product.id, product.image, product.packages]);
 
   // Review Form
   const [newRating, setNewRating] = useState(5);
@@ -77,12 +82,19 @@ export const ProductDetailView: React.FC = () => {
   const productReviews = reviews.filter(r => r.productId === product.id);
   const relatedProducts = products.filter(p => p.id !== product.id && (p.villageId === product.villageId || p.category === product.category)).slice(0, 3);
 
+  const selectedPackage = selectedPackageIndex !== null && product.packages && product.packages[selectedPackageIndex]
+    ? product.packages[selectedPackageIndex]
+    : null;
+
+  const activePrice = selectedPackage ? selectedPackage.price : product.price;
+  const activeUnit = selectedPackage ? selectedPackage.unit : product.unit;
+
   const categoryBadge = getCategoryBadge(product.category);
   const isHomestay = product.category === 'homestay' || product.category === 'penginapan-lokal';
   const nights = isHomestay ? calculateNights(bookingDateStart, bookingDateEnd) : 1;
   const totalPrice = isHomestay
-    ? product.price * quantity * nights
-    : product.price * quantity;
+    ? activePrice * quantity * nights
+    : activePrice * quantity;
 
   // Deduplicate gallery images so main image doesn't repeat
   const allGalleryImages = Array.from(new Set([product.image, ...(product.gallery || [])]));
@@ -106,23 +118,45 @@ export const ProductDetailView: React.FC = () => {
   };
 
   const handleAddToCart = () => {
+    const combinedNotes = [
+      selectedPackage ? `[Paket Terpilih: ${selectedPackage.name}]` : '',
+      specialNotes
+    ].filter(Boolean).join(' ');
+
+    const productToAdd = selectedPackage ? {
+      ...product,
+      price: activePrice,
+      unit: activeUnit
+    } : product;
+
     addToCart(
-      product, 
+      productToAdd, 
       quantity, 
-      product.category === 'homestay' || product.category === 'paket-wisata' ? bookingDateStart : undefined,
+      product.category === 'homestay' || product.category === 'paket-wisata' || product.category === 'wisata-alam' ? bookingDateStart : undefined,
       product.category === 'homestay' ? bookingDateEnd : undefined,
       guestCount,
-      specialNotes
+      combinedNotes
     );
   };
 
   const handleOrderViaWhatsApp = () => {
-    const text = createProductWhatsAppMessage(product, {
+    const combinedNotes = [
+      selectedPackage ? `Pilihan Paket: ${selectedPackage.name} (Rp ${selectedPackage.price.toLocaleString('id-ID')} ${selectedPackage.unit})` : '',
+      specialNotes
+    ].filter(Boolean).join('\n');
+
+    const productForWa = selectedPackage ? {
+      ...product,
+      price: activePrice,
+      unit: activeUnit
+    } : product;
+
+    const text = createProductWhatsAppMessage(productForWa, {
       quantity,
-      bookingDateStart: product.category === 'homestay' || product.category === 'paket-wisata' ? bookingDateStart : undefined,
+      bookingDateStart: product.category === 'homestay' || product.category === 'paket-wisata' || product.category === 'wisata-alam' ? bookingDateStart : undefined,
       bookingDateEnd: product.category === 'homestay' ? bookingDateEnd : undefined,
-      guestCount: product.category === 'homestay' || product.category === 'paket-wisata' ? guestCount : undefined,
-      notes: specialNotes
+      guestCount: product.category === 'homestay' || product.category === 'paket-wisata' || product.category === 'wisata-alam' ? guestCount : undefined,
+      notes: combinedNotes
     });
     const targetPhone = product.sellerPhone || WHATSAPP_PHONE;
     const url = formatWhatsAppUrl(targetPhone, text);
@@ -232,7 +266,103 @@ export const ProductDetailView: React.FC = () => {
                 <span>Ketersediaan Stok: {product.stockQuota} unit</span>
               </div>
             </div>
+
+            {/* Provenance Banner (Real Data vs Dummy) */}
+            {product.dataSource === 'real' ? (
+              <div className="p-4 rounded-2xl bg-gradient-to-r from-emerald-950 via-emerald-900 to-stone-900 text-white border border-emerald-500/40 shadow-md flex items-start gap-3">
+                <div className="p-2 rounded-xl bg-emerald-500/20 text-emerald-400 shrink-0 border border-emerald-400/30">
+                  <ShieldCheck className="w-5 h-5 text-emerald-300" />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <div className="flex flex-wrap items-center gap-2">
+                    <span className="text-xs font-black uppercase tracking-wider text-amber-300">
+                      Katalog Data Riil Mitra Desa
+                    </span>
+                    <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500 text-stone-950 shadow-xs">
+                      Terverifikasi Lapangan
+                    </span>
+                  </div>
+                  <p className="text-xs text-stone-300 mt-1 leading-relaxed">
+                    Produk dan layanan ini bersumber langsung dari data lapangan pengelola & pelaku usaha resmi di {product.villageName}. Kontak PIC WhatsApp dihubungkan langsung ke penanggung jawab.
+                  </p>
+                  {product.rawSourceRow && (
+                    <span className="text-[10px] text-stone-400 block mt-1 font-mono">
+                      Ref Data Klien: Baris #{product.rawSourceRow}
+                    </span>
+                  )}
+                </div>
+              </div>
+            ) : (
+              <div className="p-3.5 rounded-2xl bg-amber-500/10 border border-amber-500/30 text-amber-950 flex items-start gap-2.5">
+                <Sparkles className="w-4 h-4 text-amber-600 shrink-0 mt-0.5" />
+                <div className="text-xs leading-relaxed">
+                  <span className="font-bold text-amber-900">Katalog Simulasi (Mock Data): </span>
+                  <span className="text-stone-700">Item ini dirancang untuk simulasi interaktif Tugas Akhir DKV hingga mitra desa melengkapi data riil komoditas terkait.</span>
+                </div>
+              </div>
+            )}
           </div>
+
+          {/* Interactive Package Tiers (If Available, e.g. Land Rover Offroad) */}
+          {product.packages && product.packages.length > 0 && (
+            <div className="bg-white p-6 rounded-2xl border-2 border-emerald-700/50 shadow-md space-y-4">
+              <div className="flex items-center justify-between border-b border-stone-200 pb-3">
+                <div>
+                  <h3 className="font-bold text-stone-900 text-sm uppercase tracking-wider flex items-center gap-2">
+                    <Sparkles className="w-4 h-4 text-amber-500" />
+                    <span>Pilihan Paket Tersedia ({product.packages.length} Opsi)</span>
+                  </h3>
+                  <p className="text-xs text-stone-500 mt-0.5">Pilih paket untuk melihat detail rute, fasilitas, dan harga</p>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 gap-3">
+                {product.packages.map((pkg, idx) => {
+                  const isSelected = selectedPackageIndex === idx;
+                  return (
+                    <div
+                      key={idx}
+                      onClick={() => setSelectedPackageIndex(idx)}
+                      className={`p-4 rounded-xl border-2 transition-all cursor-pointer ${
+                        isSelected
+                          ? 'border-emerald-600 bg-emerald-50/70 shadow-sm'
+                          : 'border-stone-200 hover:border-emerald-300 bg-stone-50/50'
+                      }`}
+                    >
+                      <div className="flex items-start justify-between gap-3">
+                        <div className="flex-1">
+                          <div className="flex items-center gap-2">
+                            <span className={`w-4 h-4 rounded-full border flex items-center justify-center shrink-0 ${
+                              isSelected ? 'border-emerald-600 bg-emerald-600' : 'border-stone-400 bg-white'
+                            }`}>
+                              {isSelected && <span className="w-1.5 h-1.5 rounded-full bg-white" />}
+                            </span>
+                            <h4 className="text-xs sm:text-sm font-bold text-stone-900">{pkg.name}</h4>
+                          </div>
+                          <p className="text-xs text-stone-600 mt-1.5 pl-6 leading-relaxed">{pkg.description}</p>
+                          {pkg.highlights && pkg.highlights.length > 0 && (
+                            <div className="flex flex-wrap gap-1.5 mt-2 pl-6">
+                              {pkg.highlights.map((h, hi) => (
+                                <span key={hi} className="px-2 py-0.5 rounded-md text-[10px] font-semibold bg-white border border-stone-200 text-stone-700">
+                                  ✓ {h}
+                                </span>
+                              ))}
+                            </div>
+                          )}
+                        </div>
+                        <div className="text-right shrink-0">
+                          <span className="text-xs sm:text-sm font-black text-emerald-800 block">
+                            {formatRupiah(pkg.price)}
+                          </span>
+                          <span className="text-[10px] text-stone-500 font-medium">{pkg.unit}</span>
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          )}
 
           {/* Description */}
           <div className="bg-white p-6 rounded-2xl border border-stone-200 shadow-xs space-y-3">
@@ -426,18 +556,28 @@ export const ProductDetailView: React.FC = () => {
           <div className="bg-white p-6 rounded-3xl border-2 border-emerald-700/80 shadow-2xl space-y-6 sticky top-24">
             
             {/* Price Banner */}
-            <div className="p-4 bg-amber-50 rounded-2xl border border-amber-200 flex items-baseline justify-between">
-              <div>
-                <span className="text-[11px] font-bold text-amber-900 uppercase tracking-wider block">Harga Resmi Desa</span>
-                <span className="text-2xl font-black text-emerald-800 font-sans">
-                  {formatRupiah(product.price)}
-                </span>
-                <span className="text-xs font-semibold text-stone-600 ml-1">{product.unit}</span>
+            <div className="p-4 bg-amber-50 rounded-2xl border border-amber-200 space-y-2">
+              <div className="flex items-baseline justify-between">
+                <div>
+                  <span className="text-[11px] font-bold text-amber-900 uppercase tracking-wider block">Harga Resmi Desa</span>
+                  <span className="text-2xl font-black text-emerald-800 font-sans">
+                    {formatRupiah(activePrice)}
+                  </span>
+                  <span className="text-xs font-semibold text-stone-600 ml-1">{activeUnit}</span>
+                </div>
+                {product.originalPrice && !selectedPackage && (
+                  <span className="text-xs text-stone-400 line-through">
+                    {formatRupiah(product.originalPrice)}
+                  </span>
+                )}
               </div>
-              {product.originalPrice && (
-                <span className="text-xs text-stone-400 line-through">
-                  {formatRupiah(product.originalPrice)}
-                </span>
+              {selectedPackage && (
+                <div className="pt-2 border-t border-amber-200/80 flex items-center justify-between text-xs">
+                  <span className="text-stone-600 font-medium">Paket Terpilih:</span>
+                  <span className="font-bold text-emerald-900 truncate max-w-[200px]" title={selectedPackage.name}>
+                    {selectedPackage.name}
+                  </span>
+                </div>
               )}
             </div>
 

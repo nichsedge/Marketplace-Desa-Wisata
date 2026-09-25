@@ -97,4 +97,65 @@ bun run build
 
 # Development Server
 bun run dev
+
+# Client Real Data Pipeline (Clean TSV & WebP Image Compression)
+uv run scripts/process_client_data.py
 ```
+
+---
+
+## 🔄 Client Data Ingestion & Media Processing Pipeline
+- **Raw Data Integrity:** File `assets/real_data_from_client/list produk unggulan marketplace lembang.tsv` bersifat **strictly read-only / immutable**. Script pipeline tidak pernah menimpa file mentah klien.
+- **Adaptive Execution:** Menggunakan toolchain Python modern via `uv run scripts/process_client_data.py` dengan metadata PEP 723 (`pillow`, `pillow-heif`).
+- **Data Provenance Rule:**
+  - Data riil klien di-generate ke `src/data/realProducts.ts` dengan metadata `dataSource: 'real'`, `isDummy: false`, `rawSourceRow: <row_idx>`, dan `verifiedBadge: 'Data Riil Mitra Terverifikasi'`.
+  - Data mock katalog dipertahankan dengan metadata `dataSource: 'dummy'`, `isDummy: true`, dan `verifiedBadge: 'Data Simulasi / Mock'`.
+  - Marketplace (`MarketplaceView.tsx`) dan Detail Produk (`ProductDetailView.tsx`) menyediakan filter dan badge verifikasi transparan.
+- **Optimasi Gambar WebP:**
+  - Seluruh gambar klien dikurasi, dirotasi otomatis via EXIF transpose, dan di-downsample menjadi format WebP berkualitas 82% (ukuran berkurang >95% dari ~10MB ke ~100KB-250KB) di `public/images/client/`.
+- **Media Curation Tracker (`docs/MEDIA_CURATION_TRACKER.md`):**
+  - Seluruh 153 berkas aset media (foto & video) di folder unduhan klien diaudit lengkap dengan nama folder, nama file, status keputusan (Hero, Galeri, atau Skipped), serta penjelasan kurasi spesifik.
+  - Tracker bersifat dinamis dan otomatis mendeteksi jika ada foto baru yang ditambahkan klien ke folder unduhan saat `uv run scripts/process_client_data.py` dijalankan kembali. Manifes disimpan di `assets/real_data_from_client/media_curation_manifest.json`.
+
+---
+
+## 🤖 Future Agent Ingestion Playbook (Alur Kerja Saat Klien Menambah Data / Foto)
+
+Ketika user/klien mengabarkan penambahan data baru, seluruh AI Agent **WAJIB** mengikuti panduan standar berikut:
+
+### Skenario 1: Klien Menambah Baris Baru di File TSV
+1. Pastikan file TSV tersimpan di `assets/real_data_from_client/list produk unggulan marketplace lembang.tsv` (ingat: **JANGAN PERNAH** menimpa/mengubah format file mentah ini).
+2. Jalankan pipeline langsung:
+   ```bash
+   uv run scripts/process_client_data.py
+   ```
+3. Skrip akan secara otomatis:
+   - Mendeteksi baris baru via `parse_tsv_adaptive()`.
+   - Menormalisasi nomor telepon WA menjadi format internasional `628...`.
+   - Mengonversi harga teks ke angka nominal integer rupiah.
+   - Mengaitkan desa ke salah satu dari 8 Desa Wisata (`des-01` s/d `des-08`).
+   - Meng-generate produk baru ke `src/data/realProducts.ts` dengan metadata `dataSource: 'real'` dan `isDummy: false`.
+4. Jalankan verifikasi integritas build:
+   ```bash
+   bun run lint && bun run build
+   ```
+
+### Skenario 2: Klien Menambahkan Foto Baru ke Folder Unduhan
+1. Letakkan foto/video baru ke folder terkait di `assets/real_data_from_client/<Nama Folder>/`.
+2. Jalankan pipeline:
+   ```bash
+   uv run scripts/process_client_data.py
+   ```
+3. Skrip akan secara otomatis:
+   - Memindai berkas baru dan mencatatnya ke `assets/real_data_from_client/media_curation_manifest.json`.
+   - Menilai resolusi dan format (JPEG, PNG, HEIC).
+   - Mengompresi gambar ke WebP (kualitas 82%, max width 1200px/900px, <250KB) ke `public/images/client/<slug>/`.
+   - Memperbarui tabel evaluasi & alasan kurasi di `docs/MEDIA_CURATION_TRACKER.md`.
+4. Jika ingin menetapkan foto tertentu sebagai **Hero** atau memberikan *copywriting* narasi khusus:
+   - Tambahkan aturan spesifik pada `KNOWN_CURATION_RULES` di `scripts/media_tracker.py`.
+   - Jalankan ulang `uv run scripts/process_client_data.py`.
+
+### Aturan Ketat untuk Agent:
+* **Strict Immutability:** Dilarang mengedit atau menghapus isi mentah `assets/real_data_from_client/list produk unggulan marketplace lembang.tsv`.
+* **Strict uv run:** Selalu gunakan `uv run scripts/process_client_data.py` (DILARANG menambahkan `python`).
+* **Verifikasi Wajib:** Setiap ada pembaruan data real, wajib jalankan `bun run lint && bun run build` untuk menjamin tidak ada regresi tipe TypeScript.

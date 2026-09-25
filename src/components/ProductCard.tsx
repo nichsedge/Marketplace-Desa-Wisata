@@ -81,6 +81,16 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
                 <span>Unggulan</span>
               </span>
             )}
+            {product.dataSource === 'real' ? (
+              <span className="inline-flex items-center gap-1 px-2 py-0.5 text-[10px] font-extrabold rounded-full bg-emerald-700 text-emerald-100 shadow-xs border border-emerald-500/80">
+                <ShieldCheck className="w-2.5 h-2.5 text-amber-300 shrink-0" />
+                <span>Data Riil Mitra</span>
+              </span>
+            ) : (
+              <span className="inline-flex items-center gap-1 px-1.5 py-0.5 text-[9px] font-medium rounded-full bg-stone-900/70 text-stone-300 backdrop-blur-xs shadow-xs border border-white/15">
+                <span>Simulasi</span>
+              </span>
+            )}
           </div>
 
           {/* Right: Rating Badge */}

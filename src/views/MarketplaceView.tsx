@@ -11,7 +11,8 @@ import {
   Star, 
   ShoppingBag,
   Sparkles,
-  X
+  X,
+  ShieldCheck
 } from 'lucide-react';
 import { scoreProductSearch } from '../utils/search';
 
@@ -35,6 +36,7 @@ export const MarketplaceView: React.FC = () => {
   } = useApp();
 
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
+  const [dataSourceFilter, setDataSourceFilter] = useState<'all' | 'real' | 'dummy'>('all');
 
   const categories: { id: ProductCategory | 'all'; label: string }[] = [
     { id: 'all', label: 'Semua Produk' },
@@ -76,6 +78,11 @@ export const MarketplaceView: React.FC = () => {
       return false;
     }
 
+    // Data Source Provenance filter (real vs dummy)
+    if (dataSourceFilter !== 'all' && product.dataSource !== dataSourceFilter) {
+      return false;
+    }
+
     // Smart Search Query Scoring (multi-word token, synonym, corpus matching)
     if (searchQuery.trim()) {
       const score = scoreProductSearch(product, searchQuery);
@@ -86,6 +93,9 @@ export const MarketplaceView: React.FC = () => {
 
     return true;
   });
+
+  const realCount = products.filter(p => p.dataSource === 'real').length;
+  const dummyCount = products.filter(p => p.dataSource === 'dummy').length;
 
   // Sorting with Search Relevance Priority
   const sortedProducts = [...filteredProducts].sort((a, b) => {
@@ -101,7 +111,7 @@ export const MarketplaceView: React.FC = () => {
     return b.totalReviews - a.totalReviews;
   });
 
-  const isFiltered = categoryFilter !== 'all' || villageFilter !== 'all' || priceFilter < 1000000 || ratingFilter > 0 || searchQuery.trim().length > 0;
+  const isFiltered = categoryFilter !== 'all' || villageFilter !== 'all' || dataSourceFilter !== 'all' || priceFilter < 1000000 || ratingFilter > 0 || searchQuery.trim().length > 0;
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
@@ -140,6 +150,55 @@ export const MarketplaceView: React.FC = () => {
             </button>
           )}
         </div>
+      </div>
+
+      {/* Provenance Filter Bar (Data Riil vs Simulasi) */}
+      <div className="bg-gradient-to-r from-stone-900 to-emerald-950 p-2.5 sm:p-3 rounded-2xl border border-emerald-800/40 shadow-sm flex items-center justify-between gap-3 overflow-x-auto scrollbar-none">
+        <div className="flex items-center gap-2">
+          <span className="text-[11px] font-bold text-amber-300 uppercase tracking-wider flex items-center gap-1.5 shrink-0 pl-2">
+            <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
+            <span className="hidden sm:inline">Kurasi Sumber:</span>
+          </span>
+          <div className="flex items-center gap-1.5">
+            <button
+              onClick={() => setDataSourceFilter('all')}
+              className={`px-3 py-1 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+                dataSourceFilter === 'all'
+                  ? 'bg-amber-400 text-stone-950 shadow-sm'
+                  : 'bg-white/10 text-stone-300 hover:bg-white/20'
+              }`}
+            >
+              Semua Sumber ({products.length})
+            </button>
+            <button
+              onClick={() => setDataSourceFilter('real')}
+              className={`px-3 py-1 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 ${
+                dataSourceFilter === 'real'
+                  ? 'bg-emerald-500 text-stone-950 shadow-sm'
+                  : 'bg-white/10 text-emerald-300 hover:bg-white/20'
+              }`}
+            >
+              <ShieldCheck className="w-3.5 h-3.5" />
+              <span>Data Riil Mitra ({realCount})</span>
+            </button>
+            <button
+              onClick={() => setDataSourceFilter('dummy')}
+              className={`px-3 py-1 rounded-xl text-xs font-medium transition-all cursor-pointer ${
+                dataSourceFilter === 'dummy'
+                  ? 'bg-stone-200 text-stone-900 shadow-sm'
+                  : 'bg-white/10 text-stone-400 hover:bg-white/20'
+              }`}
+            >
+              Simulasi / Mock ({dummyCount})
+            </button>
+          </div>
+        </div>
+
+        {dataSourceFilter === 'real' && (
+          <span className="text-[11px] text-emerald-300 font-medium hidden md:inline shrink-0 pr-2">
+            ✓ Menampilkan produk hasil data riil mitra desa terverifikasi
+          </span>
+        )}
       </div>
 
       {/* Village Filter Bar (Kawasan Lembang) */}

@@ -73,6 +73,13 @@ export interface Product {
   stockQuota: number;
   isAvailable: boolean;
   isFeatured?: boolean;
+  // Metadata provenance (real vs dummy / simulation)
+  isDummy?: boolean;
+  dataSource?: 'real' | 'dummy';
+  rawSourceRow?: number;
+  verifiedBadge?: string;
+  clientFolderName?: string;
+  packages?: { name: string; price: number; unit: string; description: string; highlights?: string[] }[];
 }
 
 export interface CartItem {

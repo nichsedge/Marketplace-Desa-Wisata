@@ -1,4 +1,5 @@
 import { Village, Product, Review, Order, User } from '../types';
+import { REAL_PRODUCTS } from './realProducts';
 
 export const INITIAL_VILLAGES: Village[] = [
   {
@@ -455,7 +456,7 @@ export const LEMBANG_GALLERY_PRESETS = [
   }
 ];
 
-export const INITIAL_PRODUCTS: Product[] = [
+export const INITIAL_MOCK_PRODUCTS: Product[] = [
   // =========================================================================
   // 1. SEMBAKO — Desa: Cibodas (Sayuran organik segar & susu sapi murni harian)
   // =========================================================================
@@ -1320,6 +1321,17 @@ export const INITIAL_PRODUCTS: Product[] = [
     stockQuota: 3,
     isAvailable: true
   }
+];
+
+// Combined initial products catalog (Real client data first, followed by mock data with explicit dummy provenance)
+export const INITIAL_PRODUCTS: Product[] = [
+  ...REAL_PRODUCTS,
+  ...INITIAL_MOCK_PRODUCTS.map(p => ({
+    ...p,
+    isDummy: true,
+    dataSource: 'dummy' as const,
+    verifiedBadge: 'Data Simulasi / Mock'
+  }))
 ];
 
 export const INITIAL_REVIEWS: Review[] = [

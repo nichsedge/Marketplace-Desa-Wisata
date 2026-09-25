@@ -10,3 +10,13 @@ coverage/
 .antigravity/
 
 .vercel
+
+# Ignore heavy raw client media (DSLR photos & videos >500MB)
+assets/real_data_from_client/*/
+
+# But track lightweight client TSV and curation manifest JSON
+!assets/real_data_from_client/*.tsv
+!assets/real_data_from_client/*.json
+
+*.pyc
+

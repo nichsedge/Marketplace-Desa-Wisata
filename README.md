@@ -78,3 +78,26 @@ Seluruh foto katalog produk, homestay, avatar Admin Desa, dan lanskap 8 desa tel
    ```bash
    bun run lint
    ```
+
+## 🔄 Pipeline Pembersihan Data Riil Klien & Kompresi WebP (Adaptive Pipeline)
+
+Platform dilengkapi script pemrosesan otomatis berbasis `uv` untuk membaca data riil lapangan dari klien tanpa mengubah file mentah (`assets/real_data_from_client/list produk unggulan marketplace lembang.tsv`):
+
+```bash
+# Jalankan pipeline pembersihan data riil dan kurasi gambar
+uv run scripts/process_client_data.py
+```
+
+- **Data Provenance:** Produk ditandai secara transparan dengan metadata `dataSource: 'real'` (Data Riil Mitra) dan `dataSource: 'dummy'` (Simulasi / Mock) yang dapat difilter di Marketplace.
+- **Kompresi Gambar WebP:** Foto DSLR/HP beresolusi besar (5-12MB) dikurasi dan dikonversi otomatis menjadi format WebP berkualitas tinggi dengan ukuran ringan (~60KB - 250KB) di `public/images/client/`.
+- **Adaptif Terhadap Penambahan Baris Baru:** Setiap baris baru yang ditambahkan klien ke file TSV akan otomatis terdeteksi, dibersihkan nomor WhatsApp-nya, dan diintegrasikan ke modul TypeScript `src/data/realProducts.ts`.
+- **Pelacak & Log Kurasi Media (Tracker):** Seluruh berkas gambar dan video yang diunduh dari klien (153 berkas) diaudit dan dicatat dalam manifes data `assets/real_data_from_client/media_curation_manifest.json` serta laporan transparan di `docs/MEDIA_CURATION_TRACKER.md`. Jika klien memasukkan foto baru ke folder unduhan, pelacak akan mendeteksinya secara otomatis.
+
+### 📋 Alur Kerja Saat Ada Penambahan Data / Foto Baru:
+1. **Jika Klien Mengirim Baris TSV Baru:** Cukup simpan perubahan di `assets/real_data_from_client/list produk unggulan marketplace lembang.tsv`.
+2. **Jika Klien Mengirim Foto Baru:** Masukkan foto ke folder terkait di `assets/real_data_from_client/<Folder>/`.
+3. **Jalankan Pipeline:**
+   ```bash
+   uv run scripts/process_client_data.py
+   ```
+4. **Verifikasi:** Jalankan `bun run lint && bun run build` dan periksa laporan kurasi terbaru di `docs/MEDIA_CURATION_TRACKER.md`.
