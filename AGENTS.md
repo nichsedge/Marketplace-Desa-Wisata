@@ -107,10 +107,10 @@ uv run scripts/process_client_data.py
 ## 🔄 Client Data Ingestion & Media Processing Pipeline
 - **Raw Data Integrity:** File `assets/real_data_from_client/list produk unggulan marketplace lembang.tsv` bersifat **strictly read-only / immutable**. Script pipeline tidak pernah menimpa file mentah klien.
 - **Adaptive Execution:** Menggunakan toolchain Python modern via `uv run scripts/process_client_data.py` dengan metadata PEP 723 (`pillow`, `pillow-heif`).
-- **Data Provenance Rule:**
+- **Data Provenance Rule (Backend Metadata Only):**
   - Data riil klien di-generate ke `src/data/realProducts.ts` dengan metadata `dataSource: 'real'`, `isDummy: false`, `rawSourceRow: <row_idx>`, dan `verifiedBadge: 'Data Riil Mitra Terverifikasi'`.
   - Data mock katalog dipertahankan dengan metadata `dataSource: 'dummy'`, `isDummy: true`, dan `verifiedBadge: 'Data Simulasi / Mock'`.
-  - Marketplace (`MarketplaceView.tsx`) dan Detail Produk (`ProductDetailView.tsx`) menyediakan filter dan badge verifikasi transparan.
+  - **Aturan Ketat Frontend (FE):** Pembedaan data riil vs dummy hanya berada di level metadata data/backend. Seluruh label/badge seperti *"Data Riil Mitra"*, *"Simulasi"*, *"Mock"*, atau filter provenance **DILARANG** ditampilkan di antarmuka publik (Frontend/FE) agar seluruh katalog tampil utuh, imersif, dan representatif untuk sidang Tugas Akhir (TA) DKV.
 - **Optimasi Gambar WebP:**
   - Seluruh gambar klien dikurasi, dirotasi otomatis via EXIF transpose, dan di-downsample menjadi format WebP berkualitas 82% (ukuran berkurang >95% dari ~10MB ke ~100KB-250KB) di `public/images/client/`.
 - **Media Curation Tracker (`docs/MEDIA_CURATION_TRACKER.md`):**

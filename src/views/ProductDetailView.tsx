@@ -266,41 +266,6 @@ export const ProductDetailView: React.FC = () => {
                 <span>Ketersediaan Stok: {product.stockQuota} unit</span>
               </div>
             </div>
-
-            {/* Provenance Banner (Real Data vs Dummy) */}
-            {product.dataSource === 'real' ? (
-              <div className="p-4 rounded-2xl bg-gradient-to-r from-emerald-950 via-emerald-900 to-stone-900 text-white border border-emerald-500/40 shadow-md flex items-start gap-3">
-                <div className="p-2 rounded-xl bg-emerald-500/20 text-emerald-400 shrink-0 border border-emerald-400/30">
-                  <ShieldCheck className="w-5 h-5 text-emerald-300" />
-                </div>
-                <div className="flex-1 min-w-0">
-                  <div className="flex flex-wrap items-center gap-2">
-                    <span className="text-xs font-black uppercase tracking-wider text-amber-300">
-                      Katalog Data Riil Mitra Desa
-                    </span>
-                    <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500 text-stone-950 shadow-xs">
-                      Terverifikasi Lapangan
-                    </span>
-                  </div>
-                  <p className="text-xs text-stone-300 mt-1 leading-relaxed">
-                    Produk dan layanan ini bersumber langsung dari data lapangan pengelola & pelaku usaha resmi di {product.villageName}. Kontak PIC WhatsApp dihubungkan langsung ke penanggung jawab.
-                  </p>
-                  {product.rawSourceRow && (
-                    <span className="text-[10px] text-stone-400 block mt-1 font-mono">
-                      Ref Data Klien: Baris #{product.rawSourceRow}
-                    </span>
-                  )}
-                </div>
-              </div>
-            ) : (
-              <div className="p-3.5 rounded-2xl bg-amber-500/10 border border-amber-500/30 text-amber-950 flex items-start gap-2.5">
-                <Sparkles className="w-4 h-4 text-amber-600 shrink-0 mt-0.5" />
-                <div className="text-xs leading-relaxed">
-                  <span className="font-bold text-amber-900">Katalog Simulasi (Mock Data): </span>
-                  <span className="text-stone-700">Item ini dirancang untuk simulasi interaktif Tugas Akhir DKV hingga mitra desa melengkapi data riil komoditas terkait.</span>
-                </div>
-              </div>
-            )}
           </div>
 
           {/* Interactive Package Tiers (If Available, e.g. Land Rover Offroad) */}
