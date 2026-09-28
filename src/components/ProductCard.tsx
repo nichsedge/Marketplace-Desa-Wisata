@@ -1,7 +1,7 @@
 import React from 'react';
 import { Product } from '../types';
 import { useApp } from '../context/AppContext';
-import { Star, MapPin, ShoppingBag, Eye, ShieldCheck, Sparkles, Phone } from 'lucide-react';
+import { Star, Phone } from 'lucide-react';
 import { formatWhatsAppUrl } from '../utils/whatsapp';
 
 interface ProductCardProps {
@@ -48,13 +48,13 @@ export const getCategoryBadge = (category: string) => {
 };
 
 export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
-  const { navigateTo, addToCart } = useApp();
+  const { navigateTo } = useApp();
   const categoryBadge = getCategoryBadge(product.category);
 
   return (
-    <div className="group bg-white rounded-2xl overflow-hidden border border-stone-200/90 shadow-xs hover:shadow-xl transition-all duration-300 flex flex-col justify-between hover:-translate-y-1">
+    <div className="group bg-white rounded-lg overflow-hidden border border-stone-200 hover:border-stone-400 transition-colors duration-300 flex flex-col justify-between">
       
-      {/* Top Image & Badges */}
+      {/* Top Image */}
       <div 
         className="relative h-48 sm:h-52 overflow-hidden cursor-pointer bg-stone-100"
         onClick={() => navigateTo('product-detail', product.id)}
@@ -62,98 +62,66 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
         <img
           src={product.image}
           alt={product.title}
-          className="w-full h-full object-cover group-hover:scale-108 transition-transform duration-500"
+          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
           referrerPolicy="no-referrer"
         />
 
-        {/* Gradient Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/10 opacity-80 group-hover:opacity-90 transition-opacity" />
+        {/* Subtle Dark Gradient at bottom for text readability */}
+        <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-black/60 to-transparent pointer-events-none" />
 
-        {/* Top Badges Bar (Unified Flex to Prevent Any Overlap) */}
-        <div className="absolute top-3 inset-x-3 flex items-start justify-between gap-2 pointer-events-none z-10">
-          {/* Left: Category & Featured Tag (Stacked Vertically) */}
-          <div className="flex flex-col items-start gap-1 max-w-[calc(100%-85px)]">
-            <span className={`px-2.5 py-0.5 text-[10px] sm:text-[11px] font-extrabold rounded-full border shadow-xs truncate max-w-full backdrop-blur-xs ${categoryBadge.bg}`}>
-              {categoryBadge.label}
-            </span>
-            {product.isFeatured && (
-              <span className="inline-flex items-center gap-1 px-2 py-0.5 text-[10px] font-extrabold rounded-full bg-amber-400 text-stone-950 shadow-xs border border-amber-300">
-                <Sparkles className="w-2.5 h-2.5 text-stone-950 fill-stone-950 shrink-0" />
-                <span>Unggulan</span>
-              </span>
-            )}
-          </div>
-
-          {/* Right: Rating Badge */}
-          <div className="flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-stone-900/85 backdrop-blur-md text-amber-300 text-xs font-bold border border-white/20 shrink-0 shadow-xs">
-            <Star className="w-3 h-3 fill-amber-300 shrink-0" />
-            <span>{product.rating}</span>
-            <span className="text-[10px] text-stone-300 font-normal">({product.totalReviews})</span>
-          </div>
-        </div>
-
-        {/* Village Location Bottom */}
-        <div className="absolute bottom-3 left-3 right-3 flex items-center gap-1.5 text-white text-xs font-medium drop-shadow-md">
-          <MapPin className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
-          <span className="truncate">{product.villageName}</span>
+        {/* Category at bottom-left */}
+        <div className="absolute bottom-3 left-3 text-white text-xs font-medium tracking-wide drop-shadow-sm">
+          {categoryBadge.label}
         </div>
       </div>
 
       {/* Body Content */}
-      <div className="p-4 sm:p-5 flex-1 flex flex-col justify-between space-y-3">
+      <div className="p-4 sm:p-5 flex-1 flex flex-col justify-between space-y-4">
         
         <div>
           {/* Title */}
           <h3 
             onClick={() => navigateTo('product-detail', product.id)}
-            className="text-base font-bold text-stone-900 group-hover:text-emerald-800 transition-colors line-clamp-2 cursor-pointer font-sans leading-snug"
+            className="text-lg font-medium text-stone-900 group-hover:text-stone-600 transition-colors line-clamp-2 cursor-pointer font-sans leading-snug"
           >
             {product.title}
           </h3>
 
-          {/* Highlights or Short Description */}
-          <p className="mt-1.5 text-xs text-stone-500 line-clamp-2 leading-relaxed">
-            {product.description}
-          </p>
-        </div>
+          {/* Rating */}
+          {(product.rating > 0 || product.totalReviews > 0) && (
+            <div className="mt-1.5 flex items-center gap-1.5 text-sm text-stone-600">
+              <Star className="w-3.5 h-3.5 fill-stone-400 text-stone-400" />
+              <span>{product.rating} <span className="text-stone-400 mx-0.5">&middot;</span> {product.totalReviews} ulasan</span>
+            </div>
+          )}
 
-        {/* Seller Info & CP Contact */}
-        <div className="flex items-center gap-2 pt-2 border-t border-stone-100">
-          <img
-            src={product.sellerAvatar}
-            alt={product.sellerName}
-            className="w-7 h-7 rounded-full object-cover border border-emerald-600 shrink-0"
-            referrerPolicy="no-referrer"
-          />
-          <div className="flex-1 min-w-0">
-            <p className="text-[11px] font-bold text-stone-800 truncate flex items-center gap-1">
-              <span className="truncate">{product.sellerName}</span>
-              <ShieldCheck className="w-3 h-3 text-emerald-600 shrink-0" />
-            </p>
-            <p className="text-[10px] text-stone-500 truncate">
-              CP: {product.sellerBadge}
-            </p>
-          </div>
-        </div>
-
-        {/* Price & Actions */}
-        <div className="pt-2 flex items-center justify-between gap-2 border-t border-stone-100/60">
-          <div className="min-w-0">
+          {/* Price */}
+          <div className="mt-3">
             {product.originalPrice && (
-              <span className="text-[10px] sm:text-[11px] text-stone-400 line-through mr-1 block truncate">
+              <span className="text-xs text-stone-400 line-through mr-1 block">
                 {formatRupiah(product.originalPrice)}
               </span>
             )}
             <div className="flex items-baseline gap-1">
-              <span className="text-base sm:text-lg font-extrabold text-emerald-800 truncate">
+              <span className="text-lg font-semibold text-stone-900">
                 {formatRupiah(product.price)}
               </span>
-              <span className="text-[10px] sm:text-[11px] font-medium text-stone-500 shrink-0">{product.unit}</span>
+              <span className="text-sm text-stone-500">/ {product.unit}</span>
             </div>
           </div>
+        </div>
 
-          <div className="flex items-center gap-1.5 shrink-0">
-            {product.sellerPhone && (
+        {/* Seller Info & Actions */}
+        <div className="pt-4 border-t border-stone-100 flex flex-col gap-3">
+          {/* Seller Name and Village */}
+          <div className="flex flex-col text-sm text-stone-700">
+            <span>{product.sellerName}</span>
+            <span className="text-stone-500">{product.villageName}</span>
+          </div>
+
+          <div className="flex items-center justify-between pt-1">
+            {/* WhatsApp Link */}
+            {product.sellerPhone ? (
               <button
                 type="button"
                 onClick={(e) => {
@@ -163,18 +131,22 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
                   const url = formatWhatsAppUrl(targetPhone, text);
                   window.open(url, '_blank');
                 }}
-                className="px-2.5 py-2 rounded-xl bg-emerald-700 hover:bg-emerald-600 text-white font-bold text-xs shadow-xs transition-all hover:scale-105 flex items-center gap-1 cursor-pointer"
+                className="text-emerald-700 hover:text-emerald-800 text-sm flex items-center gap-1.5 transition-colors cursor-pointer"
                 title={`Chat WhatsApp langsung dengan Admin Produk / CP (${product.sellerName})`}
               >
                 <Phone className="w-3.5 h-3.5" />
-                <span className="text-[11px] font-bold">Chat CP</span>
+                <span>Hubungi via WhatsApp</span>
               </button>
+            ) : (
+              <div />
             )}
+
+            {/* Detail Link */}
             <button
               onClick={() => navigateTo('product-detail', product.id)}
-              className="px-2.5 sm:px-3 py-2 rounded-xl bg-stone-900 hover:bg-emerald-950 text-amber-300 font-bold text-xs shadow-xs transition-all hover:scale-105 flex items-center gap-1 cursor-pointer"
+              className="text-stone-600 hover:text-stone-900 text-sm transition-colors flex items-center cursor-pointer"
             >
-              <span>Detail</span>
+              Lihat Detail &rarr;
             </button>
           </div>
         </div>

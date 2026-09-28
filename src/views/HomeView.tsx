@@ -4,25 +4,11 @@ import { ProductCard } from '../components/ProductCard';
 import { 
   Search, 
   MapPin, 
-  BedDouble, 
-  Compass, 
-  Sparkles, 
-  ShieldCheck, 
-  Heart, 
-  TreePine, 
   ArrowRight,
-  ShoppingBag,
-  Store,
-  Coffee,
-  Palette,
-  Mountain,
   Check,
   ChevronDown,
   Layers,
-  Milk,
-  Flower2,
-  Apple,
-  Utensils
+  ShoppingBag
 } from 'lucide-react';
 import { ProductCategory } from '../types';
 
@@ -91,15 +77,15 @@ export const HomeView: React.FC = () => {
   const mockProducts = products.filter(p => p.dataSource !== 'real' && (p.isFeatured || p.rating >= 4.8));
   const featuredProducts = [...realProducts, ...mockProducts].slice(0, 8);
 
-  const categoryCards: { id: ProductCategory; title: string; subtitle: string; icon: React.ReactNode; color: string }[] = [
-    { id: 'sembako', title: 'Sembako', subtitle: 'Sayur Segar & Susu Murni (Cibodas)', icon: <Store className="w-6 h-6 text-emerald-700" />, color: 'bg-emerald-50 border-emerald-200' },
-    { id: 'tanaman-hias', title: 'Tanaman Hias', subtitle: 'Sukulen, Pot & Media Tanam (Jayagiri)', icon: <Flower2 className="w-6 h-6 text-teal-700" />, color: 'bg-teal-50 border-teal-200' },
-    { id: 'minuman-komoditas', title: 'Minuman & Komoditas', subtitle: 'Kopi Arabika/Robusta (Suntenjaya)', icon: <Coffee className="w-6 h-6 text-amber-700" />, color: 'bg-amber-50 border-amber-200' },
-    { id: 'buah-herba', title: 'Buah & Herba', subtitle: 'Lemon, Stroberi & Jamu (Cikahuripan)', icon: <Apple className="w-6 h-6 text-lime-700" />, color: 'bg-lime-50 border-lime-200' },
-    { id: 'kuliner', title: 'Kuliner', subtitle: 'Tahu Susu, Bolu & Kriya (Wangunsari, Gudangkahuripan)', icon: <Utensils className="w-6 h-6 text-rose-700" />, color: 'bg-rose-50 border-rose-200' },
-    { id: 'olahan-susu', title: 'Olahan Susu Kemasan', subtitle: 'Yoghurt, Keju & Mentega (Sukajaya)', icon: <Milk className="w-6 h-6 text-sky-700" />, color: 'bg-sky-50 border-sky-200' },
-    { id: 'wisata-alam', title: 'Wisata Alam', subtitle: 'Camping, Tenda & Offroad (Cikole, Cikahuripan)', icon: <TreePine className="w-6 h-6 text-emerald-800" />, color: 'bg-emerald-50 border-emerald-300' },
-    { id: 'penginapan-lokal', title: 'Penginapan Lokal', subtitle: 'Homestay & Sewa Rumah (Cibodas)', icon: <BedDouble className="w-6 h-6 text-indigo-700" />, color: 'bg-indigo-50 border-indigo-200' },
+  const categoryLinks: { id: ProductCategory; title: string }[] = [
+    { id: 'sembako', title: 'Sembako' },
+    { id: 'tanaman-hias', title: 'Tanaman Hias' },
+    { id: 'minuman-komoditas', title: 'Kopi & Komoditas' },
+    { id: 'buah-herba', title: 'Buah & Herba' },
+    { id: 'kuliner', title: 'Kuliner' },
+    { id: 'olahan-susu', title: 'Olahan Susu' },
+    { id: 'wisata-alam', title: 'Wisata Alam' },
+    { id: 'penginapan-lokal', title: 'Penginapan' },
   ];
 
   return (
@@ -122,7 +108,7 @@ export const HomeView: React.FC = () => {
         {/* Hero Content */}
         <div className="relative max-w-5xl mx-auto px-3 sm:px-10 py-10 sm:py-20 text-center space-y-6 sm:space-y-8 z-10 w-full">
           
-          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-white/10 text-amber-200 border border-white/20 text-[11px] sm:text-xs font-semibold tracking-wider uppercase backdrop-blur-md">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-stone-900/60 text-amber-200 border border-white/20 text-[11px] sm:text-xs font-semibold tracking-wider uppercase">
             <span>Kawasan Lembang · 1.200 — 1.400 mdpl</span>
           </div>
 
@@ -138,7 +124,7 @@ export const HomeView: React.FC = () => {
           {/* Interactive Search Box with Custom Dropdowns */}
           <form 
             onSubmit={handleHeroSearch}
-            className="bg-white/95 backdrop-blur-md p-2 sm:p-3 rounded-2xl sm:rounded-full shadow-2xl border border-stone-200 text-left max-w-4xl mx-auto flex flex-col md:flex-row items-stretch md:items-center gap-1.5 sm:gap-2 relative z-30 w-full"
+            className="bg-white p-2 sm:p-3 rounded-2xl sm:rounded-full shadow-2xl border border-stone-200 text-left max-w-4xl mx-auto flex flex-col md:flex-row items-stretch md:items-center gap-1.5 sm:gap-2 relative z-30 w-full"
           >
             {/* Search Input */}
             <div className="flex-1 relative flex items-center px-3 sm:px-4 py-2 border-b md:border-b-0 md:border-r border-stone-200">
@@ -414,10 +400,10 @@ export const HomeView: React.FC = () => {
                   referrerPolicy="no-referrer"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-stone-950/85 via-stone-950/20 to-transparent" />
-                <div className="absolute top-3 left-3 bg-stone-900/80 backdrop-blur-md text-amber-200 font-medium text-[10px] px-2.5 py-0.5 rounded-full border border-white/15">
+                <div className="absolute top-3 left-3 bg-stone-900/90 text-amber-200 font-medium text-[10px] px-2.5 py-0.5 rounded-full border border-white/15">
                   {village.villageAltitude || '1.250 mdpl'}
                 </div>
-                <div className="absolute top-3 right-3 bg-stone-900/80 backdrop-blur-md text-amber-300 font-bold text-[10px] px-2 py-0.5 rounded-full border border-white/15">
+                <div className="absolute top-3 right-3 bg-stone-900/90 text-amber-300 font-bold text-[10px] px-2 py-0.5 rounded-full border border-white/15">
                   ★ {village.rating} ({village.totalReviews})
                 </div>
                 <div className="absolute bottom-3 left-3 right-3 text-white">
@@ -477,21 +463,17 @@ export const HomeView: React.FC = () => {
           </button>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          {categoryCards.map((cat) => (
-            <div
-              key={cat.id}
-              onClick={() => { setCategoryFilter(cat.id); navigateTo('marketplace'); }}
-              className={`p-4 rounded-2xl border ${cat.color} cursor-pointer hover:shadow-lg transition-all hover:-translate-y-1 flex flex-col justify-between space-y-2 group`}
-            >
-              <div className="w-11 h-11 rounded-xl bg-white shadow-xs flex items-center justify-center group-hover:scale-110 transition-transform">
-                {cat.icon}
-              </div>
-              <div>
-                <h3 className="text-sm font-bold text-stone-900 font-sans">{cat.title}</h3>
-                <p className="text-[11px] text-stone-600 mt-0.5 line-clamp-2 leading-relaxed">{cat.subtitle}</p>
-              </div>
-            </div>
+        <div className="flex flex-wrap items-center gap-2 sm:gap-4 text-sm font-medium text-stone-700">
+          {categoryLinks.map((cat, idx) => (
+            <React.Fragment key={cat.id}>
+              <button
+                onClick={() => { setCategoryFilter(cat.id); navigateTo('marketplace'); }}
+                className="hover:text-emerald-800 transition-colors cursor-pointer"
+              >
+                {cat.title}
+              </button>
+              {idx < categoryLinks.length - 1 && <span className="text-stone-300">·</span>}
+            </React.Fragment>
           ))}
         </div>
       </section>
@@ -525,67 +507,59 @@ export const HomeView: React.FC = () => {
       </section>
 
       {/* TESTIMONIAL & IMPACT SECTION */}
-      <section className="bg-stone-900 text-stone-100 rounded-3xl mx-4 sm:mx-6 lg:mx-8 p-8 sm:p-12 border border-stone-800 space-y-8">
-        <div className="max-w-3xl mx-auto text-center space-y-3">
-          <span className="px-3 py-1 bg-amber-400/20 text-amber-300 border border-amber-400/30 rounded-full text-xs font-bold">
-            Dampak Nyata Ekonomi Desa
-          </span>
-          <h2 className="text-2xl sm:text-4xl font-extrabold font-serif-title text-white">
-            "Pariwisata Berkelanjutan yang Menyejahterakan Petani, Peternak & Pengrajin Lembang"
-          </h2>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-4">
-          <div className="bg-stone-800/80 p-6 rounded-2xl border border-stone-700/80 space-y-4">
-            <p className="text-xs sm:text-sm text-stone-300 italic leading-relaxed">
-              "Melalui portal Saba Lembang ini, sayuran organik dan susu murni kami di Cibodas terhubung langsung ke pembeli. Pengunjung juga mudah memesan penginapan warga."
-            </p>
-            <div className="flex items-center gap-3 pt-2 border-t border-stone-700">
-              <img
-                src="/images/unsplash/photo-1500648767791-00dcc994a43e_w150.jpg"
-                alt="Kang Dadang Herdiana"
-                className="w-10 h-10 rounded-full object-cover border border-amber-300"
-                referrerPolicy="no-referrer"
-              />
-              <div>
-                <p className="text-xs font-bold text-white">Kang Dadang Herdiana</p>
-                <p className="text-[10px] text-amber-300">Admin Desa Wisata Cibodas</p>
-              </div>
+      <section className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-12">
+        <div className="text-center space-y-6">
+          <blockquote className="text-2xl sm:text-4xl font-serif-title text-stone-900 leading-snug relative">
+            <span className="text-stone-300 text-6xl leading-none absolute -left-8 -top-4">"</span>
+            Melalui portal Saba Lembang ini, sayuran organik dan susu murni kami di Cibodas terhubung langsung ke pembeli. Pengunjung juga mudah memesan penginapan warga.
+          </blockquote>
+          <div className="flex items-center justify-center gap-3">
+            <img
+              src="/images/unsplash/photo-1500648767791-00dcc994a43e_w150.jpg"
+              alt="Kang Dadang Herdiana"
+              className="w-12 h-12 rounded object-cover"
+              referrerPolicy="no-referrer"
+            />
+            <div className="text-left">
+              <p className="text-sm font-bold text-stone-900">Kang Dadang Herdiana</p>
+              <p className="text-xs text-stone-600">Admin Desa Wisata Cibodas</p>
             </div>
           </div>
+        </div>
 
-          <div className="bg-stone-800/80 p-6 rounded-2xl border border-stone-700/80 space-y-4">
-            <p className="text-xs sm:text-sm text-stone-300 italic leading-relaxed">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 pt-8 border-t border-stone-200">
+          <div className="space-y-4">
+            <p className="text-sm text-stone-700 leading-relaxed">
               "Biji kopi Arabika single origin lereng Suntenjaya kini semakin dikenal luas. Komunikasi dengan wisatawan sangat praktis melalui kontak Admin Desa."
             </p>
-            <div className="flex items-center gap-3 pt-2 border-t border-stone-700">
+            <div className="flex items-center gap-3">
               <img
                 src="/images/unsplash/photo-1507003211169-0a1dd7228f2d_w150.jpg"
                 alt="Kang Asep Suhendar"
-                className="w-10 h-10 rounded-full object-cover border border-amber-300"
+                className="w-10 h-10 rounded object-cover"
                 referrerPolicy="no-referrer"
               />
               <div>
-                <p className="text-xs font-bold text-white">Kang Asep Suhendar</p>
-                <p className="text-[10px] text-amber-300">Admin Desa Wisata Suntenjaya</p>
+                <p className="text-sm font-bold text-stone-900">Kang Asep Suhendar</p>
+                <p className="text-xs text-stone-600">Admin Desa Wisata Suntenjaya</p>
               </div>
             </div>
           </div>
 
-          <div className="bg-stone-800/80 p-6 rounded-2xl border border-stone-700/80 space-y-4">
-            <p className="text-xs sm:text-sm text-stone-300 italic leading-relaxed">
+          <div className="space-y-4">
+            <p className="text-sm text-stone-700 leading-relaxed">
               "Platform ini memudahkan kami mencari produk asli desa di Lembang, mulai dari camping di Cikole, buah segar di Cikahuripan, hingga olahan susu di Sukajaya."
             </p>
-            <div className="flex items-center gap-3 pt-2 border-t border-stone-700">
+            <div className="flex items-center gap-3">
               <img
                 src="/images/unsplash/photo-1494790108377-be9c29b29330_w150.jpg"
                 alt="Siti Rahmawati"
-                className="w-10 h-10 rounded-full object-cover border border-amber-300"
+                className="w-10 h-10 rounded object-cover"
                 referrerPolicy="no-referrer"
               />
               <div>
-                <p className="text-xs font-bold text-white">Siti Rahmawati</p>
-                <p className="text-[10px] text-amber-300">Wisatawan Asal Jakarta</p>
+                <p className="text-sm font-bold text-stone-900">Siti Rahmawati</p>
+                <p className="text-xs text-stone-600">Wisatawan Asal Jakarta</p>
               </div>
             </div>
           </div>
@@ -593,25 +567,20 @@ export const HomeView: React.FC = () => {
       </section>
 
       {/* FINAL CALL TO ACTION */}
-      <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-6 pt-4">
-        <div className="bg-gradient-to-br from-emerald-800 to-emerald-950 p-8 sm:p-12 rounded-3xl text-white shadow-2xl space-y-6 relative overflow-hidden">
-          <div className="relative z-10 space-y-3">
-            <h2 className="text-2xl sm:text-4xl font-extrabold font-serif-title">
-              Siap Menikmati Sejuknya Liburan di Kawasan Lembang?
-            </h2>
-            <p className="text-stone-200 text-xs sm:text-sm max-w-xl mx-auto leading-relaxed">
-              Dapatkan pengalaman autentik di ketinggian pegunungan Lembang, nikmati udara segar berkabut, dukung ekonomi warga lokal, dan rasakan kehangatan keramahan warga desa.
-            </p>
-            <div className="pt-4 flex flex-wrap items-center justify-center gap-4">
-              <button
-                onClick={() => navigateTo('marketplace')}
-                className="px-8 py-3.5 bg-amber-400 hover:bg-amber-300 text-stone-900 font-extrabold rounded-full text-xs sm:text-sm shadow-lg transition-all hover:scale-105 flex items-center gap-2 cursor-pointer"
-              >
-                <ShoppingBag className="w-4 h-4" />
-                <span>Mulai Jelajah & Kontak Langsung CP Produk</span>
-              </button>
-            </div>
-          </div>
+      <section className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-16 text-center space-y-6 border-t border-stone-200">
+        <h2 className="text-3xl sm:text-5xl font-serif-title font-extrabold text-stone-900">
+          Siap Menikmati Liburan di Lembang?
+        </h2>
+        <p className="text-stone-600 text-sm sm:text-base leading-relaxed">
+          Dapatkan pengalaman autentik di ketinggian pegunungan Lembang, nikmati udara segar berkabut, dukung ekonomi warga lokal, dan rasakan kehangatan keramahan warga desa.
+        </p>
+        <div className="pt-6">
+          <button
+            onClick={() => navigateTo('marketplace')}
+            className="text-emerald-800 font-bold hover:text-emerald-900 text-sm sm:text-base border-b-2 border-emerald-800 pb-1 cursor-pointer transition-colors"
+          >
+            Mulai Jelajah & Kontak Langsung →
+          </button>
         </div>
       </section>
 
