@@ -13,7 +13,6 @@ import { VillageDetailView } from './views/VillageDetailView';
 import { CartView } from './views/CartView';
 import { AuthView } from './views/AuthView';
 import { SellerDashboardView } from './views/SellerDashboardView';
-import { FloatingWhatsApp } from './components/FloatingWhatsApp';
 
 const MainContent: React.FC = () => {
   const { page } = useApp();
@@ -34,7 +33,6 @@ const MainContent: React.FC = () => {
       </div>
       <Footer />
       <Toast />
-      <FloatingWhatsApp />
     </main>
   );
 };

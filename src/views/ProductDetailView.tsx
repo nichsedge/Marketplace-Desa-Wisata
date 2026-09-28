@@ -445,15 +445,20 @@ export const ProductDetailView: React.FC = () => {
                 <h4 className="text-base font-bold text-white truncate">{product.sellerName}</h4>
                 <p className="text-xs text-stone-300 font-medium">{product.sellerBadge}</p>
                 <p className="text-[11px] text-amber-200 mt-0.5">{product.villageName}</p>
+                {product.sellerPhone && (
+                  <p className="text-[11px] text-emerald-300 font-mono mt-1 font-semibold">
+                    Kontak CP: +{product.sellerPhone.replace(/^\+/, '')}
+                  </p>
+                )}
               </div>
             </div>
 
             <button
               onClick={handleWhatsAppChat}
-              className="w-full py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-xl text-xs flex items-center justify-center gap-2 shadow-md transition-colors"
+              className="w-full py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-xl text-xs flex items-center justify-center gap-2 shadow-md transition-colors cursor-pointer"
             >
               <Phone className="w-4 h-4" />
-              <span>Tanya / Chat Penjual via WhatsApp</span>
+              <span>Chat WhatsApp Admin Produk / CP ({product.sellerName})</span>
             </button>
           </div>
 
@@ -699,15 +704,15 @@ export const ProductDetailView: React.FC = () => {
             <div className="space-y-2.5 pt-2">
               <button
                 onClick={handleOrderViaWhatsApp}
-                className="w-full py-4 bg-emerald-800 hover:bg-emerald-900 text-white font-extrabold rounded-2xl text-xs sm:text-sm shadow-xl transition-all hover:scale-[1.02] flex items-center justify-center gap-2 border-2 border-amber-300"
+                className="w-full py-4 bg-emerald-800 hover:bg-emerald-900 text-white font-extrabold rounded-2xl text-xs sm:text-sm shadow-xl transition-all hover:scale-[1.02] flex items-center justify-center gap-2 border-2 border-amber-300 cursor-pointer"
               >
                 <MessageCircle className="w-5 h-5 fill-white text-emerald-800" />
-                <span>Pesan Sekarang via WhatsApp</span>
+                <span>Pesan Sekarang via WhatsApp Admin Produk / CP</span>
               </button>
 
               <button
                 onClick={handleAddToCart}
-                className="w-full py-3 bg-amber-100 hover:bg-amber-200 text-amber-950 font-bold rounded-2xl text-xs border border-amber-300 transition-colors flex items-center justify-center gap-2"
+                className="w-full py-3 bg-amber-100 hover:bg-amber-200 text-amber-950 font-bold rounded-2xl text-xs border border-amber-300 transition-colors flex items-center justify-center gap-2 cursor-pointer"
               >
                 <ShoppingBag className="w-4 h-4 text-emerald-800" />
                 <span>+ Masukkan ke Keranjang Belanja</span>
@@ -715,15 +720,15 @@ export const ProductDetailView: React.FC = () => {
 
               <button
                 onClick={handleWhatsAppChat}
-                className="w-full py-2.5 bg-stone-100 hover:bg-stone-200 text-stone-700 font-semibold rounded-2xl text-xs transition-colors flex items-center justify-center gap-1.5"
+                className="w-full py-2.5 bg-stone-100 hover:bg-stone-200 text-stone-700 font-semibold rounded-2xl text-xs transition-colors flex items-center justify-center gap-1.5 cursor-pointer"
               >
                 <Phone className="w-3.5 h-3.5 text-emerald-700" />
-                <span>Tanya Pengelola tentang Produk Ini</span>
+                <span>Tanya / Chat Admin Produk (${product.sellerName})</span>
               </button>
             </div>
 
             <p className="text-[10px] text-stone-500 text-center font-medium">
-              ✨ Pemesanan langsung terhubung ke Admin Desa resmi Saba Lembang
+              ✨ Pemesanan langsung terhubung ke kontak CP resmi produk ({product.sellerName})
             </p>
 
           </div>

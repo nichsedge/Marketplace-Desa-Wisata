@@ -1,7 +1,8 @@
 import React from 'react';
 import { Product } from '../types';
 import { useApp } from '../context/AppContext';
-import { Star, MapPin, ShoppingBag, Eye, ShieldCheck, Sparkles } from 'lucide-react';
+import { Star, MapPin, ShoppingBag, Eye, ShieldCheck, Sparkles, Phone } from 'lucide-react';
+import { formatWhatsAppUrl } from '../utils/whatsapp';
 
 interface ProductCardProps {
   product: Product;
@@ -126,45 +127,64 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
           </p>
         </div>
 
-        {/* Seller Info */}
+        {/* Seller Info & CP Contact */}
         <div className="flex items-center gap-2 pt-2 border-t border-stone-100">
           <img
             src={product.sellerAvatar}
             alt={product.sellerName}
-            className="w-6 h-6 rounded-full object-cover border border-emerald-600"
+            className="w-7 h-7 rounded-full object-cover border border-emerald-600 shrink-0"
             referrerPolicy="no-referrer"
           />
           <div className="flex-1 min-w-0">
-            <p className="text-[11px] font-semibold text-stone-800 truncate flex items-center gap-1">
-              <span>{product.sellerName}</span>
-              <ShieldCheck className="w-3 h-3 text-emerald-600 inline shrink-0" />
+            <p className="text-[11px] font-bold text-stone-800 truncate flex items-center gap-1">
+              <span className="truncate">{product.sellerName}</span>
+              <ShieldCheck className="w-3 h-3 text-emerald-600 shrink-0" />
             </p>
-            <p className="text-[10px] text-stone-400 truncate">{product.sellerBadge}</p>
+            <p className="text-[10px] text-stone-500 truncate">
+              CP: {product.sellerBadge}
+            </p>
           </div>
         </div>
 
-        {/* Price & Action */}
-        <div className="pt-2 flex items-end justify-between gap-2">
-          <div>
+        {/* Price & Actions */}
+        <div className="pt-2 flex items-center justify-between gap-2 border-t border-stone-100/60">
+          <div className="min-w-0">
             {product.originalPrice && (
-              <span className="text-[11px] text-stone-400 line-through mr-1">
+              <span className="text-[10px] sm:text-[11px] text-stone-400 line-through mr-1 block truncate">
                 {formatRupiah(product.originalPrice)}
               </span>
             )}
             <div className="flex items-baseline gap-1">
-              <span className="text-base sm:text-lg font-extrabold text-emerald-800">
+              <span className="text-base sm:text-lg font-extrabold text-emerald-800 truncate">
                 {formatRupiah(product.price)}
               </span>
-              <span className="text-[11px] font-medium text-stone-500">{product.unit}</span>
+              <span className="text-[10px] sm:text-[11px] font-medium text-stone-500 shrink-0">{product.unit}</span>
             </div>
           </div>
 
-          <div className="flex items-center gap-1.5">
+          <div className="flex items-center gap-1.5 shrink-0">
+            {product.sellerPhone && (
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  const targetPhone = product.sellerPhone;
+                  const text = `Halo Admin / CP ${product.sellerName} (${product.villageName}), saya tertarik dengan produk "${product.title}" (${formatRupiah(product.price)} ${product.unit}). Apakah masih tersedia?`;
+                  const url = formatWhatsAppUrl(targetPhone, text);
+                  window.open(url, '_blank');
+                }}
+                className="px-2.5 py-2 rounded-xl bg-emerald-700 hover:bg-emerald-600 text-white font-bold text-xs shadow-xs transition-all hover:scale-105 flex items-center gap-1 cursor-pointer"
+                title={`Chat WhatsApp langsung dengan Admin Produk / CP (${product.sellerName})`}
+              >
+                <Phone className="w-3.5 h-3.5" />
+                <span className="text-[11px] font-bold">Chat CP</span>
+              </button>
+            )}
             <button
               onClick={() => navigateTo('product-detail', product.id)}
-              className="px-3 py-2 rounded-xl bg-emerald-800 hover:bg-emerald-900 text-amber-200 font-bold text-xs shadow-sm transition-all hover:scale-105 flex items-center gap-1.5"
+              className="px-2.5 sm:px-3 py-2 rounded-xl bg-stone-900 hover:bg-emerald-950 text-amber-300 font-bold text-xs shadow-xs transition-all hover:scale-105 flex items-center gap-1 cursor-pointer"
             >
-              <span>Detail & Pesan</span>
+              <span>Detail</span>
             </button>
           </div>
         </div>

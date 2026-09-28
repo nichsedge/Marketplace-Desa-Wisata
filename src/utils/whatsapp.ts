@@ -65,8 +65,13 @@ export const createCartWhatsAppMessage = (
     notes?: string;
   }
 ) => {
-  let message = `*HALO ADMIN SABA LEMBANG*\n`;
-  message += `Saya ingin melakukan pemesanan wisata/produk via platform:\n\n`;
+  const targetVillage = items[0]?.product?.villageName || 'Kawasan Lembang';
+  const targetSeller = items[0]?.product?.sellerName;
+  let message = `*HALO ADMIN / CP ${targetVillage.toUpperCase()}*`;
+  if (targetSeller) {
+    message += ` (${targetSeller})`;
+  }
+  message += `\nSaya ingin melakukan pemesanan wisata/produk via platform:\n\n`;
   message += `👤 *Nama Pemesan:* ${customerInfo.name}\n`;
   if (customerInfo.phone) message += `📱 *No. HP/WA:* ${customerInfo.phone}\n`;
   if (customerInfo.address) message += `📍 *Alamat/Kota Asal:* ${customerInfo.address}\n`;

@@ -64,7 +64,8 @@ export const CartView: React.FC = () => {
       email: customerEmail,
       notes: notes
     });
-    const waUrl = formatWhatsAppUrl(WHATSAPP_PHONE, waText);
+    const targetPhone = cart[0]?.product?.sellerPhone || WHATSAPP_PHONE;
+    const waUrl = formatWhatsAppUrl(targetPhone, waText);
     window.open(waUrl, '_blank');
 
     const order = placeOrder(customerName, customerEmail, customerPhone, paymentMethod, notes);

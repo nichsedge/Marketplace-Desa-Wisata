@@ -151,22 +151,11 @@ export const Navbar: React.FC = () => {
             {/* Tombol Pencarian - Icon Only, tidak menggencet navbar */}
             <button 
               onClick={() => setSearchModalOpen(true)}
-              className="relative p-1.5 sm:p-2.5 rounded-full bg-white border border-stone-200 text-stone-700 hover:bg-stone-100 hover:border-emerald-700 transition-colors shadow-xs shrink-0"
+              className="relative p-1.5 sm:p-2.5 rounded-full bg-white border border-stone-200 text-stone-700 hover:bg-stone-100 hover:border-emerald-700 transition-colors shadow-xs shrink-0 cursor-pointer"
               title="Cari homestay, kopi, wisata..."
             >
               <Search className="w-4 h-4 sm:w-5 sm:h-5 text-emerald-800" />
             </button>
-
-            {/* Direct WhatsApp Contact Button */}
-            <a
-              href="https://wa.me/6282122334455?text=Halo%20Admin%20Saba%20Lembang%2C%20saya%20ingin%20tanya%20info%20Desa%20Wisata%20Kawasan%20Lembang"
-              target="_blank"
-              rel="noreferrer"
-              className="hidden 2xl:flex items-center gap-1.5 px-3.5 py-2 rounded-full bg-emerald-800 hover:bg-emerald-900 text-amber-200 text-xs font-bold shadow-sm transition-all hover:scale-105 border border-amber-300/40 whitespace-nowrap shrink-0"
-            >
-              <Phone className="w-3.5 h-3.5" />
-              <span>Hubungi Kami</span>
-            </a>
 
             {/* Cart Icon */}
             <button
@@ -302,16 +291,6 @@ export const Navbar: React.FC = () => {
                 </button>
               </div>
             )}
-
-            <a
-              href="https://wa.me/6282122334455?text=Halo%20Admin%20Saba%20Lembang%2C%20saya%20ingin%20tanya%20info%20Desa%20Wisata%20Kawasan%20Lembang"
-              target="_blank"
-              rel="noreferrer"
-              className="w-full flex items-center justify-center gap-2 p-3 bg-emerald-800 text-amber-200 rounded-xl text-xs font-bold shadow-md"
-            >
-              <Phone className="w-4 h-4" />
-              <span>Hubungi Kami via WhatsApp</span>
-            </a>
           </div>
         </div>
       )}

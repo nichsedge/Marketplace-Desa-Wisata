@@ -86,8 +86,10 @@ export const HomeView: React.FC = () => {
 
   const selectedCategoryObj = CATEGORY_OPTIONS.find(c => c.id === heroCategory);
 
-  // Filtered lists for homepage showcase
-  const featuredProducts = products.filter(p => p.isFeatured || p.rating >= 4.8).slice(0, 4);
+  // Filtered lists for homepage showcase: prioritize real products with direct CP
+  const realProducts = products.filter(p => p.dataSource === 'real');
+  const mockProducts = products.filter(p => p.dataSource !== 'real' && (p.isFeatured || p.rating >= 4.8));
+  const featuredProducts = [...realProducts, ...mockProducts].slice(0, 8);
 
   const categoryCards: { id: ProductCategory; title: string; subtitle: string; icon: React.ReactNode; color: string }[] = [
     { id: 'sembako', title: 'Sembako', subtitle: 'Sayur Segar & Susu Murni (Cibodas)', icon: <Store className="w-6 h-6 text-emerald-700" />, color: 'bg-emerald-50 border-emerald-200' },
@@ -499,16 +501,19 @@ export const HomeView: React.FC = () => {
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-stone-200 pb-4">
           <div>
-            <span className="text-emerald-700 font-bold text-xs uppercase tracking-wider">Paling Direkomendasikan</span>
+            <span className="text-emerald-700 font-bold text-xs uppercase tracking-wider">Paling Direkomendasikan · Langsung ke Kontak CP</span>
             <h2 className="text-2xl sm:text-3xl font-extrabold font-serif-title text-stone-900 mt-1">
               Produk & Layanan Unggulan Kawasan Lembang
             </h2>
+            <p className="text-xs sm:text-sm text-stone-600 mt-1">
+              Terhubung langsung dengan Kontak Person (CP) & Admin resmi tiap produk desa tanpa perantara.
+            </p>
           </div>
           <button
             onClick={() => navigateTo('marketplace')}
             className="text-xs font-bold text-emerald-800 hover:text-emerald-900 flex items-center gap-1 group cursor-pointer"
           >
-            <span>Lihat Semua Produk</span>
+            <span>Buka Semua Produk Marketplace</span>
             <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
           </button>
         </div>
@@ -604,16 +609,8 @@ export const HomeView: React.FC = () => {
                 className="px-8 py-3.5 bg-amber-400 hover:bg-amber-300 text-stone-900 font-extrabold rounded-full text-xs sm:text-sm shadow-lg transition-all hover:scale-105 flex items-center gap-2 cursor-pointer"
               >
                 <ShoppingBag className="w-4 h-4" />
-                <span>Mulai Jelajah & Pesan</span>
+                <span>Mulai Jelajah & Kontak Langsung CP Produk</span>
               </button>
-              <a
-                href="https://wa.me/6282122334455?text=Halo%20Admin%20Saba%20Lembang%2C%20saya%20ingin%20konsultasi%20destinasi%20wisata%20Kawasan%20Lembang"
-                target="_blank"
-                rel="noreferrer"
-                className="px-6 py-3.5 bg-white/10 hover:bg-white/20 text-white font-semibold rounded-full text-xs sm:text-sm border border-white/30 backdrop-blur-md transition-all flex items-center gap-2 cursor-pointer"
-              >
-                <span>Konsultasi via WhatsApp</span>
-              </a>
             </div>
           </div>
         </div>
