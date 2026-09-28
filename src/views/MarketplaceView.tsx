@@ -107,17 +107,16 @@ export const MarketplaceView: React.FC = () => {
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
       
       {/* Header Banner */}
-      <div className="bg-gradient-to-r from-emerald-900 via-stone-900 to-amber-950 rounded-3xl p-6 sm:p-10 text-white shadow-xl flex flex-col md:flex-row md:items-center justify-between gap-6 border border-emerald-700/30">
-        <div className="space-y-2">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-amber-400/20 text-amber-300 rounded-full text-xs font-semibold">
-            <ShoppingBag className="w-3.5 h-3.5" />
-            <span>Katalog Resmi Jaringan Desa Wisata Lembang</span>
-          </div>
+      <div className="bg-emerald-950 rounded-2xl p-6 sm:p-10 text-white shadow-xl flex flex-col md:flex-row md:items-center justify-between gap-6 border border-emerald-900/60 relative overflow-hidden">
+        <div className="space-y-2 relative z-10">
+          <span className="text-[11px] font-bold text-amber-300 tracking-wider uppercase font-mono">
+            Katalog Komoditas & Reservasi
+          </span>
           <h1 className="text-2xl sm:text-4xl font-extrabold font-serif-title">
             Marketplace Desa Wisata Kawasan Lembang
           </h1>
-          <p className="text-xs sm:text-sm text-stone-300 max-w-xl leading-relaxed">
-            Pesan langsung sembako segar, tanaman hias, kopi specialty, buah & herba, kuliner khas, olahan susu, paket wisata alam, hingga penginapan lokal langsung dari petani, peternak, dan warga lokal di Kawasan Lembang.
+          <p className="text-xs sm:text-sm text-stone-300 max-w-xl leading-relaxed font-light">
+            Belanja hasil kebun organik, olahan susu, kriya lokal, paket petualangan, hingga homestay asri langsung dari warga 8 Desa Wisata di Kawasan Lembang.
           </p>
         </div>
 

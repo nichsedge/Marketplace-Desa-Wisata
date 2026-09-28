@@ -108,34 +108,31 @@ export const HomeView: React.FC = () => {
       {/* HERO SECTION */}
       <section className="relative min-h-[500px] sm:min-h-[580px] lg:min-h-[640px] flex items-center rounded-2xl sm:rounded-3xl mx-2 sm:mx-6 lg:mx-8 mt-2 sm:mt-4 shadow-2xl border border-stone-200">
         
-        {/* Background Image & Gradient */}
+        {/* Background Image & Editorial Overlay */}
         <div className="absolute inset-0 rounded-2xl sm:rounded-3xl overflow-hidden pointer-events-none">
           <img
             src="/images/unsplash/photo-1506744038136-46273834b3fb_w2000.jpg"
             alt="Desa Wisata Kawasan Lembang Lanskap Pegunungan"
-            className="w-full h-full object-cover object-center scale-105 animate-pulse duration-[10000ms]"
+            className="w-full h-full object-cover object-center scale-105"
             referrerPolicy="no-referrer"
           />
-          <div className="absolute inset-0 bg-gradient-to-r from-stone-950/90 via-stone-900/80 to-emerald-950/60" />
+          <div className="absolute inset-0 bg-gradient-to-t from-stone-950/95 via-stone-950/70 to-stone-950/40" />
         </div>
 
         {/* Hero Content */}
-        <div className="relative max-w-5xl mx-auto px-3 sm:px-10 py-8 sm:py-16 text-center space-y-6 sm:space-y-8 z-10 w-full">
+        <div className="relative max-w-5xl mx-auto px-3 sm:px-10 py-10 sm:py-20 text-center space-y-6 sm:space-y-8 z-10 w-full">
           
-          <div className="inline-flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-1 sm:py-1.5 rounded-full bg-emerald-500/20 text-amber-300 border border-amber-400/40 text-[11px] sm:text-sm font-semibold backdrop-blur-md max-w-full">
-            <Sparkles className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-amber-400 shrink-0" />
-            <span className="truncate">Platform Terpadu Desa Wisata Kawasan Lembang</span>
+          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-white/10 text-amber-200 border border-white/20 text-[11px] sm:text-xs font-semibold tracking-wider uppercase backdrop-blur-md">
+            <span>Kawasan Lembang · 1.200 — 1.400 mdpl</span>
           </div>
 
-          <h1 className="text-2xl sm:text-4xl lg:text-6xl font-extrabold font-serif-title text-white tracking-tight leading-tight">
-            Jelajahi Pesona Alam & <br className="hidden sm:inline" />
-            <span className="text-amber-300 underline decoration-emerald-500 underline-offset-8">
-              Desa Wisata Kawasan Lembang
-            </span>
+          <h1 className="text-3xl sm:text-5xl lg:text-6xl font-serif-title font-extrabold text-white tracking-tight leading-[1.18]">
+            Harmoni Alam & Hasil Bumi <br className="hidden sm:inline" />
+            <span className="text-amber-300 italic font-serif">Delapan Desa Wisata</span>
           </h1>
 
-          <p className="text-stone-200 text-xs sm:text-base lg:text-lg max-w-2xl mx-auto leading-relaxed">
-            Temukan sembako organik segar, tanaman hias, kopi specialty, buah & herba, kuliner khas, olahan susu, hingga penginapan asri langsung dari petani, peternak, dan warga lokal di Kawasan Lembang.
+          <p className="text-stone-200/90 text-xs sm:text-base lg:text-lg max-w-2xl mx-auto leading-relaxed font-light">
+            Portal terpadu belanja komoditas kebun segar, kriya lokal, kopi specialty, dan reservasi penginapan asri — terhubung langsung dengan warga & pengelola resmi desa.
           </p>
 
           {/* Interactive Search Box with Custom Dropdowns */}
@@ -338,42 +335,44 @@ export const HomeView: React.FC = () => {
             </div>
           </form>
 
-          {/* Quick Stats Pill Bar */}
-          <div className="pt-2 sm:pt-4 flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-8 text-white/90 text-xs sm:text-sm font-medium">
-            <div className="flex items-center gap-2">
-              <ShieldCheck className="w-4 h-4 text-emerald-400 shrink-0" />
-              <span>Langsung ke Petani & Warga Desa</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <Mountain className="w-4 h-4 text-amber-400 shrink-0" />
-              <span>Ketinggian 1.200 - 1.400 mdpl</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <Heart className="w-4 h-4 text-rose-400 shrink-0" />
-              <span>100% Dampak Langsung Warga Lokal</span>
-            </div>
+          {/* Quick Indicators */}
+          <div className="pt-2 sm:pt-4 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-stone-300 text-xs sm:text-sm font-medium">
+            <span className="flex items-center gap-1.5">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
+              Terhubung Langsung ke Kontak Desa
+            </span>
+            <span className="hidden sm:inline text-stone-600">·</span>
+            <span className="flex items-center gap-1.5">
+              <span className="w-1.5 h-1.5 rounded-full bg-amber-400" />
+              Pemberdayaan Warga & Komoditas Lokal
+            </span>
+            <span className="hidden sm:inline text-stone-600">·</span>
+            <span className="flex items-center gap-1.5">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
+              8 Desa Wisata Terpadu
+            </span>
           </div>
         </div>
       </section>
 
       {/* STATS COUNTER BAR */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="bg-white rounded-3xl p-6 sm:p-8 border border-stone-200 shadow-md grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
-          <div className="space-y-1">
-            <p className="text-2xl sm:text-4xl font-black font-serif-title text-emerald-800">{villages.length} Desa</p>
-            <p className="text-xs sm:text-sm text-stone-600 font-medium">Jaringan Wisata Lembang</p>
+        <div className="bg-stone-900 text-white rounded-3xl p-6 sm:p-8 border border-stone-800 shadow-xl grid grid-cols-2 md:grid-cols-4 gap-6 text-center divide-y md:divide-y-0 md:divide-x divide-stone-800">
+          <div className="space-y-1 py-2 md:py-0">
+            <p className="text-3xl sm:text-4xl font-extrabold font-serif-title text-amber-300">{villages.length} Desa</p>
+            <p className="text-xs sm:text-sm text-stone-400 font-medium">Jaringan Wisata Lembang</p>
           </div>
-          <div className="space-y-1">
-            <p className="text-2xl sm:text-4xl font-black font-serif-title text-emerald-800">8 Kelompok</p>
-            <p className="text-xs sm:text-sm text-stone-600 font-medium">Komoditas & Produk Unggulan</p>
+          <div className="space-y-1 py-2 md:py-0">
+            <p className="text-3xl sm:text-4xl font-extrabold font-serif-title text-amber-300">8 Kelompok</p>
+            <p className="text-xs sm:text-sm text-stone-400 font-medium">Komoditas & Produk Unggulan</p>
           </div>
-          <div className="space-y-1">
-            <p className="text-2xl sm:text-4xl font-black font-serif-title text-emerald-800">1.400 mdpl</p>
-            <p className="text-xs sm:text-sm text-stone-600 font-medium">Ketinggian Alam Pegunungan</p>
+          <div className="space-y-1 py-2 md:py-0">
+            <p className="text-3xl sm:text-4xl font-extrabold font-serif-title text-amber-300">1.400 mdpl</p>
+            <p className="text-xs sm:text-sm text-stone-400 font-medium">Ketinggian Alam Pegunungan</p>
           </div>
-          <div className="space-y-1">
-            <p className="text-2xl sm:text-4xl font-black font-serif-title text-emerald-800">Langsung</p>
-            <p className="text-xs sm:text-sm text-stone-600 font-medium">Ke Petani & Warga Desa</p>
+          <div className="space-y-1 py-2 md:py-0">
+            <p className="text-3xl sm:text-4xl font-extrabold font-serif-title text-emerald-400">100%</p>
+            <p className="text-xs sm:text-sm text-stone-400 font-medium">Langsung ke Petani & Warga</p>
           </div>
         </div>
       </section>
@@ -382,12 +381,12 @@ export const HomeView: React.FC = () => {
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-stone-200 pb-4">
           <div>
-            <span className="text-emerald-700 font-bold text-xs uppercase tracking-wider">Destinasi Pilihan</span>
+            <span className="text-emerald-800 font-bold text-xs uppercase tracking-widest font-mono">Direktori Kawasan</span>
             <h2 className="text-2xl sm:text-3xl font-extrabold font-serif-title text-stone-900 mt-1">
-              Jelajahi {villages.length} Desa Wisata di Kawasan Lembang
+              Delapan Desa Wisata di Kawasan Lembang
             </h2>
             <p className="text-xs sm:text-sm text-stone-600 mt-1">
-              Setiap desa memiliki karakter alam, cagar budaya, dan keunggulan produk yang khas.
+              Masing-masing desa menyimpan keunikan ekologis, komoditas khas, dan keramahtamahan warga pegunungan.
             </p>
           </div>
           <button
@@ -405,7 +404,7 @@ export const HomeView: React.FC = () => {
             <div
               key={village.id}
               onClick={() => navigateTo('desa-detail', undefined, village.id)}
-              className="bg-white rounded-3xl border border-stone-200/90 shadow-sm overflow-hidden cursor-pointer hover:shadow-xl transition-all hover:-translate-y-1 flex flex-col justify-between group"
+              className="bg-white rounded-2xl border border-stone-200/90 shadow-sm overflow-hidden cursor-pointer hover:shadow-xl hover:border-emerald-700/40 transition-all hover:-translate-y-1 flex flex-col justify-between group"
             >
               <div className="relative h-44 w-full overflow-hidden">
                 <img
@@ -414,16 +413,16 @@ export const HomeView: React.FC = () => {
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                   referrerPolicy="no-referrer"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-stone-950/80 via-transparent to-transparent" />
-                <div className="absolute top-3 left-3 bg-amber-400 text-stone-950 font-bold text-[10px] px-2.5 py-1 rounded-full shadow-md">
+                <div className="absolute inset-0 bg-gradient-to-t from-stone-950/85 via-stone-950/20 to-transparent" />
+                <div className="absolute top-3 left-3 bg-stone-900/80 backdrop-blur-md text-amber-200 font-medium text-[10px] px-2.5 py-0.5 rounded-full border border-white/15">
                   {village.villageAltitude || '1.250 mdpl'}
                 </div>
-                <div className="absolute top-3 right-3 bg-stone-900/80 backdrop-blur-sm text-amber-300 font-bold text-[10px] px-2.5 py-1 rounded-full border border-white/20">
+                <div className="absolute top-3 right-3 bg-stone-900/80 backdrop-blur-md text-amber-300 font-bold text-[10px] px-2 py-0.5 rounded-full border border-white/15">
                   ★ {village.rating} ({village.totalReviews})
                 </div>
                 <div className="absolute bottom-3 left-3 right-3 text-white">
                   <h3 className="font-serif-title font-extrabold text-base leading-snug">{village.name}</h3>
-                  <p className="text-[11px] text-stone-300 flex items-center gap-1 mt-0.5">
+                  <p className="text-[11px] text-stone-300 flex items-center gap-1 mt-0.5 font-light">
                     <MapPin className="w-3 h-3 text-emerald-400 shrink-0" />
                     <span className="truncate">{village.location}</span>
                   </p>
@@ -501,12 +500,12 @@ export const HomeView: React.FC = () => {
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-stone-200 pb-4">
           <div>
-            <span className="text-emerald-700 font-bold text-xs uppercase tracking-wider">Paling Direkomendasikan · Langsung ke Kontak CP</span>
+            <span className="text-emerald-800 font-bold text-xs uppercase tracking-widest font-mono">Pilihan Terkurasi</span>
             <h2 className="text-2xl sm:text-3xl font-extrabold font-serif-title text-stone-900 mt-1">
-              Produk & Layanan Unggulan Kawasan Lembang
+              Produk & Komoditas Unggulan Kawasan Lembang
             </h2>
             <p className="text-xs sm:text-sm text-stone-600 mt-1">
-              Terhubung langsung dengan Kontak Person (CP) & Admin resmi tiap produk desa tanpa perantara.
+              Hasil panen terbaik dan kerajinan otentik, terhubung langsung ke narahubung resmi warga desa.
             </p>
           </div>
           <button
