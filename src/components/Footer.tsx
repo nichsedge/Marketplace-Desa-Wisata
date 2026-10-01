@@ -30,7 +30,7 @@ export const Footer: React.FC = () => {
           <div className="space-y-2 text-center md:text-left">
             <div className="inline-flex items-center gap-2 px-3 py-1 bg-emerald-500/10 text-emerald-300 rounded-full text-xs font-semibold border border-emerald-500/20">
               <Sparkles className="w-3.5 h-3.5" />
-              <span>Jaringan Desa Wisata Kawasan Lembang</span>
+              <span>Platform Interdesa Kawasan Lembang</span>
             </div>
             <h3 className="text-xl sm:text-2xl font-bold font-serif-title text-white">
               Dukung Komoditas & Produk Asli Warga Desa
@@ -53,9 +53,11 @@ export const Footer: React.FC = () => {
           {/* Brand Col (5 Cols) */}
           <div className="lg:col-span-5 space-y-4">
             <div className="flex items-center gap-2.5">
-              <div className="w-10 h-10 rounded-xl bg-emerald-800 flex items-center justify-center text-amber-300 shadow-md">
-                <TreePine className="w-5 h-5" />
-              </div>
+              <img 
+                src="/images/logo-saba-lembang.png" 
+                alt="Logo Saba Lembang" 
+                className="w-10 h-10 sm:w-11 sm:h-11 rounded-full shadow-md shrink-0 object-contain" 
+              />
               <span className="text-2xl font-extrabold font-serif-title text-white">
                 Saba<span className="text-emerald-400">Lembang</span>
               </span>

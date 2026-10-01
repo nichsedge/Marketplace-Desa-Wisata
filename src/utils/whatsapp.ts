@@ -101,5 +101,5 @@ export const createCartWhatsAppMessage = (
 };
 
 export const createGeneralWhatsAppMessage = () => {
-  return `Halo Admin Saba Lembang (Platform Desa Wisata Kawasan Lembang),\nsaya ingin bertanya mengenai info destinasi / homestay / paket wisata di Kawasan Lembang.`;
+  return `Halo Admin Saba Lembang (Platform Interdesa Kawasan Lembang),\nsaya ingin bertanya mengenai info destinasi / homestay / paket wisata di Kawasan Lembang.`;
 };

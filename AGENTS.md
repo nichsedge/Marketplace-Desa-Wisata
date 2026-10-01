@@ -1,7 +1,7 @@
 # Repository Guidelines & Project Context (Saba Lembang)
 
 ## 📌 Project Background & Business Context
-- **Nama Platform:** **Saba Lembang** (Jaringan & Platform Terpadu Desa Wisata Kawasan Lembang)
+- **Nama Platform:** **Saba Lembang** (Platform Interdesa Kawasan Lembang)
 - **Target Pembeli / Klien Langsung:** Mahasiswa program studi **DKV (Desain Komunikasi Visual)** yang sedang menempuh Tugas Akhir / Skripsi (perancangan identitas visual, kampanye promosi digital, UI/UX portal pariwisata terpadu, dan media informasi desa wisata).
 - **Cakupan Destinasi:** **Kawasan Lembang** (Kabupaten Bandung Barat), saat ini mencakup 6 Desa Wisata aktif (Desa Wisata Cibodas dan Cikahuripan disembunyikan/dihapus sementara waktu per 1/10/26 menunggu kepastian update data survei riil dari klien):
   1. **Desa Wisata Suntenjaya** (1.290 mdpl - Minuman & Komoditas: Kopi Arabika premium single origin lereng Palasari, Situs Megalitikum Batu Loceng)

@@ -369,10 +369,17 @@ export const CartView: React.FC = () => {
             </button>
 
             {/* Official Village Header */}
-            <div className="border-b border-stone-200 pb-4 text-center space-y-1">
+            <div className="border-b border-stone-200 pb-4 text-center space-y-2">
+              <div className="flex justify-center">
+                <img 
+                  src="/images/logo-saba-lembang.png" 
+                  alt="Saba Lembang" 
+                  className="w-12 h-12 rounded-full shadow-xs object-contain" 
+                />
+              </div>
               <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-100 text-emerald-900 border border-emerald-300 text-[10px] font-bold uppercase tracking-wider">
                 <ShieldCheck className="w-3.5 h-3.5 text-emerald-700" />
-                <span>SABA LEMBANG · DESA WISATA KAWASAN LEMBANG</span>
+                <span>SABA LEMBANG · PLATFORM INTERDESA KAWASAN LEMBANG</span>
               </div>
               <h2 className="text-xl sm:text-2xl font-extrabold font-serif-title text-stone-900">
                 E-Ticket & Bukti Reservasi Resmi

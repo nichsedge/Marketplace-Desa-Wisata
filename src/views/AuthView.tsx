@@ -68,9 +68,11 @@ export const AuthView: React.FC = () => {
           {/* Brand Top */}
           <div className="relative z-10 space-y-3">
             <div className="flex items-center gap-2.5">
-              <div className="w-10 h-10 rounded-2xl bg-amber-400 text-emerald-950 flex items-center justify-center shadow-md font-bold">
-                <TreePine className="w-6 h-6" />
-              </div>
+              <img 
+                src="/images/logo-saba-lembang.png" 
+                alt="Logo Saba Lembang" 
+                className="w-11 h-11 rounded-full shadow-md shrink-0 object-contain" 
+              />
               <div>
                 <span className="text-xs font-black tracking-widest text-amber-300 uppercase block">
                   SABA LEMBANG
@@ -105,9 +107,11 @@ export const AuthView: React.FC = () => {
             
             {/* Top Logo for Mobile */}
             <div className="flex lg:hidden items-center gap-2 mb-2">
-              <div className="w-8 h-8 rounded-xl bg-emerald-900 text-amber-300 flex items-center justify-center font-bold">
-                <TreePine className="w-5 h-5" />
-              </div>
+              <img 
+                src="/images/logo-saba-lembang.png" 
+                alt="Logo Saba Lembang" 
+                className="w-8 h-8 rounded-full shadow-xs shrink-0 object-contain" 
+              />
               <span className="text-xs font-black tracking-widest text-emerald-900 uppercase">
                 SABA LEMBANG
               </span>

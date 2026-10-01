@@ -104,7 +104,7 @@ export const MarketplaceView: React.FC = () => {
             <span>Katalog Resmi Jaringan Desa Wisata Lembang</span>
           </div>
           <h1 className="text-2xl sm:text-4xl font-extrabold font-serif-title">
-            Marketplace Desa Wisata Kawasan Lembang
+            Marketplace Platform Interdesa Kawasan Lembang
           </h1>
           <p className="text-xs sm:text-sm text-stone-300 max-w-xl leading-relaxed">
             Pesan langsung kopi specialty, kuliner khas tradisional, olahan susu murni, paket wisata alam & offroad, hingga penginapan homestay lokal langsung dari petani, peternak, dan warga lokal di Kawasan Lembang.

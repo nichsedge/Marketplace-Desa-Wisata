@@ -26,14 +26,16 @@ export const FloatingWhatsApp: React.FC = () => {
           <div className="bg-gradient-to-r from-emerald-800 via-stone-900 to-emerald-950 p-4 text-white flex items-center justify-between">
             <div className="flex items-center gap-3">
               <div className="relative">
-                <div className="w-10 h-10 rounded-full bg-emerald-700 border-2 border-amber-300 flex items-center justify-center font-bold text-amber-200 text-sm shadow-md">
-                  SL
-                </div>
+                <img 
+                  src="/images/logo-saba-lembang.png" 
+                  alt="Admin Saba Lembang" 
+                  className="w-10 h-10 rounded-full border-2 border-amber-300 object-contain shadow-md" 
+                />
                 <span className="absolute bottom-0 right-0 w-3 h-3 bg-emerald-400 border-2 border-white rounded-full"></span>
               </div>
               <div>
                 <h4 className="font-bold text-sm leading-tight">Admin Saba Lembang</h4>
-                <p className="text-[11px] text-emerald-200">Jaringan Desa Wisata Kawasan Lembang</p>
+                <p className="text-[11px] text-emerald-200">Platform Interdesa Kawasan Lembang</p>
               </div>
             </div>
             <button 

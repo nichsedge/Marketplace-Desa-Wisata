@@ -105,7 +105,7 @@ export const HomeView: React.FC = () => {
         <div className="absolute inset-0 rounded-2xl sm:rounded-3xl overflow-hidden pointer-events-none">
           <img
             src="/images/client/pasir-angling/hero-valley-panorama.webp"
-            alt="Desa Wisata Kawasan Lembang Lanskap Pegunungan"
+            alt="Platform Interdesa Kawasan Lembang Lanskap Pegunungan"
             className="w-full h-full object-cover object-center scale-105 animate-pulse duration-[10000ms]"
             referrerPolicy="no-referrer"
           />
@@ -117,13 +117,13 @@ export const HomeView: React.FC = () => {
           
           <div className="inline-flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-1 sm:py-1.5 rounded-full bg-emerald-500/20 text-amber-300 border border-amber-400/40 text-[11px] sm:text-sm font-semibold backdrop-blur-md max-w-full">
             <Sparkles className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-amber-400 shrink-0" />
-            <span className="truncate">Platform Terpadu Desa Wisata Kawasan Lembang</span>
+            <span className="truncate">Platform Interdesa Kawasan Lembang</span>
           </div>
 
           <h1 className="text-2xl sm:text-4xl lg:text-6xl font-extrabold font-serif-title text-white tracking-tight leading-tight">
             Jelajahi Pesona Alam & <br className="hidden sm:inline" />
             <span className="text-amber-300 underline decoration-emerald-500 underline-offset-8">
-              Desa Wisata Kawasan Lembang
+              Platform Interdesa Kawasan Lembang
             </span>
           </h1>
 
@@ -371,7 +371,7 @@ export const HomeView: React.FC = () => {
         </div>
       </section>
 
-      {/* SPOTLIGHT DESA WISATA KAWASAN LEMBANG */}
+      {/* SPOTLIGHT PLATFORM INTERDESA KAWASAN LEMBANG */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-stone-200 pb-4">
           <div>

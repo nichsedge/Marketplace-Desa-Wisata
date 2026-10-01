@@ -2,7 +2,7 @@
 <img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
 </div>
 
-# Saba Lembang - Platform Desa Wisata Kawasan Lembang
+# Saba Lembang - Platform Interdesa Kawasan Lembang
 
 Platform pariwisata terpadu dan marketplace resmi untuk **Desa Wisata di Kawasan Lembang**, Kabupaten Bandung Barat, Jawa Barat.
 
@@ -12,7 +12,7 @@ Platform pariwisata terpadu dan marketplace resmi untuk **Desa Wisata di Kawasan
 > **Konteks Proyek & Kolaborasi Nyata:**  
 > Dikembangkan sebagai karya Tugas Akhir / Skripsi program studi **Desain Komunikasi Visual (DKV)** dalam perancangan identitas visual, kampanye digital, dan media informasi interaktif desa wisata, berkolaborasi dengan jajaran **Pemerintah Desa & Pengurus Pokdarwis** di kawasan Lembang.
 
-## 🏛️ Jaringan Desa Wisata Kawasan Lembang
+## 🏛️ Platform Interdesa Kawasan Lembang
 
 Saat ini mencakup 6 Desa Wisata aktif (Desa Wisata Cibodas dan Cikahuripan disembunyikan sementara menunggu update data lanjutan):
 1. **Desa Wisata Suntenjaya (1.290 mdpl):** Minuman & Komoditas (Kopi Arabika premium single origin lereng Palasari, Situs Megalitikum Batu Loceng). (Admin: *Kang Asep Suhendar*)

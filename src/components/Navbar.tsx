@@ -112,15 +112,17 @@ export const Navbar: React.FC = () => {
             onClick={() => navigateTo('home')}
             className="flex items-center gap-2 sm:gap-2.5 cursor-pointer group shrink-0"
           >
-            <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl bg-gradient-to-br from-emerald-700 to-emerald-900 flex items-center justify-center text-amber-300 shadow-md group-hover:scale-105 transition-transform shrink-0">
-              <TreePine className="w-4 h-4 sm:w-5 sm:h-5 fill-amber-300/30" />
-            </div>
+            <img 
+              src="/images/logo-saba-lembang.png" 
+              alt="Logo Saba Lembang" 
+              className="w-9 h-9 sm:w-11 sm:h-11 rounded-full shadow-xs group-hover:scale-105 transition-transform shrink-0 object-contain" 
+            />
             <div className="shrink-0">
               <span className="text-base sm:text-xl xl:text-2xl font-extrabold font-serif-title tracking-tight text-stone-900 group-hover:text-emerald-800 transition-colors">
                 Saba<span className="text-emerald-700">Lembang</span>
               </span>
               <span className="hidden 2xl:block text-[10px] font-medium tracking-widest text-amber-800 uppercase font-sans">
-                Platform Desa Wisata Kawasan Lembang
+                Platform Interdesa Kawasan Lembang
               </span>
             </div>
           </div>
