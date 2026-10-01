@@ -32,8 +32,8 @@ export const TourPackagesView: React.FC = () => {
       {/* Banner Header */}
       <div className="relative rounded-3xl overflow-hidden min-h-[260px] flex items-center p-8 sm:p-12 text-white shadow-xl border border-stone-200">
         <img
-          src="/images/unsplash/photo-1464822759023-fed622ff2c3b_w1600.jpg"
-          alt="Paket Wisata Kawasan Lembang"
+          src="/images/client/offroad-cikole/convoy-pine-trail.webp"
+          alt="Paket Wisata & Offroad Kawasan Lembang"
           className="absolute inset-0 w-full h-full object-cover"
           referrerPolicy="no-referrer"
         />
@@ -48,7 +48,7 @@ export const TourPackagesView: React.FC = () => {
             Paket Wisata, Live-In & Trekking Rimba Lembang
           </h1>
           <p className="text-xs sm:text-sm text-stone-200 leading-relaxed">
-            Dapatkan pengalaman hands-on otentik: live-in bersama keluarga warga desa, perah susu sapi murni, offroad kanopi pinus Cikole, agrowisata bunga & paprika Cibodas, hingga susur jalur rimba berkabut Tangkuban Parahu di Jayagiri.
+            Dapatkan pengalaman hands-on otentik: live-in bersama keluarga warga desa, offroad Land Rover kanopi pinus Cikole, jelajah megalitikum Batu Loceng Suntenjaya, hingga seni tari Jaipong tradisional di Gudangkahuripan.
           </p>
         </div>
       </div>
@@ -65,7 +65,7 @@ export const TourPackagesView: React.FC = () => {
               onChange={(e) => setSelectedVillageId(e.target.value)}
               className="px-3 py-2 bg-white border border-stone-300 rounded-xl text-xs sm:text-sm font-bold text-stone-900 shadow-xs focus:outline-none focus:ring-2 focus:ring-emerald-700 cursor-pointer"
             >
-              <option value="all">🏞️ Semua Desa Wisata di Lembang (8 Desa)</option>
+              <option value="all">🏞️ Semua Desa Wisata di Lembang ({villages.length} Desa)</option>
               {villages.map(v => (
                 <option key={v.id} value={v.id}>{v.name} ({v.villageAltitude || '1.250 mdpl'})</option>
               ))}

@@ -22,7 +22,7 @@ export const REAL_PRODUCTS: Product[] = [
     "totalReviews": 42,
     "sellerName": "Pa Abdul Mutholib (Pasir Angling Kopi)",
     "sellerBadge": "Petani & Roastery Binaan Resmi",
-    "sellerAvatar": "/images/client/kopi-angling/coffee-plantation-view.webp",
+    "sellerAvatar": "/images/default-avatar.svg",
     "sellerPhone": "6287724759068",
     "image": "/images/client/kopi-angling/hero-pouch-v60.webp",
     "gallery": [
@@ -64,7 +64,7 @@ export const REAL_PRODUCTS: Product[] = [
     "totalReviews": 56,
     "sellerName": "Pa Cecep Mulyana (Pengelola Eduwisata)",
     "sellerBadge": "Pengelola Destinasi Desa",
-    "sellerAvatar": "/images/unsplash/photo-1500648767791-00dcc994a43e_w200.jpg",
+    "sellerAvatar": "/images/default-avatar.svg",
     "sellerPhone": "6281517860036",
     "image": "/images/client/pasir-angling/hero-valley-panorama.webp",
     "gallery": [
@@ -109,7 +109,7 @@ export const REAL_PRODUCTS: Product[] = [
     "totalReviews": 38,
     "sellerName": "Pa Cecep Mulyana (Pengelola Eduwisata)",
     "sellerBadge": "Pengelola Destinasi Desa",
-    "sellerAvatar": "/images/unsplash/photo-1500648767791-00dcc994a43e_w200.jpg",
+    "sellerAvatar": "/images/default-avatar.svg",
     "sellerPhone": "6281517860036",
     "image": "/images/client/pasir-angling/hiking-terrace-trail.webp",
     "gallery": [
@@ -149,16 +149,15 @@ export const REAL_PRODUCTS: Product[] = [
     "totalReviews": 29,
     "sellerName": "Pa Abdul Mutholib (Admin Desa / Pokdarwis)",
     "sellerBadge": "Koordinator Live-In Desa",
-    "sellerAvatar": "/images/unsplash/photo-1507003211169-0a1dd7228f2d_w200.jpg",
+    "sellerAvatar": "/images/default-avatar.svg",
     "sellerPhone": "6287724759068",
     "image": "/images/client/pasir-angling/community-agro-tour.webp",
     "gallery": [
-      "/images/client/pasir-angling/hero-valley-panorama.webp",
-      "/images/client/pasir-angling/hiking-terrace-trail.webp",
       "/images/client/pasir-angling/community-agro-tour.webp",
-      "/images/client/pasir-angling/camping-ridge-view.webp",
-      "/images/client/pasir-angling/campsite-mountain-mist.webp",
-      "/images/client/pasir-angling/trekking-guide-scenic.webp"
+      "/images/client/suntenjaya/hero-homestay-teras-kayu.webp",
+      "/images/client/suntenjaya/homestay-teras-kebun.webp",
+      "/images/client/pasir-angling/hero-valley-panorama.webp",
+      "/images/client/pasir-angling/hiking-terrace-trail.webp"
     ],
     "description": "Pengalaman otentik hidup berdampingan bersama keluarga petani Suntenjaya (induk semang). Peserta menginap di rumah warga lokal, mengikuti aktivitas keseharian memetik sayur segar terasering, merawat tanaman kopi arabika, serta menikmati jamuan masakan dapur Sunda tradisional yang hangat.",
     "highlights": [
@@ -208,6 +207,50 @@ export const REAL_PRODUCTS: Product[] = [
     "verifiedBadge": "Data Riil Mitra Terverifikasi"
   },
   {
+    "id": "real-suntenjaya-homestay-warga",
+    "title": "Homestay Rumah Warga Lereng Palasari Suntenjaya (Sewa Kamar / Rumah)",
+    "category": "penginapan-lokal",
+    "price": 200000,
+    "originalPrice": 250000,
+    "unit": "/malam",
+    "villageId": "des-01",
+    "villageName": "Desa Wisata Suntenjaya",
+    "location": "Dusun Babakan / Pasir Angling, Suntenjaya, Lembang",
+    "rating": 5.0,
+    "totalReviews": 35,
+    "sellerName": "Paguyuban Homestay & Warga Suntenjaya",
+    "sellerBadge": "Tuan Rumah Ramah Desa",
+    "sellerAvatar": "/images/default-avatar.svg",
+    "sellerPhone": "6287724759068",
+    "image": "/images/client/suntenjaya/hero-homestay-teras-kayu.webp",
+    "gallery": [
+      "/images/client/suntenjaya/hero-homestay-teras-kayu.webp",
+      "/images/client/suntenjaya/homestay-teras-kebun.webp",
+      "/images/client/suntenjaya/homestay-fondasi-batu.webp"
+    ],
+    "description": "Penginapan sejuk dan tenang di rumah warga lereng Gunung Palasari Suntenjaya (1.290 mdpl). Menikmati udara dingin pegunungan berkabut, pemandangan kebun terasering hijau, teras santai berhias tanaman hias alami, dan keramahan khas pedesaan Pasundan.",
+    "highlights": [
+      "Udara Dingin Pegunungan Lereng Palasari (1.290 mdpl)",
+      "Teras Rumah Asri & Tanaman Hias Dataran Tinggi",
+      "Pemandangan Menghadap Kebun Sayur Terasering",
+      "Kamar Bersih Nyaman dengan Fasilitas Air Hangat"
+    ],
+    "facilities": [
+      "Kasur Bersih & Selimut Hangat",
+      "Kamar Mandi Bersih Air Hangat",
+      "Teh Hangat & Kopi Arabika Suntenjaya",
+      "Area Parkir Motor & Mobil"
+    ],
+    "stockQuota": 6,
+    "isAvailable": true,
+    "isFeatured": true,
+    "isDummy": false,
+    "dataSource": "real",
+    "rawSourceRow": 3,
+    "verifiedBadge": "Data Riil Mitra Terverifikasi",
+    "clientFolderName": "20261001/rumah-suntenjaya"
+  },
+  {
     "id": "real-suntenjaya-tekno-ekologi",
     "title": "Paket Kunjungan Studi Lapangan Tekno-Ekologi Desa Suntenjaya",
     "category": "paket-wisata",
@@ -220,7 +263,7 @@ export const REAL_PRODUCTS: Product[] = [
     "totalReviews": 21,
     "sellerName": "Pa Abdul Mutholib (Kelompok Tani Binaan)",
     "sellerBadge": "Instruktur Agrotekno Desa",
-    "sellerAvatar": "/images/unsplash/photo-1507003211169-0a1dd7228f2d_w200.jpg",
+    "sellerAvatar": "/images/default-avatar.svg",
     "sellerPhone": "6287724759068",
     "image": "/images/client/kopi-angling/drying-greenhouse.webp",
     "gallery": [
@@ -261,7 +304,7 @@ export const REAL_PRODUCTS: Product[] = [
     "totalReviews": 118,
     "sellerName": "Abah Dadan (Pioneer Offroad Cikole)",
     "sellerBadge": "Operator Legenda Terverifikasi",
-    "sellerAvatar": "/images/client/offroad-cikole/hero-abah-dadan-landy.webp",
+    "sellerAvatar": "/images/default-avatar.svg",
     "sellerPhone": "6281322000600",
     "image": "/images/client/offroad-cikole/hero-abah-dadan-landy.webp",
     "gallery": [
@@ -367,78 +410,95 @@ export const REAL_PRODUCTS: Product[] = [
     "clientFolderName": "Abah"
   },
   {
-    "id": "real-cikole-green-grass",
-    "title": "Tiket Masuk & Wahana Alam Green Grass Cikole (GGC)",
+    "id": "real-cikole-sewa-armada-landrover",
+    "title": "Sewa Privat Armada Land Rover 4x4 Cikole Sukawana (Include Driver & BBM)",
     "category": "wisata-alam",
-    "price": 35000,
-    "unit": "/orang",
+    "price": 1500000,
+    "unit": "/armada/hari",
     "villageId": "des-03",
     "villageName": "Desa Wisata Cikole",
-    "location": "Kawasan Wisata Green Grass Cikole, Lembang",
-    "rating": 4.8,
-    "totalReviews": 49,
-    "sellerName": "Manajemen Green Grass Cikole (GGC)",
-    "sellerBadge": "Pengelola Wisata Alam Resmi",
-    "sellerAvatar": "/images/unsplash/photo-1507003211169-0a1dd7228f2d_w200.jpg",
-    "sellerPhone": "6281909605127",
-    "image": "/images/unsplash/photo-1448375240586-882707db888b_w1200.jpg",
+    "location": "Basecamp Land Rover Cikole, Lembang",
+    "rating": 4.9,
+    "totalReviews": 56,
+    "sellerName": "Abah Dadan (Pioneer Offroad Cikole)",
+    "sellerBadge": "Operator Legenda Terverifikasi",
+    "sellerAvatar": "/images/default-avatar.svg",
+    "sellerPhone": "6281322000600",
+    "image": "/images/client/offroad-cikole/convoy-pine-trail.webp",
     "gallery": [
-      "/images/unsplash/photo-1448375240586-882707db888b_w1200.jpg",
-      "/images/unsplash/photo-1513836279014-a89f7a76ae86_w1200.jpg"
+      "/images/client/offroad-cikole/convoy-pine-trail.webp",
+      "/images/client/offroad-cikole/cabin-cockpit-view.webp",
+      "/images/client/offroad-cikole/tourist-group-celebration.webp"
     ],
-    "description": "Destinasi wisata hijau terbuka di tengah rimbunnya hutan pinus Cikole Lembang. Menyediakan padang rumput alami untuk piknik keluarga, gathering komunitas, spot foto estetik, dan area relaksasi berudara pegunungan segar.",
+    "description": "Sewa satu armada penuh Land Rover Series 4x4 klasik untuk grup privat atau keluarga (kapasitas 7 penumpang). Termasuk driver lokal handal yang menguasai medan rimba Sukawana-Cikole, bahan bakar, dan dokumentasi foto spot estetik hutan pinus.",
     "highlights": [
-      "Hamparan Padang Rumput Segar Hutan Pinus",
-      "Lokasi Strategis di Jalur Wisata Utama Cikole",
-      "Fasilitas Toilet Bersih, Mushola, & Kafetaria",
-      "Cocok Untuk Piknik Keluarga & Foto Instagramable"
+      "Kapasitas Privat Maksimal 7 Penumpang / Armada",
+      "Termasuk Driver Senior Berpengalaman & Bahan Bakar",
+      "Jelajah Bebas Rute Hutan Pinus & Perkebunan Teh",
+      "Fleksibel Berhenti di Spot Foto Panorama Alam"
     ],
-    "stockQuota": 150,
+    "facilities": [
+      "1 Unit Land Rover 4x4 Klasik",
+      "Driver Senior Berpengalaman",
+      "Bahan Bakar Selama Trip",
+      "P3K Standar Alam Terbuka"
+    ],
+    "stockQuota": 12,
     "isAvailable": true,
     "isFeatured": false,
     "isDummy": false,
     "dataSource": "real",
-    "rawSourceRow": 24,
-    "verifiedBadge": "Data Riil Mitra Terverifikasi"
+    "rawSourceRow": 25,
+    "verifiedBadge": "Data Riil Mitra Terverifikasi",
+    "clientFolderName": "Abah"
   },
   {
-    "id": "real-cikole-maguru-kopi",
-    "title": "Kopi Seduh Maguru Legend Cikole (Single Origin Hutan Cikole)",
-    "category": "minuman-komoditas",
-    "price": 15000,
-    "unit": "/cangkir",
+    "id": "real-cikole-offroad-ekstrem-sukawana",
+    "title": "Paket Joyride Sunrise Upas Hill & Offroad Ekstrem Track 11 Sukawana",
+    "category": "wisata-alam",
+    "price": 435000,
+    "unit": "/pax (min 6 orang)",
     "villageId": "des-03",
     "villageName": "Desa Wisata Cikole",
-    "location": "Kedai Maguru Kopi, Cikole, Lembang",
-    "rating": 4.9,
-    "totalReviews": 33,
-    "sellerName": "Kedai Maguru Kopi Cikole",
-    "sellerBadge": "Kedai Kopi Legend Lokal",
-    "sellerAvatar": "/images/unsplash/photo-1500648767791-00dcc994a43e_w200.jpg",
-    "sellerPhone": "6281221885527",
-    "image": "/images/unsplash/photo-1514432324607-a09d9b4aefdd_w800.jpg",
+    "location": "Track 11 Sukawana - Upas Hill Tangkuban Parahu, Cikole",
+    "rating": 5.0,
+    "totalReviews": 42,
+    "sellerName": "Abah Dadan (Pioneer Offroad Cikole)",
+    "sellerBadge": "Operator Legenda Terverifikasi",
+    "sellerAvatar": "/images/default-avatar.svg",
+    "sellerPhone": "6281322000600",
+    "image": "/images/client/offroad-cikole/mud-splash-adventure.webp",
     "gallery": [
-      "/images/unsplash/photo-1514432324607-a09d9b4aefdd_w800.jpg",
-      "/images/unsplash/photo-1485955900006-10f4d324d411_w800.jpg"
+      "/images/client/offroad-cikole/mud-splash-adventure.webp",
+      "/images/client/offroad-cikole/action-rocky-trail.webp",
+      "/images/client/offroad-cikole/deep-forest-track.webp"
     ],
-    "description": "Seduhan kopi legendaris khas Cikole yang disangrai secara tradisional. Memadukan biji kopi pilihan petani lokal lereng Gunung Tangkuban Parahu dengan cita rasa mantap, aroma smokey yang khas, dan disajikan hangat di tengah sejuknya kabut hutan pinus.",
+    "description": "Sensasi menaklukkan rute lumpur terdalam dan bebatuan vulkanik ekstrem Track 11 menuju puncak Upas Hill untuk menyaksikan matahari terbit (sunrise) berlatar megahnya kawah Tangkuban Parahu. Paket petualangan paling memacu adrenalin di Lembang.",
     "highlights": [
-      "Biji Kopi Asli Petani Kaki Gunung Tangkuban Parahu",
-      "Sangrai Tradisional Aroma Mantap Smokey",
-      "Tersedia Varian Tubruk Klasik, V60, & Kopi Susu Aren",
-      "Spot Nongkrong Hangat Favorit Bikers & Wisatawan"
+      "Sunrise Spektakuler Puncak Upas Hill Tangkuban Parahu",
+      "Jalur Ikonik Ekstrem Lumpur Track 11 Sukawana",
+      "Termasuk Sarapan Pagi, Coffee Break & Tiket Masuk",
+      "Pemandu & Driver Senior Ahli Medan Lumpur Basah"
     ],
-    "stockQuota": 80,
+    "facilities": [
+      "Armada 4x4 Spesifikasi Ekstrem + Driver",
+      "BBM, Tiket Masuk Perhutani & Portal",
+      "1x Sarapan / Buffet Lunch",
+      "1x Coffee Break Hangat",
+      "P3K & Asuransi Kegiatan"
+    ],
+    "stockQuota": 20,
     "isAvailable": true,
-    "isFeatured": false,
+    "isFeatured": true,
     "isDummy": false,
     "dataSource": "real",
-    "rawSourceRow": 31,
-    "verifiedBadge": "Data Riil Mitra Terverifikasi"
+    "rawSourceRow": 25,
+    "verifiedBadge": "Data Riil Mitra Terverifikasi",
+    "clientFolderName": "Abah"
   },
   {
     "id": "real-jayagiri-maguru-kopi",
-    "title": "Maguru Kopi Legend Jayagiri (Kopi Robusta & Arabika Jayagiri)",
+    "title": "Maguru Kopi Legend Jayagiri (Kopi Robusta & Arabika Pa Maliki)",
     "category": "minuman-komoditas",
     "price": 15000,
     "unit": "/cangkir",
@@ -449,16 +509,19 @@ export const REAL_PRODUCTS: Product[] = [
     "totalReviews": 27,
     "sellerName": "Pa Maliki (Maguru Kopi Jayagiri)",
     "sellerBadge": "Pegiat Kopi Jayagiri",
-    "sellerAvatar": "/images/unsplash/photo-1472099645785-5658abf4ff4e_w200.jpg",
+    "sellerAvatar": "/images/default-avatar.svg",
     "sellerPhone": "6285717373115",
-    "image": "/images/unsplash/photo-1514432324607-a09d9b4aefdd_w800.jpg",
+    "image": "/images/client/jayagiri/hero-maguru-kopi-jayagiri.webp",
     "gallery": [
-      "/images/unsplash/photo-1514432324607-a09d9b4aefdd_w800.jpg"
+      "/images/client/jayagiri/hero-maguru-kopi-jayagiri.webp",
+      "/images/real/gunung-putri-jayagiri.jpg",
+      "/images/real/jayagiri-camping.jpg"
     ],
-    "description": "Kopi seduh legendaris di pintu pendakian Jayagiri yang telah menemani penjelajah alam sejak bertahun-tahun. Disajikan langsung oleh Pa Maliki dengan teknik seduh tradisional yang memanjakan penikmat kopi sejati.",
+    "description": "Kopi seduh legendaris di pintu rimba pendakian Jayagiri yang telah menemani penjelajah alam sejak bertahun-tahun. Disajikan langsung oleh Pa Maliki dengan teknik seduh tradisional yang memanjakan penikmat kopi sejati di tengah kabut hutan pinus pegunungan Lembang.",
     "highlights": [
       "Kopi Seduh Otentik Pintu Rimba Jayagiri",
-      "Pilihan Arabika Jayagiri & Robusta Pekat",
+      "Pilihan Arabika Jayagiri & Robusta Tubruk Tradisional",
+      "Suasana Warung Kayu Sejuk Teduh di Hutan Pinus",
       "Disajikan Hangat Pas Menemani Suhu Dingin Pegunungan"
     ],
     "stockQuota": 60,
@@ -482,11 +545,16 @@ export const REAL_PRODUCTS: Product[] = [
     "totalReviews": 31,
     "sellerName": "Pa Mei Wisana (Budayawan Gudangkahuripan)",
     "sellerBadge": "Ketua Sanggar Seni Terverifikasi",
-    "sellerAvatar": "/images/unsplash/photo-1519085360753-af0119f7cbe7_w200.jpg",
+    "sellerAvatar": "/images/default-avatar.svg",
     "sellerPhone": "6281221520514",
-    "image": "/images/unsplash/photo-1513519245088-0e12902e5a38_w800.jpg",
+    "image": "/images/client/gudangkahuripan/hero-tari-jaipong-materi.webp",
     "gallery": [
-      "/images/unsplash/photo-1513519245088-0e12902e5a38_w800.jpg"
+      "/images/client/gudangkahuripan/hero-tari-jaipong-materi.webp",
+      "/images/client/gudangkahuripan/jaipong-peserta-senyum.webp",
+      "/images/client/gudangkahuripan/jaipong-pelatihan-kompak.webp",
+      "/images/client/gudangkahuripan/jaipong-kebersamaan.webp",
+      "/images/client/gudangkahuripan/jaipong-praktek-lapangan.webp",
+      "/images/client/gudangkahuripan/jaipong-gerak-dasar.webp"
     ],
     "description": "Kelas apresiasi seni dan budaya Pasundan interaktif yang dipandu langsung oleh budayawan senior Pa Mei Wisana. Peserta diajak praktik memainkan seperangkat instrumen gamelan degung/salendro, mengenal gerak dasar tari Jaipong, serta menyimak narasi filosofi kearifan lokal masyarakat Lembang zaman ke zaman.",
     "highlights": [
@@ -504,55 +572,11 @@ export const REAL_PRODUCTS: Product[] = [
     "verifiedBadge": "Data Riil Mitra Terverifikasi"
   },
   {
-    "id": "real-gudangkahuripan-homestay",
-    "title": "Homestay Asri Gudangkahuripan (Penginapan Keluarga Khas Pedesaan)",
-    "category": "homestay",
-    "price": 350000,
-    "originalPrice": 400000,
-    "unit": "/malam",
-    "villageId": "des-07",
-    "villageName": "Desa Wisata Gudangkahuripan",
-    "location": "Gudangkahuripan, Lembang",
-    "rating": 4.8,
-    "totalReviews": 24,
-    "sellerName": "Pa Joe (Koordinator Homestay Desa)",
-    "sellerBadge": "Pengelola Homestay Terverifikasi",
-    "sellerAvatar": "/images/unsplash/photo-1506794778202-cad84cf45f1d_w200.jpg",
-    "sellerPhone": "6282130532424",
-    "image": "/images/real/homestay-gudangkahuripan-asri.jpg",
-    "gallery": [
-      "/images/real/homestay-gudangkahuripan-asri.jpg",
-      "/images/real/homestay-saung-santai.jpg",
-      "/images/real/homestay-kamar-keluarga.jpg"
-    ],
-    "description": "Rumah inap warga bernuansa teduh dan asri di Gudangkahuripan. Memiliki kamar tidur bersih, ruang tamu keluarga, dapur lengkap, serta halaman taman bunga yang nyaman untuk peristirahatan berlibur bersama keluarga.",
-    "highlights": [
-      "Suasana Asri Tenang dan Nyaman",
-      "Kamar Mandi Bersih dengan Water Heater",
-      "Dapur Lengkap & Ruang Tamu Luas",
-      "Akses Dekat Sentra Kuliner & Wisata Lembang"
-    ],
-    "facilities": [
-      "WiFi Cepat",
-      "Water Heater",
-      "Dapur & Kulkas",
-      "Parkir Mobil Aman",
-      "Kopi/Teh Pagi"
-    ],
-    "stockQuota": 5,
-    "isAvailable": true,
-    "isFeatured": false,
-    "isDummy": false,
-    "dataSource": "real",
-    "rawSourceRow": 59,
-    "verifiedBadge": "Data Riil Mitra Terverifikasi"
-  },
-  {
     "id": "real-wangunsari-tahu-susu",
-    "title": "Tahu Susu Lembut Asli Wangunsari (1 Kotak Isi 10 Pcs)",
+    "title": "Tahu Susu Lembut Asli Wangunsari (1 Kemasan Isi 10 Pcs)",
     "category": "kuliner",
-    "price": 25000,
-    "unit": "/kotak",
+    "price": 5000,
+    "unit": "/kemasan (10 pcs)",
     "villageId": "des-05",
     "villageName": "Desa Wisata Wangunsari",
     "location": "Sentra Tahu Susu Wangunsari, Lembang",
@@ -560,14 +584,20 @@ export const REAL_PRODUCTS: Product[] = [
     "totalReviews": 65,
     "sellerName": "Pa Agus (Sentra Tahu Susu Wangunsari)",
     "sellerBadge": "Produsen Tahu Susu Binaan",
-    "sellerAvatar": "/images/unsplash/photo-1544005313-94ddf0286df2_w200.jpg",
+    "sellerAvatar": "/images/default-avatar.svg",
     "sellerPhone": "6285221738102",
-    "image": "/images/tahu-susu-goreng.jpg",
+    "image": "/images/client/wangunsari/tahu-susu-agus-kemasan-10pcs.webp",
     "gallery": [
-      "/images/tahu-susu-goreng.jpg"
+      "/images/client/wangunsari/tahu-susu-agus-kemasan-10pcs.webp",
+      "/images/client/wangunsari/tahu-susu-nampan-produksi.webp",
+      "/images/client/wangunsari/tahu-susu-cetakan-potong.webp",
+      "/images/client/wangunsari/tahu-susu-proses-kemas.webp",
+      "/images/client/wangunsari/tahu-susu-segar.webp",
+      "/images/client/wangunsari/tahu-susu-goreng-panas.webp"
     ],
-    "description": "Tahu susu legendaris produksi Wangunsari Lembang yang terkenal sangat lembut di dalam dan garing renyah di luar saat digoreng. Dibuat dari kedelai non-transgenik pilihan yang dipadukan dengan susu sapi murni segar hasil peternak lokal. Tanpa bahan pengawet.",
+    "description": "Tahu susu legendaris produksi Pa Agus Wangunsari Lembang yang terkenal sangat lembut di dalam dan garing renyah di luar saat digoreng. Dibuat dari kedelai non-transgenik pilihan yang dipadukan dengan susu sapi murni segar hasil peternak lokal. Tanpa bahan pengawet. Kemasan plastik higienis berlabel Tahu Agus isi 10 pcs dengan harga sangat terjangkau Rp 5.000 per kemasan.",
     "highlights": [
+      "Harga Sangat Terjangkau Rp 5.000 / Kemasan (10 Pcs)",
       "Tekstur Lumer Lembut di Dalam, Garing di Luar",
       "Kandungan Susu Sapi Murni Segar Asli Lembang",
       "Higienis & Bebas Pengawet Berbahaya",
@@ -594,13 +624,15 @@ export const REAL_PRODUCTS: Product[] = [
     "totalReviews": 39,
     "sellerName": "Bu Agustian (UMKM Olahan Singkong)",
     "sellerBadge": "Pengrajin Kicimpring Tradisional",
-    "sellerAvatar": "/images/unsplash/photo-1494790108377-be9c29b29330_w150.jpg",
+    "sellerAvatar": "/images/default-avatar.svg",
     "sellerPhone": "6282216508602",
-    "image": "/images/real/kicimpring.jpg",
+    "image": "/images/client/wangunsari/kicimpring-singkong-renyah.webp",
     "gallery": [
-      "/images/real/kicimpring.jpg"
+      "/images/client/wangunsari/kicimpring-singkong-renyah.webp",
+      "/images/client/wangunsari/kicimpring-jemur-tradisional.webp",
+      "/images/client/wangunsari/kicimpring-produksi-warga.webp"
     ],
-    "description": "Kerupuk kicimpring olahan singkong khas Pasundan buatan tangan Bu Agustian. Dipadukan dengan rempah daun bawang, bawang putih, ketumbar, dan cabai merah yang menghasilkan kerenyahan tiada tara dengan cita rasa gurih nagih.",
+    "description": "Kerupuk kicimpring olahan singkong khas Pasundan buatan tangan Bu Agustian di Desa Wangunsari. Dipadukan dengan rempah daun bawang, bawang putih, ketumbar, dan cabai merah yang menghasilkan kerenyahan tiada tara dengan cita rasa gurih nagih.",
     "highlights": [
       "100% Singkong Lokal Berkualitas",
       "Bumbu Rempah Daun Bawang Alami",
@@ -617,10 +649,10 @@ export const REAL_PRODUCTS: Product[] = [
   },
   {
     "id": "real-wangunsari-ranginang",
-    "title": "Ranginang Ketan Renyah Gurih Dapur Bu Entin Wangunsari",
+    "title": "Ranginang Ketan Rasa Terasi Dapur Bu Entin (1 Kg)",
     "category": "kuliner",
-    "price": 20000,
-    "unit": "/bungkus",
+    "price": 65000,
+    "unit": "/kg (+- 50 pcs)",
     "villageId": "des-05",
     "villageName": "Desa Wisata Wangunsari",
     "location": "Wangunsari, Lembang",
@@ -628,16 +660,20 @@ export const REAL_PRODUCTS: Product[] = [
     "totalReviews": 34,
     "sellerName": "Bu Entin (Dapur Ranginang Wangunsari)",
     "sellerBadge": "Pengrajin Ranginang Tradisional",
-    "sellerAvatar": "/images/unsplash/photo-1544005313-94ddf0286df2_w200.jpg",
+    "sellerAvatar": "/images/default-avatar.svg",
     "sellerPhone": "6287887614185",
-    "image": "/images/real/ranginang.jpg",
+    "image": "/images/client/wangunsari/ranginang-terasi-khas-wangunsari.webp",
     "gallery": [
-      "/images/real/ranginang.jpg"
+      "/images/client/wangunsari/ranginang-terasi-khas-wangunsari.webp",
+      "/images/client/wangunsari/ranginang-mentah-terasi.webp",
+      "/images/client/wangunsari/ranginang-goreng-mekar.webp",
+      "/images/client/wangunsari/ranginang-tampah-jemur.webp"
     ],
-    "description": "Ranginang beras ketan premium pilihan yang diolah secara higienis dengan bumbu terasi gurih khas Sunda. Mekar sempurna saat digoreng, super renyah tanpa meninggalkan rasa lengket di gigi.",
+    "description": "Ranginang beras ketan premium pilihan rasa terasi gurih khas Sunda buatan Dapur Bu Entin Wangunsari. Keterangan produk: rasa terasi gurih, kemasan 1 kg (kurang lebih 50 pcs) dengan harga Rp 65.000/kg. Mekar sempurna saat digoreng, super renyah tanpa meninggalkan rasa lengket di gigi.",
     "highlights": [
+      "Rasa Terasi Gurih Alami Khas Pasundan",
+      "Kemasan 1 Kg (+- 50 Pcs) Rp 65.000",
       "Beras Ketan Pilihan Hasil Panen Petani",
-      "Cita Rasa Gurih Wangi Terasi Alami",
       "Mekar Sempurna & Renyah Maksimal",
       "Tersedia Siap Santap Maupun Mentah"
     ],
@@ -651,7 +687,7 @@ export const REAL_PRODUCTS: Product[] = [
   },
   {
     "id": "real-wangunsari-peuyeum-ketan",
-    "title": "Peuyeum Ketan Bungkus Daun Jambu Manis Legi Wangunsari",
+    "title": "Peuyeum Ketan Daun Jambu Wangunsari (Sistem PO)",
     "category": "kuliner",
     "price": 25000,
     "unit": "/ember mini (isi 16 pcs)",
@@ -662,14 +698,15 @@ export const REAL_PRODUCTS: Product[] = [
     "totalReviews": 45,
     "sellerName": "Pa Agus Komarudin (Peuyeum Ketan Tradisional)",
     "sellerBadge": "Pembuat Peuyeum Tradisional",
-    "sellerAvatar": "/images/unsplash/photo-1507003211169-0a1dd7228f2d_w200.jpg",
+    "sellerAvatar": "/images/default-avatar.svg",
     "sellerPhone": "6285222431566",
-    "image": "/images/unsplash/photo-1555396273-367ea4eb4db5_w800.jpg",
+    "image": "/images/client/wangunsari/peuyeum-ketan-daun-jambu.webp",
     "gallery": [
-      "/images/unsplash/photo-1555396273-367ea4eb4db5_w800.jpg"
+      "/images/client/wangunsari/peuyeum-ketan-daun-jambu.webp"
     ],
-    "description": "Tape ketan (peuyeum) hitam/putih fermentasi alami yang dibungkus rapi menggunakan daun jambu air segar. Memiliki rasa manis berair (juicy), aroma khas ragi tradisional yang segar, serta tekstur lembut yang sangat nikmat disajikan dingin.",
+    "description": "Tape ketan (peuyeum) hitam fermentasi alami yang dibungkus rapi menggunakan daun jambu air segar. Memiliki rasa manis berair (juicy), aroma khas ragi tradisional yang segar, serta tekstur lembut yang nikmat disajikan dingin. Keterangan Pemesanan: Sistem PO (Pre-Order), minimal 4 hari sebelumnya. Pemesanan hanya bisa dilakukan pada hari Sabtu dan Minggu.",
     "highlights": [
+      "Sistem PO Min. 4 Hari (Pemesanan Hari Sabtu & Minggu)",
       "Fermentasi Ragi Alami Resep Turun-Temurun",
       "Wangi Daun Jambu Air Segar Alami",
       "Air Tape Manis Segar Menyegarkan Tenggorokan",
@@ -685,29 +722,32 @@ export const REAL_PRODUCTS: Product[] = [
   },
   {
     "id": "real-sukajaya-yoghurt-alami",
-    "title": "Yoghurt Probiotik Susu Sapi Murni Sukajaya (Botol 250ml)",
+    "title": "Yoghurt Probiotik Aneka Rasa Toko Barokah Pa Emin (Botol 250ml)",
     "category": "olahan-susu",
     "price": 18000,
     "unit": "/botol 250ml",
     "villageId": "des-08",
     "villageName": "Desa Wisata Sukajaya",
-    "location": "Sentra Olahan Susu Sukajaya, Lembang",
+    "location": "Sentra Olahan Susu Barokah, Sukajaya, Lembang",
     "rating": 4.9,
     "totalReviews": 52,
-    "sellerName": "Pa Emin (Peternakan Mandiri Sukajaya)",
+    "sellerName": "Pa Emin (Toko Barokah Sukajaya)",
     "sellerBadge": "Peternak & Pengolah Susu Sukajaya",
-    "sellerAvatar": "/images/unsplash/photo-1500648767791-00dcc994a43e_w200.jpg",
+    "sellerAvatar": "/images/default-avatar.svg",
     "sellerPhone": "62895322096504",
-    "image": "/images/unsplash/photo-1571212515416-fef01fc43637_w800.jpg",
+    "image": "/images/client/sukajaya/hero-yoghvit-botol.webp",
     "gallery": [
-      "/images/unsplash/photo-1571212515416-fef01fc43637_w800.jpg"
+      "/images/client/sukajaya/hero-yoghvit-botol.webp",
+      "/images/client/sukajaya/yoghurt-stick-mat-pochi.webp",
+      "/images/client/sukajaya/hero-toko-barokah-susu-murni.webp"
     ],
-    "description": "Yoghurt kental kaya probiotik baik yang diolah langsung dari 100% susu sapi perah segar peternak Sukajaya. Tanpa pewarna sintetis atau pemanis buatan, tersedia dalam varian rasa buah stroberi kebun, blueberry, mangga, dan original plain.",
+    "description": "Yoghurt kental kaya probiotik baik (Yoghvit & Stick Mat Pochi) yang diolah langsung dari 100% susu sapi perah segar peternak Sukajaya di Toko Barokah Pa Emin. Tanpa pewarna sintetis atau pemanis buatan, tersedia dalam varian rasa buah segar leci, durian, anggur, dan aneka buah.",
     "highlights": [
+      "Produksi Asli Toko Barokah Pa Emin Sukajaya",
       "Dibuat Dari Susu Sapi Segar Perahan Pagi",
       "Kaya Bakteri Baik Probiotik Menyehatkan Pencernaan",
-      "Rasa Manis-Asam Buah Segar Alami",
-      "Kemasan Botol Higienis Praktis Dingin Siap Minum"
+      "Varian Yoghvit Botol & Stick Yoghurt Mat Pochi",
+      "Kemasan Higienis Bersertifikasi Resmi"
     ],
     "stockQuota": 80,
     "isAvailable": true,
@@ -719,26 +759,27 @@ export const REAL_PRODUCTS: Product[] = [
   },
   {
     "id": "real-sukajaya-susu-murni-segar",
-    "title": "Susu Sapi Murni Segar Pasteur Sukajaya (Botol 1 Liter)",
+    "title": "Susu Sapi Murni Segar Pasteur Toko Barokah Pa Emin (Botol 1 Liter)",
     "category": "olahan-susu",
     "price": 15000,
     "unit": "/liter",
     "villageId": "des-08",
     "villageName": "Desa Wisata Sukajaya",
-    "location": "Peternakan Sapi Perah Sukajaya, Lembang",
+    "location": "Toko Barokah, Sukajaya, Lembang",
     "rating": 5.0,
     "totalReviews": 61,
-    "sellerName": "Pa Emin (Peternakan Mandiri Sukajaya)",
+    "sellerName": "Pa Emin (Toko Barokah Sukajaya)",
     "sellerBadge": "Peternak & Pengolah Susu Sukajaya",
-    "sellerAvatar": "/images/unsplash/photo-1500648767791-00dcc994a43e_w200.jpg",
+    "sellerAvatar": "/images/default-avatar.svg",
     "sellerPhone": "62895322096504",
-    "image": "/images/unsplash/photo-1550583724-b2692b85b150_w800.jpg",
+    "image": "/images/client/sukajaya/hero-toko-barokah-susu-murni.webp",
     "gallery": [
-      "/images/unsplash/photo-1550583724-b2692b85b150_w800.jpg"
+      "/images/client/sukajaya/hero-toko-barokah-susu-murni.webp",
+      "/images/client/sukajaya/hero-yoghvit-botol.webp"
     ],
-    "description": "Susu sapi segar hasil perahan harian peternak sapi perah lereng Sukajaya. Telah melalui pasteurisasi suhu terjaga untuk membunuh kuman patogen tanpa merusak gizi alami, kalsium, dan rasa gurih alaminya.",
+    "description": "Susu sapi segar murni hasil perahan harian peternak sapi perah lereng Sukajaya yang dipasarkan langsung melalui Toko Barokah Pa Emin. Telah melalui pasteurisasi suhu terjaga untuk menjamin kehigienisan tanpa mengurangi kelezatan rasa gurih alami dan nutrisi alaminya.",
     "highlights": [
-      "Susu Perah Segar Murni Tanpa Campuran Air",
+      "Susu Perah Segar Murni Toko Barokah Pa Emin",
       "Pasteurisasi Higienis Aman Dikonsumsi Segera",
       "Tinggi Kalsium, Lemak Baik & Protein Alami",
       "Pengiriman Cepat Terjaga Suhu Dingin"
@@ -753,30 +794,30 @@ export const REAL_PRODUCTS: Product[] = [
   },
   {
     "id": "real-sukajaya-tahu-susu",
-    "title": "Tahu Susu Lembut Sukajaya Olahan Peternak Lokal (1 Kotak)",
+    "title": "Tahu Susu Lembut Barokah Sukajaya by Pa Emin (1 Kotak)",
     "category": "kuliner",
     "price": 25000,
     "unit": "/kotak",
     "villageId": "des-08",
     "villageName": "Desa Wisata Sukajaya",
-    "location": "Sukajaya, Lembang",
+    "location": "Kp. Citespong, Sukajaya, Lembang",
     "rating": 4.8,
     "totalReviews": 37,
-    "sellerName": "Pa Emin (Peternakan Mandiri Sukajaya)",
+    "sellerName": "Pa Emin (Toko Barokah Sukajaya)",
     "sellerBadge": "Peternak & Pengolah Susu Sukajaya",
-    "sellerAvatar": "/images/unsplash/photo-1500648767791-00dcc994a43e_w200.jpg",
+    "sellerAvatar": "/images/default-avatar.svg",
     "sellerPhone": "62895322096504",
-    "image": "/images/tahu-susu.jpg",
+    "image": "/images/client/sukajaya/hero-tahu-susu-barokah.webp",
     "gallery": [
-      "/images/tahu-susu.jpg",
-      "/images/tahu-susu-goreng.jpg"
+      "/images/client/sukajaya/hero-tahu-susu-barokah.webp",
+      "/images/client/sukajaya/hero-toko-barokah-susu-murni.webp"
     ],
-    "description": "Tahu susu lezat khas Sukajaya yang memadukan sari kedelai gurih dan susu sapi segar peternak setempat. Cocok disajikan sebagai hidangan sarapan atau teman minum kopi dan teh sore di pegunungan Lembang.",
+    "description": "Tahu susu lezat khas Sukajaya buatan Tahu Susu Barokah (Pa Emin) di Kp. Citespong RT 02 RW 02 Desa Sukajaya. Memadukan sari kedelai gurih dan susu sapi segar murni tanpa bahan pengawet. Resmi terdaftar Halal dan NIB 5122300062931.",
     "highlights": [
+      "Tahu Susu Barokah Pa Emin Citespong Sukajaya",
+      "Bersertifikat Halal & NIB Resmi 5122300062931",
       "Campuran Susu Murni Peternak Sukajaya",
-      "Gurih Alami Tanpa Penyedap Kimiawi Berlebih",
-      "Luar Garing Dalam Sangat Lembut",
-      "Pilihan Favorit Wisatawan Sukajaya"
+      "Luar Garing Renyah, Dalam Sangat Lembut Lumer"
     ],
     "stockQuota": 75,
     "isAvailable": true,

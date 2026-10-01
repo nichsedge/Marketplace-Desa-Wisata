@@ -25,8 +25,6 @@ export const MarketplaceView: React.FC = () => {
     setCategoryFilter,
     villageFilter,
     setVillageFilter,
-    priceFilter,
-    setPriceFilter,
     ratingFilter,
     setRatingFilter,
     sortBy,
@@ -38,13 +36,10 @@ export const MarketplaceView: React.FC = () => {
 
   const categories: { id: ProductCategory | 'all'; label: string }[] = [
     { id: 'all', label: 'Semua Produk' },
-    { id: 'sembako', label: '🌾 Sembako & Sayur' },
-    { id: 'tanaman-hias', label: '🪴 Tanaman Hias' },
     { id: 'minuman-komoditas', label: '☕ Kopi & Komoditas' },
-    { id: 'buah-herba', label: '🍋 Buah & Herba' },
+    { id: 'wisata-alam', label: '🌲 Wisata Alam & Offroad' },
     { id: 'kuliner', label: '🍲 Kuliner & Camilan' },
     { id: 'olahan-susu', label: '🥛 Olahan Susu Kemasan' },
-    { id: 'wisata-alam', label: '🌲 Wisata Alam & Camping' },
     { id: 'penginapan-lokal', label: '🏡 Penginapan & Homestay' },
   ];
 
@@ -63,11 +58,6 @@ export const MarketplaceView: React.FC = () => {
 
     // Village filter
     if (villageFilter !== 'all' && product.villageId !== villageFilter) {
-      return false;
-    }
-
-    // Price Filter
-    if (product.price > priceFilter) {
       return false;
     }
 
@@ -101,7 +91,7 @@ export const MarketplaceView: React.FC = () => {
     return b.totalReviews - a.totalReviews;
   });
 
-  const isFiltered = categoryFilter !== 'all' || villageFilter !== 'all' || priceFilter < 1000000 || ratingFilter > 0 || searchQuery.trim().length > 0;
+  const isFiltered = categoryFilter !== 'all' || villageFilter !== 'all' || ratingFilter > 0 || searchQuery.trim().length > 0;
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
@@ -117,7 +107,7 @@ export const MarketplaceView: React.FC = () => {
             Marketplace Desa Wisata Kawasan Lembang
           </h1>
           <p className="text-xs sm:text-sm text-stone-300 max-w-xl leading-relaxed">
-            Pesan langsung sembako segar, tanaman hias, kopi specialty, buah & herba, kuliner khas, olahan susu, paket wisata alam, hingga penginapan lokal langsung dari petani, peternak, dan warga lokal di Kawasan Lembang.
+            Pesan langsung kopi specialty, kuliner khas tradisional, olahan susu murni, paket wisata alam & offroad, hingga penginapan homestay lokal langsung dari petani, peternak, dan warga lokal di Kawasan Lembang.
           </p>
         </div>
 
@@ -226,25 +216,8 @@ export const MarketplaceView: React.FC = () => {
           )}
         </div>
 
-        {/* Right Controls: Price Dropdown, Rating Dropdown, Sort By, View Mode */}
-        <div className="grid grid-cols-3 sm:flex sm:flex-wrap items-center gap-2 sm:gap-2.5 w-full md:w-auto">
-          
-          {/* Price Filter Dropdown */}
-          <div className="w-full sm:w-auto">
-            <select
-              value={priceFilter}
-              onChange={(e) => setPriceFilter(Number(e.target.value))}
-              aria-label="Filter Harga Maksimal"
-              className="w-full sm:w-auto px-2 sm:px-2.5 py-2 bg-stone-50 hover:bg-stone-100 border border-stone-200 rounded-xl text-[11px] sm:text-xs text-stone-800 font-bold focus:outline-none focus:ring-2 focus:ring-emerald-600 cursor-pointer"
-            >
-              <option value={1000000}>Semua Harga</option>
-              <option value={35000}>≤ Rp 35rb</option>
-              <option value={50000}>≤ Rp 50rb</option>
-              <option value={100000}>≤ Rp 100rb</option>
-              <option value={250000}>≤ Rp 250rb</option>
-              <option value={500000}>≤ Rp 500rb</option>
-            </select>
-          </div>
+        {/* Right Controls: Rating Dropdown, Sort By, View Mode */}
+        <div className="grid grid-cols-2 sm:flex sm:flex-wrap items-center gap-2 sm:gap-2.5 w-full md:w-auto">
 
           {/* Minimum Rating Dropdown */}
           <div className="w-full sm:w-auto">

@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useApp } from '../context/AppContext';
 import { ProductCard } from '../components/ProductCard';
+import { UserAvatar } from '../components/UserAvatar';
 import { 
   Search, 
   MapPin, 
@@ -74,32 +75,24 @@ export const HomeView: React.FC = () => {
 
   const CATEGORY_OPTIONS: { id: ProductCategory | 'all'; label: string; icon: string }[] = [
     { id: 'all', label: 'Semua Kelompok', icon: '✨' },
-    { id: 'sembako', label: 'Sembako & Susu Murni', icon: '🥬' },
-    { id: 'tanaman-hias', label: 'Tanaman Hias & Sukulen', icon: '🪴' },
     { id: 'minuman-komoditas', label: 'Minuman & Kopi Specialty', icon: '☕' },
-    { id: 'buah-herba', label: 'Buah & Herba Alami', icon: '🍋' },
-    { id: 'kuliner', label: 'Kuliner & Kerajinan', icon: '🍲' },
-    { id: 'olahan-susu', label: 'Olahan Susu Kemasan', icon: '🥛' },
     { id: 'wisata-alam', label: 'Wisata Alam & Offroad', icon: '🌲' },
+    { id: 'kuliner', label: 'Kuliner & Camilan Tradisional', icon: '🍲' },
+    { id: 'olahan-susu', label: 'Olahan Susu Kemasan', icon: '🥛' },
     { id: 'penginapan-lokal', label: 'Penginapan Lokal & Homestay', icon: '🏡' },
   ];
 
   const selectedCategoryObj = CATEGORY_OPTIONS.find(c => c.id === heroCategory);
 
-  // Filtered lists for homepage showcase: prioritize real products with direct CP
-  const realProducts = products.filter(p => p.dataSource === 'real');
-  const mockProducts = products.filter(p => p.dataSource !== 'real' && (p.isFeatured || p.rating >= 4.8));
-  const featuredProducts = [...realProducts, ...mockProducts].slice(0, 8);
+  // Filtered lists for homepage showcase: exclusively real client products
+  const featuredProducts = products.filter(p => p.isFeatured || p.rating >= 4.9).slice(0, 8);
 
   const categoryCards: { id: ProductCategory; title: string; subtitle: string; icon: React.ReactNode; color: string }[] = [
-    { id: 'sembako', title: 'Sembako', subtitle: 'Sayur Segar & Susu Murni (Cibodas)', icon: <Store className="w-6 h-6 text-emerald-700" />, color: 'bg-emerald-50 border-emerald-200' },
-    { id: 'tanaman-hias', title: 'Tanaman Hias', subtitle: 'Sukulen, Pot & Media Tanam (Jayagiri)', icon: <Flower2 className="w-6 h-6 text-teal-700" />, color: 'bg-teal-50 border-teal-200' },
-    { id: 'minuman-komoditas', title: 'Minuman & Komoditas', subtitle: 'Kopi Arabika/Robusta (Suntenjaya)', icon: <Coffee className="w-6 h-6 text-amber-700" />, color: 'bg-amber-50 border-amber-200' },
-    { id: 'buah-herba', title: 'Buah & Herba', subtitle: 'Lemon, Stroberi & Jamu (Cikahuripan)', icon: <Apple className="w-6 h-6 text-lime-700" />, color: 'bg-lime-50 border-lime-200' },
-    { id: 'kuliner', title: 'Kuliner', subtitle: 'Tahu Susu, Bolu & Kriya (Wangunsari, Gudangkahuripan)', icon: <Utensils className="w-6 h-6 text-rose-700" />, color: 'bg-rose-50 border-rose-200' },
-    { id: 'olahan-susu', title: 'Olahan Susu Kemasan', subtitle: 'Yoghurt, Keju & Mentega (Sukajaya)', icon: <Milk className="w-6 h-6 text-sky-700" />, color: 'bg-sky-50 border-sky-200' },
-    { id: 'wisata-alam', title: 'Wisata Alam', subtitle: 'Camping, Tenda & Offroad (Cikole, Cikahuripan)', icon: <TreePine className="w-6 h-6 text-emerald-800" />, color: 'bg-emerald-50 border-emerald-300' },
-    { id: 'penginapan-lokal', title: 'Penginapan Lokal', subtitle: 'Homestay & Sewa Rumah (Cibodas)', icon: <BedDouble className="w-6 h-6 text-indigo-700" />, color: 'bg-indigo-50 border-indigo-200' },
+    { id: 'minuman-komoditas', title: 'Minuman & Komoditas', subtitle: 'Kopi Arabika & Maguru Kopi (Suntenjaya, Jayagiri)', icon: <Coffee className="w-6 h-6 text-amber-700" />, color: 'bg-amber-50 border-amber-200' },
+    { id: 'wisata-alam', title: 'Wisata Alam & Seni', subtitle: 'Offroad, Camping, Jaipong & Megalitikum (Cikole, Gudangkahuripan, Suntenjaya)', icon: <TreePine className="w-6 h-6 text-emerald-800" />, color: 'bg-emerald-50 border-emerald-300' },
+    { id: 'kuliner', title: 'Kuliner Tradisional', subtitle: 'Tahu Susu, Kicimpring & Ranginang (Wangunsari)', icon: <Utensils className="w-6 h-6 text-rose-700" />, color: 'bg-rose-50 border-rose-200' },
+    { id: 'olahan-susu', title: 'Olahan Susu Kemasan', subtitle: 'Susu Murni, Yoghurt & Tahu Susu (Sukajaya)', icon: <Milk className="w-6 h-6 text-sky-700" />, color: 'bg-sky-50 border-sky-200' },
+    { id: 'penginapan-lokal', title: 'Penginapan Lokal', subtitle: 'Homestay & Sewa Rumah Pegunungan Lembang (Suntenjaya)', icon: <BedDouble className="w-6 h-6 text-indigo-700" />, color: 'bg-indigo-50 border-indigo-200' },
   ];
 
   return (
@@ -111,7 +104,7 @@ export const HomeView: React.FC = () => {
         {/* Background Image & Gradient */}
         <div className="absolute inset-0 rounded-2xl sm:rounded-3xl overflow-hidden pointer-events-none">
           <img
-            src="/images/unsplash/photo-1506744038136-46273834b3fb_w2000.jpg"
+            src="/images/client/pasir-angling/hero-valley-panorama.webp"
             alt="Desa Wisata Kawasan Lembang Lanskap Pegunungan"
             className="w-full h-full object-cover object-center scale-105 animate-pulse duration-[10000ms]"
             referrerPolicy="no-referrer"
@@ -135,7 +128,7 @@ export const HomeView: React.FC = () => {
           </h1>
 
           <p className="text-stone-200 text-xs sm:text-base lg:text-lg max-w-2xl mx-auto leading-relaxed">
-            Temukan sembako organik segar, tanaman hias, kopi specialty, buah & herba, kuliner khas, olahan susu, hingga penginapan asri langsung dari petani, peternak, dan warga lokal di Kawasan Lembang.
+            Temukan kopi specialty, kuliner khas tradisional, olahan susu murni, wisata alam & offroad, hingga penginapan homestay asri langsung dari petani, peternak, dan warga lokal di Kawasan Lembang.
           </p>
 
           {/* Interactive Search Box with Custom Dropdowns */}
@@ -150,7 +143,7 @@ export const HomeView: React.FC = () => {
                 type="text"
                 value={heroSearch}
                 onChange={(e) => setHeroSearch(e.target.value)}
-                placeholder="Cari sembako, kopi, tanaman, offroad, homestay..."
+                placeholder="Cari kopi, offroad, homestay, tahu susu, susu murni, jaipong..."
                 className="w-full bg-transparent text-xs sm:text-sm text-stone-900 placeholder-stone-400 focus:outline-none font-medium"
               />
               {heroSearch && (
@@ -364,7 +357,7 @@ export const HomeView: React.FC = () => {
             <p className="text-xs sm:text-sm text-stone-600 font-medium">Jaringan Wisata Lembang</p>
           </div>
           <div className="space-y-1">
-            <p className="text-2xl sm:text-4xl font-black font-serif-title text-emerald-800">8 Kelompok</p>
+            <p className="text-2xl sm:text-4xl font-black font-serif-title text-emerald-800">{categoryCards.length} Kelompok</p>
             <p className="text-xs sm:text-sm text-stone-600 font-medium">Komoditas & Produk Unggulan</p>
           </div>
           <div className="space-y-1">
@@ -466,7 +459,7 @@ export const HomeView: React.FC = () => {
           <div>
             <span className="text-emerald-700 font-bold text-xs uppercase tracking-wider">Katalog Terpadu</span>
             <h2 className="text-2xl sm:text-3xl font-extrabold font-serif-title text-stone-900 mt-1">
-              8 Kelompok Produk & Komoditas Desa
+              {categoryCards.length} Kelompok Produk & Komoditas Desa
             </h2>
           </div>
           <button
@@ -539,18 +532,17 @@ export const HomeView: React.FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-4">
           <div className="bg-stone-800/80 p-6 rounded-2xl border border-stone-700/80 space-y-4">
             <p className="text-xs sm:text-sm text-stone-300 italic leading-relaxed">
-              "Melalui portal Saba Lembang ini, sayuran organik dan susu murni kami di Cibodas terhubung langsung ke pembeli. Pengunjung juga mudah memesan penginapan warga."
+              "Melalui portal Saba Lembang ini, produk tahu susu, ranginang gurih, dan olahan komoditas kami di Wangunsari semakin cepat terhubung langsung ke wisatawan dan pemesan."
             </p>
             <div className="flex items-center gap-3 pt-2 border-t border-stone-700">
-              <img
-                src="/images/unsplash/photo-1500648767791-00dcc994a43e_w150.jpg"
-                alt="Kang Dadang Herdiana"
-                className="w-10 h-10 rounded-full object-cover border border-amber-300"
-                referrerPolicy="no-referrer"
+              <UserAvatar
+                alt="Kang Sandi Permana"
+                sizeClassName="w-10 h-10"
+                className="border border-amber-300 shrink-0"
               />
               <div>
-                <p className="text-xs font-bold text-white">Kang Dadang Herdiana</p>
-                <p className="text-[10px] text-amber-300">Admin Desa Wisata Cibodas</p>
+                <p className="text-xs font-bold text-white">Kang Sandi Permana</p>
+                <p className="text-[10px] text-amber-300">Admin Desa Wisata Wangunsari</p>
               </div>
             </div>
           </div>
@@ -560,11 +552,10 @@ export const HomeView: React.FC = () => {
               "Biji kopi Arabika single origin lereng Suntenjaya kini semakin dikenal luas. Komunikasi dengan wisatawan sangat praktis melalui kontak Admin Desa."
             </p>
             <div className="flex items-center gap-3 pt-2 border-t border-stone-700">
-              <img
-                src="/images/unsplash/photo-1507003211169-0a1dd7228f2d_w150.jpg"
+              <UserAvatar
                 alt="Kang Asep Suhendar"
-                className="w-10 h-10 rounded-full object-cover border border-amber-300"
-                referrerPolicy="no-referrer"
+                sizeClassName="w-10 h-10"
+                className="border border-amber-300 shrink-0"
               />
               <div>
                 <p className="text-xs font-bold text-white">Kang Asep Suhendar</p>
@@ -575,14 +566,13 @@ export const HomeView: React.FC = () => {
 
           <div className="bg-stone-800/80 p-6 rounded-2xl border border-stone-700/80 space-y-4">
             <p className="text-xs sm:text-sm text-stone-300 italic leading-relaxed">
-              "Platform ini memudahkan kami mencari produk asli desa di Lembang, mulai dari camping di Cikole, buah segar di Cikahuripan, hingga olahan susu di Sukajaya."
+              "Platform ini memudahkan kami mencari produk asli desa di Lembang, mulai dari offroad di Cikole, kopi specialty di Suntenjaya & Jayagiri, hingga olahan susu murni di Sukajaya."
             </p>
             <div className="flex items-center gap-3 pt-2 border-t border-stone-700">
-              <img
-                src="/images/unsplash/photo-1494790108377-be9c29b29330_w150.jpg"
+              <UserAvatar
                 alt="Siti Rahmawati"
-                className="w-10 h-10 rounded-full object-cover border border-amber-300"
-                referrerPolicy="no-referrer"
+                sizeClassName="w-10 h-10"
+                className="border border-amber-300 shrink-0"
               />
               <div>
                 <p className="text-xs font-bold text-white">Siti Rahmawati</p>

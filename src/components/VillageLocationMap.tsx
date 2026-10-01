@@ -2,17 +2,13 @@ import React, { useState } from 'react';
 import { Village } from '../types';
 import { 
   MapPin, 
-  Phone, 
-  MessageSquare, 
   ExternalLink, 
   Clock, 
   Building2, 
   Navigation, 
-  ShieldCheck, 
   ChevronDown,
   Sparkles
 } from 'lucide-react';
-import { formatWhatsAppUrl } from '../utils/whatsapp';
 
 interface VillageLocationMapProps {
   villages: Village[];
@@ -63,11 +59,6 @@ export const VillageLocationMap: React.FC<VillageLocationMapProps> = ({
       currentVillage.officeAddress || `${currentVillage.name}, Lembang, Kabupaten Bandung Barat`
     )}`;
 
-  const cleanPhone = currentVillage.contactPhone ? currentVillage.contactPhone.replace(/[^0-9]/g, '') : '';
-  const waContactUrl = cleanPhone 
-    ? formatWhatsAppUrl(cleanPhone, `Halo Admin ${currentVillage.name}, saya ingin bertanya seputar informasi desa dan layanan wisata.`)
-    : '';
-
   return (
     <div className={`bg-white rounded-3xl border border-stone-200 shadow-sm overflow-hidden ${className}`}>
       
@@ -77,13 +68,13 @@ export const VillageLocationMap: React.FC<VillageLocationMapProps> = ({
             <div className="space-y-1.5">
               <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-amber-400/20 text-amber-300 border border-amber-400/30 rounded-full text-xs font-semibold">
                 <Building2 className="w-3.5 h-3.5" />
-                <span>Peta & Kontak Resmi Kantor Desa</span>
+                <span>Peta Lokasi Kantor Desa</span>
               </div>
               <h2 className="text-xl sm:text-2xl lg:text-3xl font-extrabold font-serif-title text-white">
-                Lokasi Kantor Desa & Kontak di Kawasan Lembang
+                Lokasi Kantor Desa di Kawasan Lembang
               </h2>
               <p className="text-xs sm:text-sm text-stone-300 max-w-2xl">
-                Pilih salah satu desa wisata di bawah untuk melihat lokasi kantor desa secara presisi di peta serta nomor kontak/CP resmi pengelola desa.
+                Pilih salah satu desa wisata di bawah untuk melihat lokasi kantor desa secara presisi di peta interaktif.
               </p>
             </div>
 
@@ -190,53 +181,6 @@ export const VillageLocationMap: React.FC<VillageLocationMapProps> = ({
               </div>
             </div>
 
-            {/* CP / Kontak Desa */}
-            <div className="space-y-3">
-              <h4 className="text-xs font-bold text-stone-900 uppercase tracking-wider flex items-center gap-1.5">
-                <ShieldCheck className="w-4 h-4 text-emerald-700" />
-                <span>Kontak & Layanan Admin Desa:</span>
-              </h4>
-
-              {currentVillage.contactPhone ? (
-                <div className="p-4 rounded-2xl bg-emerald-50/70 border border-emerald-200 space-y-3">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-2.5">
-                      <div className="w-8 h-8 rounded-xl bg-emerald-700 text-white flex items-center justify-center font-bold">
-                        <Phone className="w-4 h-4" />
-                      </div>
-                      <div>
-                        <p className="text-[10px] text-emerald-800 font-bold uppercase tracking-wider">
-                          CP / Admin Desa Resmi:
-                        </p>
-                        <p className="text-xs sm:text-sm font-extrabold text-stone-900">
-                          {currentVillage.contactPhone}
-                        </p>
-                      </div>
-                    </div>
-
-                    <span className="px-2 py-0.5 bg-emerald-200/80 text-emerald-900 text-[10px] font-extrabold rounded-md">
-                      Aktif
-                    </span>
-                  </div>
-
-                  {waContactUrl && (
-                    <a
-                      href={waContactUrl}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="w-full py-2.5 px-4 bg-emerald-700 hover:bg-emerald-800 text-white font-bold rounded-xl text-xs transition-all shadow-xs flex items-center justify-center gap-2 cursor-pointer"
-                    >
-                      <MessageSquare className="w-4 h-4" />
-                      <span>Hubungi via WhatsApp</span>
-                    </a>
-                  )}
-                </div>
-              ) : (
-                <div className="p-3 bg-stone-50 rounded-xl border border-stone-200 text-xs text-stone-500 italic">
-                  Kontak resmi desa sedang dalam proses sinkronisasi data final.
-                </div>
-              )}
-            </div>
 
           </div>
 

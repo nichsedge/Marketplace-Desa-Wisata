@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useApp } from '../context/AppContext';
 import { formatRupiah, getCategoryBadge, ProductCard } from '../components/ProductCard';
 import { calculateNights } from '../utils/booking';
+import { UserAvatar } from '../components/UserAvatar';
 import { 
   Star, 
   MapPin, 
@@ -400,11 +401,11 @@ export const ProductDetailView: React.FC = () => {
             </div>
 
             <div className="flex items-center gap-4">
-              <img
+              <UserAvatar
                 src={product.sellerAvatar}
                 alt={product.sellerName}
-                className="w-14 h-14 rounded-full object-cover border-2 border-amber-300 shadow-md"
-                referrerPolicy="no-referrer"
+                sizeClassName="w-14 h-14"
+                className="border-2 border-amber-300 shadow-md shrink-0"
               />
               <div className="flex-1 min-w-0">
                 <h4 className="text-base font-bold text-white truncate">{product.sellerName}</h4>
@@ -497,7 +498,12 @@ export const ProductDetailView: React.FC = () => {
                   <div key={rev.id} className="p-4 bg-stone-50/60 rounded-xl border border-stone-200/80 space-y-2">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-2.5">
-                        <img src={rev.authorAvatar} alt={rev.authorName} className="w-8 h-8 rounded-full object-cover" referrerPolicy="no-referrer" />
+                        <UserAvatar
+                          src={rev.authorAvatar}
+                          alt={rev.authorName}
+                          sizeClassName="w-8 h-8"
+                          className="shrink-0"
+                        />
                         <div>
                           <p className="text-xs font-bold text-stone-900">{rev.authorName}</p>
                           <p className="text-[10px] text-stone-400">{rev.userRole}</p>

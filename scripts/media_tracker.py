@@ -166,6 +166,224 @@ KNOWN_CURATION_RULES = {
         "webPath": "/images/client/pasir-angling/trekking-guide-scenic.webp",
         "targetProduct": "Tiket & Izin Jalur Hiking Bukit & Perkebunan Pasir Angling",
         "reason": "Pemandu lokal mendampingi peserta lintas alam dengan latar belakang kontur pegunungan hijau yang luas."
+    },
+
+    # -------------------------------------------------------------
+    # 4. PEMBARUAN 01/10/2026: BATU LOCENG SUNTENJAYA
+    # -------------------------------------------------------------
+    "20261001/batu lonceng-20261001T102213Z-1-001/batu lonceng/Screenshot 2026-10-01 112942.png": {
+        "decision": "accepted_hero",
+        "webPath": "/images/client/batu-loceng/hero-batu-loceng-kuncen.webp",
+        "targetProduct": "Paket Wisata Edukasi Kebun Kopi & Situs Batu Loceng Suntenjaya",
+        "reason": "Juru kunci / sesepuh adat memegang batu megalitikum bertuah Batu Loceng di dalam saung pelindung cagar budaya. Sangat otentik dan bernilai sejarah tinggi."
+    },
+    "20261001/batu lonceng-20261001T102213Z-1-001/batu lonceng/Screenshot 2026-10-01 112928.png": {
+        "decision": "accepted_gallery",
+        "webPath": "/images/client/batu-loceng/batu-loceng-sacred-stone.webp",
+        "targetProduct": "Paket Wisata Edukasi Kebun Kopi & Situs Batu Loceng Suntenjaya",
+        "reason": "Detail batu hitam megalitikum sakral Batu Loceng di atas kain alas dan taburan bunga sesaji doa."
+    },
+    "20261001/batu lonceng-20261001T102213Z-1-001/batu lonceng/Screenshot 2026-10-01 113009.png": {
+        "decision": "accepted_gallery",
+        "webPath": "/images/client/batu-loceng/saung-cagar-budaya.webp",
+        "targetProduct": "Paket Wisata Edukasi Kebun Kopi & Situs Batu Loceng Suntenjaya",
+        "reason": "Bangunan saung pelindung situs cagar budaya Batu Loceng yang dikelilingi hutan hijau asri lereng Gunung Palasari."
+    },
+
+    # -------------------------------------------------------------
+    # 5. PEMBARUAN 01/10/2026: TAHU SUSU WANGUNSARI (PA AGUS)
+    # -------------------------------------------------------------
+    "20261001/tahu susu-20261001T102221Z-1-001/tahu susu/WhatsApp Image 2026-09-30 at 12.07.14 (1).jpeg": {
+        "decision": "accepted_hero",
+        "webPath": "/images/client/wangunsari/tahu-susu-agus-kemasan-10pcs.webp",
+        "targetProduct": "Tahu Susu Lembut Asli Wangunsari (1 Kotak Isi 10 Pcs)",
+        "reason": "Tahu Susu Lembang Special cap Tahu Agus kemasan asli isi 10 pcs siap jual di atas nampan stainless steel. Menampilkan keaslian produk UMKM binaan Wangunsari."
+    },
+    "20261001/tahu susu-20261001T102221Z-1-001/tahu susu/WhatsApp Image 2026-09-30 at 12.07.15 (1).jpeg": {
+        "decision": "accepted_gallery",
+        "webPath": "/images/client/wangunsari/tahu-susu-nampan-produksi.webp",
+        "targetProduct": "Tahu Susu Lembut Asli Wangunsari (1 Kotak Isi 10 Pcs)",
+        "reason": "Tumpukan kemasan tahu susu kuning segar tersusun rapi di area dapur produksi, siap dikirim ke konsumen."
+    },
+    "20261001/tahu susu-20261001T102221Z-1-001/tahu susu/WhatsApp Image 2026-09-30 at 12.07.15.jpeg": {
+        "decision": "accepted_gallery",
+        "webPath": "/images/client/wangunsari/tahu-susu-cetakan-potong.webp",
+        "targetProduct": "Tahu Susu Lembut Asli Wangunsari (1 Kotak Isi 10 Pcs)",
+        "reason": "Balok-balok tahu susu segar berwarna kuning alami setelah proses pencetakan dan perendaman bumbu rempah."
+    },
+    "20261001/tahu susu-20261001T102221Z-1-001/tahu susu/WhatsApp Image 2026-09-30 at 12.07.14.jpeg": {
+        "decision": "accepted_gallery",
+        "webPath": "/images/client/wangunsari/tahu-susu-proses-kemas.webp",
+        "targetProduct": "Tahu Susu Lembut Asli Wangunsari (1 Kotak Isi 10 Pcs)",
+        "reason": "Proses pengemasan higienis tahu susu ke dalam kantong plastik berlabel resmi Tahu Agus."
+    },
+    "20261001/tahu susu-20261001T102221Z-1-001/tahu susu/WhatsApp Image 2026-09-30 at 12.07.13.jpeg": {
+        "decision": "accepted_gallery",
+        "webPath": "/images/client/wangunsari/tahu-susu-segar.webp",
+        "targetProduct": "Tahu Susu Lembut Asli Wangunsari (1 Kotak Isi 10 Pcs)",
+        "reason": "Dokumentasi kebersihan dapur produksi dan wadah stainless perendaman tahu susu."
+    },
+    "20261001/tahu susu-20261001T102221Z-1-001/tahu susu/WhatsApp Image 2026-09-30 at 13.07.55.jpeg": {
+        "decision": "accepted_gallery",
+        "webPath": "/images/client/wangunsari/tahu-susu-goreng-panas.webp",
+        "targetProduct": "Tahu Susu Lembut Asli Wangunsari (1 Kotak Isi 10 Pcs)",
+        "reason": "Tahu susu siap santap bertekstur lembut di dalam dan garing gurih di luar."
+    },
+
+    # -------------------------------------------------------------
+    # 6. PEMBARUAN 01/10/2026: KICIMPRING SINGKONG WANGUNSARI
+    # -------------------------------------------------------------
+    "20261001/Kicimpring Singkong-20261001T102245Z-1-001/Kicimpring Singkong/Screenshot 2026-10-01 120129.png": {
+        "decision": "accepted_hero",
+        "webPath": "/images/client/wangunsari/kicimpring-singkong-renyah.webp",
+        "targetProduct": "Kicimpring Singkong Renyah Gurih Wangunsari (250gr)",
+        "reason": "Close-up keripik kicimpring singkong renyah dengan taburan bumbu cabai dan daun bawang gurih siap konsumsi."
+    },
+    "20261001/Kicimpring Singkong-20261001T102245Z-1-001/Kicimpring Singkong/21 Juni 2019 》Kegiatan kali ini kita berkunjung pada potensi yang ada di Desa Wangunsari yaitu a(1).jpg": {
+        "decision": "accepted_gallery",
+        "webPath": "/images/client/wangunsari/kicimpring-jemur-tradisional.webp",
+        "targetProduct": "Kicimpring Singkong Renyah Gurih Wangunsari (250gr)",
+        "reason": "Ibu-ibu perajin Wangunsari menjemur adonan kicimpring singkong di atas rak kawat tradisional di bawah sinar matahari pegunungan."
+    },
+    "20261001/Kicimpring Singkong-20261001T102245Z-1-001/Kicimpring Singkong/21 Juni 2019 》Kegiatan kali ini kita berkunjung pada potensi yang ada di Desa Wangunsari yaitu a.jpg": {
+        "decision": "accepted_gallery",
+        "webPath": "/images/client/wangunsari/kicimpring-produksi-warga.webp",
+        "targetProduct": "Kicimpring Singkong Renyah Gurih Wangunsari (250gr)",
+        "reason": "Dokumentasi kunjungan potensi desa dan proses pembuatan adonan kicimpring singkong bersama warga lokal."
+    },
+
+    # -------------------------------------------------------------
+    # 7. PEMBARUAN 01/10/2026: PEUYEUM KETAN WANGUNSARI
+    # -------------------------------------------------------------
+    "20261001/peuyeum ketan-20261001T102251Z-1-001/peuyeum ketan/Gemini_Generated_Image_p455vip455vip455.jpg": {
+        "decision": "accepted_hero",
+        "webPath": "/images/client/wangunsari/peuyeum-ketan-daun-jambu.webp",
+        "targetProduct": "Peuyeum Ketan Bungkus Daun Jambu Manis Legi Wangunsari",
+        "reason": "Visual estetik peuyeum ketan hitam terbungkus daun jambu air rapi di atas tampah kayu bersama mangkuk keramik ketan hitam tradisional."
+    },
+
+    # -------------------------------------------------------------
+    # 8. PEMBARUAN 01/10/2026: RANGINANG TERASI WANGUNSARI
+    # -------------------------------------------------------------
+    "20261001/Ranginang-20261001T102353Z-1-001/Ranginang/😍😍😍😍.jpg": {
+        "decision": "accepted_hero",
+        "webPath": "/images/client/wangunsari/ranginang-terasi-khas-wangunsari.webp",
+        "targetProduct": "Ranginang Ketan Renyah Gurih Dapur Bu Entin Wangunsari",
+        "reason": "Ranginang ketan rasa terasi gurih mekar renyah disajikan bersama cangkir teh hangat dan kaleng kerupuk vintage oranye. Sangat menggugah selera."
+    },
+    "20261001/Ranginang-20261001T102353Z-1-001/Ranginang/😍😍😍😍(1).jpg": {
+        "decision": "accepted_gallery",
+        "webPath": "/images/client/wangunsari/ranginang-mentah-terasi.webp",
+        "targetProduct": "Ranginang Ketan Renyah Gurih Dapur Bu Entin Wangunsari",
+        "reason": "Ranginang mentah siap goreng dengan butiran beras ketan pilihan berbumbu terasi gurih."
+    },
+    "20261001/Ranginang-20261001T102353Z-1-001/Ranginang/😍😍😍😍(2).jpg": {
+        "decision": "accepted_gallery",
+        "webPath": "/images/client/wangunsari/ranginang-goreng-mekar.webp",
+        "targetProduct": "Ranginang Ketan Renyah Gurih Dapur Bu Entin Wangunsari",
+        "reason": "Piring saji penuh dengan ranginang mekar renyah gurih siap santap."
+    },
+    "20261001/Ranginang-20261001T102353Z-1-001/Ranginang/😍😍😍😍(3).jpg": {
+        "decision": "accepted_gallery",
+        "webPath": "/images/client/wangunsari/ranginang-tampah-jemur.webp",
+        "targetProduct": "Ranginang Ketan Renyah Gurih Dapur Bu Entin Wangunsari",
+        "reason": "Proses penjemuran ranginang di tampah bambu secara tradisional."
+    },
+
+    # -------------------------------------------------------------
+    # 9. PEMBARUAN 01/10/2026: TARI JAIPONG & GAMELAN GUDANGKAHURIPAN
+    # -------------------------------------------------------------
+    "20261001/gudangkahuripan-20261001T102355Z-1-001/gudangkahuripan/Dokumentasi saat materi Tari Jaipong 😍🥰.jpg": {
+        "decision": "accepted_hero",
+        "webPath": "/images/client/gudangkahuripan/hero-tari-jaipong-materi.webp",
+        "targetProduct": "Workshop Seni Gamelan Sunda, Tari Tradisional & Literasi Kearifan Lokal",
+        "reason": "Peserta workshop dan penari remaja menyambut tamu dengan salam hangat gerakan tari Jaipong tradisional di pelataran sanggar budaya."
+    },
+    "20261001/gudangkahuripan-20261001T102355Z-1-001/gudangkahuripan/789108465_17966266326159854_4186932252492757219_n.jpg": {
+        "decision": "accepted_gallery",
+        "webPath": "/images/client/gudangkahuripan/jaipong-peserta-senyum.webp",
+        "targetProduct": "Workshop Seni Gamelan Sunda, Tari Tradisional & Literasi Kearifan Lokal",
+        "reason": "Penari muda berkebaya Sunda putih tersenyum ramah bersama peserta pelatihan seni budaya."
+    },
+    "20261001/gudangkahuripan-20261001T102355Z-1-001/gudangkahuripan/790023457_17966266371159854_7924881403726805858_n.jpg": {
+        "decision": "accepted_gallery",
+        "webPath": "/images/client/gudangkahuripan/jaipong-pelatihan-kompak.webp",
+        "targetProduct": "Workshop Seni Gamelan Sunda, Tari Tradisional & Literasi Kearifan Lokal",
+        "reason": "Kekompakan penari sanggar Kamandaka Gudangkahuripan mengenakan kain jarik batik Pasundan."
+    },
+    "20261001/gudangkahuripan-20261001T102355Z-1-001/gudangkahuripan/790475973_17966266335159854_2867174840609974419_n.jpg": {
+        "decision": "accepted_gallery",
+        "webPath": "/images/client/gudangkahuripan/jaipong-kebersamaan.webp",
+        "targetProduct": "Workshop Seni Gamelan Sunda, Tari Tradisional & Literasi Kearifan Lokal",
+        "reason": "Momen interaksi hangat dan latihan gerak dasar tari bersama wisatawan edukasi."
+    },
+    "20261001/gudangkahuripan-20261001T102355Z-1-001/gudangkahuripan/Dokumentasii keseruan saat praktek Tari Jaipong 😉😍#ypjpapua #tembagapura #kamandakalembang #b.jpg": {
+        "decision": "accepted_gallery",
+        "webPath": "/images/client/gudangkahuripan/jaipong-praktek-lapangan.webp",
+        "targetProduct": "Workshop Seni Gamelan Sunda, Tari Tradisional & Literasi Kearifan Lokal",
+        "reason": "Keseruan praktik tari Jaipong di ruang terbuka sanggar seni Kamandaka Lembang."
+    },
+    "20261001/gudangkahuripan-20261001T102355Z-1-001/gudangkahuripan/Dokumentasii keseruan saat praktek Tari Jaipong 😉😍#ypjpapua #tembagapura #kamandakalembang #b(1).jpg": {
+        "decision": "accepted_gallery",
+        "webPath": "/images/client/gudangkahuripan/jaipong-gerak-dasar.webp",
+        "targetProduct": "Workshop Seni Gamelan Sunda, Tari Tradisional & Literasi Kearifan Lokal",
+        "reason": "Peserta mempraktikkan gerakan selendang dan ayunan tangan tari Jaipong."
+    },
+
+    # -------------------------------------------------------------
+    # 10. PEMBARUAN 01/10/2026: SUKAJAYA (PA EMIN - BAROKAH)
+    # -------------------------------------------------------------
+    "20261001/sukajaya-20261001T102401Z-1-001/sukajaya/Screenshot 2026-10-01 122739.png": {
+        "decision": "accepted_hero",
+        "webPath": "/images/client/sukajaya/hero-yoghvit-botol.webp",
+        "targetProduct": "Yoghurt Probiotik Susu Sapi Murni Sukajaya (Botol 250ml)",
+        "reason": "Botol yoghurt dingin Yoghvit Barokah Fresh Milk aneka rasa buah tertata di rak pendingin show-case toko Pa Emin Sukajaya."
+    },
+    "20261001/sukajaya-20261001T102401Z-1-001/sukajaya/Screenshot 2026-10-01 122749.png": {
+        "decision": "accepted_gallery",
+        "webPath": "/images/client/sukajaya/yoghurt-stick-mat-pochi.webp",
+        "targetProduct": "Yoghurt Probiotik Susu Sapi Murni Sukajaya (Botol 250ml)",
+        "reason": "Kemasan stick yoghurt Mat Pochi produksi Barokah Freshmilk Lembang bertanda Halal dan izin resmi."
+    },
+    "20261001/sukajaya-20261001T102401Z-1-001/sukajaya/Screenshot 2026-10-01 122758.png": {
+        "decision": "accepted_hero",
+        "webPath": "/images/client/sukajaya/hero-toko-barokah-susu-murni.webp",
+        "targetProduct": "Susu Sapi Murni Segar Pasteur Sukajaya (Botol 1 Liter)",
+        "reason": "Tampak depan kios dan sentra pengolahan Barokah milik Pa Emin: spanduk Susu Sapi Segar, Yoghurt, dan Tahu Susu Barokah di Sukajaya."
+    },
+    "20261001/sukajaya-20261001T102401Z-1-001/sukajaya/Screenshot 2026-10-01 122836.png": {
+        "decision": "accepted_hero",
+        "webPath": "/images/client/sukajaya/hero-tahu-susu-barokah.webp",
+        "targetProduct": "Tahu Susu Lembut Sukajaya Olahan Peternak Lokal (1 Kotak)",
+        "reason": "Kemasan Tahu Susu Barokah khas Sukajaya Citespong lengkap dengan label Halal dan NIB resmi."
+    },
+
+    # -------------------------------------------------------------
+    # 11. PEMBARUAN 01/10/2026: RUMAH SUNTENJAYA (HOMESTAY & SEWA RUMAH WARGA)
+    # -------------------------------------------------------------
+    "20261001/rumah-suntenjaya/WhatsApp Image 2026-10-01 at 17.13.45.jpeg": {
+        "decision": "accepted_hero",
+        "webPath": "/images/client/suntenjaya/hero-homestay-teras-kayu.webp",
+        "targetProduct": "Homestay Rumah Warga Lereng Palasari Suntenjaya (Sewa Kamar / Rumah)",
+        "reason": "Fasad rumah panggung bernuansa kayu asri warga Suntenjaya berteras tanaman hias alami dengan udara sejuk dataran tinggi lereng Palasari."
+    },
+    "20261001/rumah-suntenjaya/WhatsApp Image 2026-10-01 at 17.13.49.jpeg": {
+        "decision": "accepted_gallery",
+        "webPath": "/images/client/suntenjaya/homestay-teras-kebun.webp",
+        "targetProduct": "Homestay Rumah Warga Lereng Palasari Suntenjaya (Sewa Kamar / Rumah)",
+        "reason": "Rumah warga bernuansa hijau asri berteras keramik bersih menghadap langsung kebun pertanian sayur lereng Palasari."
+    },
+    "20261001/rumah-suntenjaya/WhatsApp Image 2026-10-01 at 17.13.51.jpeg": {
+        "decision": "accepted_gallery",
+        "webPath": "/images/client/suntenjaya/homestay-fondasi-batu.webp",
+        "targetProduct": "Homestay Rumah Warga Lereng Palasari Suntenjaya (Sewa Kamar / Rumah)",
+        "reason": "Rumah bertingkat fondasi batu alam lereng pegunungan Suntenjaya yang bersih, kokoh, dan berlatar langit biru pegunungan."
+    },
+    "20261001/rumah-suntenjaya/WhatsApp Image 2026-10-01 at 17.13.52.jpeg": {
+        "decision": "skipped_duplicate",
+        "webPath": "-",
+        "targetProduct": "Homestay Rumah Warga Lereng Palasari Suntenjaya (Sewa Kamar / Rumah)",
+        "reason": "Sudut bidikan duplikat dan komposisi identik dengan foto 17.13.51."
     }
 }
 

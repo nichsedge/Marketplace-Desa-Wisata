@@ -65,7 +65,7 @@ export const FloatingWhatsApp: React.FC = () => {
               </button>
               <button
                 type="button"
-                onClick={() => setCustomMsg('Halo Admin Saba Lembang, saya ingin info Paket Wisata Alam, Camping & Offroad Cikole/Cikahuripan.')}
+                onClick={() => setCustomMsg('Halo Admin Saba Lembang, saya ingin info Paket Wisata Alam, Camping & Offroad Cikole.')}
                 className="px-2.5 py-1 bg-white border border-stone-200 hover:border-emerald-700 text-stone-700 rounded-full text-[11px] transition-colors"
               >
                 🎒 Paket Wisata Alam

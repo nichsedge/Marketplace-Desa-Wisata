@@ -86,15 +86,15 @@ export const AuthView: React.FC = () => {
                 Portal Pengelola Kawasan Lembang
               </h2>
               <p className="text-xs text-emerald-200/90 leading-relaxed mt-2">
-                Sistem pengelolaan terpadu katalog komoditas, reservasi homestay, dan informasi destinasi 8 desa wisata di Kawasan Lembang.
+                Sistem pengelolaan terpadu katalog komoditas, reservasi homestay, dan informasi destinasi desa wisata di Kawasan Lembang.
               </p>
             </div>
           </div>
 
           {/* Bottom Security / Trust Notice */}
           <div className="relative z-10 pt-8 border-t border-emerald-800/60 text-[11px] text-emerald-300/80 space-y-1">
-            <p className="font-semibold text-white">Jaringan 8 Desa Wisata Lembang</p>
-            <p className="text-[10px] text-emerald-300/70">Suntenjaya · Cibodas · Cikole · Jayagiri · Wangunsari · Cikahuripan · Gudangkahuripan · Sukajaya</p>
+            <p className="font-semibold text-white">Jaringan 6 Desa Wisata Lembang</p>
+            <p className="text-[10px] text-emerald-300/70">Suntenjaya · Cikole · Jayagiri · Wangunsari · Gudangkahuripan · Sukajaya</p>
           </div>
         </div>
 

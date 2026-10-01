@@ -37,8 +37,8 @@ export const HomestayView: React.FC = () => {
       {/* Banner */}
       <div className="relative rounded-3xl overflow-hidden min-h-[260px] flex items-center p-8 sm:p-12 text-white shadow-xl border border-stone-200">
         <img
-          src="/images/real/homestay-gudangkahuripan-asri.jpg"
-          alt="Homestay Desa Kawasan Lembang"
+          src="/images/client/suntenjaya/hero-homestay-teras-kayu.webp"
+          alt="Homestay Asri Rumah Warga Suntenjaya Lereng Palasari"
           className="absolute inset-0 w-full h-full object-cover"
           referrerPolicy="no-referrer"
         />
@@ -83,7 +83,7 @@ export const HomestayView: React.FC = () => {
               onChange={(e) => setSelectedVillageId(e.target.value)}
               className="w-full px-3 py-2.5 bg-white border border-stone-300 rounded-xl text-xs sm:text-sm font-bold text-stone-900 shadow-xs focus:outline-none focus:ring-2 focus:ring-emerald-700 cursor-pointer"
             >
-              <option value="all">🏞️ Semua Desa Wisata di Lembang (8 Desa)</option>
+              <option value="all">🏞️ Semua Desa Wisata di Lembang ({villages.length} Desa)</option>
               {villages.map(v => (
                 <option key={v.id} value={v.id}>{v.name} ({v.villageAltitude || '1.250 mdpl'})</option>
               ))}

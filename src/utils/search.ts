@@ -116,21 +116,19 @@ export function buildProductSearchText(p: Product): string {
   // Tambahkan alias geografis dan keunikan desa
   const vName = (p.villageName || '').toLowerCase();
   if (vName.includes('suntenjaya')) {
-    parts.push('batu loceng palasari kadaplak pasir angling');
-  } else if (vName.includes('cibodas')) {
-    parts.push('maribaya curug lembah maribaya kebun bunga krisan');
+    parts.push('batu loceng palasari kopi pasir angling megalitikum kuncen');
   } else if (vName.includes('cikole')) {
-    parts.push('tangkuban parahu kanopi pinus glamping camping offroad');
+    parts.push('tangkuban parahu kanopi pinus glamping camping offroad land rover abah sukawana');
   } else if (vName.includes('jayagiri')) {
-    parts.push('tangkuban parahu rimba trekking sukulen kaktus florikultura');
+    parts.push('maguru kopi pa maliki arabika robusta manual brew');
   } else if (vName.includes('wangunsari')) {
-    parts.push('tahu susu bolu susu keripik tempe anyaman bambu');
+    parts.push('tahu susu kicimpring ranginang peuyeum ketan singkong');
   } else if (vName.includes('cikahuripan')) {
-    parts.push('lemon california stroberi herbal jamu bukit bukanagara');
+    parts.push('lemon california stroberi herbal jamu bukit bukanagara camping');
   } else if (vName.includes('gudangkahuripan')) {
-    parts.push('tahu susu bolu suvenir oleh-oleh');
+    parts.push('wisata budaya gamelan seni jaipong pa mei wisana tari sunda');
   } else if (vName.includes('sukajaya')) {
-    parts.push('yoghurt keju mentega olahan susu sapi');
+    parts.push('susu sapi murni yoghurt yoghvit mat pochi tahu susu pa emin barokah citespong');
   }
 
   return parts.join(' ').toLowerCase();

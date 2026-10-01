@@ -34,8 +34,8 @@ interface AppContextType {
   setCategoryFilter: (cat: ProductCategory | 'all') => void;
   villageFilter: string | 'all';
   setVillageFilter: (vId: string | 'all') => void;
-  priceFilter: number;
-  setPriceFilter: (p: number) => void;
+  priceFilter: number | null;
+  setPriceFilter: (p: number | null) => void;
   ratingFilter: number;
   setRatingFilter: (r: number) => void;
   sortBy: 'popular' | 'price-asc' | 'price-desc' | 'rating';
@@ -140,7 +140,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [categoryFilter, setCategoryFilter] = useState<ProductCategory | 'all'>('all');
   const [villageFilter, setVillageFilter] = useState<string | 'all'>('all');
-  const [priceFilter, setPriceFilter] = useState<number>(1000000);
+  const [priceFilter, setPriceFilter] = useState<number | null>(null);
   const [ratingFilter, setRatingFilter] = useState<number>(0);
   const [sortBy, setSortBy] = useState<'popular' | 'price-asc' | 'price-desc' | 'rating'>('popular');
 
@@ -197,7 +197,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     setSearchQuery('');
     setCategoryFilter('all');
     setVillageFilter('all');
-    setPriceFilter(1000000);
+    setPriceFilter(null);
     setRatingFilter(0);
     setSortBy('popular');
   };
@@ -374,7 +374,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       id: `rev-${Date.now()}`,
       productId,
       authorName: currentUser ? currentUser.name : 'Wisatawan',
-      authorAvatar: currentUser?.avatar || '/images/unsplash/photo-1535713875002-d1d0cf377fde_w150.jpg',
+      authorAvatar: currentUser?.avatar || '/images/default-avatar.svg',
       rating,
       date: 'Baru saja',
       comment,

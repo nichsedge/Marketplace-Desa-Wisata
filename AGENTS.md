@@ -3,21 +3,19 @@
 ## 📌 Project Background & Business Context
 - **Nama Platform:** **Saba Lembang** (Jaringan & Platform Terpadu Desa Wisata Kawasan Lembang)
 - **Target Pembeli / Klien Langsung:** Mahasiswa program studi **DKV (Desain Komunikasi Visual)** yang sedang menempuh Tugas Akhir / Skripsi (perancangan identitas visual, kampanye promosi digital, UI/UX portal pariwisata terpadu, dan media informasi desa wisata).
-- **Cakupan Destinasi:** **Kawasan Lembang** (Kabupaten Bandung Barat), mencakup 8 Desa Wisata:
-  1. **Desa Wisata Suntenjaya** (1.290 mdpl - Minuman & Komoditas: Kopi Arabika/Robusta premium, Kadaplak, Megalitikum Batu Loceng)
-  2. **Desa Wisata Cibodas** (1.250 mdpl - Sembako & Penginapan Lokal: Sayuran organik segar, susu sapi harian, homestay & sewa rumah warga)
-  3. **Desa Wisata Cikole** (1.400 mdpl - Wisata Alam: Paket camping, sewa tenda, tiket wahana, sewa offroad pinus)
-  4. **Desa Wisata Jayagiri** (1.350 mdpl - Tanaman Hias: Tanaman hias, sukulen, media tanam, pot)
-  5. **Desa Wisata Wangunsari** (1.200 mdpl - Kuliner: Tahu susu, bolu, camilan kering, kerajinan tangan)
-  6. **Desa Wisata Cikahuripan** (1.280 mdpl - Buah & Herba serta Wisata Alam: Lemon segar, stroberi, herbal alami, camping & offroad)
-  7. **Desa Wisata Gudangkahuripan** (1.220 mdpl - Kuliner: Tahu susu, bolu, camilan kering, kerajinan tangan)
-  8. **Desa Wisata Sukajaya** (1.260 mdpl - Olahan Susu Kemasan: Yoghurt, keju lokal, mentega buatan rumahan)
+- **Cakupan Destinasi:** **Kawasan Lembang** (Kabupaten Bandung Barat), saat ini mencakup 6 Desa Wisata aktif (Desa Wisata Cibodas dan Cikahuripan disembunyikan/dihapus sementara waktu per 1/10/26 menunggu kepastian update data survei riil dari klien):
+  1. **Desa Wisata Suntenjaya** (1.290 mdpl - Minuman & Komoditas: Kopi Arabika premium single origin lereng Palasari, Situs Megalitikum Batu Loceng)
+  2. **Desa Wisata Cikole** (1.400 mdpl - Wisata Alam: Paket camping pinus, sewa tenda kanopi, tiket wahana, offroad rimba Sukawana Land Rover Abah)
+  3. **Desa Wisata Jayagiri** (1.350 mdpl - Kopi Spesialti: Maguru Kopi Pa Maliki)
+  4. **Desa Wisata Wangunsari** (1.200 mdpl - Kuliner Tradisional: Tahu Susu Lembut, Kicimpring Singkong, Ranginang rasa terasi, Peuyeum Ketan PO)
+  5. **Desa Wisata Gudangkahuripan** (1.220 mdpl - Seni & Budaya: Paket Pelatihan Wisata Budaya Tari Jaipong & Gamelan Pa Mei Wisana)
+  6. **Desa Wisata Sukajaya** (1.260 mdpl - Olahan Susu Kemasan: Susu Sapi Murni Pasteurisasi, Tahu Susu, Yoghurt Yoghvit & Mat Pochi Toko Barokah Pa Emin)
 - **Sistem Admin Desa & Alur Posting Konten:**
   - Istilah ramah pengguna awam: **"Admin Desa"** digunakan di seluruh antarmuka web.
   - Setiap desa memiliki Admin Desa resmi terverifikasi.
-  - Alur transaksi fast-checkout WhatsApp menghubungkan wisatawan langsung ke kontak Admin Desa terkait.
-  - Peta lokasi kantor desa interaktif (Google Maps embed) dan kontak/CP desa terhubung langsung via dropdown pemilih desa.
-  - Bagian Sekretariat tidak ditampilkan sementara waktu menunggu kepastian data final. Silamot disembunyikan.
+  - Alur transaksi fast-checkout WhatsApp menghubungkan wisatawan langsung ke kontak pengelola/penjual resmi.
+  - Menu / seksi *"Kontak & Layanan Admin Desa"* di peta lokasi ditiadakan per 1/10/26 sesuai arahan klien agar antarmuka fokus ke peta lokasi presisi kantor desa.
+  - Bagian Sekretariat dan Silamot disembunyikan.
 
 ---
 
@@ -51,14 +49,13 @@
      - Pengelola desa masuk dengan langsung mengetikkan rute `/login` (atau `/#login`, `/admin`) pada address bar browser.
      - Akun pengelola yang terdaftar di sistem:
        - **PIC/Admin Suntenjaya:** `pic.suntenjaya` / `suntenjaya123` (*Kang Asep Suhendar*)
-       - **PIC/Admin Cibodas:** `pic.cibodas` / `cibodas123` (*Kang Dadang Herdiana*)
        - **PIC/Admin Cikole:** `pic.cikole` / `cikole123` (*Kang Dadan Ridwan*)
        - **PIC/Admin Jayagiri:** `pic.jayagiri` / `jayagiri123` (*Teh Eni Rohaeni*)
        - **PIC/Admin Wangunsari:** `pic.wangunsari` / `wangunsari123` (*Kang Sandi Permana*)
-       - **PIC/Admin Cikahuripan:** `pic.cikahuripan` / `cikahuripan123` (*Kang Cecep Mulyana*)
        - **PIC/Admin Gudangkahuripan:** `pic.gudangkahuripan` / `gudang123` (*Kang Agus Hidayat*)
        - **PIC/Admin Sukajaya:** `pic.sukajaya` / `sukajaya123` (*Ibu Siti Maryam*)
        - **Super Admin Kawasan:** `admin.lembang` / `lembang2026`
+       - *(PIC Cibodas & Cikahuripan dinonaktifkan sementara)*
      - Dasbor dilindungi barrier guard sehingga pengguna publik tidak dapat mengubah data katalog desa.
 
 ---
@@ -69,7 +66,7 @@
 - **Styling:** Tailwind CSS v4 + Motion (`framer-motion`) + Lucide React
 - **Hosting / Deployment:** Vercel SPA (Hobby tier gratis, konfigurasi rewrite di `vercel.json`).
 - **Domain Target:** Menyesuaikan konfigurasi domain klien (*Custom Domain*)
-- **Aset Gambar Lokal (Offline-Ready):** Seluruh aset foto katalog produk, avatar Admin Desa, dan galeri desa tersimpan lokal di `public/images/` untuk menjamin tampilan tidak pernah hilang atau lambat saat demo / presentasi.
+- **Aset Gambar Lokal & Avatar Standar:** Seluruh aset foto katalog produk dan galeri desa tersimpan lokal di `public/images/`. Profil pengguna, Admin Desa, ulasan, dan testimoni menggunakan avatar standar *"no profile picture"* ala WhatsApp (`public/images/default-avatar.svg` via komponen `<UserAvatar />`) dan dilarang memakai foto wajah orang dummy/stok Unsplash.
 
 ---
 

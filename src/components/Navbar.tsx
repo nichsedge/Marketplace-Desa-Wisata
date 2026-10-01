@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useApp, PageRoute } from '../context/AppContext';
+import { UserAvatar } from './UserAvatar';
 import { 
   ShoppingBag, 
   Home, 
@@ -22,14 +23,14 @@ import {
 import { scoreProductSearch } from '../utils/search';
 
 const POPULAR_SEARCH_TAGS = [
-  '☕ Kopi Arabika Suntenjaya',
-  '🏡 Homestay Maribaya Cibodas',
-  '🌲 Glamping Pinus Cikole',
-  '🧗 Trekking Rimba Jayagiri',
+  '☕ Kopi Arabika Pasir Angling',
+  '🏛️ Megalitikum Batu Loceng',
+  '🚜 Offroad Land Rover Cikole',
+  '🏕️ Camping Pasir Angling',
   '🍲 Tahu Susu Wangunsari',
-  '🍓 Stroberi Manis Cikahuripan',
-  '🚜 Offroad Tangkuban Parahu',
-  '🥛 Olahan Susu Sukajaya'
+  '☕ Maguru Kopi Jayagiri',
+  '🥛 Susu Murni Sukajaya',
+  '🎭 Tari Jaipong Gudangkahuripan'
 ];
 
 export const Navbar: React.FC = () => {
@@ -179,11 +180,11 @@ export const Navbar: React.FC = () => {
                   className="flex items-center gap-1 sm:gap-2 py-1 px-1.5 sm:py-1.5 sm:px-2.5 rounded-full bg-emerald-900 text-amber-200 border border-emerald-700/80 hover:bg-emerald-950 transition-all shadow-xs shrink-0 cursor-pointer"
                   title="Sesi Admin Desa Aktif · Klik untuk menu pengelola"
                 >
-                  <img
-                    src={currentUser.avatar || '/images/unsplash/photo-1507003211169-0a1dd7228f2d_w150.jpg'}
+                  <UserAvatar
+                    src={currentUser.avatar}
                     alt={currentUser.name}
-                    className="w-6 h-6 sm:w-7 sm:h-7 rounded-full object-cover border border-amber-300 shrink-0"
-                    referrerPolicy="no-referrer"
+                    sizeClassName="w-6 h-6 sm:w-7 sm:h-7"
+                    className="border border-amber-300 shrink-0"
                   />
                   <div className="hidden sm:flex flex-col text-left text-xs leading-none pr-1">
                     <span className="font-bold text-white truncate max-w-[120px]">{currentUser.name}</span>

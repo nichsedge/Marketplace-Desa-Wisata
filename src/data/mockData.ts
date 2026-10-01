@@ -16,15 +16,17 @@ export const INITIAL_VILLAGES: Village[] = [
     highlights: [
       'Sentra Kopi Arabika Suntenjaya',
       'Situs Bersejarah Batu Loceng',
-      'Peternakan Sapi Perah Murni',
+      'Homestay Asri Rumah Warga (Lereng Palasari)',
       'Wisata Lereng Pasir Angling',
-      'Kerajinan Tradisional Kadaplak'
+      'Wisata Edukasi Tekno-Ekologi'
     ],
     image: '/images/client/pasir-angling/hero-valley-panorama.webp',
     gallery: [
       '/images/client/pasir-angling/hero-valley-panorama.webp',
+      '/images/client/suntenjaya/hero-homestay-teras-kayu.webp',
+      '/images/client/suntenjaya/homestay-teras-kebun.webp',
       '/images/client/kopi-angling/coffee-plantation-view.webp',
-      '/images/client/pasir-angling/camping-ridge-view.webp',
+      '/images/client/batu-loceng/hero-batu-loceng-kuncen.webp',
       '/images/client/kopi-angling/hero-pouch-v60.webp'
     ],
     mapLocation: 'Jl. Maribaya Timur KM. 13,5, Desa Suntenjaya, Kec. Lembang, Kab. Bandung Barat 40391',
@@ -34,40 +36,6 @@ export const INITIAL_VILLAGES: Village[] = [
     contactPhone: '+62 812-2076-3734',
     instagram: '@suntenjaya.lembang',
     managerName: 'Kang Asep Suhendar (Admin Desa Suntenjaya)',
-    totalListings: 4
-  },
-  {
-    id: 'des-02',
-    name: 'Desa Wisata Cibodas',
-    location: 'Kec. Lembang, Kab. Bandung Barat',
-    province: 'Jawa Barat',
-    rating: 4.8,
-    totalReviews: 215,
-    villageAltitude: '1.250 mdpl',
-    description: 'Desa Cibodas terkenal dengan sembako sayuran organik segar, susu sapi murni harian, lembah agrowisata bunga potong, dan puluhan rumah warga yang disewakan sebagai homestay asri.',
-    history: 'Desa Cibodas merupakan salah satu desa agrowisata induk di koridor Maribaya Lembang yang terkenal subur sebagai sentra holtikultura sayuran dan peternakan susu sapi perah murni.',
-    culture: 'Masyarakat agraris Sunda dengan tradisi tani sayur segar terasering, peternak sapi perah harian, serta keramahan warga menyewakan kamar dan rumah untuk wisatawan.',
-    highlights: [
-      'Sayuran Organik Segar Panen Harian',
-      'Susu Sapi Murni Segar Harian',
-      'Homestay & Sewa Rumah Warga',
-      'Agrowisata Bunga Potong & Krisan',
-      'Pesona Alam Lembah Maribaya'
-    ],
-    image: '/images/real/cibodas-maribaya.jpg',
-    gallery: [
-      '/images/real/cibodas-maribaya.jpg',
-      '/images/unsplash/photo-1574943320219-553eb213f72d_w800.jpg',
-      '/images/unsplash/photo-1550583724-b2692b85b150_w800.jpg',
-      '/images/real/homestay-gudangkahuripan-asri.jpg'
-    ],
-    mapLocation: 'Jl. Maribaya No. 88, Desa Cibodas, Kec. Lembang, Kab. Bandung Barat 40391',
-    officeAddress: 'Kantor Desa Cibodas, Jl. Maribaya No. 88, Desa Cibodas, Kec. Lembang, Kab. Bandung Barat, Jawa Barat 40391',
-    officeMapEmbedUrl: 'https://maps.google.com/maps?q=Kantor+Desa+Cibodas+Lembang&t=&z=15&ie=UTF8&iwloc=&output=embed',
-    googleMapsUrl: 'https://www.google.com/maps/search/?api=1&query=Kantor+Desa+Cibodas+Lembang',
-    contactPhone: '+62 813-9485-1122',
-    instagram: '@wisatacibodaslembang',
-    managerName: 'Kang Dadang Herdiana (Admin Desa Cibodas)',
     totalListings: 6
   },
   {
@@ -102,7 +70,7 @@ export const INITIAL_VILLAGES: Village[] = [
     contactPhone: '+62 821-3344-9988',
     instagram: '@cikolewisatalembang',
     managerName: 'Kang Dadan Ridwan (Admin Desa Cikole)',
-    totalListings: 5
+    totalListings: 3
   },
   {
     id: 'des-04',
@@ -112,22 +80,21 @@ export const INITIAL_VILLAGES: Village[] = [
     rating: 4.8,
     totalReviews: 180,
     villageAltitude: '1.350 mdpl',
-    description: 'Desa Jayagiri berada di lereng Gunung Tangkuban Parahu, terkenal dengan panorama samudra awan Gunung Putri, hutan pinus asri, jalur lintas alam legendaris, dan sentra tanaman hias pegunungan.',
+    description: 'Desa Jayagiri berada di lereng Gunung Tangkuban Parahu, terkenal dengan panorama samudra awan Gunung Putri, hutan pinus asri, jalur lintas alam legendaris, dan kedai Maguru Kopi Jayagiri.',
     history: 'Jayagiri melegenda dalam seni dan sastra Sunda sebagai kawasan hutan alam berkabut sejuk dengan jalur pendakian bersejarah menuju kawah Tangkuban Parahu dan benteng peninggalan kolonial.',
-    culture: 'Masyarakat agraris penjaga kelestarian lereng gunung, pemandu lintas alam, pengrajin pot, serta pembudidaya tanaman hias bunga dan daun tropis dataran tinggi.',
+    culture: 'Masyarakat agraris penjaga kelestarian lereng gunung, pemandu lintas alam rimba, serta tradisi seduh kopi pegunungan bersama Pa Maliki.',
     highlights: [
+      'Maguru Kopi Legend Jayagiri (Pa Maliki)',
       'Pesona Samudra Awan Gunung Putri',
       'Jalur Rimba Trekking Tangkuban Parahu',
-      'Sentra Tanaman Hias & Media Tanam',
-      'Camping Ground Hutan Pinus Sejuk',
-      'Situs Bersejarah Benteng Jayagiri'
+      'Camping Ground Hutan Pinus Sejuk'
     ],
     image: '/images/real/gunung-putri-jayagiri.jpg',
     gallery: [
       '/images/real/gunung-putri-jayagiri.jpg',
       '/images/real/jayagiri-camping.jpg',
       '/images/unsplash/photo-1448375240586-882707db888b_w800.jpg',
-      '/images/unsplash/photo-1485955900006-10f4d324d411_w800.jpg'
+      '/images/unsplash/photo-1514432324607-a09d9b4aefdd_w800.jpg'
     ],
     mapLocation: 'Jl. Jayagiri No. 12, Jayagiri, Kec. Lembang, Kab. Bandung Barat 40391',
     officeAddress: 'Kantor Desa Jayagiri, Jl. Jayagiri No. 12, Jayagiri, Kec. Lembang, Kab. Bandung Barat, Jawa Barat 40391',
@@ -136,7 +103,7 @@ export const INITIAL_VILLAGES: Village[] = [
     contactPhone: '+62 857-2233-7711',
     instagram: '@jayagiri.lembang',
     managerName: 'Teh Eni Rohaeni (Admin Desa Jayagiri)',
-    totalListings: 4
+    totalListings: 1
   },
   {
     id: 'des-05',
@@ -146,22 +113,21 @@ export const INITIAL_VILLAGES: Village[] = [
     rating: 4.8,
     totalReviews: 165,
     villageAltitude: '1.200 mdpl',
-    description: 'Desa Wangunsari terkenal dengan ragam kuliner khas Lembang seperti tahu susu lembut, bolu legit, camilan kering gurih, serta kerajinan tangan anyaman bambu seni Sunda.',
-    history: 'Desa Wangunsari berkembang pesat sebagai sentra kreasi kuliner tradisional dan pembinaan pengrajin anyaman bambu kriya khas Jawa Barat.',
-    culture: 'Tradisi kuliner olahan tahu susu, keahlian mengolah jajanan camilan kering, dan keterampilan menganyam bambu bernilai estetika tinggi.',
+    description: 'Desa Wangunsari terkenal dengan produk kuliner legendaris khas Lembang seperti tahu susu lembut Tahu Agus, kicimpring singkong renyah, ranginang ketan terasi, dan peuyeum ketan manis daun jambu.',
+    history: 'Desa Wangunsari berkembang pesat sebagai sentra kreasi kuliner tradisional UMKM panganan khas Jawa Barat yang berkualitas tinggi.',
+    culture: 'Tradisi kuliner olahan tahu susu lembut, keterampilan mengolah kicimpring singkong, ranginang terasi gurih, dan tape peuyeum ketan fermentasi alami.',
     highlights: [
-      'Tahu Susu Lembang Khas Wangunsari',
-      'Bolu Susu Tradisional Lembut',
-      'Camilan Kering & Keripik Renyah',
-      'Kerajinan Tangan Anyaman Bambu',
-      'Sentra UMKM Kuliner Oleh-oleh'
+      'Tahu Susu Lembut Tahu Agus (Rp 5.000/kemasan)',
+      'Kicimpring Singkong Renyah Gurih',
+      'Ranginang Ketan Rasa Terasi (1 Kg)',
+      'Peuyeum Ketan Daun Jambu (Sistem PO)'
     ],
-    image: '/images/tahu-susu-1200.jpg',
+    image: '/images/client/wangunsari/tahu-susu-agus-kemasan-10pcs.webp',
     gallery: [
-      '/images/tahu-susu-goreng.jpg',
-      '/images/tahu-susu-800.jpg',
-      '/images/real/gudangkahuripan-pusat-oleh-oleh.jpg',
-      '/images/unsplash/photo-1590874103328-eac38a683ce7_w800.jpg'
+      '/images/client/wangunsari/tahu-susu-agus-kemasan-10pcs.webp',
+      '/images/client/wangunsari/kicimpring-singkong-renyah.webp',
+      '/images/client/wangunsari/ranginang-terasi-khas-wangunsari.webp',
+      '/images/client/wangunsari/peuyeum-ketan-daun-jambu.webp'
     ],
     mapLocation: 'Jl. Wangunsari Raya No. 45, Wangunsari, Kec. Lembang, Kab. Bandung Barat 40391',
     officeAddress: 'Kantor Desa Wangunsari, Jl. Wangunsari Raya No. 45, Wangunsari, Kec. Lembang, Kab. Bandung Barat, Jawa Barat 40391',
@@ -173,40 +139,6 @@ export const INITIAL_VILLAGES: Village[] = [
     totalListings: 4
   },
   {
-    id: 'des-06',
-    name: 'Desa Wisata Cikahuripan',
-    location: 'Kec. Lembang, Kab. Bandung Barat',
-    province: 'Jawa Barat',
-    rating: 4.8,
-    totalReviews: 142,
-    villageAltitude: '1.280 mdpl',
-    description: 'Desa Cikahuripan adalah sentra agrowisata buah lemon segar, kebun stroberi manis, olahan herbal alami, paket camping lereng bukit, sewa tenda, tiket wahana, dan sewa offroad.',
-    history: 'Desa Cikahuripan memiliki kontur perbukitan yang sejuk dan tanah vulkanis subur yang sangat ideal untuk tanaman jeruk lemon California, stroberi, serta arena rekreasi wisata alam terbuka.',
-    culture: 'Masyarakat petani buah dan herba obat keluarga yang ramah, dipadukan dengan pemuda desa penggerak wisata petualangan alam dan camping.',
-    highlights: [
-      'Lemon Segar Panen Langsung Pohon',
-      'Stroberi Manis Dataran Tinggi',
-      'Herbal Alami & Teh Rempah Sehat',
-      'Paket Camping & Sewa Tenda',
-      'Sewa Offroad Jalur Cikahuripan'
-    ],
-    image: '/images/real/kebun-jeruk-cikahuripan.jpg',
-    gallery: [
-      '/images/real/kebun-jeruk-cikahuripan.jpg',
-      '/images/real/kebun-stroberi-cikahuripan.jpg',
-      '/images/unsplash/photo-1596040033229-a9821ebd058d_w800.jpg',
-      '/images/unsplash/photo-1506744038136-46273834b3fb_w800.jpg'
-    ],
-    mapLocation: 'Jl. Bukanagara, Cikahuripan, Kec. Lembang, Kab. Bandung Barat 40391',
-    officeAddress: 'Kantor Desa Cikahuripan, Jl. Bukanagara, Cikahuripan, Kec. Lembang, Kab. Bandung Barat, Jawa Barat 40391',
-    officeMapEmbedUrl: 'https://maps.google.com/maps?q=Kantor+Desa+Cikahuripan+Lembang&t=&z=15&ie=UTF8&iwloc=&output=embed',
-    googleMapsUrl: 'https://www.google.com/maps/search/?api=1&query=Kantor+Desa+Cikahuripan+Lembang',
-    contactPhone: '+62 822-1940-5566',
-    instagram: '@cikahuripan.lembang',
-    managerName: 'Kang Hendra Pratama (Admin Desa Cikahuripan)',
-    totalListings: 6
-  },
-  {
     id: 'des-07',
     name: 'Desa Wisata Gudangkahuripan',
     location: 'Kec. Lembang, Kab. Bandung Barat',
@@ -214,22 +146,21 @@ export const INITIAL_VILLAGES: Village[] = [
     rating: 4.8,
     totalReviews: 156,
     villageAltitude: '1.220 mdpl',
-    description: 'Desa Gudangkahuripan merupakan sentra kuliner oleh-oleh legendaris di Lembang yang memproduksi tahu susu khas, aneka bolu lezat, camilan kering renyah, dan kerajinan tangan suvenir.',
-    history: 'Sebagai salah satu pintu utama koridor wisata Lembang, Gudangkahuripan telah lama menjadi pusat transit dan sentra produksi kuliner tradisional terpercaya.',
-    culture: 'Kreativitas pengrajin kuliner rumahan dan pelaku UMKM suvenir yang memadukan cita rasa khas Sunda dengan kemasan oleh-oleh modern.',
+    description: 'Desa Wisata Gudangkahuripan menjunjung tinggi pelestarian seni budaya tradisional Pasundan, menghadirkan workshop seni gamelan degung/salendro, pelatihan tari Jaipong, dan literasi kearifan lokal bersama Sanggar Seni Kamandaka.',
+    history: 'Sebagai salah satu pintu utama koridor wisata Lembang, Gudangkahuripan menjadi pusat edukasi kebudayaan Sunda dan apresiasi seni tari tradisional Jawa Barat.',
+    culture: 'Pelestarian gerak tari Jaipong tradisional Sunda, kesenian gamelan degung, dan bincang literasi budaya bersama budayawan Pa Mei Wisana.',
     highlights: [
-      'Tahu Susu Gurih Gudangkahuripan',
-      'Bolu Legit & Aneka Pastry Desa',
-      'Camilan Kering & Kerupuk Tradisional',
-      'Kerajinan Tangan Suvenir Khas',
-      'Lokasi Strategis Pusat Lembang'
+      'Workshop Tari Tradisional Jaipong',
+      'Pelatihan Tabuh Gamelan Degung Sunda',
+      'Literasi Kearifan Lokal & Sejarah Lembang',
+      'Sanggar Seni Budaya Kamandaka'
     ],
-    image: '/images/real/gudangkahuripan-pusat-oleh-oleh.jpg',
+    image: '/images/client/gudangkahuripan/hero-tari-jaipong-materi.webp',
     gallery: [
-      '/images/real/gudangkahuripan-pusat-oleh-oleh.jpg',
-      '/images/tahu-susu-800.jpg',
-      '/images/tahu-susu-goreng.jpg',
-      '/images/unsplash/photo-1513519245088-0e12902e5a38_w800.jpg'
+      '/images/client/gudangkahuripan/hero-tari-jaipong-materi.webp',
+      '/images/client/gudangkahuripan/jaipong-peserta-senyum.webp',
+      '/images/client/gudangkahuripan/jaipong-pelatihan-kompak.webp',
+      '/images/client/gudangkahuripan/jaipong-praktek-lapangan.webp'
     ],
     mapLocation: 'Jl. Raya Lembang No. 145, Gudangkahuripan, Kec. Lembang, Kab. Bandung Barat 40391',
     officeAddress: 'Kantor Desa Gudangkahuripan, Jl. Raya Lembang No. 145, Gudangkahuripan, Kec. Lembang, Kab. Bandung Barat, Jawa Barat 40391',
@@ -238,7 +169,7 @@ export const INITIAL_VILLAGES: Village[] = [
     contactPhone: '+62 812-3344-7788',
     instagram: '@gudangkahuripan.lembang',
     managerName: 'Teh Rina Melati (Admin Desa Gudangkahuripan)',
-    totalListings: 3
+    totalListings: 1
   },
   {
     id: 'des-08',
@@ -248,22 +179,21 @@ export const INITIAL_VILLAGES: Village[] = [
     rating: 4.9,
     totalReviews: 172,
     villageAltitude: '1.270 mdpl',
-    description: 'Desa Sukajaya merupakan pelopor olahan susu kemasan berkualitas di Lembang, memproduksi yoghurt segar probiotik, keju lokal alami, dan mentega murni buatan rumahan.',
-    history: 'Dikelilingi kawasan peternakan sapi perah yang makmur, Desa Sukajaya berinovasi mengolah susu murni segar menjadi produk turunan bernilai tinggi seperti yoghurt, keju, dan mentega.',
-    culture: 'Semangat inovasi para peternak dan ibu-ibu pengolah susu desa yang menjaga kebersihan, mutu, dan keaslian cita rasa susu tanpa bahan pengawet.',
+    description: 'Desa Wisata Sukajaya terkenal dengan produk olahan susu murni perah segar, aneka olahan yoghurt sehat (Yoghvit & Mat Pochi), serta tahu susu lembut dari sentra peternakan dan Toko Barokah Pa Emin.',
+    history: 'Dikelilingi kawasan peternakan sapi perah yang makmur di Kp. Citespong, Toko Barokah Pa Emin menjadi pionir pengolahan susu murni higienis berkualitas tinggi.',
+    culture: 'Kerja keras peternak sapi perah lokal dalam menjaga kemurnian susu, higienitas pengolahan yoghurt berprobiotik, serta pembuatan tahu susu lembut tanpa pengawet.',
     highlights: [
-      'Yoghurt Segar Aneka Rasa Botol',
-      'Keju Lokal Tradisional Homemade',
-      'Mentega Susu Sapi Murni Alami',
-      'Edukasi Pengolahan Susu Kemasan',
-      'Kualitas Susu Sapi Perah Higienis'
+      'Susu Sapi Murni Segar Pasteur (Pa Emin)',
+      'Yoghurt Probiotik Botol & Stick Yoghvit',
+      'Tahu Susu Lembut Barokah Sukajaya',
+      'Sentra Toko Barokah Pa Emin Citespong'
     ],
-    image: '/images/unsplash/photo-1570042225831-d98fa7577f1e_w1200.jpg',
+    image: '/images/client/sukajaya/hero-toko-barokah-susu-murni.webp',
     gallery: [
-      '/images/unsplash/photo-1570042225831-d98fa7577f1e_w800.jpg',
-      '/images/unsplash/photo-1571212515416-fef01fc43637_w800.jpg',
-      '/images/unsplash/photo-1550583724-b2692b85b150_w800.jpg',
-      '/images/unsplash/photo-1486297678162-eb2a19b0a32d_w800.jpg'
+      '/images/client/sukajaya/hero-toko-barokah-susu-murni.webp',
+      '/images/client/sukajaya/hero-yoghvit-botol.webp',
+      '/images/client/sukajaya/hero-tahu-susu-barokah.webp',
+      '/images/client/sukajaya/yoghurt-stick-mat-pochi.webp'
     ],
     mapLocation: 'Jl. Sukajaya No. 18, Sukajaya, Kec. Lembang, Kab. Bandung Barat 40391',
     officeAddress: 'Kantor Desa Sukajaya, Jl. Sukajaya No. 18, Sukajaya, Kec. Lembang, Kab. Bandung Barat, Jawa Barat 40391',
@@ -286,27 +216,12 @@ export const MOCK_PICS: User[] = [
     email: 'asep.suhendar@sabalembang.id',
     role: 'penjual',
     phone: '+6281220763734',
-    avatar: '/images/unsplash/photo-1507003211169-0a1dd7228f2d_w200.jpg',
+    avatar: '/images/default-avatar.svg',
     villageName: 'Desa Wisata Suntenjaya',
     sellerName: 'Admin Desa Suntenjaya / BUMDes',
     picVillageId: 'des-01',
     picVillageName: 'Desa Wisata Suntenjaya',
     picRoleTitle: 'Admin Desa Suntenjaya'
-  },
-  {
-    id: 'admin-cibodas',
-    name: 'Kang Dadang Herdiana',
-    username: 'admin.cibodas',
-    password: 'cibodas123',
-    email: 'dadang.cibodas@sabalembang.id',
-    role: 'penjual',
-    phone: '+6281394851122',
-    avatar: '/images/unsplash/photo-1500648767791-00dcc994a43e_w200.jpg',
-    villageName: 'Desa Wisata Cibodas',
-    sellerName: 'Admin Desa Cibodas Maribaya',
-    picVillageId: 'des-02',
-    picVillageName: 'Desa Wisata Cibodas',
-    picRoleTitle: 'Admin Desa Cibodas'
   },
   {
     id: 'admin-cikole',
@@ -316,7 +231,7 @@ export const MOCK_PICS: User[] = [
     email: 'dadan.cikole@sabalembang.id',
     role: 'penjual',
     phone: '+6282133449988',
-    avatar: '/images/unsplash/photo-1472099645785-5658abf4ff4e_w200.jpg',
+    avatar: '/images/default-avatar.svg',
     villageName: 'Desa Wisata Cikole',
     sellerName: 'Admin Desa Wisata Cikole',
     picVillageId: 'des-03',
@@ -331,7 +246,7 @@ export const MOCK_PICS: User[] = [
     email: 'eni.jayagiri@sabalembang.id',
     role: 'penjual',
     phone: '+6285722337711',
-    avatar: '/images/unsplash/photo-1544005313-94ddf0286df2_w200.jpg',
+    avatar: '/images/default-avatar.svg',
     villageName: 'Desa Wisata Jayagiri',
     sellerName: 'Admin Desa Wisata Jayagiri',
     picVillageId: 'des-04',
@@ -346,27 +261,12 @@ export const MOCK_PICS: User[] = [
     email: 'sandi.wangunsari@sabalembang.id',
     role: 'penjual',
     phone: '+6281809115544',
-    avatar: '/images/unsplash/photo-1519085360753-af0119f7cbe7_w200.jpg',
+    avatar: '/images/default-avatar.svg',
     villageName: 'Desa Wisata Wangunsari',
     sellerName: 'Admin Desa Wisata Wangunsari',
     picVillageId: 'des-05',
     picVillageName: 'Desa Wisata Wangunsari',
     picRoleTitle: 'Admin Desa Wangunsari'
-  },
-  {
-    id: 'admin-cikahuripan',
-    name: 'Kang Hendra Pratama',
-    username: 'admin.cikahuripan',
-    password: 'cikahuripan123',
-    email: 'hendra.cikahuripan@sabalembang.id',
-    role: 'penjual',
-    phone: '+6282219405566',
-    avatar: '/images/unsplash/photo-1506794778202-cad84cf45f1d_w200.jpg',
-    villageName: 'Desa Wisata Cikahuripan',
-    sellerName: 'Admin Desa Wisata Cikahuripan',
-    picVillageId: 'des-06',
-    picVillageName: 'Desa Wisata Cikahuripan',
-    picRoleTitle: 'Admin Desa Cikahuripan'
   },
   {
     id: 'admin-gudangkahuripan',
@@ -376,7 +276,7 @@ export const MOCK_PICS: User[] = [
     email: 'rina.gudangkahuripan@sabalembang.id',
     role: 'penjual',
     phone: '+6281233447788',
-    avatar: '/images/unsplash/photo-1534528741775-53994a69daeb_w200.jpg',
+    avatar: '/images/default-avatar.svg',
     villageName: 'Desa Wisata Gudangkahuripan',
     sellerName: 'Admin Desa Wisata Gudangkahuripan',
     picVillageId: 'des-07',
@@ -391,7 +291,7 @@ export const MOCK_PICS: User[] = [
     email: 'wawan.sukajaya@sabalembang.id',
     role: 'penjual',
     phone: '+6281388996655',
-    avatar: '/images/unsplash/photo-1507003211169-0a1dd7228f2d_w200.jpg',
+    avatar: '/images/default-avatar.svg',
     villageName: 'Desa Wisata Sukajaya',
     sellerName: 'Admin Desa Wisata Sukajaya',
     picVillageId: 'des-08',
@@ -404,19 +304,19 @@ export const MOCK_PICS: User[] = [
 export const LEMBANG_GALLERY_PRESETS = [
   {
     id: 'photo-1',
-    title: 'Homestay Asri Nuansa Tradisional Lereng Sejuk',
+    title: 'Homestay Teras Kayu Asri Lereng Palasari',
     category: 'penginapan-lokal',
-    villageId: 'des-02',
-    villageName: 'Cibodas',
-    url: '/images/real/homestay-gudangkahuripan-asri.jpg'
+    villageId: 'des-01',
+    villageName: 'Suntenjaya',
+    url: '/images/client/suntenjaya/hero-homestay-teras-kayu.webp'
   },
   {
     id: 'photo-2',
-    title: 'Sayuran Organik Segar Panen Pagi',
-    category: 'sembako',
-    villageId: 'des-02',
-    villageName: 'Cibodas',
-    url: '/images/unsplash/photo-1540420773420-3366772f4999_w800.jpg'
+    title: 'Tahu Susu Lembut Gurih Wangunsari',
+    category: 'kuliner',
+    villageId: 'des-05',
+    villageName: 'Wangunsari',
+    url: '/images/client/wangunsari/hero-tahu-susu.webp'
   },
   {
     id: 'photo-3',
@@ -443,14 +343,6 @@ export const LEMBANG_GALLERY_PRESETS = [
     url: '/images/unsplash/photo-1485955900006-10f4d324d411_w800.jpg'
   },
   {
-    id: 'photo-6',
-    title: 'Buah Lemon & Stroberi Cikahuripan',
-    category: 'buah-herba',
-    villageId: 'des-06',
-    villageName: 'Cikahuripan',
-    url: '/images/unsplash/photo-1587496679742-bad502958fbf_w800.jpg'
-  },
-  {
     id: 'photo-7',
     title: 'Kuliner Tahu Susu & Bolu Wangunsari',
     category: 'kuliner',
@@ -470,186 +362,7 @@ export const LEMBANG_GALLERY_PRESETS = [
 
 export const INITIAL_MOCK_PRODUCTS: Product[] = [
   // =========================================================================
-  // 1. SEMBAKO — Desa: Cibodas (Sayuran organik segar & susu sapi murni harian)
-  // =========================================================================
-  {
-    id: 'prod-sembako-01',
-    title: 'Paket Sayuran Organik Segar Maribaya Cibodas (1 Keranjang)',
-    category: 'sembako',
-    price: 35000,
-    originalPrice: 45000,
-    unit: '/keranjang',
-    villageId: 'des-02',
-    villageName: 'Desa Wisata Cibodas',
-    location: 'Cibodas, Lembang',
-    rating: 4.9,
-    totalReviews: 68,
-    sellerName: 'Kelompok Tani Terasering Cibodas',
-    sellerBadge: 'Petani Binaan Desa',
-    sellerAvatar: '/images/unsplash/photo-1500648767791-00dcc994a43e_w200.jpg',
-    sellerPhone: '+6281394851122',
-    image: '/images/unsplash/photo-1540420773420-3366772f4999_w800.jpg',
-    gallery: [
-      '/images/unsplash/photo-1540420773420-3366772f4999_w800.jpg',
-      '/images/unsplash/photo-1500382017468-9049fed747ef_w800.jpg'
-    ],
-    description: 'Koleksi sayuran organik segar (selada romaine, brokoli hijau, tomat cherry, paprika, wortel manis) yang dipetik langsung pagi hari dari kebun terasering Cibodas Maribaya.',
-    highlights: ['Dipetik Pagi Saat Pesanan Masuk', '100% Bebas Pestisida Kimia', 'Kemasan Higienis Ramah Lingkungan'],
-    stockQuota: 40,
-    isAvailable: true,
-    isFeatured: true
-  },
-  {
-    id: 'prod-sembako-02',
-    title: 'Susu Sapi Murni Segar Harian Cibodas (1 Liter Botol)',
-    category: 'sembako',
-    price: 18000,
-    originalPrice: 22000,
-    unit: '/liter',
-    villageId: 'des-02',
-    villageName: 'Desa Wisata Cibodas',
-    location: 'Cibodas, Lembang',
-    rating: 5.0,
-    totalReviews: 92,
-    sellerName: 'Peternak Sapi Murni Cibodas',
-    sellerBadge: 'Peternak Lokal Terverifikasi',
-    sellerAvatar: '/images/unsplash/photo-1507003211169-0a1dd7228f2d_w200.jpg',
-    sellerPhone: '+6281394851122',
-    image: '/images/unsplash/photo-1550583724-b2692b85b150_w800.jpg',
-    gallery: ['/images/unsplash/photo-1550583724-b2692b85b150_w800.jpg'],
-    description: 'Susu sapi murni segar harian hasil perahan pagi hari peternak Cibodas. Telah melalui proses pasteurisasi standar higienis tanpa campuran air ataupun bahan pengawet.',
-    highlights: ['Susu Perah Segar Harian', 'Kaya Nutrisi & Kalsium', 'Pasteurisasi Higienis Aman Konsumsi'],
-    stockQuota: 60,
-    isAvailable: true,
-    isFeatured: true
-  },
-  {
-    id: 'prod-sembako-03',
-    title: 'Paket Agrowisata Petik Sayuran Segar & Kebun Bunga Cibodas',
-    category: 'wisata-alam',
-    price: 40000,
-    unit: '/orang',
-    villageId: 'des-02',
-    villageName: 'Desa Wisata Cibodas',
-    location: 'Cibodas, Lembang',
-    rating: 4.9,
-    totalReviews: 52,
-    sellerName: 'Kelompok Tani Terasering Cibodas',
-    sellerBadge: 'Petani Binaan Desa',
-    sellerAvatar: '/images/unsplash/photo-1500648767791-00dcc994a43e_w200.jpg',
-    sellerPhone: '+6281394851122',
-    image: '/images/unsplash/photo-1500382017468-9049fed747ef_w800.jpg',
-    gallery: [
-      '/images/unsplash/photo-1500382017468-9049fed747ef_w800.jpg',
-      '/images/unsplash/photo-1540420773420-3366772f4999_w800.jpg'
-    ],
-    description: 'Aktivitas edukasi agrowisata memetik langsung aneka sayuran organik (selada, brokoli, wortel) dan menjelajah kebun bunga krisan potong bersama petani lokal Cibodas Maribaya.',
-    highlights: ['Petik Langsung Dari Kebun', 'Termasuk Sayuran Segar Bawa Pulang', 'Spot Foto Terasering & Bunga Asri'],
-    stockQuota: 30,
-    isAvailable: true,
-    isFeatured: true
-  },
-
-  // =========================================================================
-  // 2. TANAMAN HIAS — Desa: Jayagiri (Tanaman hias, sukulen, media tanam, pot)
-  // =========================================================================
-  {
-    id: 'prod-tanaman-01',
-    title: 'Tanaman Hias Begonia & Philodendron Asri Jayagiri',
-    category: 'tanaman-hias',
-    price: 45000,
-    originalPrice: 55000,
-    unit: '/pot',
-    villageId: 'des-04',
-    villageName: 'Desa Wisata Jayagiri',
-    location: 'Jayagiri, Lembang',
-    rating: 4.8,
-    totalReviews: 37,
-    sellerName: 'Kelompok Florikultura Jayagiri',
-    sellerBadge: 'Petani Bunga Terampil',
-    sellerAvatar: '/images/unsplash/photo-1544005313-94ddf0286df2_w200.jpg',
-    sellerPhone: '+6285722337711',
-    image: '/images/unsplash/photo-1485955900006-10f4d324d411_w800.jpg',
-    gallery: ['/images/unsplash/photo-1485955900006-10f4d324d411_w800.jpg'],
-    description: 'Tanaman hias daun rimbun sehat dataran tinggi lereng Jayagiri yang mudah dirawat di dalam ruangan (indoor) maupun pekarangan rumah.',
-    highlights: ['Akar Kuat & Daun Rimbun', 'Cocok Untuk Dekorasi Rumah', 'Termasuk Panduan Perawatan'],
-    stockQuota: 35,
-    isAvailable: true,
-    isFeatured: true
-  },
-  {
-    id: 'prod-tanaman-02',
-    title: 'Paket Sukulen Mini Cantik & Pot Tembikar Jayagiri',
-    category: 'tanaman-hias',
-    price: 30000,
-    unit: '/paket',
-    villageId: 'des-04',
-    villageName: 'Desa Wisata Jayagiri',
-    location: 'Jayagiri, Lembang',
-    rating: 4.9,
-    totalReviews: 44,
-    sellerName: 'Kebun Sukulen Rimba Jayagiri',
-    sellerBadge: 'Pengrajin Tanaman Hias',
-    sellerAvatar: '/images/unsplash/photo-1506794778202-cad84cf45f1d_w200.jpg',
-    sellerPhone: '+6285722337711',
-    image: '/images/unsplash/photo-1509316975850-ff9c5deb0cd9_w800.jpg',
-    gallery: ['/images/unsplash/photo-1509316975850-ff9c5deb0cd9_w800.jpg'],
-    description: 'Kombinasi 3 sukulen unik dataran tinggi lengkap dengan pot tembikar estetik dan bebatuan hias warna natural.',
-    highlights: ['3 Jenis Sukulen Berbeda', 'Pot Tembikar Alami Estetik', 'Perawatan Sangat Praktis'],
-    stockQuota: 50,
-    isAvailable: true
-  },
-  {
-    id: 'prod-tanaman-03',
-    title: 'Media Tanam Organik Subur & Pot Tanaman Jayagiri (5 Kg)',
-    category: 'tanaman-hias',
-    price: 25000,
-    unit: '/karung',
-    villageId: 'des-04',
-    villageName: 'Desa Wisata Jayagiri',
-    location: 'Jayagiri, Lembang',
-    rating: 4.9,
-    totalReviews: 29,
-    sellerName: 'Sentra Tani Jayagiri',
-    sellerBadge: 'Penyedia Media Tanam',
-    sellerAvatar: '/images/unsplash/photo-1506794778202-cad84cf45f1d_w200.jpg',
-    sellerPhone: '+6285722337711',
-    image: '/images/unsplash/photo-1416879595882-3373a0480b5b_w800.jpg',
-    gallery: ['/images/unsplash/photo-1416879595882-3373a0480b5b_w800.jpg'],
-    description: 'Media tanam subur kaya humus tanah pegunungan, kompos fermentasi, sekam bakar, dan cocopeat yang siap pakai untuk aneka tanaman hias.',
-    highlights: ['Gembur & Porous', 'Kaya Unsur Hara Organik', 'Bebas Hama & Jamur Jahat'],
-    stockQuota: 70,
-    isAvailable: true
-  },
-  {
-    id: 'prod-wisata-j01',
-    title: 'Paket Trekking & Pemandu Rimba Hutan Jayagiri Tangkuban Parahu',
-    category: 'wisata-alam',
-    price: 85000,
-    unit: '/orang',
-    villageId: 'des-04',
-    villageName: 'Desa Wisata Jayagiri',
-    location: 'Jayagiri, Lembang',
-    rating: 4.9,
-    totalReviews: 45,
-    sellerName: 'Pemandu Rimba Trekking Jayagiri',
-    sellerBadge: 'Pemandu Terverifikasi Desa',
-    sellerAvatar: '/images/unsplash/photo-1544005313-94ddf0286df2_w200.jpg',
-    sellerPhone: '+6285722337711',
-    image: '/images/unsplash/photo-1502082553048-f009c37129b9_w800.jpg',
-    gallery: [
-      '/images/unsplash/photo-1502082553048-f009c37129b9_w800.jpg',
-      '/images/unsplash/photo-1448375240586-882707db888b_w800.jpg'
-    ],
-    description: 'Petualangan susur jalur lintas alam legendaris hutan pinus berkabut Jayagiri menembus lereng Gunung Tangkuban Parahu dipandu warga lokal profesional, include briefing keamanan, tongkat hiking, dan camilan tradisional.',
-    highlights: ['Pemandu Lokal Berlisensi', 'Jalur Rimba Hutan Sejuk', 'Spot Panorama Tangkuban Parahu', 'Aman Untuk Pemula & Keluarga'],
-    stockQuota: 25,
-    isAvailable: true,
-    isFeatured: true
-  },
-
-  // =========================================================================
-  // 3. MINUMAN & KOMODITAS — Desa: Suntenjaya (Kopi Arabika/Robusta premium kantongan)
+  // 1. MINUMAN & KOMODITAS — Desa: Suntenjaya (Kopi Arabika & Wisata Batu Loceng)
   // =========================================================================
   {
     id: 'prod-kopi-01',
@@ -665,7 +378,7 @@ export const INITIAL_MOCK_PRODUCTS: Product[] = [
     totalReviews: 112,
     sellerName: 'Kelompok Tani Kopi Batu Loceng',
     sellerBadge: 'Petani Kopi Juara',
-    sellerAvatar: '/images/unsplash/photo-1507003211169-0a1dd7228f2d_w200.jpg',
+    sellerAvatar: '/images/default-avatar.svg',
     sellerPhone: '+6281220763734',
     image: '/images/client/kopi-angling/hero-pouch-v60.webp',
     gallery: [
@@ -680,28 +393,6 @@ export const INITIAL_MOCK_PRODUCTS: Product[] = [
     isFeatured: true
   },
   {
-    id: 'prod-kopi-02',
-    title: 'Biji Kopi Robusta Lereng Palasari Suntenjaya Kantongan (250g)',
-    category: 'minuman-komoditas',
-    price: 45000,
-    unit: '/pouch',
-    villageId: 'des-01',
-    villageName: 'Desa Wisata Suntenjaya',
-    location: 'Suntenjaya, Lembang',
-    rating: 4.8,
-    totalReviews: 48,
-    sellerName: 'Koperasi Kopi Suntenjaya',
-    sellerBadge: 'UMKM Komoditas Desa',
-    sellerAvatar: '/images/unsplash/photo-1500648767791-00dcc994a43e_w200.jpg',
-    sellerPhone: '+6281220763734',
-    image: '/images/unsplash/photo-1559056199-641a0ac8b55e_w800.jpg',
-    gallery: ['/images/unsplash/photo-1559056199-641a0ac8b55e_w800.jpg'],
-    description: 'Kopi Robusta lereng pegunungan dengan body mantap tebal, aroma cokelat gelap pekat, dan sentuhan rasa rempah hangat yang cocok untuk kopi tubruk maupun es kopi susu.',
-    highlights: ['Medium Dark Roast', 'Aroma Cokelat Pekat', 'Kemasan Pouch Zipper Segel'],
-    stockQuota: 60,
-    isAvailable: true
-  },
-  {
     id: 'prod-wisata-s01',
     title: 'Paket Wisata Edukasi Kebun Kopi & Situs Batu Loceng Suntenjaya',
     category: 'wisata-alam',
@@ -714,40 +405,19 @@ export const INITIAL_MOCK_PRODUCTS: Product[] = [
     totalReviews: 56,
     sellerName: 'Kelompok Sadar Wisata Batu Loceng',
     sellerBadge: 'Pengelola Wisata Budaya',
-    sellerAvatar: '/images/unsplash/photo-1507003211169-0a1dd7228f2d_w200.jpg',
+    sellerAvatar: '/images/default-avatar.svg',
     sellerPhone: '+6281220763734',
-    image: '/images/unsplash/photo-1506744038136-46273834b3fb_w800.jpg',
+    image: '/images/client/batu-loceng/hero-batu-loceng-kuncen.webp',
     gallery: [
-      '/images/unsplash/photo-1506744038136-46273834b3fb_w800.jpg',
-      '/images/unsplash/photo-1514432324607-a09d9b4aefdd_w800.jpg'
+      '/images/client/batu-loceng/hero-batu-loceng-kuncen.webp',
+      '/images/client/batu-loceng/batu-loceng-sacred-stone.webp',
+      '/images/client/batu-loceng/saung-cagar-budaya.webp'
     ],
-    description: 'Jelajah agrowisata kebun kopi Arabika lereng Gunung Palasari dan napak tilas cagar budaya megalitikum Situs Batu Loceng Suntenjaya, include cupping kopi specialty hangat dan pemandu sejarah desa.',
-    highlights: ['Wisata Sejarah Megalitikum Batu Loceng', 'Edukasi Petik & Sangrai Biji Kopi', 'Welcome Drink Kopi Arabika Suntenjaya'],
+    description: 'Jelajah agrowisata kebun kopi Arabika lereng Gunung Palasari dan napak tilas cagar budaya megalitikum Situs Batu Loceng Suntenjaya bersama juru kunci cagar budaya, include cupping kopi specialty hangat dan pemandu sejarah desa.',
+    highlights: ['Wisata Sejarah Megalitikum Batu Loceng', 'Edukasi Petik & Sangrai Biji Kopi', 'Didampingi Kuncen Cagar Budaya'],
     stockQuota: 30,
     isAvailable: true,
     isFeatured: true
-  },
-  {
-    id: 'prod-kuliner-s01',
-    title: 'Kerajinan Miniatur Tradisional Balap Kadaplak Suntenjaya',
-    category: 'kuliner',
-    price: 55000,
-    unit: '/pcs',
-    villageId: 'des-01',
-    villageName: 'Desa Wisata Suntenjaya',
-    location: 'Suntenjaya, Lembang',
-    rating: 4.8,
-    totalReviews: 34,
-    sellerName: 'Pengrajin Kriya Kadaplak Suntenjaya',
-    sellerBadge: 'Pengrajin Kayu Tradisional',
-    sellerAvatar: '/images/unsplash/photo-1507003211169-0a1dd7228f2d_w200.jpg',
-    sellerPhone: '+6281220763734',
-    image: '/images/unsplash/photo-1513519245088-0e12902e5a38_w800.jpg',
-    gallery: ['/images/unsplash/photo-1513519245088-0e12902e5a38_w800.jpg'],
-    description: 'Suvenir miniatur kayu kereta balap luncur tradisional "Kadaplak" khas budaya Suntenjaya. Dikerjakan handmade oleh seniman ukir kayu lokal sebagai suvenir dan cinderamata unik.',
-    highlights: ['100% Kerajinan Kayu Handmade', 'Ikon Budaya Balap Kadaplak Suntenjaya', 'Suvenir Etnik Bernilai Seni'],
-    stockQuota: 25,
-    isAvailable: true
   },
 
   // =========================================================================
@@ -767,7 +437,7 @@ export const INITIAL_MOCK_PRODUCTS: Product[] = [
     totalReviews: 53,
     sellerName: 'Kebun Lemon Asri Cikahuripan',
     sellerBadge: 'Petani Buah Binaan',
-    sellerAvatar: '/images/unsplash/photo-1506794778202-cad84cf45f1d_w200.jpg',
+    sellerAvatar: '/images/default-avatar.svg',
     sellerPhone: '+6282219405566',
     image: '/images/unsplash/photo-1587496679742-bad502958fbf_w800.jpg',
     gallery: ['/images/unsplash/photo-1587496679742-bad502958fbf_w800.jpg'],
@@ -790,7 +460,7 @@ export const INITIAL_MOCK_PRODUCTS: Product[] = [
     totalReviews: 61,
     sellerName: 'Petik Stroberi Cikahuripan',
     sellerBadge: 'Petani Stroberi Lokal',
-    sellerAvatar: '/images/unsplash/photo-1544005313-94ddf0286df2_w200.jpg',
+    sellerAvatar: '/images/default-avatar.svg',
     sellerPhone: '+6282219405566',
     image: '/images/unsplash/photo-1464965911861-746a04b4bca6_w800.jpg',
     gallery: ['/images/unsplash/photo-1464965911861-746a04b4bca6_w800.jpg'],
@@ -812,7 +482,7 @@ export const INITIAL_MOCK_PRODUCTS: Product[] = [
     totalReviews: 38,
     sellerName: 'Griya Herba Sehat Cikahuripan',
     sellerBadge: 'Pengolah Herba Alami',
-    sellerAvatar: '/images/unsplash/photo-1534528741775-53994a69daeb_w200.jpg',
+    sellerAvatar: '/images/default-avatar.svg',
     sellerPhone: '+6282219405566',
     image: '/images/unsplash/photo-1596040033229-a9821ebd058d_w800.jpg',
     gallery: ['/images/unsplash/photo-1596040033229-a9821ebd058d_w800.jpg'],
@@ -821,247 +491,8 @@ export const INITIAL_MOCK_PRODUCTS: Product[] = [
     stockQuota: 50,
     isAvailable: true
   },
-
   // =========================================================================
-  // 5. KULINER — Desa: Wangunsari & Gudangkahuripan (Tahu susu, bolu, camilan kering, kerajinan tangan)
-  // =========================================================================
-  {
-    id: 'prod-kuliner-w01',
-    title: 'Tahu Susu Lembang Khas Wangunsari (Isi 10 Pcs)',
-    category: 'kuliner',
-    price: 25000,
-    unit: '/box',
-    villageId: 'des-05',
-    villageName: 'Desa Wisata Wangunsari',
-    location: 'Wangunsari, Lembang',
-    rating: 4.9,
-    totalReviews: 87,
-    sellerName: 'Dapur Tahu Susu Wangunsari',
-    sellerBadge: 'Kuliner Tradisional Terverifikasi',
-    sellerAvatar: '/images/unsplash/photo-1519085360753-af0119f7cbe7_w200.jpg',
-    sellerPhone: '+6281809115544',
-    image: '/images/tahu-susu.jpg',
-    gallery: ['/images/tahu-susu.jpg', '/images/tahu-susu-goreng.jpg'],
-    description: 'Tahu susu khas Lembang yang dibuat dari perpaduan kedelai pilihan dan susu sapi segar murni. Teksturnya sangat lembut lumer di dalam dan gurih renyah saat digoreng.',
-    highlights: ['Super Lembut & Gurih', 'Bahan Susu Murni Segar', 'Diproduksi Fresh Tiap Hari'],
-    stockQuota: 55,
-    isAvailable: true,
-    isFeatured: true
-  },
-  {
-    id: 'prod-kuliner-w02',
-    title: 'Bolu Susu Tradisional Lembut Wangunsari',
-    category: 'kuliner',
-    price: 38000,
-    unit: '/box',
-    villageId: 'des-05',
-    villageName: 'Desa Wisata Wangunsari',
-    location: 'Wangunsari, Lembang',
-    rating: 4.8,
-    totalReviews: 46,
-    sellerName: 'Oleh-Oleh Khas Wangunsari',
-    sellerBadge: 'UMKM Kuliner Desa',
-    sellerAvatar: '/images/unsplash/photo-1519085360753-af0119f7cbe7_w200.jpg',
-    sellerPhone: '+6281809115544',
-    image: '/images/real/gudangkahuripan-pusat-oleh-oleh.jpg',
-    gallery: ['/images/real/gudangkahuripan-pusat-oleh-oleh.jpg', '/images/tahu-susu-goreng.jpg'],
-    description: 'Kue bolu kukus susu bertabur keju melimpah dengan aroma harum manis lembut yang disukai seluruh anggota keluarga.',
-    highlights: ['Tekstur Empuk & Mengembang', 'Taburan Keju Melimpah', 'Cocok Teman Minum Teh/Kopi'],
-    stockQuota: 40,
-    isAvailable: true
-  },
-  {
-    id: 'prod-kuliner-w03',
-    title: 'Camilan Kering & Keripik Tempe Renyah Wangunsari (250g)',
-    category: 'kuliner',
-    price: 20000,
-    unit: '/pack',
-    villageId: 'des-05',
-    villageName: 'Desa Wisata Wangunsari',
-    location: 'Wangunsari, Lembang',
-    rating: 4.8,
-    totalReviews: 32,
-    sellerName: 'Sentra Camilan Wangunsari',
-    sellerBadge: 'Pengrajin Camilan Gurih',
-    sellerAvatar: '/images/unsplash/photo-1519085360753-af0119f7cbe7_w200.jpg',
-    sellerPhone: '+6281809115544',
-    image: '/images/unsplash/photo-1555396273-367ea4eb4db5_w800.jpg',
-    gallery: ['/images/unsplash/photo-1555396273-367ea4eb4db5_w800.jpg'],
-    description: 'Keripik tempe tipis gurih dengan racikan bumbu rempah daun jeruk renyah khas pedesaan Wangunsari.',
-    highlights: ['Renyah Tahan Lama', 'Aroma Daun Jeruk Harum', 'Tanpa Pengawet Buatan'],
-    stockQuota: 50,
-    isAvailable: true
-  },
-  {
-    id: 'prod-kuliner-w04',
-    title: 'Kerajinan Tangan Anyaman Bambu Kreatif Wangunsari',
-    category: 'kuliner',
-    price: 45000,
-    unit: '/pcs',
-    villageId: 'des-05',
-    villageName: 'Desa Wisata Wangunsari',
-    location: 'Wangunsari, Lembang',
-    rating: 4.9,
-    totalReviews: 28,
-    sellerName: 'Sanggar Kriya Bambu Wangunsari',
-    sellerBadge: 'Pengrajin Kriya Desa',
-    sellerAvatar: '/images/unsplash/photo-1519085360753-af0119f7cbe7_w200.jpg',
-    sellerPhone: '+6281809115544',
-    image: '/images/unsplash/photo-1590874103328-eac38a683ce7_w800.jpg',
-    gallery: ['/images/unsplash/photo-1590874103328-eac38a683ce7_w800.jpg'],
-    description: 'Wadah saji etnik dan keranjang anyaman bambu petung buatan tangan pengrajin lokal Wangunsari.',
-    highlights: ['100% Buatan Tangan Pengrajin', 'Bahan Bambu Kuat & Awet', 'Finishing Alami Halus'],
-    stockQuota: 25,
-    isAvailable: true
-  },
-
-  // Kuliner — Desa Gudangkahuripan
-  {
-    id: 'prod-kuliner-g01',
-    title: 'Tahu Susu Gurih Gudangkahuripan (Kemasan Box)',
-    category: 'kuliner',
-    price: 25000,
-    unit: '/box',
-    villageId: 'des-07',
-    villageName: 'Desa Wisata Gudangkahuripan',
-    location: 'Gudangkahuripan, Lembang',
-    rating: 4.9,
-    totalReviews: 74,
-    sellerName: 'Sentra Tahu Susu Gudangkahuripan',
-    sellerBadge: 'Produsen Tahu Ternama',
-    sellerAvatar: '/images/unsplash/photo-1534528741775-53994a69daeb_w200.jpg',
-    sellerPhone: '+6281233447788',
-    image: '/images/tahu-susu.jpg',
-    gallery: ['/images/tahu-susu.jpg', '/images/tahu-susu-goreng.jpg'],
-    description: 'Tahu susu istimewa Gudangkahuripan dengan rasa gurih pas, renyah keemasan di luar, dan sangat lumer di mulut.',
-    highlights: ['Rasa Gurih Alami', 'Langsung Dari Sentra Pembuatan', 'Kemasan Rapi Siap Goreng'],
-    stockQuota: 60,
-    isAvailable: true,
-    isFeatured: true
-  },
-  {
-    id: 'prod-kuliner-g02',
-    title: 'Bolu Panggang & Camilan Kering Khas Gudangkahuripan',
-    category: 'kuliner',
-    price: 35000,
-    unit: '/box',
-    villageId: 'des-07',
-    villageName: 'Desa Wisata Gudangkahuripan',
-    location: 'Gudangkahuripan, Lembang',
-    rating: 4.8,
-    totalReviews: 41,
-    sellerName: 'Dapur Kue Gudangkahuripan',
-    sellerBadge: 'UMKM Kuliner Oleh-oleh',
-    sellerAvatar: '/images/unsplash/photo-1534528741775-53994a69daeb_w200.jpg',
-    sellerPhone: '+6281233447788',
-    image: '/images/real/gudangkahuripan-pusat-oleh-oleh.jpg',
-    gallery: ['/images/real/gudangkahuripan-pusat-oleh-oleh.jpg', '/images/tahu-susu-goreng.jpg'],
-    description: 'Bolu panggang legit harum mentega dipadukan dengan pilihan camilan kering renyah cocok untuk buah tangan keluarga.',
-    highlights: ['Harum Butter Mentega Asli', 'Tekstur Lembut Legit', 'Tahan Beberapa Hari'],
-    stockQuota: 45,
-    isAvailable: true
-  },
-  {
-    id: 'prod-kuliner-g03',
-    title: 'Kerajinan Tangan Suvenir Unik Gudangkahuripan',
-    category: 'kuliner',
-    price: 35000,
-    unit: '/pcs',
-    villageId: 'des-07',
-    villageName: 'Desa Wisata Gudangkahuripan',
-    location: 'Gudangkahuripan, Lembang',
-    rating: 4.8,
-    totalReviews: 25,
-    sellerName: 'Pengrajin Souvenir Gudangkahuripan',
-    sellerBadge: 'Kriya Kreatif Lokal',
-    sellerAvatar: '/images/unsplash/photo-1534528741775-53994a69daeb_w200.jpg',
-    sellerPhone: '+6281233447788',
-    image: '/images/unsplash/photo-1513519245088-0e12902e5a38_w800.jpg',
-    gallery: ['/images/unsplash/photo-1513519245088-0e12902e5a38_w800.jpg'],
-    description: 'Gantungan kunci kayu ukir, taplak meja etnik, dan kerajinan tangan suvenir khas desa wisata Lembang.',
-    highlights: ['Desain Etnik Khas Lembang', 'Bahan Kayu & Serat Alami', 'Suvenir Kenang-kenangan Wisata'],
-    stockQuota: 40,
-    isAvailable: true
-  },
-
-  // =========================================================================
-  // 6. OLAHAN SUSU KEMASAN — Desa: Sukajaya (Yoghurt, keju lokal, mentega buatan rumahan)
-  // =========================================================================
-  {
-    id: 'prod-susu-01',
-    title: 'Yoghurt Segar Aneka Rasa Botol Sukajaya (500ml)',
-    category: 'olahan-susu',
-    price: 25000,
-    originalPrice: 30000,
-    unit: '/botol',
-    villageId: 'des-08',
-    villageName: 'Desa Wisata Sukajaya',
-    location: 'Sukajaya, Lembang',
-    rating: 5.0,
-    totalReviews: 83,
-    sellerName: 'Rumah Olahan Susu Sukajaya',
-    sellerBadge: 'Produsen Susu Kemasan',
-    sellerAvatar: '/images/unsplash/photo-1507003211169-0a1dd7228f2d_w200.jpg',
-    sellerPhone: '+6281388996655',
-    image: '/images/unsplash/photo-1571212515416-fef01fc43637_w800.jpg',
-    gallery: [
-      '/images/unsplash/photo-1571212515416-fef01fc43637_w800.jpg',
-      '/images/unsplash/photo-1576402187878-974f70c890a5_w800.jpg',
-      '/images/unsplash/photo-1488477181946-6428a0291777_w800.jpg'
-    ],
-    description: 'Minuman yoghurt segar kental berprobiotik tinggi dari susu sapi murni Desa Sukajaya dengan varian rasa buah stroberi, blueberry, dan mangga asli.',
-    highlights: ['Kaya Bakteri Probiotik Baik', 'Dibuat Dari Susu Murni Segar', 'Tanpa Pemanis Buatan'],
-    stockQuota: 50,
-    isAvailable: true,
-    isFeatured: true
-  },
-  {
-    id: 'prod-susu-02',
-    title: 'Keju Lokal Homemade Tradisional Sukajaya (200g)',
-    category: 'olahan-susu',
-    price: 45000,
-    unit: '/pack',
-    villageId: 'des-08',
-    villageName: 'Desa Wisata Sukajaya',
-    location: 'Sukajaya, Lembang',
-    rating: 4.9,
-    totalReviews: 47,
-    sellerName: 'Artisan Cheese Sukajaya',
-    sellerBadge: 'Pengrajin Keju Lokal',
-    sellerAvatar: '/images/unsplash/photo-1507003211169-0a1dd7228f2d_w200.jpg',
-    sellerPhone: '+6281388996655',
-    image: '/images/unsplash/photo-1486297678162-eb2a19b0a32d_w800.jpg',
-    gallery: ['/images/unsplash/photo-1486297678162-eb2a19b0a32d_w800.jpg'],
-    description: 'Keju lokal alami buatan rumahan peternak Sukajaya dengan tekstur lembut gurih creamy, sangat cocok untuk hidangan roti, salad, ataupun camilan.',
-    highlights: ['100% Susu Sapi Murni Sukajaya', 'Fermentasi Alami Higienis', 'Kemasan Vacuum Segel'],
-    stockQuota: 30,
-    isAvailable: true
-  },
-  {
-    id: 'prod-susu-03',
-    title: 'Mentega Susu Sapi Murni Buatan Rumahan Sukajaya (250g)',
-    category: 'olahan-susu',
-    price: 35000,
-    unit: '/jar',
-    villageId: 'des-08',
-    villageName: 'Desa Wisata Sukajaya',
-    location: 'Sukajaya, Lembang',
-    rating: 4.8,
-    totalReviews: 39,
-    sellerName: 'Rumah Olahan Susu Sukajaya',
-    sellerBadge: 'Produsen Susu Kemasan',
-    sellerAvatar: '/images/unsplash/photo-1507003211169-0a1dd7228f2d_w200.jpg',
-    sellerPhone: '+6281388996655',
-    image: '/images/unsplash/photo-1589985270826-4b7bb135bc9d_w800.jpg',
-    gallery: ['/images/unsplash/photo-1589985270826-4b7bb135bc9d_w800.jpg'],
-    description: 'Mentega tawar (unsalted/salted) alami murni dari lemak susu sapi segar pegunungan tanpa pewarna buatan, memberikan aroma masakan dan kue yang sangat harum.',
-    highlights: ['Aroma Gurih Susu Alami', 'Bebas Pengawet & Pewarna Sintetis', 'Kemasan Jar Kaca Rapi'],
-    stockQuota: 35,
-    isAvailable: true
-  },
-
-  // =========================================================================
-  // 7. WISATA ALAM — Desa: Cikole & Cikahuripan (Camping, tenda, tiket wahana, offroad)
+  // 3. WISATA ALAM — Desa: Cikole & Cikahuripan (Camping, tenda, tiket wahana, offroad)
   // =========================================================================
   {
     id: 'prod-wisata-c01',
@@ -1076,7 +507,7 @@ export const INITIAL_MOCK_PRODUCTS: Product[] = [
     totalReviews: 95,
     sellerName: 'Pengelola Rimba Pinus Cikole',
     sellerBadge: 'Pengelola Wisata Resmi',
-    sellerAvatar: '/images/unsplash/photo-1472099645785-5658abf4ff4e_w200.jpg',
+    sellerAvatar: '/images/default-avatar.svg',
     sellerPhone: '+6282133449988',
     image: '/images/unsplash/photo-1448375240586-882707db888b_w800.jpg',
     gallery: [
@@ -1102,7 +533,7 @@ export const INITIAL_MOCK_PRODUCTS: Product[] = [
     totalReviews: 82,
     sellerName: 'Komunitas Landy Rimba Cikole',
     sellerBadge: 'Driver Profesional Berlisensi',
-    sellerAvatar: '/images/unsplash/photo-1472099645785-5658abf4ff4e_w200.jpg',
+    sellerAvatar: '/images/default-avatar.svg',
     sellerPhone: '+6282133449988',
     image: '/images/client/offroad-cikole/hero-abah-dadan-landy.webp',
     gallery: [
@@ -1129,7 +560,7 @@ export const INITIAL_MOCK_PRODUCTS: Product[] = [
     totalReviews: 64,
     sellerName: 'Loket Wisata Cikole',
     sellerBadge: 'Tiket Resmi Terverifikasi',
-    sellerAvatar: '/images/unsplash/photo-1472099645785-5658abf4ff4e_w200.jpg',
+    sellerAvatar: '/images/default-avatar.svg',
     sellerPhone: '+6282133449988',
     image: '/images/unsplash/photo-1473448912268-2022ce9509d8_w800.jpg',
     gallery: ['/images/unsplash/photo-1473448912268-2022ce9509d8_w800.jpg'],
@@ -1151,7 +582,7 @@ export const INITIAL_MOCK_PRODUCTS: Product[] = [
     totalReviews: 78,
     sellerName: 'Pengelola Rimba Pinus Cikole',
     sellerBadge: 'Pengelola Wisata Resmi',
-    sellerAvatar: '/images/unsplash/photo-1472099645785-5658abf4ff4e_w200.jpg',
+    sellerAvatar: '/images/default-avatar.svg',
     sellerPhone: '+6282133449988',
     image: '/images/unsplash/photo-1509316975850-ff9c5deb0cd9_w800.jpg',
     gallery: [
@@ -1178,7 +609,7 @@ export const INITIAL_MOCK_PRODUCTS: Product[] = [
     totalReviews: 49,
     sellerName: 'Komunitas Paintball Cikole',
     sellerBadge: 'Instruktur Outbound Berlisensi',
-    sellerAvatar: '/images/unsplash/photo-1472099645785-5658abf4ff4e_w200.jpg',
+    sellerAvatar: '/images/default-avatar.svg',
     sellerPhone: '+6282133449988',
     image: '/images/unsplash/photo-1473448912268-2022ce9509d8_w800.jpg',
     gallery: ['/images/unsplash/photo-1473448912268-2022ce9509d8_w800.jpg'],
@@ -1202,7 +633,7 @@ export const INITIAL_MOCK_PRODUCTS: Product[] = [
     totalReviews: 43,
     sellerName: 'Camping Ground Bukit Cikahuripan',
     sellerBadge: 'Pengelola Wisata Bukit',
-    sellerAvatar: '/images/unsplash/photo-1506794778202-cad84cf45f1d_w200.jpg',
+    sellerAvatar: '/images/default-avatar.svg',
     sellerPhone: '+6282219405566',
     image: '/images/unsplash/photo-1506744038136-46273834b3fb_w800.jpg',
     gallery: ['/images/unsplash/photo-1506744038136-46273834b3fb_w800.jpg'],
@@ -1224,7 +655,7 @@ export const INITIAL_MOCK_PRODUCTS: Product[] = [
     totalReviews: 36,
     sellerName: 'Offroad Bukit Cikahuripan',
     sellerBadge: 'Driver Pemandu Alam',
-    sellerAvatar: '/images/unsplash/photo-1506794778202-cad84cf45f1d_w200.jpg',
+    sellerAvatar: '/images/default-avatar.svg',
     sellerPhone: '+6282219405566',
     image: '/images/unsplash/photo-1509316975850-ff9c5deb0cd9_w800.jpg',
     gallery: ['/images/unsplash/photo-1509316975850-ff9c5deb0cd9_w800.jpg'],
@@ -1246,7 +677,7 @@ export const INITIAL_MOCK_PRODUCTS: Product[] = [
     totalReviews: 29,
     sellerName: 'Wahana Alam Cikahuripan',
     sellerBadge: 'Pengelola Destinasi',
-    sellerAvatar: '/images/unsplash/photo-1506794778202-cad84cf45f1d_w200.jpg',
+    sellerAvatar: '/images/default-avatar.svg',
     sellerPhone: '+6282219405566',
     image: '/images/unsplash/photo-1464822759023-fed622ff2c3b_w800.jpg',
     gallery: ['/images/unsplash/photo-1464822759023-fed622ff2c3b_w800.jpg'],
@@ -1256,117 +687,29 @@ export const INITIAL_MOCK_PRODUCTS: Product[] = [
     isAvailable: true
   },
 
-  // =========================================================================
-  // 8. PENGINAPAN LOKAL — Desa: Cibodas (Homestay & sewa per kamar atau per rumah)
-  // =========================================================================
-  {
-    id: 'prod-inap-01',
-    title: 'Homestay Lembah Maribaya Cibodas (Sewa Per Kamar)',
-    category: 'penginapan-lokal',
-    price: 220000,
-    originalPrice: 280000,
-    unit: '/malam',
-    villageId: 'des-02',
-    villageName: 'Desa Wisata Cibodas',
-    location: 'Cibodas, Lembang',
-    rating: 4.9,
-    totalReviews: 58,
-    sellerName: 'Ibu Nenden & Tuan Rumah Cibodas',
-    sellerBadge: 'Tuan Rumah Terverifikasi',
-    sellerAvatar: '/images/unsplash/photo-1544005313-94ddf0286df2_w200.jpg',
-    sellerPhone: '+6281394851122',
-    image: '/images/unsplash/photo-1590490360182-c33d57733427_w800.jpg',
-    gallery: [
-      '/images/unsplash/photo-1590490360182-c33d57733427_w800.jpg',
-      '/images/real/homestay-saung-santai.jpg'
-    ],
-    description: 'Kamar homestay bersih dan hangat di rumah warga lokal Cibodas dekat lembah Maribaya. Dilengkapi fasilitas air panas water heater dan sarapan nasi liwet khas Sunda.',
-    highlights: ['Kamar Nyaman Bersih Kasur Queen', 'Air Panas Water Heater', 'Termasuk Sarapan Hangat', 'Dekat Curug & Kebun Bunga'],
-    facilities: ['Water Heater', 'Sarapan Sunda', 'WiFi Gratis', 'Area Parkir'],
-    stockQuota: 4,
-    isAvailable: true,
-    isFeatured: true
-  },
-  {
-    id: 'prod-inap-02',
-    title: 'Sewa Rumah Warga Asri Cibodas (1 Rumah Penuh 3 Kamar)',
-    category: 'penginapan-lokal',
-    price: 750000,
-    originalPrice: 900000,
-    unit: '/malam',
-    villageId: 'des-02',
-    villageName: 'Desa Wisata Cibodas',
-    location: 'Cibodas, Lembang',
-    rating: 5.0,
-    totalReviews: 42,
-    sellerName: 'Paguyuban Homestay Cibodas',
-    sellerBadge: 'Pengelola Homestay Desa',
-    sellerAvatar: '/images/unsplash/photo-1500648767791-00dcc994a43e_w200.jpg',
-    sellerPhone: '+6281394851122',
-    image: '/images/real/homestay-gudangkahuripan-asri.jpg',
-    gallery: [
-      '/images/real/homestay-gudangkahuripan-asri.jpg',
-      '/images/real/homestay-kamar-keluarga.jpg'
-    ],
-    description: 'Sewa satu unit rumah warga asri bernuansa kayu di Cibodas berkapasitas 6-10 orang keluarga. Memiliki 3 kamar tidur luas, ruang tamu, dapur lengkap, teras asri, dan halaman parkir.',
-    highlights: ['Sewa 1 Rumah Penuh Privat', '3 Kamar Tidur + Dapur Lengkap', 'Halaman Luas & Garasi Mobil', 'Suasana Tenang Sejuk'],
-    facilities: ['3 Kamar Tidur', 'Dapur & Alat Masak', '2 Kamar Mandi Water Heater', 'WiFi & TV', 'Parkir 3 Mobil'],
-    stockQuota: 2,
-    isAvailable: true,
-    isFeatured: true
-  },
-  {
-    id: 'prod-inap-03',
-    title: 'Homestay Saung Hijau Maribaya Cibodas (Sewa Kamar Nyaman)',
-    category: 'penginapan-lokal',
-    price: 200000,
-    unit: '/malam',
-    villageId: 'des-02',
-    villageName: 'Desa Wisata Cibodas',
-    location: 'Cibodas, Lembang',
-    rating: 4.8,
-    totalReviews: 31,
-    sellerName: 'Tuan Rumah Saung Hijau',
-    sellerBadge: 'Tuan Rumah Ramah',
-    sellerAvatar: '/images/unsplash/photo-1500648767791-00dcc994a43e_w200.jpg',
-    sellerPhone: '+6281394851122',
-    image: '/images/unsplash/photo-1513836279014-a89f7a76ae86_w800.jpg',
-    gallery: ['/images/unsplash/photo-1513836279014-a89f7a76ae86_w800.jpg'],
-    description: 'Penginapan sejuk dan tenang di tengah perkampungan Cibodas yang asri. Pemandangan hamparan kebun bunga potong dan aliran air sungai Maribaya yang jernih.',
-    highlights: ['Kamar Rapi Bersih', 'Suasana Pedesaan Asri', 'Dekat Spot Agrowisata Bunga'],
-    facilities: ['Kasur Double Bed', 'Kamar Mandi Air Hangat', 'Teh & Kopi Pagi', 'Parkir Aman'],
-    stockQuota: 3,
-    isAvailable: true
-  }
 ];
 
-// Combined initial products catalog (Real client data first, followed by mock data with explicit dummy provenance)
+// Initial products catalog (100% Real client data; mock products hidden)
 export const INITIAL_PRODUCTS: Product[] = [
-  ...REAL_PRODUCTS,
-  ...INITIAL_MOCK_PRODUCTS.map(p => ({
-    ...p,
-    isDummy: true,
-    dataSource: 'dummy' as const,
-    verifiedBadge: 'Data Simulasi / Mock'
-  }))
+  ...REAL_PRODUCTS
 ];
 
 export const INITIAL_REVIEWS: Review[] = [
   {
     id: 'rev-01',
-    productId: 'prod-sembako-01',
+    productId: 'real-wangunsari-tahu-susu',
     authorName: 'Rian Prasetya',
-    authorAvatar: '/images/unsplash/photo-1535713875002-d1d0cf377fde_w150.jpg',
+    authorAvatar: '/images/default-avatar.svg',
     rating: 5,
     date: '2 hari lalu',
-    comment: 'Sayuran organik dari Cibodas segar banget! Dipetik pagi hari dan masih renyah manis. Susu sapinya juga murni dan gurih.',
+    comment: 'Tahu susu Wangunsari super lembut lumer di dalam dan gurihnya pas banget! Sangat cocok untuk oleh-oleh khas Lembang.',
     userRole: 'Wisatawan Asal Jakarta'
   },
   {
     id: 'rev-02',
-    productId: 'prod-kopi-01',
+    productId: 'real-suntenjaya-kopi-angling',
     authorName: 'Budi Kurniawan',
-    authorAvatar: '/images/unsplash/photo-1570295999919-56ceb5ecca61_w150.jpg',
+    authorAvatar: '/images/default-avatar.svg',
     rating: 5,
     date: '3 hari lalu',
     comment: 'Kopi Arabika Suntenjaya karakternya harum floral dan manis karamel. Luar biasa kualitas kopi petani Lembang!',
@@ -1374,12 +717,12 @@ export const INITIAL_REVIEWS: Review[] = [
   },
   {
     id: 'rev-03',
-    productId: 'prod-inap-01',
+    productId: 'real-cikole-offroad-landrover-abah',
     authorName: 'Siti Rahmawati',
-    authorAvatar: '/images/unsplash/photo-1494790108377-be9c29b29330_w150.jpg',
+    authorAvatar: '/images/default-avatar.svg',
     rating: 5,
     date: '1 minggu lalu',
-    comment: 'Menginap di homestay Cibodas nyaman banget, udaranya dingin berkabut dan sarapan liwetnya enak pisan. Admin desa sangat cepat membantu koordinasi.',
+    comment: 'Offroad Sukawana Cikole bareng Land Rover Abah seru luar biasa menembus jalur lumpur hutan pinus. Pemandu ramah dan profesional!',
     userRole: 'Wisatawan Asal Tangerang'
   }
 ];

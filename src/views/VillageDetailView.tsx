@@ -111,7 +111,7 @@ export const VillageDetailView: React.FC = () => {
           }`}
         >
           <Building2 className="w-3.5 h-3.5" />
-          <span>Peta Kantor Desa & Kontak</span>
+          <span>Peta Lokasi Kantor Desa</span>
         </button>
 
         <button
@@ -204,13 +204,6 @@ export const VillageDetailView: React.FC = () => {
                     <span className="text-[10px] text-stone-400 block font-semibold">Alamat Kantor Desa:</span>
                     <p className="text-xs leading-relaxed text-stone-300">{village.officeAddress || village.mapLocation}</p>
                   </div>
-
-                  {village.contactPhone && (
-                    <div>
-                      <span className="text-[10px] text-stone-400 block font-semibold">Kontak Layanan / CP:</span>
-                      <p className="font-bold text-amber-300 text-xs">{village.contactPhone}</p>
-                    </div>
-                  )}
                 </div>
 
                 <div className="pt-2 space-y-2">
@@ -219,7 +212,7 @@ export const VillageDetailView: React.FC = () => {
                     className="w-full py-3 bg-emerald-800 hover:bg-emerald-700 text-white font-bold rounded-2xl text-xs transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer"
                   >
                     <Building2 className="w-4 h-4 text-amber-300" />
-                    <span>Lihat Peta Kantor Desa & CP</span>
+                    <span>Lihat Peta Lokasi Kantor Desa</span>
                   </button>
 
                   <button
@@ -257,11 +250,10 @@ export const VillageDetailView: React.FC = () => {
       {/* TAB 3: PRODUCTS */}
       {activeTab === 'products' && (
         <div className="space-y-6">
-          <div className="flex items-center justify-between border-b border-stone-200 pb-3">
+          <div className="border-b border-stone-200 pb-3">
             <h2 className="text-xl font-bold font-serif-title text-stone-900">
               Katalog Produk & Layanan {village.name} ({villageProducts.length})
             </h2>
-            <span className="text-xs text-emerald-800 font-semibold">Terhubung ke Admin Desa & Warga</span>
           </div>
 
           {villageProducts.length > 0 ? (

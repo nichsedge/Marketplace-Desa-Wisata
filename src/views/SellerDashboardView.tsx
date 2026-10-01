@@ -205,7 +205,7 @@ export const SellerDashboardView: React.FC = () => {
       location: currentVillage.location,
       sellerName: currentUser?.sellerName || currentUser?.name || currentVillage.managerName,
       sellerBadge: 'Admin Desa Terverifikasi',
-      sellerAvatar: currentUser?.avatar || '/images/unsplash/photo-1507003211169-0a1dd7228f2d_w200.jpg',
+      sellerAvatar: currentUser?.avatar || '/images/default-avatar.svg',
       sellerPhone: currentUser?.phone || currentVillage.contactPhone,
       image: selectedImage,
       gallery: [selectedImage],

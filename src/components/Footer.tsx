@@ -72,7 +72,7 @@ export const Footer: React.FC = () => {
                 className="px-4 py-2 rounded-full bg-emerald-950/80 hover:bg-emerald-800 text-amber-300 hover:text-white text-xs font-bold flex items-center gap-2 transition-colors cursor-pointer border border-emerald-700/60 shadow-sm"
               >
                 <Map className="w-3.5 h-3.5 text-amber-300" />
-                <span>Peta Kantor 8 Desa</span>
+                <span>Peta Lokasi Kantor Desa</span>
               </button>
             </div>
           </div>
@@ -85,14 +85,14 @@ export const Footer: React.FC = () => {
               <li><button onClick={() => navigateTo('marketplace')} className="hover:text-emerald-400 transition-colors cursor-pointer">Marketplace Komoditas & Produk</button></li>
               <li><button onClick={() => navigateTo('homestay')} className="hover:text-emerald-400 transition-colors cursor-pointer">Penginapan & Homestay Warga</button></li>
               <li><button onClick={() => navigateTo('paket-wisata')} className="hover:text-emerald-400 transition-colors cursor-pointer">Paket Wisata Alam & Offroad</button></li>
-              <li><button onClick={() => navigateTo('desa-detail')} className="hover:text-emerald-400 transition-colors cursor-pointer">Direktori & Profil 8 Desa</button></li>
+              <li><button onClick={() => navigateTo('desa-detail')} className="hover:text-emerald-400 transition-colors cursor-pointer">Direktori & Profil Desa Wisata</button></li>
             </ul>
           </div>
 
-          {/* 8 Decentralized Villages Directory Col (4 Cols) */}
+          {/* Decentralized Villages Directory Col (4 Cols) */}
           <div className="lg:col-span-4 space-y-4">
             <div className="flex items-center justify-between">
-              <h4 className="text-sm font-bold text-white uppercase tracking-wider">Jaringan 8 Desa Wisata</h4>
+              <h4 className="text-sm font-bold text-white uppercase tracking-wider">Jaringan Desa Wisata</h4>
               <button
                 onClick={() => {
                   setModalVillageId('des-01');
@@ -135,7 +135,7 @@ export const Footer: React.FC = () => {
           <div className="flex items-center gap-4 text-stone-400">
             <span className="flex items-center gap-1">
               <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" /> 
-              Desentralisasi 8 Desa · Transaksi Langsung ke Admin & Warga
+              Desentralisasi Desa Wisata · Transaksi Langsung ke Admin & Warga
             </span>
           </div>
         </div>
@@ -160,7 +160,7 @@ export const Footer: React.FC = () => {
                 </div>
                 <div>
                   <h3 className="text-base sm:text-lg font-bold font-serif-title">
-                    Direktori & Peta Kantor 8 Desa Wisata
+                    Direktori & Peta Lokasi Kantor Desa
                   </h3>
                   <p className="text-[11px] text-stone-300">
                     Pilih desa untuk melihat lokasi kantor desa dan rute Google Maps

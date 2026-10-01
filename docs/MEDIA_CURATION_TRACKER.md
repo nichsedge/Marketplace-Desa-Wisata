@@ -1,22 +1,117 @@
 # 📸 Pelacak & Log Kurasi Media Lapangan (Saba Lembang)
-> **Waktu Pembaruan Terakhir:** 2026-09-25 19:32:04 WIB  
+> **Waktu Pembaruan Terakhir:** 2026-10-01 19:05:36 WIB  
 > **Status Pelacakan:** Otomatis & Terverifikasi  
-> **Total Berkas Terdaftar:** **153 berkas** (4 Hero Web, 16 Galeri Web, 5 Video Dicadangkan, 128 Dilewati/Redundan)
+> **Total Berkas Terdaftar:** **185 berkas** (14 Hero Web, 36 Galeri Web, 5 Video Dicadangkan, 130 Dilewati/Redundan)
 
 ---
 
 ## 🎯 Ringkasan Eksekutif Kurasi
 | Kategori Status | Jumlah Berkas | Keterangan & Perlakuan di Web |
 | :--- | :---: | :--- |
-| **⭐ Accepted (Hero Utama)** | **4** | Foto kualitas premium terbaik, tampil di cover kartu marketplace & header detail produk |
-| **🖼️ Accepted (Galeri/Slider)** | **16** | Foto pendukung autentik, tampil di slider thumbnail & album detail produk |
+| **⭐ Accepted (Hero Utama)** | **14** | Foto kualitas premium terbaik, tampil di cover kartu marketplace & header detail produk |
+| **🖼️ Accepted (Galeri/Slider)** | **36** | Foto pendukung autentik, tampil di slider thumbnail & album detail produk |
 | **🎥 Skipped (Format Video)** | **5** | Video ukuran besar (25MB - 184MB). Dicadangkan untuk promosi reels / IG / YouTube |
-| **⏭️ Skipped (Burst / Redundan)** | **128** | Foto duplikat burst kamera, dokumentasi internal rapat, atau sudut yang telah terwakili |
-| **🆕 Berkas Baru Terdeteksi** | **0** | Berkas baru yang ditambahkan oleh klien pada unduhan terbaru |
+| **⏭️ Skipped (Burst / Redundan)** | **130** | Foto duplikat burst kamera, dokumentasi internal rapat, atau sudut yang telah terwakili |
+| **🆕 Berkas Baru Terdeteksi** | **1** | Berkas baru yang ditambahkan oleh klien pada unduhan terbaru |
 
 ---
 
 ## 🗂️ Rincian Lengkap per Folder Klien
+
+### 📁 Folder: `20261001` (1 Berkas | 0 Hero, 0 Galeri)
+
+| No | Nama Berkas | Ukuran | Resolusi | Status Keputusan | Jalur Aset Web (WebP) | Alasan Keputusan Kurasi |
+| :-: | :--- | :-: | :-: | :--- | :--- | :--- |
+| 01 | `REQUIREMENTS.md` | 2.1 KB | N/A | 🆕 *Menunggu Review* | - | File baru ditambahkan oleh klien. Menunggu kurasi manual atau otomatis pada pipeline build berikutnya. |
+
+---
+
+### 📁 Folder: `20261001/Kicimpring Singkong-20261001T102245Z-1-001/Kicimpring Singkong` (3 Berkas | 1 Hero, 2 Galeri)
+
+| No | Nama Berkas | Ukuran | Resolusi | Status Keputusan | Jalur Aset Web (WebP) | Alasan Keputusan Kurasi |
+| :-: | :--- | :-: | :-: | :--- | :--- | :--- |
+| 01 | `21 Juni 2019 》Kegiatan kali ini kita berkunjung pada potensi yang ada di Desa Wangunsari yaitu a(1).jpg` | 105.2 KB | 1080x1080 | 🖼️ **GALERI WEB** | `/images/client/wangunsari/kicimpring-jemur-tradisional.webp` | Ibu-ibu perajin Wangunsari menjemur adonan kicimpring singkong di atas rak kawat tradisional di bawah sinar matahari pegunungan. |
+| 02 | `21 Juni 2019 》Kegiatan kali ini kita berkunjung pada potensi yang ada di Desa Wangunsari yaitu a.jpg` | 77.9 KB | 1080x1080 | 🖼️ **GALERI WEB** | `/images/client/wangunsari/kicimpring-produksi-warga.webp` | Dokumentasi kunjungan potensi desa dan proses pembuatan adonan kicimpring singkong bersama warga lokal. |
+| 03 | `Screenshot 2026-10-01 120129.png` | 164.4 KB | 316x251 | ⭐ **HERO WEB** | `/images/client/wangunsari/kicimpring-singkong-renyah.webp` | Close-up keripik kicimpring singkong renyah dengan taburan bumbu cabai dan daun bawang gurih siap konsumsi. |
+
+---
+
+### 📁 Folder: `20261001/Ranginang-20261001T102353Z-1-001/Ranginang` (4 Berkas | 1 Hero, 3 Galeri)
+
+| No | Nama Berkas | Ukuran | Resolusi | Status Keputusan | Jalur Aset Web (WebP) | Alasan Keputusan Kurasi |
+| :-: | :--- | :-: | :-: | :--- | :--- | :--- |
+| 01 | `😍😍😍😍(1).jpg` | 140.5 KB | 1170x1170 | 🖼️ **GALERI WEB** | `/images/client/wangunsari/ranginang-mentah-terasi.webp` | Ranginang mentah siap goreng dengan butiran beras ketan pilihan berbumbu terasi gurih. |
+| 02 | `😍😍😍😍(2).jpg` | 131.6 KB | 1170x1170 | 🖼️ **GALERI WEB** | `/images/client/wangunsari/ranginang-goreng-mekar.webp` | Piring saji penuh dengan ranginang mekar renyah gurih siap santap. |
+| 03 | `😍😍😍😍(3).jpg` | 115.8 KB | 1170x1169 | 🖼️ **GALERI WEB** | `/images/client/wangunsari/ranginang-tampah-jemur.webp` | Proses penjemuran ranginang di tampah bambu secara tradisional. |
+| 04 | `😍😍😍😍.jpg` | 137.4 KB | 1170x1170 | ⭐ **HERO WEB** | `/images/client/wangunsari/ranginang-terasi-khas-wangunsari.webp` | Ranginang ketan rasa terasi gurih mekar renyah disajikan bersama cangkir teh hangat dan kaleng kerupuk vintage oranye. Sangat menggugah selera. |
+
+---
+
+### 📁 Folder: `20261001/batu lonceng-20261001T102213Z-1-001/batu lonceng` (3 Berkas | 1 Hero, 2 Galeri)
+
+| No | Nama Berkas | Ukuran | Resolusi | Status Keputusan | Jalur Aset Web (WebP) | Alasan Keputusan Kurasi |
+| :-: | :--- | :-: | :-: | :--- | :--- | :--- |
+| 01 | `Screenshot 2026-10-01 112928.png` | 233.0 KB | 391x448 | 🖼️ **GALERI WEB** | `/images/client/batu-loceng/batu-loceng-sacred-stone.webp` | Detail batu hitam megalitikum sakral Batu Loceng di atas kain alas dan taburan bunga sesaji doa. |
+| 02 | `Screenshot 2026-10-01 112942.png` | 204.9 KB | 421x284 | ⭐ **HERO WEB** | `/images/client/batu-loceng/hero-batu-loceng-kuncen.webp` | Juru kunci / sesepuh adat memegang batu megalitikum bertuah Batu Loceng di dalam saung pelindung cagar budaya. Sangat otentik dan bernilai sejarah tinggi. |
+| 03 | `Screenshot 2026-10-01 113009.png` | 128.4 KB | 311x168 | 🖼️ **GALERI WEB** | `/images/client/batu-loceng/saung-cagar-budaya.webp` | Bangunan saung pelindung situs cagar budaya Batu Loceng yang dikelilingi hutan hijau asri lereng Gunung Palasari. |
+
+---
+
+### 📁 Folder: `20261001/gudangkahuripan-20261001T102355Z-1-001/gudangkahuripan` (6 Berkas | 1 Hero, 5 Galeri)
+
+| No | Nama Berkas | Ukuran | Resolusi | Status Keputusan | Jalur Aset Web (WebP) | Alasan Keputusan Kurasi |
+| :-: | :--- | :-: | :-: | :--- | :--- | :--- |
+| 01 | `789108465_17966266326159854_4186932252492757219_n.jpg` | 139.0 KB | 1170x1560 | 🖼️ **GALERI WEB** | `/images/client/gudangkahuripan/jaipong-peserta-senyum.webp` | Penari muda berkebaya Sunda putih tersenyum ramah bersama peserta pelatihan seni budaya. |
+| 02 | `790023457_17966266371159854_7924881403726805858_n.jpg` | 156.6 KB | 1170x1560 | 🖼️ **GALERI WEB** | `/images/client/gudangkahuripan/jaipong-pelatihan-kompak.webp` | Kekompakan penari sanggar Kamandaka Gudangkahuripan mengenakan kain jarik batik Pasundan. |
+| 03 | `790475973_17966266335159854_2867174840609974419_n.jpg` | 115.5 KB | 1170x1560 | 🖼️ **GALERI WEB** | `/images/client/gudangkahuripan/jaipong-kebersamaan.webp` | Momen interaksi hangat dan latihan gerak dasar tari bersama wisatawan edukasi. |
+| 04 | `Dokumentasi saat materi Tari Jaipong 😍🥰.jpg` | 150.9 KB | 1170x780 | ⭐ **HERO WEB** | `/images/client/gudangkahuripan/hero-tari-jaipong-materi.webp` | Peserta workshop dan penari remaja menyambut tamu dengan salam hangat gerakan tari Jaipong tradisional di pelataran sanggar budaya. |
+| 05 | `Dokumentasii keseruan saat praktek Tari Jaipong 😉😍#ypjpapua #tembagapura #kamandakalembang #b(1).jpg` | 94.7 KB | 1170x780 | 🖼️ **GALERI WEB** | `/images/client/gudangkahuripan/jaipong-gerak-dasar.webp` | Peserta mempraktikkan gerakan selendang dan ayunan tangan tari Jaipong. |
+| 06 | `Dokumentasii keseruan saat praktek Tari Jaipong 😉😍#ypjpapua #tembagapura #kamandakalembang #b.jpg` | 112.2 KB | 1170x780 | 🖼️ **GALERI WEB** | `/images/client/gudangkahuripan/jaipong-praktek-lapangan.webp` | Keseruan praktik tari Jaipong di ruang terbuka sanggar seni Kamandaka Lembang. |
+
+---
+
+### 📁 Folder: `20261001/peuyeum ketan-20261001T102251Z-1-001/peuyeum ketan` (1 Berkas | 1 Hero, 0 Galeri)
+
+| No | Nama Berkas | Ukuran | Resolusi | Status Keputusan | Jalur Aset Web (WebP) | Alasan Keputusan Kurasi |
+| :-: | :--- | :-: | :-: | :--- | :--- | :--- |
+| 01 | `Gemini_Generated_Image_p455vip455vip455.jpg` | 755.5 KB | 1408x768 | ⭐ **HERO WEB** | `/images/client/wangunsari/peuyeum-ketan-daun-jambu.webp` | Visual estetik peuyeum ketan hitam terbungkus daun jambu air rapi di atas tampah kayu bersama mangkuk keramik ketan hitam tradisional. |
+
+---
+
+### 📁 Folder: `20261001/rumah-suntenjaya` (4 Berkas | 1 Hero, 2 Galeri)
+
+| No | Nama Berkas | Ukuran | Resolusi | Status Keputusan | Jalur Aset Web (WebP) | Alasan Keputusan Kurasi |
+| :-: | :--- | :-: | :-: | :--- | :--- | :--- |
+| 01 | `WhatsApp Image 2026-10-01 at 17.13.45.jpeg` | 145.0 KB | 960x1280 | ⭐ **HERO WEB** | `/images/client/suntenjaya/hero-homestay-teras-kayu.webp` | Fasad rumah panggung bernuansa kayu asri warga Suntenjaya berteras tanaman hias alami dengan udara sejuk dataran tinggi lereng Palasari. |
+| 02 | `WhatsApp Image 2026-10-01 at 17.13.49.jpeg` | 115.2 KB | 960x1280 | 🖼️ **GALERI WEB** | `/images/client/suntenjaya/homestay-teras-kebun.webp` | Rumah warga bernuansa hijau asri berteras keramik bersih menghadap langsung kebun pertanian sayur lereng Palasari. |
+| 03 | `WhatsApp Image 2026-10-01 at 17.13.51.jpeg` | 120.4 KB | 960x1280 | 🖼️ **GALERI WEB** | `/images/client/suntenjaya/homestay-fondasi-batu.webp` | Rumah bertingkat fondasi batu alam lereng pegunungan Suntenjaya yang bersih, kokoh, dan berlatar langit biru pegunungan. |
+| 04 | `WhatsApp Image 2026-10-01 at 17.13.52.jpeg` | 112.1 KB | 960x1280 | ⏭️ *Dilewati (Redundan)* | - | Sudut bidikan duplikat dan komposisi identik dengan foto 17.13.51. |
+
+---
+
+### 📁 Folder: `20261001/sukajaya-20261001T102401Z-1-001/sukajaya` (4 Berkas | 3 Hero, 1 Galeri)
+
+| No | Nama Berkas | Ukuran | Resolusi | Status Keputusan | Jalur Aset Web (WebP) | Alasan Keputusan Kurasi |
+| :-: | :--- | :-: | :-: | :--- | :--- | :--- |
+| 01 | `Screenshot 2026-10-01 122739.png` | 284.1 KB | 575x310 | ⭐ **HERO WEB** | `/images/client/sukajaya/hero-yoghvit-botol.webp` | Botol yoghurt dingin Yoghvit Barokah Fresh Milk aneka rasa buah tertata di rak pendingin show-case toko Pa Emin Sukajaya. |
+| 02 | `Screenshot 2026-10-01 122749.png` | 402.4 KB | 564x427 | 🖼️ **GALERI WEB** | `/images/client/sukajaya/yoghurt-stick-mat-pochi.webp` | Kemasan stick yoghurt Mat Pochi produksi Barokah Freshmilk Lembang bertanda Halal dan izin resmi. |
+| 03 | `Screenshot 2026-10-01 122758.png` | 362.0 KB | 568x392 | ⭐ **HERO WEB** | `/images/client/sukajaya/hero-toko-barokah-susu-murni.webp` | Tampak depan kios dan sentra pengolahan Barokah milik Pa Emin: spanduk Susu Sapi Segar, Yoghurt, dan Tahu Susu Barokah di Sukajaya. |
+| 04 | `Screenshot 2026-10-01 122836.png` | 185.2 KB | 298x302 | ⭐ **HERO WEB** | `/images/client/sukajaya/hero-tahu-susu-barokah.webp` | Kemasan Tahu Susu Barokah khas Sukajaya Citespong lengkap dengan label Halal dan NIB resmi. |
+
+---
+
+### 📁 Folder: `20261001/tahu susu-20261001T102221Z-1-001/tahu susu` (6 Berkas | 1 Hero, 5 Galeri)
+
+| No | Nama Berkas | Ukuran | Resolusi | Status Keputusan | Jalur Aset Web (WebP) | Alasan Keputusan Kurasi |
+| :-: | :--- | :-: | :-: | :--- | :--- | :--- |
+| 01 | `WhatsApp Image 2026-09-30 at 12.07.13.jpeg` | 59.8 KB | 640x480 | 🖼️ **GALERI WEB** | `/images/client/wangunsari/tahu-susu-segar.webp` | Dokumentasi kebersihan dapur produksi dan wadah stainless perendaman tahu susu. |
+| 02 | `WhatsApp Image 2026-09-30 at 12.07.14 (1).jpeg` | 252.0 KB | 1200x1600 | ⭐ **HERO WEB** | `/images/client/wangunsari/tahu-susu-agus-kemasan-10pcs.webp` | Tahu Susu Lembang Special cap Tahu Agus kemasan asli isi 10 pcs siap jual di atas nampan stainless steel. Menampilkan keaslian produk UMKM binaan Wangunsari. |
+| 03 | `WhatsApp Image 2026-09-30 at 12.07.14.jpeg` | 100.2 KB | 900x1600 | 🖼️ **GALERI WEB** | `/images/client/wangunsari/tahu-susu-proses-kemas.webp` | Proses pengemasan higienis tahu susu ke dalam kantong plastik berlabel resmi Tahu Agus. |
+| 04 | `WhatsApp Image 2026-09-30 at 12.07.15 (1).jpeg` | 118.7 KB | 1200x1600 | 🖼️ **GALERI WEB** | `/images/client/wangunsari/tahu-susu-nampan-produksi.webp` | Tumpukan kemasan tahu susu kuning segar tersusun rapi di area dapur produksi, siap dikirim ke konsumen. |
+| 05 | `WhatsApp Image 2026-09-30 at 12.07.15.jpeg` | 266.9 KB | 1200x1600 | 🖼️ **GALERI WEB** | `/images/client/wangunsari/tahu-susu-cetakan-potong.webp` | Balok-balok tahu susu segar berwarna kuning alami setelah proses pencetakan dan perendaman bumbu rempah. |
+| 06 | `WhatsApp Image 2026-09-30 at 13.07.55.jpeg` | 116.2 KB | 720x1600 | 🖼️ **GALERI WEB** | `/images/client/wangunsari/tahu-susu-goreng-panas.webp` | Tahu susu siap santap bertekstur lembut di dalam dan garing gurih di luar. |
+
+---
 
 ### 📁 Folder: `Abah/Foto` (27 Berkas | 1 Hero, 6 Galeri)
 

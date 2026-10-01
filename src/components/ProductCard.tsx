@@ -3,12 +3,16 @@ import { Product } from '../types';
 import { useApp } from '../context/AppContext';
 import { Star, MapPin, ShoppingBag, Eye, ShieldCheck, Sparkles, Phone } from 'lucide-react';
 import { formatWhatsAppUrl } from '../utils/whatsapp';
+import { UserAvatar } from './UserAvatar';
 
 interface ProductCardProps {
   product: Product;
 }
 
-export const formatRupiah = (number: number) => {
+export const formatRupiah = (number?: number | null) => {
+  if (typeof number !== 'number' || isNaN(number)) {
+    return 'Rp 0';
+  }
   return new Intl.NumberFormat('id-ID', {
     style: 'currency',
     currency: 'IDR',
@@ -119,11 +123,11 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
 
         {/* Seller Info & CP Contact */}
         <div className="flex items-center gap-2 pt-2 border-t border-stone-100">
-          <img
+          <UserAvatar
             src={product.sellerAvatar}
             alt={product.sellerName}
-            className="w-7 h-7 rounded-full object-cover border border-emerald-600 shrink-0"
-            referrerPolicy="no-referrer"
+            sizeClassName="w-7 h-7"
+            className="border border-emerald-600 shrink-0"
           />
           <div className="flex-1 min-w-0">
             <p className="text-[11px] font-bold text-stone-800 truncate flex items-center gap-1">
@@ -137,22 +141,28 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
         </div>
 
         {/* Price & Actions */}
-        <div className="pt-2 flex items-center justify-between gap-2 border-t border-stone-100/60">
-          <div className="min-w-0">
+        <div className="pt-3 border-t border-stone-100 space-y-2.5">
+          {/* Price & Unit Display (Dedicated Full-Width Line, Never Truncated) */}
+          <div className="flex flex-col">
             {product.originalPrice && (
-              <span className="text-[10px] sm:text-[11px] text-stone-400 line-through mr-1 block truncate">
+              <span className="text-[10px] sm:text-[11px] text-stone-400 line-through">
                 {formatRupiah(product.originalPrice)}
               </span>
             )}
-            <div className="flex items-baseline gap-1">
-              <span className="text-base sm:text-lg font-extrabold text-emerald-800 truncate">
+            <div className="flex items-baseline gap-1.5 flex-wrap">
+              <span className="text-lg sm:text-xl font-extrabold text-emerald-800 tracking-tight whitespace-nowrap">
                 {formatRupiah(product.price)}
               </span>
-              <span className="text-[10px] sm:text-[11px] font-medium text-stone-500 shrink-0">{product.unit}</span>
+              {product.unit && (
+                <span className="text-[11px] sm:text-xs font-semibold text-stone-500 whitespace-nowrap">
+                  {product.unit}
+                </span>
+              )}
             </div>
           </div>
 
-          <div className="flex items-center gap-1.5 shrink-0">
+          {/* Action Buttons Row */}
+          <div className="flex items-center gap-2">
             {product.sellerPhone && (
               <button
                 type="button"
@@ -163,16 +173,16 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
                   const url = formatWhatsAppUrl(targetPhone, text);
                   window.open(url, '_blank');
                 }}
-                className="px-2.5 py-2 rounded-xl bg-emerald-700 hover:bg-emerald-600 text-white font-bold text-xs shadow-xs transition-all hover:scale-105 flex items-center gap-1 cursor-pointer"
-                title={`Chat WhatsApp langsung dengan Admin Produk / CP (${product.sellerName})`}
+                className="flex-1 py-2 px-3 rounded-xl bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-xs shadow-xs transition-all hover:scale-[1.02] flex items-center justify-center gap-1.5 cursor-pointer"
+                title={`Chat WhatsApp langsung dengan ${product.sellerName}`}
               >
                 <Phone className="w-3.5 h-3.5" />
-                <span className="text-[11px] font-bold">Chat CP</span>
+                <span>Chat WA</span>
               </button>
             )}
             <button
               onClick={() => navigateTo('product-detail', product.id)}
-              className="px-2.5 sm:px-3 py-2 rounded-xl bg-stone-900 hover:bg-emerald-950 text-amber-300 font-bold text-xs shadow-xs transition-all hover:scale-105 flex items-center gap-1 cursor-pointer"
+              className={`${product.sellerPhone ? 'px-3.5' : 'w-full'} py-2 rounded-xl bg-stone-900 hover:bg-stone-800 text-amber-300 font-bold text-xs shadow-xs transition-all hover:scale-[1.02] flex items-center justify-center cursor-pointer`}
             >
               <span>Detail</span>
             </button>

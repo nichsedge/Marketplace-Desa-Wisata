@@ -12,50 +12,37 @@ Platform pariwisata terpadu dan marketplace resmi untuk **Desa Wisata di Kawasan
 > **Konteks Proyek & Kolaborasi Nyata:**  
 > Dikembangkan sebagai karya Tugas Akhir / Skripsi program studi **Desain Komunikasi Visual (DKV)** dalam perancangan identitas visual, kampanye digital, dan media informasi interaktif desa wisata, berkolaborasi dengan jajaran **Pemerintah Desa & Pengurus Pokdarwis** di kawasan Lembang.
 
-## 🏛️ Jaringan 8 Desa Wisata Kawasan Lembang
+## 🏛️ Jaringan Desa Wisata Kawasan Lembang
 
-1. **Desa Wisata Suntenjaya (1.290 mdpl):** Minuman & Komoditas (Kopi Arabika/Robusta premium kantongan, Kadaplak, Pasir Angling). (Admin: *Kang Asep Suhendar*)
-2. **Desa Wisata Cibodas (1.250 mdpl):** Sembako & Penginapan Lokal (Sayuran organik segar, susu sapi murni harian, homestay & sewa rumah warga). (Admin: *Kang Dadang Herdiana*)
-3. **Desa Wisata Cikole (1.400 mdpl):** Wisata Alam (Paket camping, sewa tenda, tiket wahana, sewa offroad pinus). (Admin: *Kang Dadan Ridwan*)
-4. **Desa Wisata Jayagiri (1.350 mdpl):** Tanaman Hias (Tanaman hias, sukulen, media tanam, dan pot). (Admin: *Teh Eni Rohaeni*)
-5. **Desa Wisata Wangunsari (1.200 mdpl):** Kuliner (Tahu susu, bolu, camilan kering, kerajinan tangan). (Admin: *Kang Sandi Permana*)
-6. **Desa Wisata Cikahuripan (1.280 mdpl):** Buah & Herba serta Wisata Alam (Lemon segar, stroberi, herbal alami, paket camping & offroad). (Admin: *Kang Cecep Mulyana*)
-7. **Desa Wisata Gudangkahuripan (1.220 mdpl):** Kuliner (Tahu susu, bolu, camilan kering, kerajinan tangan). (Admin: *Kang Agus Hidayat*)
-8. **Desa Wisata Sukajaya (1.260 mdpl):** Olahan Susu Kemasan (Yoghurt, keju lokal, dan mentega buatan rumahan). (Admin: *Ibu Siti Maryam*)
+Saat ini mencakup 6 Desa Wisata aktif (Desa Wisata Cibodas dan Cikahuripan disembunyikan sementara menunggu update data lanjutan):
+1. **Desa Wisata Suntenjaya (1.290 mdpl):** Minuman & Komoditas (Kopi Arabika premium single origin lereng Palasari, Situs Megalitikum Batu Loceng). (Admin: *Kang Asep Suhendar*)
+2. **Desa Wisata Cikole (1.400 mdpl):** Wisata Alam (Paket camping kanopi pinus, offroad rimba Sukawana Land Rover Abah). (Admin: *Kang Dadan Ridwan*)
+3. **Desa Wisata Jayagiri (1.350 mdpl):** Kopi Spesialti (Maguru Kopi Pa Maliki lereng Jayagiri). (Admin: *Teh Eni Rohaeni*)
+4. **Desa Wisata Wangunsari (1.200 mdpl):** Kuliner Tradisional (Tahu Susu lembut Rp 5.000/kemasan 10 pcs, Kicimpring Singkong, Ranginang terasi Rp 65.000/kg, Peuyeum Ketan PO). (Admin: *Kang Sandi Permana*)
+5. **Desa Wisata Gudangkahuripan (1.220 mdpl):** Seni & Budaya (Paket Wisata Budaya Tari Jaipong & Gamelan Pa Mei Wisana). (Admin: *Kang Agus Hidayat*)
+6. **Desa Wisata Sukajaya (1.260 mdpl):** Olahan Susu Kemasan (Susu Sapi Murni Pasteurisasi, Tahu Susu, Yoghurt Yoghvit & Mat Pochi Toko Barokah Pa Emin). (Admin: *Ibu Siti Maryam*)
 
-## 🛒 8 Kelompok Produk & Komoditas Marketplace
+## 🗺️ Fitur Peta Interaktif Kantor Desa
 
-- 🥬 **Sembako (Desa Cibodas):** Sayuran organik segar dan susu sapi murni harian.
-- 🪴 **Tanaman Hias (Desa Jayagiri):** Tanaman hias, sukulen, media tanam, dan pot.
-- ☕ **Minuman & Komoditas (Desa Suntenjaya):** Biji kopi Arabika/Robusta premium kantongan.
-- 🍋 **Buah & Herba (Desa Cikahuripan):** Lemon segar, stroberi, dan herbal alami.
-- 🍲 **Kuliner (Desa Wangunsari & Gudangkahuripan):** Tahu susu, bolu, camilan kering, dan kerajinan tangan (masing-masing desa terpisah).
-- 🥛 **Olahan Susu Kemasan (Desa Sukajaya):** Yoghurt, keju lokal, dan mentega buatan rumahan.
-- 🌲 **Wisata Alam (Desa Cikole & Cikahuripan):** Paket camping, sewa tenda, tiket wahana, dan sewa offroad.
-- 🏡 **Penginapan Lokal (Desa Cibodas):** Homestay dan puluhan rumah warga disewakan per kamar/rumah.
-
-## 🗺️ Fitur Peta Kantor Desa & Kontak Interaktif
-
-- **Dropdown Pemilih Desa:** Pengguna dapat memilih salah satu desa dan peta lokasi Kantor Desa Google Maps embed langsung tampil bersama alamat kantor dan kontak/CP resmi Admin Desa.
-- **Tersedia di Beranda dan Profil Desa:** Terintegrasi langsung untuk memudahkan pencarian titik lokasi kantor desa dan konsultasi ke Admin Desa.
+- **Dropdown Pemilih Desa:** Pengguna dapat memilih salah satu desa wisata dan peta lokasi Kantor Desa Google Maps embed langsung tampil secara presisi dengan rute Google Maps eksternal.
+- **Tersedia di Beranda dan Profil Desa:** Terintegrasi langsung untuk memudahkan pencarian titik lokasi kantor desa secara akurat.
 
 ## 🚀 Portal Admin Desa & Keamanan Sistem
 
-- 🎒 **Mode Pengunjung Bebas:** Pengunjung dapat langsung menjelajahi katalog 8 desa, mencari produk/layanan, menambah ke keranjang, dan order WhatsApp tanpa perlu login.
+- 🎒 **Mode Pengunjung Bebas:** Pengunjung dapat langsung menjelajahi katalog desa, mencari produk/layanan, menambah ke keranjang, dan order WhatsApp tanpa perlu login.
 - 🔐 **Portal Login Admin Desa (`/login`):**
   - **Daftar Kredensial Pengelola:**
     - **Super Admin Kawasan:** `admin.lembang` / `lembang2026`
     - **Desa Suntenjaya:** `pic.suntenjaya` / `suntenjaya123` (*Kang Asep Suhendar*)
-    - **Desa Cibodas:** `pic.cibodas` / `cibodas123` (*Kang Dadang Herdiana*)
     - **Desa Cikole:** `pic.cikole` / `cikole123` (*Kang Dadan Ridwan*)
     - **Desa Jayagiri:** `pic.jayagiri` / `jayagiri123` (*Teh Eni Rohaeni*)
     - **Desa Wangunsari:** `pic.wangunsari` / `wangunsari123` (*Kang Sandi Permana*)
-    - **Desa Cikahuripan:** `pic.cikahuripan` / `cikahuripan123` (*Kang Cecep Mulyana*)
     - **Desa Gudangkahuripan:** `pic.gudangkahuripan` / `gudang123` (*Kang Agus Hidayat*)
     - **Desa Sukajaya:** `pic.sukajaya` / `sukajaya123` (*Ibu Siti Maryam*)
+    - *(PIC Cibodas & Cikahuripan dinonaktifkan sementara)*
 
-## 📦 Aset Visual Lokal (Offline-Ready)
-Seluruh foto katalog produk, homestay, avatar Admin Desa, dan lanskap 8 desa telah diunduh dan tersimpan secara lokal di folder `public/images/`. Platform tidak bergantung pada koneksi gambar eksternal (Unsplash), sehingga aman dari risiko gambar hilang atau lambat saat demo dan presentasi.
+## 📦 Aset Visual Lokal & Avatar Standar WhatsApp
+Seluruh foto katalog produk, homestay, dan lanskap 7 desa aktif tersimpan secara lokal di folder `public/images/`. Untuk avatar profil Admin Desa, pembeli, ulasan, dan testimoni, sistem menerapkan avatar default *"no profile picture"* ala WhatsApp (`/images/default-avatar.svg` via komponen `<UserAvatar />`) yang bersih dan seragam, tanpa menggunakan foto wajah stok/dummy.
 
 ## 🛠️ Cara Menjalankan Aplikasi
 
