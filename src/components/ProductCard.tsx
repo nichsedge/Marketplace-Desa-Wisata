@@ -169,12 +169,13 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
                 onClick={(e) => {
                   e.stopPropagation();
                   const targetPhone = product.sellerPhone;
-                  const text = `Halo Admin / CP ${product.sellerName} (${product.villageName}), saya tertarik dengan produk "${product.title}" (${formatRupiah(product.price)} ${product.unit}). Apakah masih tersedia?`;
+                  const sellerDisplayName = product.sellerName.replace(/\s*\([^)]*\)$/, '') || product.sellerName;
+                  const text = `Halo Admin / CP ${sellerDisplayName} (${product.villageName}), saya tertarik dengan produk "${product.title}" (${formatRupiah(product.price)} ${product.unit}). Apakah masih tersedia?`;
                   const url = formatWhatsAppUrl(targetPhone, text);
                   window.open(url, '_blank');
                 }}
                 className="flex-1 py-2 px-3 rounded-xl bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-xs shadow-xs transition-all hover:scale-[1.02] flex items-center justify-center gap-1.5 cursor-pointer"
-                title={`Chat WhatsApp langsung dengan ${product.sellerName}`}
+                title={`Chat WhatsApp langsung dengan ${product.sellerName.replace(/\s*\([^)]*\)$/, '') || product.sellerName}`}
               >
                 <Phone className="w-3.5 h-3.5" />
                 <span>Chat WA</span>

@@ -172,8 +172,11 @@ export const ProductDetailView: React.FC = () => {
     setReviewAuthorName('');
   };
 
+  // Nama ringkas PIC / Admin produk (menghilangkan suffix kurung bisnis/desa bila ada agar tidak terjadi nested parentheses)
+  const sellerDisplayName = product.sellerName.replace(/\s*\([^)]*\)$/, '') || product.sellerName;
+
   const handleWhatsAppChat = () => {
-    const text = `Halo Admin ${product.villageName} (${product.sellerName}), saya ingin bertanya tentang "${product.title}" (${product.unit}).`;
+    const text = `Halo Admin ${product.villageName} (${sellerDisplayName}), saya ingin bertanya tentang "${product.title}" (${product.unit}).`;
     const targetPhone = product.sellerPhone || WHATSAPP_PHONE;
     const url = formatWhatsAppUrl(targetPhone, text);
     window.open(url, '_blank');
@@ -424,7 +427,7 @@ export const ProductDetailView: React.FC = () => {
               className="w-full py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-xl text-xs flex items-center justify-center gap-2 shadow-md transition-colors cursor-pointer"
             >
               <Phone className="w-4 h-4" />
-              <span>Chat WhatsApp Admin Produk / CP ({product.sellerName})</span>
+              <span>Chat WhatsApp Admin Produk / CP ({sellerDisplayName})</span>
             </button>
           </div>
 
@@ -694,12 +697,12 @@ export const ProductDetailView: React.FC = () => {
                 className="w-full py-2.5 bg-stone-100 hover:bg-stone-200 text-stone-700 font-semibold rounded-2xl text-xs transition-colors flex items-center justify-center gap-1.5 cursor-pointer"
               >
                 <Phone className="w-3.5 h-3.5 text-emerald-700" />
-                <span>Tanya / Chat Admin Produk (${product.sellerName})</span>
+                <span>Tanya / Chat Admin Produk ({sellerDisplayName})</span>
               </button>
             </div>
 
             <p className="text-[10px] text-stone-500 text-center font-medium">
-              ✨ Pemesanan langsung terhubung ke kontak CP resmi produk ({product.sellerName})
+              ✨ Pemesanan langsung terhubung ke kontak CP resmi produk ({sellerDisplayName})
             </p>
 
           </div>
