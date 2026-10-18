@@ -46,6 +46,15 @@ const POPULAR_SEARCH_TAGS_EN = [
   '🎭 Jaipong Dance Gudangkahuripan'
 ];
 
+const QUICK_VILLAGE_TAGS = [
+  { id: 'des-01', name: 'Suntenjaya', icon: '☕', highlight: 'Kopi & Budaya' },
+  { id: 'des-02', name: 'Cikole', icon: '🌲', highlight: 'Camping & Offroad' },
+  { id: 'des-03', name: 'Jayagiri', icon: '⛰️', highlight: 'Maguru Kopi' },
+  { id: 'des-04', name: 'Wangunsari', icon: '🍲', highlight: 'Tahu Susu & Kuliner' },
+  { id: 'des-05', name: 'Gudangkahuripan', icon: '🎭', highlight: 'Tari Jaipong' },
+  { id: 'des-06', name: 'Sukajaya', icon: '🥛', highlight: 'Susu Murni' },
+];
+
 export const Navbar: React.FC = () => {
   const { 
     page, 
@@ -124,6 +133,18 @@ export const Navbar: React.FC = () => {
     navigateTo('marketplace');
   };
 
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  // Monitor scroll position to apply crisp dynamic elevation
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 15);
+    };
+    handleScroll();
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
   const navItems: { label: string; route: PageRoute; icon: React.ReactNode }[] = [
     { label: t('nav.home'), route: 'home', icon: <Home className="w-4 h-4" /> },
     { label: t('nav.marketplace'), route: 'marketplace', icon: <Compass className="w-4 h-4" /> },
@@ -133,7 +154,13 @@ export const Navbar: React.FC = () => {
   ];
 
   return (
-    <header className="sticky top-0 z-40 bg-amber-50/95 backdrop-blur-md border-b border-stone-200/80 shadow-xs">
+    <header 
+      className={`sticky top-0 z-40 transition-all duration-200 ${
+        isScrolled 
+          ? 'bg-white border-b border-stone-200/90 shadow-sm' 
+          : 'bg-white/95 sm:bg-white border-b border-stone-200/60 shadow-none'
+      }`}
+    >
       <div className="w-full px-3 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-14 sm:h-16 md:h-20 gap-2 sm:gap-3">
           
@@ -328,28 +355,62 @@ export const Navbar: React.FC = () => {
 
       {/* Mobile Drawer Menu */}
       {mobileMenuOpen && (
-        <div className="lg:hidden border-t border-stone-200 bg-amber-50/95 px-4 pt-3 pb-6 space-y-3 animate-in fade-in slide-in-from-top-2 duration-150">
-          <div className="flex items-center gap-2">
-            <button
-              type="button"
-              onClick={() => {
-                setMobileMenuOpen(false);
-                setSearchModalOpen(true);
-              }}
-              className="flex-1 flex items-center justify-between px-4 py-3 bg-white border border-stone-300 rounded-2xl text-left shadow-xs focus-visible:ring-2 focus-visible:ring-emerald-700 cursor-pointer"
-            >
-              <div className="flex items-center gap-2.5 text-stone-500">
-                <Search className="w-4 h-4 text-emerald-800" />
-                <span className="text-sm font-medium">{searchQuery || t('nav.searchPlaceholder')}</span>
+        <div className="lg:hidden border-t border-stone-200 bg-white px-4 pt-3.5 pb-6 space-y-3.5 shadow-lg animate-in fade-in slide-in-from-top-2 duration-150">
+          {/* Full-width Sleek Search Box Trigger */}
+          <button
+            type="button"
+            onClick={() => {
+              setMobileMenuOpen(false);
+              setSearchModalOpen(true);
+            }}
+            className="w-full flex items-center justify-between px-3.5 py-2.5 sm:px-4 sm:py-3 bg-white hover:bg-stone-50 active:scale-[0.99] border border-emerald-900/15 hover:border-emerald-700/50 rounded-2xl text-left shadow-xs transition-all cursor-pointer group focus-visible:ring-2 focus-visible:ring-emerald-700"
+          >
+            <div className="flex items-center gap-3 text-stone-600 min-w-0">
+              <div className="w-8 h-8 rounded-xl bg-emerald-50 text-emerald-800 flex items-center justify-center shrink-0 group-hover:bg-emerald-800 group-hover:text-amber-200 transition-colors">
+                <Search className="w-4 h-4 stroke-[2.2]" />
               </div>
-              <span className="text-xs font-bold text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded-md">
-                {language === 'en' ? 'Open' : 'Buka'}
-              </span>
-            </button>
+              <div className="min-w-0">
+                <span className="block text-[10px] font-extrabold uppercase tracking-wider text-emerald-800">
+                  {language === 'en' ? 'Quick Search' : 'Pencarian Cepat'}
+                </span>
+                <span className="block text-xs sm:text-sm font-semibold text-stone-800 truncate">
+                  {searchQuery || (language === 'en' ? 'Search coffee, stays, tours...' : 'Cari kopi, homestay, offroad...')}
+                </span>
+              </div>
+            </div>
+            <div className="flex items-center gap-1 px-2.5 py-1 rounded-xl bg-emerald-800 text-amber-200 text-xs font-bold shadow-2xs group-hover:bg-emerald-900 transition-all shrink-0">
+              <span>{language === 'en' ? 'Search' : 'Cari'}</span>
+              <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
+            </div>
+          </button>
 
-            {/* Mobile Language Switcher Segmented Control */}
+          {/* Nav Items Grid */}
+          <div className="grid grid-cols-2 gap-2">
+            {navItems.map((item) => (
+              <button
+                type="button"
+                key={item.route}
+                onClick={() => { navigateTo(item.route); setMobileMenuOpen(false); }}
+                className={`flex items-center gap-2 p-3 rounded-xl text-xs font-semibold focus-visible:ring-2 focus-visible:ring-emerald-700 cursor-pointer transition-all ${
+                  page === item.route
+                    ? 'bg-emerald-800 text-amber-200 shadow-sm'
+                    : 'bg-white/90 text-stone-700 hover:bg-white border border-stone-200/80 shadow-2xs'
+                }`}
+              >
+                {item.icon}
+                <span>{item.label}</span>
+              </button>
+            ))}
+          </div>
+
+          {/* Language Switcher Bar in Drawer */}
+          <div className="flex items-center justify-between pt-2 border-t border-stone-200/80 px-0.5">
+            <div className="flex items-center gap-1.5 text-xs font-semibold text-stone-600">
+              <Globe className="w-3.5 h-3.5 text-emerald-800" />
+              <span>{language === 'en' ? 'Display Language' : 'Bahasa Tampilan'}</span>
+            </div>
             <div 
-              className="flex items-center bg-stone-100 border border-stone-300 rounded-2xl p-1 shadow-xs shrink-0"
+              className="flex items-center bg-stone-100 border border-stone-200 rounded-full p-0.5 shadow-2xs shrink-0"
               role="group"
               aria-label="Pilih Bahasa / Language Selector"
             >
@@ -359,7 +420,7 @@ export const Navbar: React.FC = () => {
                   setLanguage('id');
                   setMobileMenuOpen(false);
                 }}
-                className={`flex items-center gap-1 px-3 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer min-h-[40px] focus-visible:ring-2 focus-visible:ring-emerald-700 ${
+                className={`flex items-center gap-1 px-3 py-1 rounded-full text-xs font-extrabold transition-all cursor-pointer min-h-[32px] ${
                   language === 'id'
                     ? 'bg-emerald-800 text-amber-200 shadow-xs'
                     : 'text-stone-600 hover:text-stone-900'
@@ -367,7 +428,6 @@ export const Navbar: React.FC = () => {
                 title="Bahasa Indonesia"
                 aria-label="Bahasa Indonesia"
               >
-                <Globe className={`w-3.5 h-3.5 ${language === 'id' ? 'text-amber-300' : 'text-stone-500'}`} />
                 <span>ID</span>
               </button>
               <button
@@ -376,7 +436,7 @@ export const Navbar: React.FC = () => {
                   setLanguage('en');
                   setMobileMenuOpen(false);
                 }}
-                className={`px-3 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer min-h-[40px] focus-visible:ring-2 focus-visible:ring-emerald-700 ${
+                className={`px-3 py-1 rounded-full text-xs font-extrabold transition-all cursor-pointer min-h-[32px] ${
                   language === 'en'
                     ? 'bg-emerald-800 text-amber-200 shadow-xs'
                     : 'text-stone-600 hover:text-stone-900'
@@ -387,24 +447,6 @@ export const Navbar: React.FC = () => {
                 <span>EN</span>
               </button>
             </div>
-          </div>
-
-          <div className="grid grid-cols-2 gap-2 pt-1">
-            {navItems.map((item) => (
-              <button
-                type="button"
-                key={item.route}
-                onClick={() => { navigateTo(item.route); setMobileMenuOpen(false); }}
-                className={`flex items-center gap-2 p-3 rounded-xl text-xs font-semibold focus-visible:ring-2 focus-visible:ring-emerald-700 cursor-pointer ${
-                  page === item.route
-                    ? 'bg-emerald-800 text-amber-200 shadow-sm'
-                    : 'bg-white/80 text-stone-700 border border-stone-200/80'
-                }`}
-              >
-                {item.icon}
-                <span>{item.label}</span>
-              </button>
-            ))}
           </div>
 
           <div className="pt-2 border-t border-stone-200 space-y-2">
@@ -442,19 +484,21 @@ export const Navbar: React.FC = () => {
           role="dialog"
           aria-modal="true"
           aria-label={language === 'en' ? 'Search Products & Villages' : 'Pencarian Produk dan Desa Wisata'}
-          className="fixed inset-0 z-50 bg-stone-950/60 backdrop-blur-sm flex items-start justify-center pt-12 sm:pt-20 px-4 animate-in fade-in duration-150"
+          className="fixed inset-0 z-50 bg-stone-950/70 sm:backdrop-blur-sm flex items-start justify-center p-0 sm:p-4 sm:pt-16 animate-in fade-in duration-200"
           onClick={() => setSearchModalOpen(false)}
         >
           <div 
-            className="w-full max-w-2xl bg-white rounded-3xl shadow-2xl border border-stone-200 overflow-hidden flex flex-col max-h-[85vh] animate-in zoom-in-95 duration-150"
+            className="w-full h-full sm:h-auto sm:max-h-[85vh] sm:max-w-2xl bg-white sm:rounded-3xl shadow-2xl border-0 sm:border sm:border-stone-200 flex flex-col overflow-hidden animate-in slide-in-from-bottom-2 sm:zoom-in-95 duration-200"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Search Input Bar */}
             <form 
               onSubmit={handleModalSubmit}
-              className="flex items-center gap-3 p-4 sm:p-5 border-b border-stone-200 bg-stone-50/50"
+              className="flex items-center gap-2.5 sm:gap-3 p-3.5 sm:p-5 border-b border-stone-200 bg-stone-50/70 shrink-0"
             >
-              <Search className="w-5 h-5 sm:w-6 sm:h-6 text-emerald-800 shrink-0" aria-hidden="true" />
+              <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-emerald-800/10 text-emerald-800 flex items-center justify-center shrink-0">
+                <Search className="w-4 h-4 sm:w-5 sm:h-5 text-emerald-800 stroke-[2.2]" aria-hidden="true" />
+              </div>
               <input
                 ref={searchInputRef}
                 type="text"
@@ -462,62 +506,162 @@ export const Navbar: React.FC = () => {
                 onChange={(e) => setModalSearchText(e.target.value)}
                 placeholder={
                   language === 'en'
-                    ? 'Search homestays, Lembang coffee, dairy, offroad, village profiles...'
-                    : 'Cari homestay, kopi Lembang, sayur, offroad, profil desa...'
+                    ? 'Search homestays, coffee, dairy, offroad...'
+                    : 'Cari homestay, kopi, sayur, offroad, desa...'
                 }
                 aria-label={language === 'en' ? 'Search query' : 'Kata kunci pencarian'}
-                className="w-full bg-transparent text-stone-900 text-base sm:text-lg font-semibold placeholder:text-stone-500 placeholder:font-normal focus:outline-none"
+                className="w-full bg-transparent text-stone-900 text-sm sm:text-base font-bold placeholder:text-stone-400 placeholder:font-normal focus:outline-none"
               />
               {modalSearchText && (
                 <button
                   type="button"
                   onClick={() => setModalSearchText('')}
                   aria-label={language === 'en' ? 'Clear search text' : 'Hapus kata kunci'}
-                  className="min-w-[36px] min-h-[36px] flex items-center justify-center p-1 text-stone-500 hover:text-stone-800 rounded-full hover:bg-stone-200 text-sm cursor-pointer"
+                  className="w-8 h-8 flex items-center justify-center rounded-full bg-stone-200/80 hover:bg-stone-300 text-stone-600 text-xs transition-colors shrink-0 cursor-pointer"
                 >
                   ✕
                 </button>
               )}
+              {/* Mobile Close Button */}
+              <button
+                type="button"
+                onClick={() => setSearchModalOpen(false)}
+                aria-label={language === 'en' ? 'Close search' : 'Tutup pencarian'}
+                className="sm:hidden flex items-center justify-center w-8 h-8 rounded-full bg-stone-200/80 text-stone-700 hover:bg-stone-300 transition-colors shrink-0 cursor-pointer"
+              >
+                <X className="w-4 h-4" />
+              </button>
+              {/* Desktop ESC Badge Button */}
               <button
                 type="button"
                 onClick={() => setSearchModalOpen(false)}
                 aria-label={language === 'en' ? 'Close search modal' : 'Tutup modal pencarian'}
-                className="px-3 py-1.5 text-xs font-bold text-stone-600 bg-stone-200/80 hover:bg-stone-300 rounded-lg transition-colors cursor-pointer"
+                className="hidden sm:inline-flex items-center gap-1 px-2.5 py-1.5 text-xs font-mono font-bold text-stone-600 bg-stone-200/80 hover:bg-stone-300 rounded-lg transition-colors cursor-pointer shrink-0"
               >
                 ESC
               </button>
             </form>
 
             {/* Modal Body */}
-            <div className="p-4 sm:p-6 overflow-y-auto space-y-5">
+            <div className="p-4 sm:p-6 overflow-y-auto space-y-5 flex-1">
               
-              {/* Quick Tags (Tampil bila input kosong atau selalu untuk navigasi instan) */}
-              <div>
-                <p className="text-[11px] font-bold text-stone-600 uppercase tracking-wider mb-2.5 flex items-center gap-1.5">
-                  <Sparkles className="w-3.5 h-3.5 text-amber-600" aria-hidden="true" />
-                  <span>
-                    {language === 'en'
-                      ? 'Quick & Popular Searches in Lembang Region:'
-                      : 'Pencarian Cepat & Populer di Kawasan Lembang:'}
-                  </span>
-                </p>
-                <div className="flex flex-wrap gap-2">
-                  {(language === 'en' ? POPULAR_SEARCH_TAGS_EN : POPULAR_SEARCH_TAGS_ID).map((tag) => (
-                    <button
-                      key={tag}
-                      type="button"
-                      onClick={() => handleTagClick(tag)}
-                      className="px-3.5 py-2 min-h-[36px] bg-stone-100 hover:bg-emerald-800 hover:text-amber-200 text-stone-800 text-xs font-semibold rounded-xl transition-all border border-stone-200/80 hover:scale-102 cursor-pointer focus-visible:ring-2 focus-visible:ring-emerald-700"
-                    >
-                      {tag}
-                    </button>
-                  ))}
+              {/* Quick Tags (Tampil bila input kosong) */}
+              {modalSearchText.trim().length === 0 && (
+                <div className="space-y-5">
+                  {/* Popular Tags */}
+                  <div>
+                    <p className="text-[11px] font-bold text-stone-600 uppercase tracking-wider mb-2.5 flex items-center gap-1.5">
+                      <Sparkles className="w-3.5 h-3.5 text-amber-600" aria-hidden="true" />
+                      <span>
+                        {language === 'en'
+                          ? 'Popular Searches in Lembang Region:'
+                          : 'Pencarian Populer di Kawasan Lembang:'}
+                      </span>
+                    </p>
+                    <div className="flex flex-wrap gap-2">
+                      {(language === 'en' ? POPULAR_SEARCH_TAGS_EN : POPULAR_SEARCH_TAGS_ID).map((tag) => (
+                        <button
+                          key={tag}
+                          type="button"
+                          onClick={() => handleTagClick(tag)}
+                          className="px-3 py-2 min-h-[36px] bg-stone-100 hover:bg-emerald-800 hover:text-amber-200 text-stone-800 text-xs font-semibold rounded-xl transition-all border border-stone-200/80 hover:scale-[1.02] cursor-pointer focus-visible:ring-2 focus-visible:ring-emerald-700"
+                        >
+                          {tag}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* 1-Tap Village Filter Chips */}
+                  <div>
+                    <p className="text-[11px] font-bold text-stone-600 uppercase tracking-wider mb-2.5 flex items-center gap-1.5">
+                      <MapPin className="w-3.5 h-3.5 text-emerald-700" aria-hidden="true" />
+                      <span>
+                        {language === 'en' ? 'Explore by Village:' : 'Pencarian Cepat per Desa Wisata:'}
+                      </span>
+                    </p>
+                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                      {QUICK_VILLAGE_TAGS.map((v) => (
+                        <button
+                          key={v.id}
+                          type="button"
+                          onClick={() => {
+                            recordSearch(v.name);
+                            setVillageFilter(v.id);
+                            setCategoryFilter('all');
+                            setSearchQuery('');
+                            setSearchModalOpen(false);
+                            navigateTo('marketplace');
+                          }}
+                          className="flex items-center gap-2 p-2.5 rounded-xl bg-stone-50 hover:bg-emerald-50/70 border border-stone-200/80 hover:border-emerald-700/50 text-left transition-all cursor-pointer group"
+                        >
+                          <span className="text-base shrink-0">{v.icon}</span>
+                          <div className="min-w-0">
+                            <span className="block text-xs font-bold text-stone-800 group-hover:text-emerald-800 truncate">
+                              {v.name}
+                            </span>
+                            <span className="block text-[10px] text-stone-500 truncate">
+                              {v.highlight}
+                            </span>
+                          </div>
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Top Curated Recommendations */}
+                  {Array.isArray(products) && products.length > 0 && (
+                    <div className="pt-2 border-t border-stone-100">
+                      <p className="text-[11px] font-bold text-stone-600 uppercase tracking-wider mb-2.5">
+                        {language === 'en' ? 'Featured Village Highlights:' : 'Rekomendasi Unggulan Hari Ini:'}
+                      </p>
+                      <div className="space-y-2">
+                        {products.slice(0, 3).map((item) => {
+                          const locItem = getLocalizedProduct(item, language);
+                          const villageDisplay = language === 'en' ? item.villageName.replace('Desa Wisata ', 'Village ') : item.villageName;
+                          return (
+                            <button
+                              type="button"
+                              key={item.id}
+                              onClick={() => {
+                                setSearchModalOpen(false);
+                                navigateTo('product-detail', item.id);
+                              }}
+                              className="w-full text-left flex items-center gap-3 p-2.5 rounded-2xl border border-stone-200/70 hover:border-emerald-700/50 hover:bg-emerald-50/40 cursor-pointer transition-all group"
+                            >
+                              <img
+                                src={item.image}
+                                alt={locItem.title}
+                                loading="lazy"
+                                decoding="async"
+                                className="w-12 h-12 rounded-xl object-cover border border-stone-200 group-hover:scale-105 transition-transform shrink-0"
+                              />
+                              <div className="flex-1 min-w-0">
+                                <h4 className="text-xs sm:text-sm font-bold text-stone-900 group-hover:text-emerald-800 transition-colors truncate">
+                                  {locItem.title}
+                                </h4>
+                                <div className="flex items-center gap-2 mt-0.5">
+                                  <span className="text-[9px] sm:text-[10px] font-bold text-emerald-800 bg-emerald-100/70 px-1.5 py-0.2 rounded">
+                                    {villageDisplay}
+                                  </span>
+                                  <span className="text-xs font-bold text-stone-800">
+                                    Rp {item.price.toLocaleString('id-ID')}
+                                  </span>
+                                </div>
+                              </div>
+                              <ArrowRight className="w-4 h-4 text-stone-400 group-hover:text-emerald-800 group-hover:translate-x-0.5 transition-all shrink-0" />
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  )}
                 </div>
-              </div>
+              )}
 
               {/* Live Results Section */}
               {modalSearchText.trim().length > 0 && (
-                <div className="pt-2 border-t border-stone-100">
+                <div>
                   <p className="text-[11px] font-bold text-stone-600 uppercase tracking-wider mb-3">
                     {language === 'en'
                       ? 'Matching Products & Tourism Activities:'
@@ -568,12 +712,20 @@ export const Navbar: React.FC = () => {
                       })}
                     </div>
                   ) : (
-                    <div className="py-6 text-center text-stone-600 text-sm">
-                      {language === 'en' ? (
-                        <>No instant results found for "<strong>{modalSearchText}</strong>".</>
-                      ) : (
-                        <>Tidak ditemukan hasil instan untuk "<strong>{modalSearchText}</strong>".</>
-                      )}
+                    <div className="py-8 text-center space-y-2">
+                      <div className="w-12 h-12 rounded-full bg-stone-100 text-stone-400 flex items-center justify-center mx-auto">
+                        <Search className="w-6 h-6 stroke-[1.5]" />
+                      </div>
+                      <p className="text-stone-700 text-sm font-bold">
+                        {language === 'en'
+                          ? `No matches for "${modalSearchText}"`
+                          : `Tidak ditemukan hasil untuk "${modalSearchText}"`}
+                      </p>
+                      <p className="text-stone-500 text-xs max-w-xs mx-auto">
+                        {language === 'en'
+                          ? 'Try searching with general keywords like "coffee", "offroad", or select one of the villages.'
+                          : 'Coba gunakan kata kunci umum seperti "kopi", "offroad", "homestay", atau pilih salah satu desa di atas.'}
+                      </p>
                     </div>
                   )}
                 </div>
@@ -581,7 +733,7 @@ export const Navbar: React.FC = () => {
             </div>
 
             {/* Modal Footer */}
-            <div className="p-3.5 bg-stone-100 border-t border-stone-200 flex items-center justify-between">
+            <div className="p-3.5 bg-stone-50 border-t border-stone-200 flex items-center justify-between shrink-0">
               <span className="text-xs text-stone-500 font-medium hidden sm:inline">
                 {language === 'en' ? (
                   <>Press <kbd className="px-1.5 py-0.5 bg-white border border-stone-300 rounded text-[10px] font-mono font-bold">↵ Enter</kbd> to view full catalog</>
@@ -592,7 +744,7 @@ export const Navbar: React.FC = () => {
               <button
                 type="button"
                 onClick={() => handleModalSubmit()}
-                className="w-full sm:w-auto px-4 py-2 bg-emerald-800 hover:bg-emerald-900 text-amber-200 rounded-xl text-xs font-bold shadow-xs flex items-center justify-center gap-1.5 transition-all ml-auto"
+                className="w-full sm:w-auto px-4 py-2.5 bg-emerald-800 hover:bg-emerald-900 text-amber-200 rounded-xl text-xs font-bold shadow-xs flex items-center justify-center gap-1.5 transition-all ml-auto cursor-pointer active:scale-98"
               >
                 <span>{language === 'en' ? 'View All Results in Marketplace' : 'Lihat Seluruh Hasil di Marketplace'}</span>
                 <ArrowRight className="w-3.5 h-3.5" />

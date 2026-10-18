@@ -154,23 +154,26 @@ export const HomeView: React.FC = () => {
           {/* Interactive Search Box with Custom Dropdowns */}
           <form 
             onSubmit={handleHeroSearch}
-            className="bg-white/95 backdrop-blur-md p-2 sm:p-3 rounded-2xl sm:rounded-full shadow-2xl border border-stone-200 text-left max-w-4xl mx-auto flex flex-col md:flex-row items-stretch md:items-center gap-1.5 sm:gap-2 relative z-30 w-full"
+            className="bg-white/95 backdrop-blur-md p-2 sm:p-2.5 rounded-2xl sm:rounded-full shadow-2xl border border-stone-200/90 focus-within:border-emerald-700/80 focus-within:ring-4 focus-within:ring-emerald-700/15 transition-all text-left max-w-4xl mx-auto flex flex-col md:flex-row items-stretch md:items-center gap-1.5 sm:gap-2 relative z-30 w-full"
           >
             {/* Search Input */}
-            <div className="flex-1 relative flex items-center px-3 sm:px-4 py-2 border-b md:border-b-0 md:border-r border-stone-200">
-              <Search className="w-4 h-4 sm:w-5 sm:h-5 text-emerald-800 mr-2 sm:mr-2.5 shrink-0" />
+            <div className="flex-1 relative flex items-center px-3 sm:px-4 py-2 sm:py-1.5 bg-stone-50/70 sm:bg-transparent rounded-xl sm:rounded-none border-b sm:border-b-0 md:border-r border-stone-200/80 transition-colors focus-within:bg-white focus-within:ring-2 focus-within:ring-emerald-700/30 sm:focus-within:ring-0">
+              <div className="w-7 h-7 rounded-lg bg-emerald-100/70 text-emerald-800 flex items-center justify-center shrink-0 mr-2 sm:mr-2.5">
+                <Search className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-emerald-800 stroke-[2.2]" />
+              </div>
               <input
                 type="text"
                 value={heroSearch}
                 onChange={(e) => setHeroSearch(e.target.value)}
-                placeholder={t('hero.searchPlaceholder')}
-                className="w-full bg-transparent text-xs sm:text-sm text-stone-900 placeholder-stone-400 focus:outline-none font-medium"
+                placeholder={language === 'en' ? 'Search coffee, stays, offroad...' : 'Cari kopi, homestay, kuliner, offroad...'}
+                className="w-full bg-transparent text-xs sm:text-sm text-stone-900 placeholder-stone-400 focus:outline-none font-bold placeholder:font-normal"
               />
               {heroSearch && (
                 <button
                   type="button"
                   onClick={() => setHeroSearch('')}
-                  className="p-1 text-stone-400 hover:text-stone-700 text-xs rounded-full cursor-pointer"
+                  aria-label={language === 'en' ? 'Clear search' : 'Hapus kata kunci'}
+                  className="p-1 text-stone-400 hover:text-stone-700 hover:bg-stone-200/80 text-xs rounded-full cursor-pointer transition-colors shrink-0"
                 >
                   ✕
                 </button>
@@ -178,7 +181,7 @@ export const HomeView: React.FC = () => {
             </div>
 
             {/* Custom Village Dropdown */}
-            <div ref={villageRef} className="relative flex-1 md:max-w-[260px] px-2 py-1.5 md:py-0 border-b md:border-b-0 md:border-r border-stone-200">
+            <div ref={villageRef} className="relative flex-1 md:max-w-[260px] px-2.5 py-2 sm:py-0 bg-stone-50/70 sm:bg-transparent rounded-xl sm:rounded-none border-b sm:border-b-0 md:border-r border-stone-200/80 transition-colors">
               <button
                 type="button"
                 onClick={() => {
@@ -288,7 +291,7 @@ export const HomeView: React.FC = () => {
             </div>
 
             {/* Custom Category Dropdown */}
-            <div ref={categoryRef} className="relative flex-1 md:max-w-[220px] px-2 py-1.5 md:py-0 border-b md:border-b-0 md:border-r border-stone-200">
+            <div ref={categoryRef} className="relative flex-1 md:max-w-[220px] px-2.5 py-2 sm:py-0 bg-stone-50/70 sm:bg-transparent rounded-xl sm:rounded-none border-b sm:border-b-0 md:border-r border-stone-200/80 transition-colors">
               <button
                 type="button"
                 onClick={() => {
@@ -352,12 +355,12 @@ export const HomeView: React.FC = () => {
             </div>
 
             {/* Submit Button */}
-            <div className="px-1 py-1">
+            <div className="p-1 sm:p-0">
               <button
                 type="submit"
-                className="w-full md:w-auto px-6 py-3 bg-emerald-800 hover:bg-emerald-900 text-amber-200 font-bold rounded-xl sm:rounded-2xl md:rounded-full text-xs sm:text-sm shadow-md transition-all hover:scale-105 flex items-center justify-center gap-2 shrink-0 cursor-pointer"
+                className="w-full md:w-auto px-6 py-3 bg-emerald-800 hover:bg-emerald-900 active:scale-95 text-amber-200 font-extrabold rounded-xl sm:rounded-full text-xs sm:text-sm shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2 shrink-0 cursor-pointer group"
               >
-                <Search className="w-4 h-4" />
+                <Search className="w-4 h-4 text-amber-300 group-hover:scale-110 transition-transform" />
                 <span>{t('hero.searchBtn')}</span>
               </button>
             </div>
