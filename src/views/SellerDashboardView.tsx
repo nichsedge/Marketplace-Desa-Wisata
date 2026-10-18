@@ -46,7 +46,8 @@ import {
   MessageCircle,
   Activity,
   Play,
-  Video
+  Video,
+  Star
 } from 'lucide-react';
 
 export const SellerDashboardView: React.FC = () => {
@@ -109,8 +110,10 @@ export const SellerDashboardView: React.FC = () => {
   const [showPostWizard, setShowPostWizard] = useState(false);
   const [wizardStep, setWizardStep] = useState<'pick-media' | 'fill-detail'>('pick-media');
   
-  // Post Wizard Form State
-  const [selectedImage, setSelectedImage] = useState<string>(LEMBANG_GALLERY_PRESETS[0].url);
+  // Post Wizard Form State - Unified Media (Multiple Images + Video + Main Selection)
+  const [wizardImages, setWizardImages] = useState<string[]>([LEMBANG_GALLERY_PRESETS[0].url]);
+  const [wizardMainImage, setWizardMainImage] = useState<string>(LEMBANG_GALLERY_PRESETS[0].url);
+  const [wizardMediaTab, setWizardMediaTab] = useState<'upload' | 'gallery' | 'video'>('upload');
   const [postTitle, setPostTitle] = useState('');
   const [postDescription, setPostDescription] = useState('');
   const [postPrice, setPostPrice] = useState<number>(250000);
@@ -119,19 +122,31 @@ export const SellerDashboardView: React.FC = () => {
   const [postCategory, setPostCategory] = useState<ProductCategory>('homestay');
   const [postVideoUrl, setPostVideoUrl] = useState('');
   
-  // Editing existing product state
+  // Editing existing product state - Unified Media (Multiple Images + Video + Main Selection)
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
-  const [editImageTab, setEditImageTab] = useState<'gallery' | 'upload' | 'url'>('gallery');
+  const [editImageTab, setEditImageTab] = useState<'upload' | 'gallery' | 'video' | 'url'>('upload');
   const [editHighlightsText, setEditHighlightsText] = useState<string>('');
+  const [editImageUrlInput, setEditImageUrlInput] = useState<string>('');
 
   const fileInputRef = useRef<HTMLInputElement>(null);
   const editFileInputRef = useRef<HTMLInputElement>(null);
 
-  // Synchronize highlights text whenever editingProduct opens
+  // Synchronize highlights text & gallery whenever editingProduct opens
   const openEditProductModal = (product: Product) => {
-    setEditingProduct({ ...product });
+    const rawGallery = Array.from(new Set([
+      product.image,
+      ...(product.gallery || [])
+    ])).filter(Boolean);
+
+    setEditingProduct({
+      ...product,
+      image: product.image || rawGallery[0] || LEMBANG_GALLERY_PRESETS[0].url,
+      gallery: rawGallery.length > 0 ? rawGallery : [product.image || LEMBANG_GALLERY_PRESETS[0].url],
+      videoUrl: product.videoUrl || ''
+    });
     setEditHighlightsText(product.highlights?.join(', ') || '');
-    setEditImageTab('gallery');
+    setEditImageUrlInput('');
+    setEditImageTab('upload');
   };
 
   // Close modals on Escape key & manage body scroll
@@ -156,49 +171,150 @@ export const SellerDashboardView: React.FC = () => {
     };
   }, [showPostWizard, editingProduct]);
 
-  // Handle local image file upload for new post (Base64)
-  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        if (typeof reader.result === 'string') {
-          setSelectedImage(reader.result);
-          showToast('Foto aktual berhasil dimuat!', 'success');
+  // Handle local image file upload for new post (Base64) - Supports Multiple Files
+  const handleWizardMultiUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (files && files.length > 0) {
+      const fileList = Array.from(files);
+      const readPromises = fileList.map((file: File) => new Promise<string>((resolve) => {
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          if (typeof reader.result === 'string') resolve(reader.result);
+        };
+        reader.readAsDataURL(file);
+      }));
+
+      Promise.all(readPromises).then((newImages) => {
+        const validImages = newImages.filter(Boolean);
+        if (validImages.length > 0) {
+          setWizardImages(prev => {
+            const combined = [...prev, ...validImages];
+            return combined;
+          });
+          if (!wizardMainImage || !wizardImages.includes(wizardMainImage)) {
+            setWizardMainImage(validImages[0]);
+          }
+          showToast(`${validImages.length} foto berhasil ditambahkan!`, 'success');
         }
-      };
-      reader.readAsDataURL(file);
+      });
+      // reset input value so re-selecting same file triggers onChange
+      e.target.value = '';
     }
   };
 
-  // Handle local image file upload for editing product (Base64)
-  const handleEditFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file && editingProduct) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        if (typeof reader.result === 'string') {
-          const newImg = reader.result;
+  const handleWizardTogglePreset = (url: string) => {
+    if (wizardImages.includes(url)) {
+      if (wizardImages.length === 1) {
+        showToast('Minimal harus ada 1 foto untuk postingan.', 'info');
+        return;
+      }
+      const updated = wizardImages.filter(img => img !== url);
+      setWizardImages(updated);
+      if (wizardMainImage === url) {
+        setWizardMainImage(updated[0]);
+      }
+    } else {
+      setWizardImages(prev => [...prev, url]);
+      if (!wizardMainImage) setWizardMainImage(url);
+      showToast('Foto ditambahkan ke koleksi!', 'info');
+    }
+  };
+
+  const handleWizardRemoveImage = (indexToRemove: number) => {
+    if (wizardImages.length <= 1) {
+      showToast('Minimal harus ada 1 foto untuk postingan.', 'info');
+      return;
+    }
+    const targetUrl = wizardImages[indexToRemove];
+    const updated = wizardImages.filter((_, idx) => idx !== indexToRemove);
+    setWizardImages(updated);
+    if (wizardMainImage === targetUrl) {
+      setWizardMainImage(updated[0]);
+    }
+  };
+
+  // Handle local image file upload for editing product (Base64) - Supports Multiple Files
+  const handleEditMultiUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (files && files.length > 0 && editingProduct) {
+      const fileList = Array.from(files);
+      const readPromises = fileList.map((file: File) => new Promise<string>((resolve) => {
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          if (typeof reader.result === 'string') resolve(reader.result);
+        };
+        reader.readAsDataURL(file);
+      }));
+
+      Promise.all(readPromises).then((newImages) => {
+        const validImages = newImages.filter(Boolean);
+        if (validImages.length > 0) {
+          const currentGal = editingProduct.gallery || [editingProduct.image];
+          const updatedGal = [...currentGal, ...validImages];
           setEditingProduct({
             ...editingProduct,
-            image: newImg,
-            gallery: [newImg, ...(editingProduct.gallery?.filter(g => g !== newImg) || [])]
+            gallery: updatedGal
           });
-          showToast('Foto aktual produk berhasil diperbarui!', 'success');
+          showToast(`${validImages.length} foto berhasil ditambahkan ke galeri!`, 'success');
         }
-      };
-      reader.readAsDataURL(file);
+      });
+      e.target.value = '';
     }
   };
 
-  const handleEditSelectGalleryPreset = (imgUrl: string) => {
+  const handleEditTogglePreset = (url: string) => {
     if (!editingProduct) return;
+    const currentGal = editingProduct.gallery || [editingProduct.image];
+    if (currentGal.includes(url)) {
+      if (currentGal.length <= 1) {
+        showToast('Minimal harus ada 1 foto dalam galeri.', 'info');
+        return;
+      }
+      const updated = currentGal.filter(img => img !== url);
+      setEditingProduct({
+        ...editingProduct,
+        image: editingProduct.image === url ? updated[0] : editingProduct.image,
+        gallery: updated
+      });
+    } else {
+      setEditingProduct({
+        ...editingProduct,
+        gallery: [...currentGal, url]
+      });
+      showToast('Foto ditambahkan ke galeri produk!', 'info');
+    }
+  };
+
+  const handleEditRemoveImage = (imgUrl: string) => {
+    if (!editingProduct) return;
+    const currentGal = editingProduct.gallery || [editingProduct.image];
+    if (currentGal.length <= 1) {
+      showToast('Minimal harus ada 1 foto dalam galeri produk.', 'info');
+      return;
+    }
+    const updated = currentGal.filter(img => img !== imgUrl);
     setEditingProduct({
       ...editingProduct,
-      image: imgUrl,
-      gallery: [imgUrl, ...(editingProduct.gallery?.filter(g => g !== imgUrl) || [])]
+      image: editingProduct.image === imgUrl ? updated[0] : editingProduct.image,
+      gallery: updated
     });
-    showToast('Foto dari galeri Lembang dipilih!', 'info');
+    showToast('Foto dihapus dari galeri.', 'info');
+  };
+
+  const handleAddImageUrlToEditGallery = () => {
+    if (!editImageUrlInput.trim() || !editingProduct) return;
+    const url = editImageUrlInput.trim();
+    const currentGal = editingProduct.gallery || [editingProduct.image];
+    if (currentGal.includes(url)) {
+      showToast('URL foto sudah ada di galeri.', 'info');
+      return;
+    }
+    setEditingProduct({
+      ...editingProduct,
+      gallery: [...currentGal, url]
+    });
+    setEditImageUrlInput('');
+    showToast('Foto URL berhasil ditambahkan ke galeri!', 'success');
   };
 
   // Submit new post from wizard
@@ -208,6 +324,11 @@ export const SellerDashboardView: React.FC = () => {
       showToast('Mohon masukkan judul postingan.', 'error');
       return;
     }
+
+    const safeGallery = wizardImages.length > 0 ? wizardImages : [LEMBANG_GALLERY_PRESETS[0].url];
+    const safeMainImage = wizardMainImage && safeGallery.includes(wizardMainImage)
+      ? wizardMainImage
+      : safeGallery[0];
 
     addProduct({
       title: postTitle,
@@ -221,8 +342,8 @@ export const SellerDashboardView: React.FC = () => {
       sellerBadge: 'Admin Desa Terverifikasi',
       sellerAvatar: currentUser?.avatar || '/images/default-avatar.svg',
       sellerPhone: currentUser?.phone || currentVillage.contactPhone,
-      image: selectedImage,
-      gallery: [selectedImage],
+      image: safeMainImage,
+      gallery: safeGallery,
       videoUrl: postVideoUrl.trim() || undefined,
       description: postDescription || 'Konten dan penawaran aktual dari Desa Wisata.',
       highlights: ['Foto Asli Lokasi', 'Dikelola Langsung Admin Desa', 'Kualitas Terjamin'],
@@ -237,6 +358,9 @@ export const SellerDashboardView: React.FC = () => {
 
   const resetWizard = () => {
     setWizardStep('pick-media');
+    setWizardImages([LEMBANG_GALLERY_PRESETS[0].url]);
+    setWizardMainImage(LEMBANG_GALLERY_PRESETS[0].url);
+    setWizardMediaTab('upload');
     setPostTitle('');
     setPostDescription('');
     setPostPrice(250000);
@@ -271,16 +395,24 @@ export const SellerDashboardView: React.FC = () => {
       .map(h => h.trim())
       .filter(h => h.length > 0);
 
+    const safeGallery = editingProduct.gallery && editingProduct.gallery.length > 0
+      ? editingProduct.gallery
+      : [editingProduct.image];
+
+    const safeMainImage = safeGallery.includes(editingProduct.image)
+      ? editingProduct.image
+      : safeGallery[0];
+
     const updated: Product = {
       ...editingProduct,
+      image: safeMainImage,
+      gallery: safeGallery,
+      videoUrl: editingProduct.videoUrl?.trim() || undefined,
       highlights: parsedHighlights.length > 0 ? parsedHighlights : editingProduct.highlights,
-      gallery: editingProduct.image 
-        ? [editingProduct.image, ...(editingProduct.gallery?.filter(g => g !== editingProduct.image) || [])]
-        : editingProduct.gallery
     };
 
     updateProduct(updated);
-    showToast(`Data produk "${updated.title}" dan foto berhasil diperbarui!`, 'success');
+    showToast(`Data produk "${updated.title}" dan koleksi media berhasil diperbarui!`, 'success');
     setEditingProduct(null);
   };
 
@@ -1061,10 +1193,10 @@ export const SellerDashboardView: React.FC = () => {
               
               <div className="text-center px-2">
                 <span className="text-[10px] uppercase font-bold tracking-widest text-emerald-200 block">
-                  {wizardStep === 'pick-media' ? 'Langkah 1: PILIH MEDIA' : 'Langkah 2: ISI DETAIL'}
+                  {wizardStep === 'pick-media' ? 'Langkah 1: KELOLA MEDIA' : 'Langkah 2: ISI DETAIL'}
                 </span>
                 <h3 className="font-extrabold text-sm sm:text-base tracking-wide uppercase">
-                  {wizardStep === 'pick-media' ? 'Upload / Pilih Foto' : 'Detail Postingan'}
+                  {wizardStep === 'pick-media' ? 'Koleksi Media (Foto & Video)' : 'Detail Postingan'}
                 </h3>
               </div>
 
@@ -1079,73 +1211,254 @@ export const SellerDashboardView: React.FC = () => {
               </button>
             </div>
 
-            {/* STEP 1: PILIH MEDIA */}
+            {/* STEP 1: PILIH & KELOLA MEDIA TERPADU */}
             {wizardStep === 'pick-media' && (
               <div className="overflow-y-auto flex-1 p-5 sm:p-6 space-y-6 overscroll-contain">
                 
-                {/* Upload Camera / File Area */}
-                <div 
-                  onClick={() => fileInputRef.current?.click()}
-                  className="bg-sky-50 hover:bg-sky-100/70 border-2 border-dashed border-sky-300 rounded-3xl p-6 sm:p-8 text-center cursor-pointer transition-all flex flex-col items-center justify-center space-y-3 group"
-                >
-                  <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-sky-200/60 text-sky-700 flex items-center justify-center group-hover:scale-110 transition-transform">
-                    <Camera className="w-8 h-8 sm:w-10 sm:h-10" />
+                {/* 1. SELECTED MEDIA TRAY (Daftar Media Terpilih & Pemilihan Konten Utama) */}
+                <div className="space-y-3 bg-stone-50 p-4 rounded-2xl border border-stone-200">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <span className="text-xs font-black text-stone-900 uppercase tracking-wider block">
+                        Media Terpilih ({wizardImages.length} Foto{postVideoUrl ? ' + 1 Video' : ''})
+                      </span>
+                      <p className="text-[11px] text-stone-500">
+                        Klik <strong>"Jadikan Utama"</strong> untuk memilih foto yang tampil sebagai cover depan.
+                      </p>
+                    </div>
+                    <span className="text-[10px] bg-emerald-100 text-emerald-800 font-bold px-2.5 py-1 rounded-full border border-emerald-300">
+                      ✓ Siap Diposting
+                    </span>
                   </div>
-                  <div>
-                    <p className="text-sm font-extrabold text-stone-900">Ambil Foto / Upload dari Perangkat</p>
-                    <p className="text-xs text-stone-500 mt-0.5">Mendukung format JPG, PNG langsung dari lokasi destinasi</p>
+
+                  {/* Horizontal Scrollable Thumbnails Grid */}
+                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5 max-h-56 overflow-y-auto p-1">
+                    {wizardImages.map((imgUrl, idx) => {
+                      const isMain = wizardMainImage === imgUrl;
+                      return (
+                        <div
+                          key={idx}
+                          className={`relative rounded-xl overflow-hidden border-2 transition-all bg-stone-900 flex flex-col justify-between group ${
+                            isMain
+                              ? 'border-amber-400 ring-2 ring-amber-400/60 shadow-md'
+                              : 'border-stone-200 hover:border-emerald-600'
+                          }`}
+                        >
+                          <div className="relative h-24 w-full overflow-hidden">
+                            <img src={imgUrl} alt={`Foto ${idx + 1}`} className="w-full h-full object-cover" />
+                            {isMain && (
+                              <span className="absolute top-1.5 left-1.5 px-2 py-0.5 rounded-md bg-amber-400 text-stone-950 font-black text-[9px] uppercase tracking-wider shadow-sm flex items-center gap-1">
+                                <Sparkles className="w-2.5 h-2.5 text-stone-950" />
+                                <span>Cover Utama</span>
+                              </span>
+                            )}
+                            {wizardImages.length > 1 && (
+                              <button
+                                type="button"
+                                onClick={() => handleWizardRemoveImage(idx)}
+                                className="absolute top-1.5 right-1.5 w-6 h-6 rounded-full bg-stone-950/70 hover:bg-rose-600 text-white flex items-center justify-center text-xs transition-colors cursor-pointer"
+                                title="Hapus foto ini"
+                              >
+                                ✕
+                              </button>
+                            )}
+                          </div>
+
+                          <div className="p-1.5 bg-white border-t border-stone-100 flex items-center justify-between">
+                            <span className="text-[10px] text-stone-500 font-bold">#{idx + 1}</span>
+                            {!isMain ? (
+                              <button
+                                type="button"
+                                onClick={() => setWizardMainImage(imgUrl)}
+                                className="px-2 py-1 bg-stone-100 hover:bg-emerald-50 hover:text-emerald-800 text-stone-700 font-bold rounded-lg text-[10px] transition-colors cursor-pointer"
+                              >
+                                Jadikan Cover
+                              </button>
+                            ) : (
+                              <span className="text-[10px] text-amber-600 font-bold">★ Cover Aktif</span>
+                            )}
+                          </div>
+                        </div>
+                      );
+                    })}
+
+                    {/* Video Card if URL is provided */}
+                    {postVideoUrl && (
+                      <div className="relative rounded-xl overflow-hidden border-2 border-rose-400 bg-stone-900 flex flex-col justify-between p-2 text-white">
+                        <div className="flex items-center justify-between">
+                          <span className="px-1.5 py-0.5 rounded-md bg-rose-600 text-white font-extrabold text-[9px] uppercase tracking-wider flex items-center gap-1">
+                            <Play className="w-2.5 h-2.5 fill-white" />
+                            <span>Video</span>
+                          </span>
+                          <button
+                            type="button"
+                            onClick={() => setPostVideoUrl('')}
+                            className="w-5 h-5 rounded-full bg-white/20 hover:bg-rose-600 text-white flex items-center justify-center text-[10px] transition-colors"
+                            title="Hapus video"
+                          >
+                            ✕
+                          </button>
+                        </div>
+                        <div className="py-2 text-center">
+                          <Play className="w-6 h-6 fill-rose-500 text-rose-500 mx-auto" />
+                          <p className="text-[10px] font-mono text-stone-300 truncate max-w-[120px] mt-1 mx-auto">
+                            {postVideoUrl}
+                          </p>
+                        </div>
+                        <span className="text-[9px] text-emerald-300 font-semibold text-center">
+                          Tampil di galeri detail
+                        </span>
+                      </div>
+                    )}
                   </div>
-                  <input
-                    ref={fileInputRef}
-                    type="file"
-                    accept="image/*"
-                    onChange={handleFileUpload}
-                    className="hidden"
-                  />
                 </div>
 
-                {/* Selected Preview if any */}
-                {selectedImage && (
-                  <div className="space-y-2">
-                    <div className="flex items-center justify-between">
-                      <span className="text-xs font-bold text-stone-700">Foto Terpilih:</span>
-                      <span className="text-[10px] text-emerald-700 font-bold">Siap Digunakan ✓</span>
-                    </div>
-                    <div className="relative h-40 rounded-2xl overflow-hidden border-2 border-emerald-500 shadow-sm">
-                      <img src={selectedImage} alt="Preview" className="w-full h-full object-cover" />
-                    </div>
-                  </div>
-                )}
-
-                {/* Preset Galeri Foto Riil Lembang */}
+                {/* 2. MEDIA INPUT TABS (UPLOAD / GALERI / VIDEO) */}
                 <div className="space-y-3">
                   <div className="flex items-center justify-between">
                     <span className="text-xs font-extrabold text-stone-800 uppercase tracking-wider">
-                      GALERI FOTO AKTUAL DESA
+                      TAMBAH MEDIA BARU
                     </span>
-                    <span className="text-[11px] text-stone-500">Pilih dari koleksi riil</span>
+                    <span className="text-[10px] text-stone-500">Mendukung multi-foto & video</span>
                   </div>
 
-                  <div className="grid grid-cols-3 gap-2.5 max-h-48 overflow-y-auto pr-1">
-                    {LEMBANG_GALLERY_PRESETS.map((preset) => (
-                      <div
-                        key={preset.id}
-                        onClick={() => setSelectedImage(preset.url)}
-                        className={`relative h-20 rounded-xl overflow-hidden cursor-pointer border-2 transition-all ${
-                          selectedImage === preset.url
-                            ? 'border-emerald-600 ring-2 ring-emerald-400 scale-95'
-                            : 'border-stone-200 hover:border-stone-400'
-                        }`}
-                      >
-                        <img src={preset.url} alt={preset.title} className="w-full h-full object-cover" referrerPolicy="no-referrer" />
-                        {selectedImage === preset.url && (
-                          <div className="absolute inset-0 bg-emerald-900/40 flex items-center justify-center">
-                            <Check className="w-5 h-5 text-white stroke-[3]" />
-                          </div>
-                        )}
-                      </div>
-                    ))}
+                  <div className="flex bg-stone-100 p-1 rounded-2xl gap-1 border border-stone-200">
+                    <button
+                      type="button"
+                      onClick={() => setWizardMediaTab('upload')}
+                      className={`flex-1 py-2 text-xs font-bold rounded-xl transition-all cursor-pointer flex items-center justify-center gap-1.5 ${
+                        wizardMediaTab === 'upload' ? 'bg-white text-emerald-900 shadow-xs' : 'text-stone-600 hover:text-stone-900'
+                      }`}
+                    >
+                      <Camera className="w-3.5 h-3.5" />
+                      <span>Upload (Bisa Banyak)</span>
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setWizardMediaTab('gallery')}
+                      className={`flex-1 py-2 text-xs font-bold rounded-xl transition-all cursor-pointer flex items-center justify-center gap-1.5 ${
+                        wizardMediaTab === 'gallery' ? 'bg-white text-emerald-900 shadow-xs' : 'text-stone-600 hover:text-stone-900'
+                      }`}
+                    >
+                      <ImageIcon className="w-3.5 h-3.5" />
+                      <span>Galeri Lembang</span>
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setWizardMediaTab('video')}
+                      className={`flex-1 py-2 text-xs font-bold rounded-xl transition-all cursor-pointer flex items-center justify-center gap-1.5 ${
+                        wizardMediaTab === 'video' ? 'bg-rose-600 text-white shadow-xs' : 'text-stone-600 hover:text-stone-900'
+                      }`}
+                    >
+                      <Play className="w-3.5 h-3.5 fill-current" />
+                      <span>Link Video</span>
+                    </button>
                   </div>
+
+                  {/* Tab 1: Upload Multiple Files from Device */}
+                  {wizardMediaTab === 'upload' && (
+                    <div 
+                      onClick={() => fileInputRef.current?.click()}
+                      className="bg-sky-50 hover:bg-sky-100/70 border-2 border-dashed border-sky-300 rounded-3xl p-6 text-center cursor-pointer transition-all flex flex-col items-center justify-center space-y-2 group"
+                    >
+                      <div className="w-14 h-14 rounded-full bg-sky-200/60 text-sky-700 flex items-center justify-center group-hover:scale-110 transition-transform">
+                        <UploadCloud className="w-7 h-7" />
+                      </div>
+                      <div>
+                        <p className="text-xs sm:text-sm font-extrabold text-stone-900">
+                          Pilih 1 atau Beberapa Foto Sekaligus
+                        </p>
+                        <p className="text-[11px] text-stone-500 mt-0.5">
+                          Tahan tombol Ctrl / Shift atau seleksi banyak foto langsung dari galeri HP / komputer
+                        </p>
+                      </div>
+                      <input
+                        ref={fileInputRef}
+                        type="file"
+                        multiple
+                        accept="image/*"
+                        onChange={handleWizardMultiUpload}
+                        className="hidden"
+                      />
+                    </div>
+                  )}
+
+                  {/* Tab 2: Preset Galeri Riil Lembang */}
+                  {wizardMediaTab === 'gallery' && (
+                    <div className="space-y-2">
+                      <p className="text-[11px] text-stone-500">
+                        Klik pada foto untuk menambahkannya ke koleksi postingan:
+                      </p>
+                      <div className="grid grid-cols-3 gap-2 max-h-48 overflow-y-auto p-1 bg-stone-50 rounded-2xl border border-stone-200">
+                        {LEMBANG_GALLERY_PRESETS.map((preset) => {
+                          const isIncluded = wizardImages.includes(preset.url);
+                          const isMain = wizardMainImage === preset.url;
+                          return (
+                            <div
+                              key={preset.id}
+                              onClick={() => handleWizardTogglePreset(preset.url)}
+                              className={`relative h-20 rounded-xl overflow-hidden cursor-pointer border-2 transition-all group ${
+                                isMain
+                                  ? 'border-amber-400 ring-2 ring-amber-400'
+                                  : isIncluded
+                                  ? 'border-emerald-600 ring-2 ring-emerald-400'
+                                  : 'border-stone-200 hover:border-stone-400'
+                              }`}
+                            >
+                              <img src={preset.url} alt={preset.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform" />
+                              {isIncluded && (
+                                <div className="absolute top-1 right-1 bg-emerald-700 text-white rounded-full p-0.5 shadow-sm">
+                                  <Check className="w-3 h-3 stroke-[3]" />
+                                </div>
+                              )}
+                              {isMain && (
+                                <span className="absolute bottom-1 left-1 bg-amber-400 text-stone-950 text-[8px] font-black px-1.5 py-0.2 rounded shadow-xs uppercase">
+                                  Cover
+                                </span>
+                              )}
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Tab 3: Video URL Input */}
+                  {wizardMediaTab === 'video' && (
+                    <div className="p-4 bg-stone-50 rounded-2xl border border-stone-200 space-y-3">
+                      <div>
+                        <label className="block text-xs font-bold text-stone-800 mb-1">
+                          Tautan Video YouTube / Vimeo / MP4:
+                        </label>
+                        <input
+                          type="url"
+                          value={postVideoUrl}
+                          onChange={(e) => setPostVideoUrl(e.target.value)}
+                          placeholder="https://www.youtube.com/watch?v=... atau https://youtu.be/..."
+                          className="w-full p-2.5 bg-white border border-stone-300 rounded-xl text-xs font-medium text-stone-900 focus:outline-none focus:ring-2 focus:ring-emerald-600"
+                        />
+                        <p className="text-[10px] text-stone-500 mt-1">
+                          Video akan langsung tersemat dan bisa diputar oleh wisatawan di galeri foto/video produk.
+                        </p>
+                      </div>
+
+                      {postVideoUrl && (
+                        <div className="p-2.5 bg-emerald-50 rounded-xl border border-emerald-200 text-emerald-900 text-xs flex items-center justify-between">
+                          <div className="flex items-center gap-2 truncate">
+                            <Play className="w-4 h-4 fill-emerald-800 text-emerald-800 shrink-0" />
+                            <span className="font-semibold truncate">Video siap disematkan bersama foto</span>
+                          </div>
+                          <button
+                            type="button"
+                            onClick={() => setPostVideoUrl('')}
+                            className="text-[11px] text-rose-600 font-bold hover:underline shrink-0 ml-2"
+                          >
+                            Hapus
+                          </button>
+                        </div>
+                      )}
+                    </div>
+                  )}
                 </div>
 
                 {/* Action Buttons */}
@@ -1153,14 +1466,14 @@ export const SellerDashboardView: React.FC = () => {
                   <button
                     type="button"
                     onClick={() => setShowPostWizard(false)}
-                    className="px-4 py-3.5 bg-stone-100 hover:bg-stone-200 text-stone-700 font-bold rounded-2xl text-xs transition-colors"
+                    className="px-4 py-3.5 bg-stone-100 hover:bg-stone-200 text-stone-700 font-bold rounded-2xl text-xs transition-colors cursor-pointer"
                   >
                     Batal
                   </button>
                   <button
                     type="button"
                     onClick={() => setWizardStep('fill-detail')}
-                    className="flex-1 py-3.5 bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold rounded-2xl text-xs sm:text-sm shadow-lg transition-all flex items-center justify-center gap-2"
+                    className="flex-1 py-3.5 bg-emerald-700 hover:bg-emerald-800 text-white font-extrabold rounded-2xl text-xs sm:text-sm shadow-lg transition-all flex items-center justify-center gap-2 cursor-pointer hover:scale-[1.01]"
                   >
                     <span>Lanjut Isi Detail Postingan</span>
                     <ArrowRight className="w-4 h-4" />
@@ -1169,21 +1482,29 @@ export const SellerDashboardView: React.FC = () => {
               </div>
             )}
 
-            {/* STEP 2: ISI DETAIL */}
+            {/* STEP 2: ISI DETAIL POSTINGAN */}
             {wizardStep === 'fill-detail' && (
               <form onSubmit={handlePublishPost} className="overflow-y-auto flex-1 p-5 sm:p-6 space-y-4 text-left overscroll-contain">
                 
-                {/* Photo Preview in Step 2 Header */}
+                {/* Media Summary in Step 2 Header */}
                 <div className="flex items-center gap-3 p-3 bg-stone-50 rounded-2xl border border-stone-200">
-                  <img src={selectedImage} alt="Foto terpilih" className="w-16 h-16 rounded-xl object-cover border" />
-                  <div className="flex-1">
-                    <p className="text-xs font-bold text-stone-900">Foto Destinasi Terpilih</p>
+                  <div className="relative w-16 h-16 rounded-xl overflow-hidden border shrink-0 bg-stone-900 shadow-xs">
+                    <img src={wizardMainImage} alt="Foto Utama" className="w-full h-full object-cover" />
+                    <span className="absolute bottom-0 inset-x-0 bg-stone-950/80 text-amber-300 text-[8px] font-black text-center py-0.5 uppercase tracking-wider">
+                      Cover
+                    </span>
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-xs font-bold text-stone-900 truncate">
+                      {wizardImages.length} Foto Terpilih {postVideoUrl ? '• 1 Video' : ''}
+                    </p>
+                    <p className="text-[10px] text-stone-500 mt-0.5">Konten Utama telah ditentukan</p>
                     <button
                       type="button"
                       onClick={() => setWizardStep('pick-media')}
-                      className="text-[11px] font-bold text-emerald-700 hover:underline mt-0.5"
+                      className="text-[11px] font-bold text-emerald-700 hover:underline mt-0.5 cursor-pointer inline-block"
                     >
-                      Ganti Foto Lain ↺
+                      Kelola Media ↺
                     </button>
                   </div>
                 </div>
@@ -1191,14 +1512,14 @@ export const SellerDashboardView: React.FC = () => {
                 {/* JUDUL */}
                 <div>
                   <label className="block text-xs font-extrabold text-stone-800 uppercase tracking-wider mb-1">
-                    JUDUL POSTINGAN
+                    JUDUL POSTINGAN*
                   </label>
                   <input
                     type="text"
                     required
                     value={postTitle}
                     onChange={(e) => setPostTitle(e.target.value)}
-                    placeholder="Contoh: Kamar Melati Homestay"
+                    placeholder="Contoh: Kamar Melati Homestay Pasir Angling"
                     className="w-full p-2.5 bg-stone-50 border border-stone-300 rounded-xl text-xs font-semibold text-stone-900 focus:outline-none focus:ring-2 focus:ring-emerald-600"
                   />
                 </div>
@@ -1206,14 +1527,14 @@ export const SellerDashboardView: React.FC = () => {
                 {/* DESKRIPSI */}
                 <div>
                   <label className="block text-xs font-extrabold text-stone-800 uppercase tracking-wider mb-1">
-                    DESKRIPSI
+                    DESKRIPSI LENGKAP*
                   </label>
                   <textarea
                     rows={2}
                     required
                     value={postDescription}
                     onChange={(e) => setPostDescription(e.target.value)}
-                    placeholder="Contoh: Kamar nyaman bersih, include sarapan liwet hangat"
+                    placeholder="Contoh: Kamar nyaman bersih sejuk pegunungan, include sarapan liwet hangat khas desa..."
                     className="w-full p-2.5 bg-stone-50 border border-stone-300 rounded-xl text-xs font-medium text-stone-900 focus:outline-none focus:ring-2 focus:ring-emerald-600"
                   />
                 </div>
@@ -1222,7 +1543,7 @@ export const SellerDashboardView: React.FC = () => {
                 <div className="grid grid-cols-2 gap-2">
                   <div>
                     <label className="block text-xs font-extrabold text-stone-800 uppercase tracking-wider mb-1">
-                      HARGA (Rp)
+                      HARGA (Rp)*
                     </label>
                     <input
                       type="number"
@@ -1242,13 +1563,15 @@ export const SellerDashboardView: React.FC = () => {
                     <select
                       value={postUnit}
                       onChange={(e) => setPostUnit(e.target.value)}
-                      className="w-full p-2.5 bg-stone-50 border border-stone-300 rounded-xl text-xs font-semibold text-stone-900 focus:outline-none focus:ring-2 focus:ring-emerald-600"
+                      className="w-full p-2.5 bg-stone-50 border border-stone-300 rounded-xl text-xs font-semibold text-stone-900 focus:outline-none focus:ring-2 focus:ring-emerald-600 cursor-pointer"
                     >
                       <option value="/malam">/malam (Homestay)</option>
                       <option value="/orang">/orang (Paket Wisata)</option>
                       <option value="/pack">/pack (Kopi/Olahan)</option>
                       <option value="/kg">/kg (Sayur/Buah)</option>
                       <option value="/pcs">/pcs (Suvenir/Kerajinan)</option>
+                      <option value="/porsi">/porsi (Kuliner)</option>
+                      <option value="/botol">/botol (Susu)</option>
                     </select>
                   </div>
                 </div>
@@ -1269,7 +1592,7 @@ export const SellerDashboardView: React.FC = () => {
                   />
                 </div>
 
-                {/* PILIH KATEGORI (Checkboxes / Pills persis wireframe) */}
+                {/* PILIH KATEGORI */}
                 <div>
                   <label className="block text-xs font-extrabold text-stone-800 uppercase tracking-wider mb-1.5">
                     PILIH KATEGORI
@@ -1287,9 +1610,9 @@ export const SellerDashboardView: React.FC = () => {
                         type="button"
                         key={cat.id}
                         onClick={() => setPostCategory(cat.id as ProductCategory)}
-                        className={`p-2 rounded-xl text-xs font-bold border transition-all flex items-center justify-center gap-1.5 ${
+                        className={`p-2 rounded-xl text-xs font-bold border transition-all flex items-center justify-center gap-1.5 cursor-pointer ${
                           postCategory === cat.id
-                            ? 'bg-emerald-600 text-white border-emerald-600 shadow-xs'
+                            ? 'bg-emerald-700 text-white border-emerald-700 shadow-xs'
                             : 'bg-stone-50 text-stone-700 border-stone-200 hover:bg-stone-100'
                         }`}
                       >
@@ -1300,38 +1623,20 @@ export const SellerDashboardView: React.FC = () => {
                   </div>
                 </div>
 
-                {/* VIDEO URL (OPSIONAL) */}
-                <div>
-                  <label className="block text-xs font-extrabold text-stone-800 uppercase tracking-wider mb-1 flex items-center justify-between">
-                    <span>LINK VIDEO (OPSIONAL)</span>
-                    <span className="text-[10px] text-emerald-700 font-bold lowercase">YouTube / Shorts / MP4</span>
-                  </label>
-                  <input
-                    type="url"
-                    value={postVideoUrl}
-                    onChange={(e) => setPostVideoUrl(e.target.value)}
-                    placeholder="https://www.youtube.com/watch?v=... atau https://youtu.be/..."
-                    className="w-full p-2.5 bg-stone-50 border border-stone-300 rounded-xl text-xs font-medium text-stone-900 focus:outline-none focus:ring-2 focus:ring-emerald-600"
-                  />
-                  <p className="text-[10px] text-stone-400 mt-1">
-                    Calon wisatawan bisa memutar video langsung di galeri detail produk.
-                  </p>
-                </div>
-
                 {/* POSTING BUTTON */}
                 <div className="flex items-center gap-3 pt-3">
                   <button
                     type="button"
                     onClick={() => setWizardStep('pick-media')}
-                    className="px-4 py-3.5 bg-stone-100 hover:bg-stone-200 text-stone-700 font-bold rounded-2xl text-xs transition-colors"
+                    className="px-4 py-3.5 bg-stone-100 hover:bg-stone-200 text-stone-700 font-bold rounded-2xl text-xs transition-colors cursor-pointer"
                   >
-                    ← Ganti Foto
+                    ← Kelola Media
                   </button>
                   <button
                     type="submit"
-                    className="flex-1 py-3.5 bg-sky-500 hover:bg-sky-600 text-white font-black rounded-2xl text-xs sm:text-sm shadow-xl transition-all hover:scale-[1.01] tracking-wider uppercase"
+                    className="flex-1 py-3.5 bg-emerald-800 hover:bg-emerald-900 text-amber-200 font-black rounded-2xl text-xs sm:text-sm shadow-xl transition-all hover:scale-[1.01] tracking-wider uppercase cursor-pointer"
                   >
-                    POSTING SEKARANG
+                    POSTING SEKARANG ✓
                   </button>
                 </div>
 
@@ -1391,42 +1696,94 @@ export const SellerDashboardView: React.FC = () => {
                 {/* Left 7 Cols: Form Inputs */}
                 <div className="lg:col-span-7 space-y-5">
                   
-                  {/* --- PHOTO MANAGER SECTION --- */}
+                  {/* --- UNIFIED MEDIA MANAGER SECTION (MULTI-PHOTO & VIDEO) --- */}
                   <div className="bg-stone-50 p-4 sm:p-5 rounded-2xl border border-stone-200 space-y-4">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-2">
                         <Camera className="w-4 h-4 text-emerald-800" />
                         <span className="font-extrabold text-stone-900 text-xs uppercase tracking-wider">
-                          1. Foto Aktual Produk / Homestay
+                          1. Koleksi Media (Foto & Video)
                         </span>
                       </div>
                       <span className="text-[10px] bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded-full">
-                        Resolusi Tinggi
+                        {(editingProduct.gallery || [editingProduct.image]).length} Foto {editingProduct.videoUrl ? '+ 1 Video' : ''}
                       </span>
                     </div>
 
-                    {/* Active Photo Preview & Controls */}
-                    <div className="relative rounded-2xl overflow-hidden border-2 border-dashed border-emerald-600/40 bg-stone-900 h-48 group">
-                      <img
-                        src={editingProduct.image}
-                        alt={editingProduct.title}
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                        referrerPolicy="no-referrer"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-stone-950/80 via-transparent to-transparent flex items-end justify-between p-3">
-                        <div className="text-white">
-                          <p className="text-[10px] text-amber-300 font-bold uppercase">Foto Utama Aktif</p>
-                          <p className="text-xs font-semibold truncate max-w-[200px]">{editingProduct.title}</p>
+                    <p className="text-[11px] text-stone-600">
+                      Kelola kumpulan foto produk & video dalam satu tempat. Klik <strong>"Jadikan Cover"</strong> pada foto yang ingin dijadikan tampilan utama katalog.
+                    </p>
+
+                    {/* Media Gallery Grid Preview */}
+                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2.5 bg-stone-200/50 p-3 rounded-2xl border border-stone-300/70 max-h-56 overflow-y-auto">
+                      {(editingProduct.gallery || [editingProduct.image]).map((imgUrl, idx) => {
+                        const isMain = editingProduct.image === imgUrl;
+                        return (
+                          <div 
+                            key={`edit-gal-${idx}`}
+                            className={`group relative h-28 rounded-xl overflow-hidden border-2 transition-all shadow-xs ${
+                              isMain ? 'border-amber-500 ring-2 ring-amber-400' : 'border-stone-300 hover:border-emerald-600'
+                            }`}
+                          >
+                            <img
+                              src={imgUrl}
+                              alt={`Foto ${idx + 1}`}
+                              className="w-full h-full object-cover group-hover:scale-105 transition-transform"
+                              referrerPolicy="no-referrer"
+                            />
+                            
+                            {/* Main Cover Badge / Button */}
+                            {isMain ? (
+                              <div className="absolute top-1 left-1 bg-amber-400 text-stone-950 font-black text-[9px] px-1.5 py-0.5 rounded-md flex items-center gap-1 shadow-sm">
+                                <Star className="w-2.5 h-2.5 fill-stone-950" />
+                                <span>Cover Utama</span>
+                              </div>
+                            ) : (
+                              <button
+                                type="button"
+                                onClick={() => setEditingProduct({ ...editingProduct, image: imgUrl })}
+                                className="absolute top-1 left-1 opacity-0 group-hover:opacity-100 transition-opacity bg-stone-900/80 hover:bg-amber-400 hover:text-stone-950 text-white text-[9px] font-bold px-1.5 py-0.5 rounded-md cursor-pointer shadow-sm"
+                                title="Jadikan Cover Utama"
+                              >
+                                Jadikan Cover
+                              </button>
+                            )}
+
+                            {/* Delete Button */}
+                            <button
+                              type="button"
+                              onClick={() => handleEditRemoveImage(imgUrl)}
+                              className="absolute top-1 right-1 opacity-0 group-hover:opacity-100 transition-opacity bg-red-600 hover:bg-red-700 text-white p-1 rounded-md cursor-pointer shadow-sm"
+                              title="Hapus foto ini"
+                            >
+                              <Trash2 className="w-3 h-3" />
+                            </button>
+
+                            <div className="absolute bottom-1 right-1 bg-stone-900/70 text-white text-[9px] font-bold px-1 rounded">
+                              #{idx + 1}
+                            </div>
+                          </div>
+                        );
+                      })}
+
+                      {/* Video Item Card if present */}
+                      {editingProduct.videoUrl && (
+                        <div className="relative h-28 rounded-xl overflow-hidden border-2 border-emerald-500 bg-stone-900 flex flex-col items-center justify-center p-2 text-center shadow-xs">
+                          <div className="w-8 h-8 rounded-full bg-red-600 text-white flex items-center justify-center mb-1">
+                            <Play className="w-4 h-4 fill-white ml-0.5" />
+                          </div>
+                          <span className="text-[10px] text-white font-bold leading-tight">Video Aktif</span>
+                          <span className="text-[9px] text-stone-400 truncate max-w-full px-1">{editingProduct.videoUrl}</span>
+                          <button
+                            type="button"
+                            onClick={() => setEditingProduct({ ...editingProduct, videoUrl: '' })}
+                            className="absolute top-1 right-1 bg-red-600 hover:bg-red-700 text-white p-1 rounded-md cursor-pointer shadow-sm"
+                            title="Hapus video"
+                          >
+                            <Trash2 className="w-3 h-3" />
+                          </button>
                         </div>
-                        <button
-                          type="button"
-                          onClick={() => editFileInputRef.current?.click()}
-                          className="px-3 py-1.5 bg-amber-400 hover:bg-amber-300 text-stone-950 font-bold rounded-xl text-[11px] flex items-center gap-1.5 shadow-md transition-transform hover:scale-105 cursor-pointer"
-                        >
-                          <UploadCloud className="w-3.5 h-3.5" />
-                          <span>Ganti dari File</span>
-                        </button>
-                      </div>
+                      )}
                     </div>
 
                     {/* Hidden file input */}
@@ -1434,58 +1791,86 @@ export const SellerDashboardView: React.FC = () => {
                       ref={editFileInputRef}
                       type="file"
                       accept="image/*"
-                      onChange={handleEditFileUpload}
+                      multiple
+                      onChange={handleEditMultiUpload}
                       className="hidden"
                     />
 
-                    {/* Photo Source Selector Tabs */}
+                    {/* Media Tabs Selector */}
                     <div className="space-y-2">
-                      <div className="flex bg-stone-200/80 p-1 rounded-xl gap-1">
-                        <button
-                          type="button"
-                          onClick={() => setEditImageTab('gallery')}
-                          className={`flex-1 py-1.5 text-[11px] font-bold rounded-lg transition-all cursor-pointer ${
-                            editImageTab === 'gallery' ? 'bg-white text-emerald-900 shadow-xs' : 'text-stone-600'
-                          }`}
-                        >
-                          🏞️ Galeri Lembang ({LEMBANG_GALLERY_PRESETS.length})
-                        </button>
+                      <div className="flex bg-stone-200/80 p-1 rounded-xl gap-1 overflow-x-auto">
                         <button
                           type="button"
                           onClick={() => setEditImageTab('upload')}
-                          className={`flex-1 py-1.5 text-[11px] font-bold rounded-lg transition-all cursor-pointer ${
+                          className={`flex-1 min-w-[100px] py-1.5 text-[11px] font-bold rounded-lg transition-all cursor-pointer ${
                             editImageTab === 'upload' ? 'bg-white text-emerald-900 shadow-xs' : 'text-stone-600'
                           }`}
                         >
-                          📸 Kamera / Upload
+                          📸 Upload Foto
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => setEditImageTab('gallery')}
+                          className={`flex-1 min-w-[100px] py-1.5 text-[11px] font-bold rounded-lg transition-all cursor-pointer ${
+                            editImageTab === 'gallery' ? 'bg-white text-emerald-900 shadow-xs' : 'text-stone-600'
+                          }`}
+                        >
+                          🏞️ Galeri Lembang
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => setEditImageTab('video')}
+                          className={`flex-1 min-w-[100px] py-1.5 text-[11px] font-bold rounded-lg transition-all cursor-pointer ${
+                            editImageTab === 'video' ? 'bg-white text-emerald-900 shadow-xs' : 'text-stone-600'
+                          }`}
+                        >
+                          ▶ Video {editingProduct.videoUrl ? '✓' : ''}
                         </button>
                         <button
                           type="button"
                           onClick={() => setEditImageTab('url')}
-                          className={`flex-1 py-1.5 text-[11px] font-bold rounded-lg transition-all cursor-pointer ${
+                          className={`flex-1 min-w-[80px] py-1.5 text-[11px] font-bold rounded-lg transition-all cursor-pointer ${
                             editImageTab === 'url' ? 'bg-white text-emerald-900 shadow-xs' : 'text-stone-600'
                           }`}
                         >
-                          🔗 URL Gambar
+                          🔗 Tambah URL
                         </button>
                       </div>
 
-                      {/* Tab 1: Galeri Lembang */}
+                      {/* Tab 1: Upload Multiple Files */}
+                      {editImageTab === 'upload' && (
+                        <div className="p-4 bg-white rounded-xl border border-stone-200 text-center space-y-2">
+                          <p className="text-xs text-stone-600">
+                            Pilih satu atau beberapa foto dari galeri HP / komputer Anda:
+                          </p>
+                          <button
+                            type="button"
+                            onClick={() => editFileInputRef.current?.click()}
+                            className="px-4 py-2 bg-emerald-800 hover:bg-emerald-900 text-amber-200 font-bold rounded-xl text-xs flex items-center justify-center gap-2 mx-auto cursor-pointer shadow-xs transition-transform hover:scale-105"
+                          >
+                            <UploadCloud className="w-4 h-4" />
+                            <span>Pilih Foto dari Galeri / File (Bisa Banyak)</span>
+                          </button>
+                          <p className="text-[10px] text-stone-400">Mendukung multi-select (JPG, PNG, WebP)</p>
+                        </div>
+                      )}
+
+                      {/* Tab 2: Galeri Lembang Presets */}
                       {editImageTab === 'gallery' && (
                         <div className="space-y-2 pt-1">
                           <p className="text-[10px] text-stone-500 font-medium">
-                            Pilih salah satu foto riil destinasi & homestay di Kawasan Lembang:
+                            Klik foto untuk menambah / mengurangi foto dari galeri produk ini:
                           </p>
-                          <div className="grid grid-cols-4 gap-2 max-h-36 overflow-y-auto p-1 bg-white rounded-xl border border-stone-200">
+                          <div className="grid grid-cols-4 gap-2 max-h-40 overflow-y-auto p-1 bg-white rounded-xl border border-stone-200">
                             {LEMBANG_GALLERY_PRESETS.map((preset) => {
-                              const isSelected = editingProduct.image === preset.url;
+                              const isInGallery = (editingProduct.gallery || [editingProduct.image]).includes(preset.url);
                               return (
                                 <button
                                   key={preset.id}
                                   type="button"
-                                  onClick={() => handleEditSelectGalleryPreset(preset.url)}
+                                  onClick={() => handleEditTogglePreset(preset.url)}
                                   className={`relative h-16 rounded-lg overflow-hidden border-2 transition-all cursor-pointer group ${
-                                    isSelected ? 'border-amber-500 ring-2 ring-amber-400' : 'border-transparent hover:border-emerald-600'
+                                    isInGallery ? 'border-emerald-600 ring-2 ring-emerald-400' : 'border-transparent hover:border-emerald-400 opacity-70 hover:opacity-100'
                                   }`}
                                 >
                                   <img
@@ -1493,7 +1878,7 @@ export const SellerDashboardView: React.FC = () => {
                                     alt={preset.title}
                                     className="w-full h-full object-cover group-hover:scale-110 transition-transform"
                                   />
-                                  {isSelected && (
+                                  {isInGallery && (
                                     <div className="absolute inset-0 bg-emerald-900/60 flex items-center justify-center text-amber-300 font-black text-xs">
                                       <Check className="w-4 h-4 stroke-[3]" />
                                     </div>
@@ -1505,34 +1890,59 @@ export const SellerDashboardView: React.FC = () => {
                         </div>
                       )}
 
-                      {/* Tab 2: Upload Device */}
-                      {editImageTab === 'upload' && (
-                        <div className="p-4 bg-white rounded-xl border border-stone-200 text-center space-y-2">
-                          <p className="text-xs text-stone-600">
-                            Unggah foto aktual langsung dari galeri HP, kamera, atau komputer Anda:
+                      {/* Tab 3: Video URL */}
+                      {editImageTab === 'video' && (
+                        <div className="p-3 bg-white rounded-xl border border-stone-200 space-y-2">
+                          <label className="text-[10px] font-bold text-stone-700 block">
+                            Tautan Video (YouTube atau direct .mp4):
+                          </label>
+                          <div className="flex gap-2">
+                            <input
+                              type="url"
+                              value={editingProduct.videoUrl || ''}
+                              onChange={(e) => setEditingProduct({ ...editingProduct, videoUrl: e.target.value })}
+                              placeholder="https://www.youtube.com/watch?v=... atau https://youtu.be/..."
+                              className="flex-1 p-2 bg-stone-50 border border-stone-300 rounded-xl text-xs focus:bg-white focus:ring-2 focus:ring-emerald-700 focus:outline-none"
+                            />
+                            {editingProduct.videoUrl && (
+                              <button
+                                type="button"
+                                onClick={() => setEditingProduct({ ...editingProduct, videoUrl: '' })}
+                                className="px-3 py-1.5 bg-red-100 text-red-700 font-bold rounded-xl text-xs hover:bg-red-200 cursor-pointer"
+                              >
+                                Hapus
+                              </button>
+                            )}
+                          </div>
+                          <p className="text-[10px] text-stone-500">
+                            Video otomatis menyatu di koleksi media dan dapat langsung diputar di detail produk.
                           </p>
-                          <button
-                            type="button"
-                            onClick={() => editFileInputRef.current?.click()}
-                            className="px-4 py-2 bg-emerald-800 hover:bg-emerald-900 text-amber-200 font-bold rounded-xl text-xs flex items-center justify-center gap-2 mx-auto cursor-pointer shadow-xs"
-                          >
-                            <Camera className="w-4 h-4" />
-                            <span>Buka Kamera / Pilih File Foto</span>
-                          </button>
                         </div>
                       )}
 
-                      {/* Tab 3: URL Input */}
+                      {/* Tab 4: Direct URL */}
                       {editImageTab === 'url' && (
-                        <div className="space-y-1 pt-1">
-                          <label className="text-[10px] font-bold text-stone-600">Tautan Gambar Langsung (HTTPS URL):</label>
-                          <input
-                            type="url"
-                            value={editingProduct.image}
-                            onChange={(e) => setEditingProduct({ ...editingProduct, image: e.target.value })}
-                            placeholder="Masukkan URL foto (contoh: /images/...)"
-                            className="w-full p-2.5 bg-white border border-stone-300 rounded-xl text-xs focus:ring-2 focus:ring-emerald-700 focus:outline-none"
-                          />
+                        <div className="p-3 bg-white rounded-xl border border-stone-200 space-y-2">
+                          <label className="text-[10px] font-bold text-stone-700 block">
+                            Tambah URL Foto Eksternal (HTTPS):
+                          </label>
+                          <div className="flex gap-2">
+                            <input
+                              type="url"
+                              value={editImageUrlInput}
+                              onChange={(e) => setEditImageUrlInput(e.target.value)}
+                              placeholder="Masukkan URL foto (contoh: https://...)"
+                              className="flex-1 p-2 bg-stone-50 border border-stone-300 rounded-xl text-xs focus:bg-white focus:ring-2 focus:ring-emerald-700 focus:outline-none"
+                            />
+                            <button
+                              type="button"
+                              onClick={handleAddImageUrlToEditGallery}
+                              disabled={!editImageUrlInput.trim()}
+                              className="px-3 py-1.5 bg-emerald-800 text-amber-300 font-bold rounded-xl text-xs hover:bg-emerald-900 disabled:opacity-50 cursor-pointer"
+                            >
+                              + Tambah
+                            </button>
+                          </div>
                         </div>
                       )}
                     </div>
@@ -1659,21 +2069,6 @@ export const SellerDashboardView: React.FC = () => {
                         className="w-full p-2.5 bg-stone-50 border border-stone-300 rounded-xl font-medium text-stone-800 focus:bg-white focus:ring-2 focus:ring-emerald-700 focus:outline-none"
                       />
                     </div>
-
-                    {/* Video URL */}
-                    <div>
-                      <label className="font-bold text-stone-800 block mb-1 flex items-center justify-between text-xs">
-                        <span>Link Video YouTube / MP4 (Opsional):</span>
-                        <span className="text-[11px] text-emerald-700 font-semibold">Tampil di galeri detail</span>
-                      </label>
-                      <input
-                        type="url"
-                        value={editingProduct.videoUrl || ''}
-                        onChange={(e) => setEditingProduct({ ...editingProduct, videoUrl: e.target.value })}
-                        placeholder="Contoh: https://www.youtube.com/watch?v=... atau https://youtu.be/..."
-                        className="w-full p-2.5 bg-stone-50 border border-stone-300 rounded-xl font-medium text-stone-800 focus:bg-white focus:ring-2 focus:ring-emerald-700 focus:outline-none text-xs"
-                      />
-                    </div>
                   </div>
 
                 </div>
@@ -1710,6 +2105,21 @@ export const SellerDashboardView: React.FC = () => {
                       </div>
                       <div className="absolute bottom-2.5 left-2.5 bg-stone-950/75 backdrop-blur-md px-2.5 py-0.5 rounded-lg text-[10px] font-bold text-amber-300">
                         {editingProduct.stockQuota} kuota tersedia
+                      </div>
+
+                      {/* Unified Media Indicators in Preview */}
+                      <div className="absolute bottom-2.5 right-2.5 flex items-center gap-1">
+                        {editingProduct.videoUrl && (
+                          <div className="bg-red-600 text-white p-1 rounded-md shadow-md" title="Memiliki Video">
+                            <Play className="w-3 h-3 fill-white" />
+                          </div>
+                        )}
+                        {(editingProduct.gallery?.length || 1) > 1 && (
+                          <div className="bg-stone-950/75 backdrop-blur-md px-2 py-0.5 rounded-lg text-[10px] font-bold text-white flex items-center gap-1">
+                            <ImageIcon className="w-3 h-3 text-amber-300" />
+                            <span>{editingProduct.gallery?.length} Foto</span>
+                          </div>
+                        )}
                       </div>
                     </div>
 

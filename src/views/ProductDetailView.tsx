@@ -238,36 +238,7 @@ export const ProductDetailView: React.FC = () => {
           
           {/* Gallery */}
           <div className="space-y-3">
-            {/* Media Mode Switcher (If videoUrl is available) */}
-            {product.videoUrl && (
-              <div className="flex items-center gap-2">
-                <button
-                  type="button"
-                  onClick={() => setActiveMediaType('image')}
-                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
-                    activeMediaType === 'image'
-                      ? 'bg-emerald-800 text-amber-200 shadow-xs'
-                      : 'bg-white text-stone-700 border border-stone-200 hover:bg-stone-50'
-                  }`}
-                >
-                  <ImageIcon className="w-3.5 h-3.5" />
-                  <span>{t('detail.tabPhotos')}</span>
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setActiveMediaType('video')}
-                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
-                    activeMediaType === 'video'
-                      ? 'bg-rose-700 text-white shadow-xs'
-                      : 'bg-white text-stone-700 border border-stone-200 hover:bg-stone-50'
-                  }`}
-                >
-                  <Play className="w-3.5 h-3.5 fill-current" />
-                  <span>{t('detail.tabVideo')}</span>
-                </button>
-              </div>
-            )}
-
+            {/* Unified Main Media Viewer */}
             <div className="relative h-72 sm:h-96 rounded-2xl overflow-hidden border border-stone-200 bg-stone-900 shadow-md">
               {activeMediaType === 'video' && product.videoUrl ? (
                 (() => {
@@ -300,46 +271,86 @@ export const ProductDetailView: React.FC = () => {
                   referrerPolicy="no-referrer"
                 />
               )}
+
+              {/* Category Badge */}
               <span className={`absolute top-4 left-4 px-3 py-1 rounded-full text-xs font-bold border shadow-md ${categoryBadge.bg}`}>
                 {categoryBadge.label}
               </span>
+
+              {/* Active Media Type Pill Indicator */}
+              <div className="absolute top-4 right-4 flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-stone-950/70 backdrop-blur-md text-white text-[11px] font-bold border border-white/20 shadow-md">
+                {activeMediaType === 'video' ? (
+                  <>
+                    <Play className="w-3 h-3 text-rose-400 fill-current" />
+                    <span>{language === 'en' ? 'Playing Video' : 'Memutar Video'}</span>
+                  </>
+                ) : (
+                  <>
+                    <ImageIcon className="w-3 h-3 text-amber-300" />
+                    <span>
+                      {allGalleryImages.indexOf(activeImage) + 1} / {allGalleryImages.length}
+                    </span>
+                  </>
+                )}
+              </div>
             </div>
 
-            {/* Gallery Thumbnails (Images + Video Thumbnail if available) */}
-            <div className="flex items-center gap-3 overflow-x-auto pb-1">
+            {/* Unified Media Thumbnails Strip (Photos + Video together) */}
+            <div className="flex items-center gap-2.5 overflow-x-auto pb-1 pt-0.5">
+              {/* Video Thumbnail (Unified in the same reel) */}
               {product.videoUrl && (
                 <button
                   type="button"
                   onClick={() => setActiveMediaType('video')}
-                  className={`w-20 h-20 rounded-xl overflow-hidden border-2 shrink-0 transition-all cursor-pointer bg-stone-900 flex flex-col items-center justify-center text-white ${
+                  className={`relative w-20 h-20 rounded-xl overflow-hidden border-2 shrink-0 transition-all cursor-pointer bg-stone-900 flex flex-col items-center justify-center text-white ${
                     activeMediaType === 'video'
                       ? 'border-rose-500 scale-105 shadow-md ring-2 ring-rose-400/50'
-                      : 'border-stone-200 opacity-80 hover:opacity-100'
+                      : 'border-stone-200 opacity-80 hover:opacity-100 hover:border-rose-400'
                   }`}
-                  title="Putar Video"
+                  title={language === 'en' ? 'Play Video' : 'Putar Video'}
                 >
-                  <div className="w-8 h-8 rounded-full bg-rose-600 flex items-center justify-center mb-1">
+                  <div className="w-8 h-8 rounded-full bg-rose-600 flex items-center justify-center mb-1 shadow-sm">
                     <Play className="w-4 h-4 fill-white text-white ml-0.5" />
                   </div>
-                  <span className="text-[10px] font-extrabold uppercase tracking-wider text-rose-300">Video</span>
+                  <span className="text-[10px] font-black uppercase tracking-wider text-rose-300">
+                    {language === 'en' ? '▶ Video' : '▶ Video'}
+                  </span>
                 </button>
               )}
 
-              {allGalleryImages.map((imgUrl, i) => (
-                <button
-                  key={i}
-                  type="button"
-                  onClick={() => {
-                    setActiveMediaType('image');
-                    setActiveImage(imgUrl);
-                  }}
-                  className={`w-20 h-20 rounded-xl overflow-hidden border-2 shrink-0 transition-all cursor-pointer ${
-                    activeMediaType === 'image' && activeImage === imgUrl ? 'border-emerald-700 scale-105 shadow-md' : 'border-stone-200 opacity-70 hover:opacity-100'
-                  }`}
-                >
-                  <img src={imgUrl} alt={`${product.title} ${i + 1}`} className="w-full h-full object-cover" referrerPolicy="no-referrer" />
-                </button>
-              ))}
+              {/* Photo Thumbnails */}
+              {allGalleryImages.map((imgUrl, i) => {
+                const isActive = activeMediaType === 'image' && activeImage === imgUrl;
+                const isCover = imgUrl === product.image;
+                return (
+                  <button
+                    key={i}
+                    type="button"
+                    onClick={() => {
+                      setActiveMediaType('image');
+                      setActiveImage(imgUrl);
+                    }}
+                    className={`relative w-20 h-20 rounded-xl overflow-hidden border-2 shrink-0 transition-all cursor-pointer group ${
+                      isActive
+                        ? 'border-emerald-700 scale-105 shadow-md ring-2 ring-emerald-400/50'
+                        : 'border-stone-200 opacity-70 hover:opacity-100 hover:border-stone-400'
+                    }`}
+                    title={isCover ? (language === 'en' ? 'Cover Photo' : 'Foto Utama') : `${product.title} ${i + 1}`}
+                  >
+                    <img
+                      src={imgUrl}
+                      alt={`${product.title} ${i + 1}`}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform"
+                      referrerPolicy="no-referrer"
+                    />
+                    {isCover && (
+                      <span className="absolute bottom-0 inset-x-0 bg-stone-950/80 text-amber-300 text-[8px] font-black text-center py-0.5 uppercase tracking-wider">
+                        {language === 'en' ? 'Main' : 'Utama'}
+                      </span>
+                    )}
+                  </button>
+                );
+              })}
             </div>
           </div>
 
