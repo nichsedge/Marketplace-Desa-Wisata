@@ -180,12 +180,12 @@ export const Navbar: React.FC = () => {
             })}
           </nav>
 
-          {/* Sisi Kanan: Search Button, Language Switcher, Keranjang, & Akun */}
-          <div className="flex items-center gap-1 sm:gap-2.5 shrink-0">
+          {/* Sisi Kanan: Language Switcher (Desktop), Search, Cart, & Menu */}
+          <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
             
-            {/* 1. Language Switcher: Tablet/Desktop Full Segmented Control (sm: and up) */}
+            {/* Desktop Language Switcher (Only visible on desktop >= lg; on mobile it lives inside the drawer) */}
             <div 
-              className="hidden sm:flex items-center bg-stone-100 border border-stone-200 rounded-full p-0.5 shadow-2xs shrink-0"
+              className="hidden lg:flex items-center bg-stone-100 border border-stone-200 rounded-full p-0.5 shadow-2xs shrink-0"
               role="group"
               aria-label="Pilih Bahasa / Language Selector"
             >
@@ -218,23 +218,14 @@ export const Navbar: React.FC = () => {
               </button>
             </div>
 
-            {/* 2. Language Switcher: Compact 1-Tap Toggle Pill for Mobile (< sm) */}
-            <button
-              type="button"
-              onClick={() => setLanguage(language === 'id' ? 'en' : 'id')}
-              className="flex sm:hidden items-center gap-1 px-2.5 py-1.5 rounded-full bg-stone-100 hover:bg-stone-200 border border-stone-200 text-[11px] font-extrabold text-stone-800 shadow-2xs min-h-[36px] transition-all cursor-pointer shrink-0 focus-visible:ring-2 focus-visible:ring-emerald-700"
-              title={language === 'id' ? 'Beralih ke English (EN)' : 'Switch to Bahasa Indonesia (ID)'}
-              aria-label={language === 'id' ? 'Beralih ke English' : 'Switch to Bahasa Indonesia'}
-            >
-              <Globe className="w-3.5 h-3.5 text-emerald-800" />
-              <span className="font-black text-emerald-950 uppercase">{language}</span>
-            </button>
-
             {/* Tombol Pencarian - Icon Only */}
             <button 
               type="button"
-              onClick={() => setSearchModalOpen(true)}
-              className="relative min-w-[38px] min-h-[38px] sm:min-w-[44px] sm:min-h-[44px] flex items-center justify-center rounded-full bg-white border border-stone-200 text-stone-700 hover:bg-stone-100 hover:border-emerald-700 transition-colors shadow-xs shrink-0 cursor-pointer focus-visible:ring-2 focus-visible:ring-emerald-700"
+              onClick={() => {
+                setMobileMenuOpen(false);
+                setSearchModalOpen(true);
+              }}
+              className="w-10 h-10 min-w-[40px] min-h-[40px] sm:w-11 sm:h-11 flex items-center justify-center rounded-full bg-white border border-stone-200 text-stone-700 hover:bg-stone-100 hover:border-emerald-700 transition-colors shadow-2xs shrink-0 cursor-pointer focus-visible:ring-2 focus-visible:ring-emerald-700"
               title={t('nav.searchPlaceholder')}
               aria-label={t('nav.searchPlaceholder')}
             >
@@ -244,8 +235,11 @@ export const Navbar: React.FC = () => {
             {/* Cart Icon */}
             <button
               type="button"
-              onClick={() => navigateTo('cart')}
-              className="relative min-w-[38px] min-h-[38px] sm:min-w-[44px] sm:min-h-[44px] flex items-center justify-center rounded-full bg-white border border-stone-200 text-stone-700 hover:bg-stone-100 transition-colors shadow-xs shrink-0 focus-visible:ring-2 focus-visible:ring-emerald-700 cursor-pointer"
+              onClick={() => {
+                setMobileMenuOpen(false);
+                navigateTo('cart');
+              }}
+              className="relative w-10 h-10 min-w-[40px] min-h-[40px] sm:w-11 sm:h-11 flex items-center justify-center rounded-full bg-white border border-stone-200 text-stone-700 hover:bg-stone-100 transition-colors shadow-2xs shrink-0 focus-visible:ring-2 focus-visible:ring-emerald-700 cursor-pointer"
               title={t('nav.cart')}
               aria-label={`${t('nav.cart')}, ${cartCount} item`}
             >
@@ -318,15 +312,15 @@ export const Navbar: React.FC = () => {
             <button
               type="button"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className={`lg:hidden p-2 min-w-[38px] min-h-[38px] sm:min-w-[44px] sm:min-h-[44px] flex items-center justify-center rounded-xl transition-all focus-visible:ring-2 focus-visible:ring-emerald-700 cursor-pointer shrink-0 ${
-                mobileMenuOpen 
-                  ? 'bg-emerald-800 text-amber-200 shadow-sm' 
-                  : 'text-stone-800 hover:bg-stone-200/60'
-              }`}
+              className="lg:hidden w-10 h-10 min-w-[40px] min-h-[40px] sm:w-11 sm:h-11 flex items-center justify-center rounded-full bg-white border border-stone-200 text-stone-700 hover:bg-stone-100 hover:border-emerald-700 transition-colors shadow-2xs shrink-0 cursor-pointer focus-visible:ring-2 focus-visible:ring-emerald-700"
               aria-expanded={mobileMenuOpen}
               aria-label={mobileMenuOpen ? (language === 'en' ? 'Close navigation menu' : 'Tutup menu navigasi') : (language === 'en' ? 'Open navigation menu' : 'Buka menu navigasi')}
             >
-              {mobileMenuOpen ? <X className="w-5 h-5 sm:w-6 sm:h-6 stroke-[2.5]" /> : <Menu className="w-5 h-5 sm:w-6 sm:h-6 stroke-[2.5]" />}
+              {mobileMenuOpen ? (
+                <X className="w-5 h-5 text-stone-800 stroke-[2.2]" />
+              ) : (
+                <Menu className="w-5 h-5 text-emerald-800 stroke-[2.2]" />
+              )}
             </button>
           </div>
         </div>
@@ -361,7 +355,10 @@ export const Navbar: React.FC = () => {
             >
               <button
                 type="button"
-                onClick={() => setLanguage('id')}
+                onClick={() => {
+                  setLanguage('id');
+                  setMobileMenuOpen(false);
+                }}
                 className={`flex items-center gap-1 px-3 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer min-h-[40px] focus-visible:ring-2 focus-visible:ring-emerald-700 ${
                   language === 'id'
                     ? 'bg-emerald-800 text-amber-200 shadow-xs'
@@ -375,7 +372,10 @@ export const Navbar: React.FC = () => {
               </button>
               <button
                 type="button"
-                onClick={() => setLanguage('en')}
+                onClick={() => {
+                  setLanguage('en');
+                  setMobileMenuOpen(false);
+                }}
                 className={`px-3 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer min-h-[40px] focus-visible:ring-2 focus-visible:ring-emerald-700 ${
                   language === 'en'
                     ? 'bg-emerald-800 text-amber-200 shadow-xs'
