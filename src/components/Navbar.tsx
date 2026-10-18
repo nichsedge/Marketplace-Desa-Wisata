@@ -142,15 +142,15 @@ export const Navbar: React.FC = () => {
             type="button"
             onClick={() => navigateTo('home')}
             aria-label="Saba Lembang - Beranda Platform Interdesa Kawasan Lembang"
-            className="flex items-center gap-2 sm:gap-2.5 text-left cursor-pointer group shrink-0 rounded-xl p-1 focus-visible:ring-2 focus-visible:ring-emerald-700"
+            className="flex items-center gap-1.5 sm:gap-2.5 text-left cursor-pointer group shrink-0 rounded-xl p-1 focus-visible:ring-2 focus-visible:ring-emerald-700 min-w-0"
           >
             <img 
               src="/images/logo-saba-lembang.png" 
               alt="Logo Saba Lembang" 
-              className="w-9 h-9 sm:w-11 sm:h-11 rounded-full shadow-xs group-hover:scale-105 transition-transform shrink-0 object-contain" 
+              className="w-8 h-8 sm:w-11 sm:h-11 rounded-full shadow-xs group-hover:scale-105 transition-transform shrink-0 object-contain" 
             />
             <div className="shrink-0">
-              <span className="text-base sm:text-xl xl:text-2xl font-extrabold font-serif-title tracking-tight text-stone-900 group-hover:text-emerald-800 transition-colors">
+              <span className="text-sm sm:text-xl xl:text-2xl font-extrabold font-serif-title tracking-tight text-stone-900 group-hover:text-emerald-800 transition-colors">
                 Saba<span className="text-emerald-700">Lembang</span>
               </span>
               <span className="hidden 2xl:block text-[10px] font-medium tracking-widest text-amber-800 uppercase font-sans">
@@ -181,11 +181,11 @@ export const Navbar: React.FC = () => {
           </nav>
 
           {/* Sisi Kanan: Search Button, Language Switcher, Keranjang, & Akun */}
-          <div className="flex items-center gap-1.5 sm:gap-2.5 shrink-0">
+          <div className="flex items-center gap-1 sm:gap-2.5 shrink-0">
             
-            {/* Language Switcher Segmented Control */}
+            {/* 1. Language Switcher: Tablet/Desktop Full Segmented Control (sm: and up) */}
             <div 
-              className="flex items-center bg-stone-100 border border-stone-200 rounded-full p-0.5 shadow-2xs"
+              className="hidden sm:flex items-center bg-stone-100 border border-stone-200 rounded-full p-0.5 shadow-2xs shrink-0"
               role="group"
               aria-label="Pilih Bahasa / Language Selector"
             >
@@ -218,11 +218,23 @@ export const Navbar: React.FC = () => {
               </button>
             </div>
 
+            {/* 2. Language Switcher: Compact 1-Tap Toggle Pill for Mobile (< sm) */}
+            <button
+              type="button"
+              onClick={() => setLanguage(language === 'id' ? 'en' : 'id')}
+              className="flex sm:hidden items-center gap-1 px-2.5 py-1.5 rounded-full bg-stone-100 hover:bg-stone-200 border border-stone-200 text-[11px] font-extrabold text-stone-800 shadow-2xs min-h-[36px] transition-all cursor-pointer shrink-0 focus-visible:ring-2 focus-visible:ring-emerald-700"
+              title={language === 'id' ? 'Beralih ke English (EN)' : 'Switch to Bahasa Indonesia (ID)'}
+              aria-label={language === 'id' ? 'Beralih ke English' : 'Switch to Bahasa Indonesia'}
+            >
+              <Globe className="w-3.5 h-3.5 text-emerald-800" />
+              <span className="font-black text-emerald-950 uppercase">{language}</span>
+            </button>
+
             {/* Tombol Pencarian - Icon Only */}
             <button 
               type="button"
               onClick={() => setSearchModalOpen(true)}
-              className="relative min-w-[44px] min-h-[44px] flex items-center justify-center rounded-full bg-white border border-stone-200 text-stone-700 hover:bg-stone-100 hover:border-emerald-700 transition-colors shadow-xs shrink-0 cursor-pointer focus-visible:ring-2 focus-visible:ring-emerald-700"
+              className="relative min-w-[38px] min-h-[38px] sm:min-w-[44px] sm:min-h-[44px] flex items-center justify-center rounded-full bg-white border border-stone-200 text-stone-700 hover:bg-stone-100 hover:border-emerald-700 transition-colors shadow-xs shrink-0 cursor-pointer focus-visible:ring-2 focus-visible:ring-emerald-700"
               title={t('nav.searchPlaceholder')}
               aria-label={t('nav.searchPlaceholder')}
             >
@@ -233,7 +245,7 @@ export const Navbar: React.FC = () => {
             <button
               type="button"
               onClick={() => navigateTo('cart')}
-              className="relative min-w-[44px] min-h-[44px] flex items-center justify-center rounded-full bg-white border border-stone-200 text-stone-700 hover:bg-stone-100 transition-colors shadow-xs shrink-0 focus-visible:ring-2 focus-visible:ring-emerald-700 cursor-pointer"
+              className="relative min-w-[38px] min-h-[38px] sm:min-w-[44px] sm:min-h-[44px] flex items-center justify-center rounded-full bg-white border border-stone-200 text-stone-700 hover:bg-stone-100 transition-colors shadow-xs shrink-0 focus-visible:ring-2 focus-visible:ring-emerald-700 cursor-pointer"
               title={t('nav.cart')}
               aria-label={`${t('nav.cart')}, ${cartCount} item`}
             >
@@ -306,11 +318,15 @@ export const Navbar: React.FC = () => {
             <button
               type="button"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="lg:hidden p-2.5 min-w-[44px] min-h-[44px] flex items-center justify-center text-stone-700 hover:bg-stone-200/60 rounded-xl transition-colors focus-visible:ring-2 focus-visible:ring-emerald-700 cursor-pointer"
+              className={`lg:hidden p-2 min-w-[38px] min-h-[38px] sm:min-w-[44px] sm:min-h-[44px] flex items-center justify-center rounded-xl transition-all focus-visible:ring-2 focus-visible:ring-emerald-700 cursor-pointer shrink-0 ${
+                mobileMenuOpen 
+                  ? 'bg-emerald-800 text-amber-200 shadow-sm' 
+                  : 'text-stone-800 hover:bg-stone-200/60'
+              }`}
               aria-expanded={mobileMenuOpen}
               aria-label={mobileMenuOpen ? (language === 'en' ? 'Close navigation menu' : 'Tutup menu navigasi') : (language === 'en' ? 'Open navigation menu' : 'Buka menu navigasi')}
             >
-              {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+              {mobileMenuOpen ? <X className="w-5 h-5 sm:w-6 sm:h-6 stroke-[2.5]" /> : <Menu className="w-5 h-5 sm:w-6 sm:h-6 stroke-[2.5]" />}
             </button>
           </div>
         </div>
