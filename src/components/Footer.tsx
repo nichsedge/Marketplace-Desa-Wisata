@@ -20,6 +20,18 @@ export const Footer: React.FC = () => {
   const [modalVillageId, setModalVillageId] = useState<string>('des-01');
   const [isMapModalOpen, setIsMapModalOpen] = useState(false);
 
+  React.useEffect(() => {
+    if (isMapModalOpen) {
+      const handleKeyDown = (e: KeyboardEvent) => {
+        if (e.key === 'Escape') {
+          setIsMapModalOpen(false);
+        }
+      };
+      window.addEventListener('keydown', handleKeyDown);
+      return () => window.removeEventListener('keydown', handleKeyDown);
+    }
+  }, [isMapModalOpen]);
+
   const currentModalVillage = villages.find(v => v.id === modalVillageId) || villages[0];
 
   return (
@@ -145,24 +157,32 @@ export const Footer: React.FC = () => {
           </p>
           <div className="flex flex-wrap items-center gap-4 text-stone-400">
             {/* Language Switcher */}
-            <div className="flex items-center gap-1.5 bg-stone-800/80 px-2.5 py-1 rounded-full border border-stone-700">
-              <Globe className="w-3.5 h-3.5 text-emerald-400" />
+            <div 
+              className="flex items-center gap-1.5 bg-stone-800/80 p-1 rounded-full border border-stone-700"
+              role="group"
+              aria-label="Pilih Bahasa / Language Selector"
+            >
+              <Globe className="w-3.5 h-3.5 text-emerald-400 ml-1.5" aria-hidden="true" />
               <button
+                type="button"
                 onClick={() => setLanguage('id')}
-                className={`text-[11px] font-bold px-1.5 py-0.5 rounded cursor-pointer ${language === 'id' ? 'bg-emerald-700 text-white' : 'text-stone-400 hover:text-white'}`}
+                aria-label="Bahasa Indonesia"
+                className={`text-[11px] font-bold px-2.5 py-1.5 min-h-[32px] rounded-full cursor-pointer focus-visible:ring-2 focus-visible:ring-emerald-400 ${language === 'id' ? 'bg-emerald-700 text-white' : 'text-stone-400 hover:text-white'}`}
               >
                 ID
               </button>
-              <span className="text-stone-600">|</span>
+              <span className="text-stone-600" aria-hidden="true">|</span>
               <button
+                type="button"
                 onClick={() => setLanguage('en')}
-                className={`text-[11px] font-bold px-1.5 py-0.5 rounded cursor-pointer ${language === 'en' ? 'bg-emerald-700 text-white' : 'text-stone-400 hover:text-white'}`}
+                aria-label="English"
+                className={`text-[11px] font-bold px-2.5 py-1.5 min-h-[32px] rounded-full cursor-pointer focus-visible:ring-2 focus-visible:ring-emerald-400 ${language === 'en' ? 'bg-emerald-700 text-white' : 'text-stone-400 hover:text-white'}`}
               >
                 EN
               </button>
             </div>
             <span className="flex items-center gap-1">
-              <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" /> 
+              <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" aria-hidden="true" /> 
               {language === 'en'
                 ? 'Decentralized Tourism Villages · Direct Transactions with Village Admins & Locals'
                 : 'Desentralisasi Desa Wisata · Transaksi Langsung ke Admin & Warga'}
@@ -175,6 +195,9 @@ export const Footer: React.FC = () => {
       {/* Interactive Map & Office Directory Modal */}
       {isMapModalOpen && (
         <div 
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="footer-map-title"
           className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-sm animate-in fade-in duration-200"
           onClick={(e) => {
             if (e.target === e.currentTarget) setIsMapModalOpen(false);
@@ -186,10 +209,10 @@ export const Footer: React.FC = () => {
             <div className="p-4 sm:p-5 bg-gradient-to-r from-emerald-950 via-stone-900 to-emerald-900 text-white flex items-center justify-between shrink-0">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-xl bg-amber-400 text-stone-950 flex items-center justify-center font-bold shrink-0">
-                  <Building2 className="w-5 h-5" />
+                  <Building2 className="w-5 h-5" aria-hidden="true" />
                 </div>
                 <div>
-                  <h3 className="text-base sm:text-lg font-bold font-serif-title">
+                  <h3 id="footer-map-title" className="text-base sm:text-lg font-bold font-serif-title">
                     {language === 'en' ? 'Directory & Village Office Location Map' : 'Direktori & Peta Lokasi Kantor Desa'}
                   </h3>
                   <p className="text-[11px] text-stone-300">
@@ -199,8 +222,10 @@ export const Footer: React.FC = () => {
               </div>
 
               <button
+                type="button"
                 onClick={() => setIsMapModalOpen(false)}
-                className="p-2 rounded-xl bg-white/10 hover:bg-rose-600 text-stone-300 hover:text-white transition-colors cursor-pointer"
+                aria-label={language === 'en' ? 'Close map directory' : 'Tutup direktori peta'}
+                className="p-2 min-w-[40px] min-h-[40px] flex items-center justify-center rounded-xl bg-white/10 hover:bg-rose-600 text-stone-300 hover:text-white transition-colors cursor-pointer focus-visible:ring-2 focus-visible:ring-white"
               >
                 <X className="w-5 h-5" />
               </button>

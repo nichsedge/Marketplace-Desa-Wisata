@@ -53,6 +53,8 @@ export const UserAvatar: React.FC<UserAvatarProps> = ({
       <img
         src={src}
         alt={alt}
+        loading="lazy"
+        decoding="async"
         className="w-full h-full object-cover"
         referrerPolicy="no-referrer"
         onError={() => setHasError(true)}

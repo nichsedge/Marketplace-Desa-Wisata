@@ -62,6 +62,8 @@ export const VillageDetailView: React.FC = () => {
         <img
           src={village.image}
           alt={village.name}
+          loading="lazy"
+          decoding="async"
           className="absolute inset-0 w-full h-full object-cover"
           referrerPolicy="no-referrer"
         />
@@ -94,10 +96,19 @@ export const VillageDetailView: React.FC = () => {
       </div>
 
       {/* Navigation Tabs */}
-      <div className="flex flex-wrap items-center gap-2 border-b border-stone-200 pb-2">
+      <div 
+        role="tablist" 
+        aria-label={language === 'en' ? 'Village Navigation Tabs' : 'Navigasi Bagian Desa'}
+        className="flex flex-wrap items-center gap-2 border-b border-stone-200 pb-2"
+      >
         <button
+          type="button"
+          role="tab"
+          id="tab-overview"
+          aria-selected={activeTab === 'overview'}
+          aria-controls="panel-overview"
           onClick={() => setActiveTab('overview')}
-          className={`px-4 py-2.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+          className={`px-4 py-2.5 rounded-xl text-xs font-bold transition-all cursor-pointer focus-visible:ring-2 focus-visible:ring-emerald-700 ${
             activeTab === 'overview'
               ? 'bg-emerald-800 text-amber-200 shadow-sm'
               : 'bg-white text-stone-700 hover:bg-stone-100 border border-stone-200'
@@ -107,8 +118,13 @@ export const VillageDetailView: React.FC = () => {
         </button>
 
         <button
+          type="button"
+          role="tab"
+          id="tab-peta-lokasi"
+          aria-selected={activeTab === 'peta-lokasi'}
+          aria-controls="panel-peta-lokasi"
           onClick={() => setActiveTab('peta-lokasi')}
-          className={`px-4 py-2.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer ${
+          className={`px-4 py-2.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer focus-visible:ring-2 focus-visible:ring-emerald-700 ${
             activeTab === 'peta-lokasi'
               ? 'bg-emerald-800 text-amber-200 shadow-sm'
               : 'bg-white text-stone-700 hover:bg-stone-100 border border-stone-200'
@@ -119,8 +135,13 @@ export const VillageDetailView: React.FC = () => {
         </button>
 
         <button
+          type="button"
+          role="tab"
+          id="tab-products"
+          aria-selected={activeTab === 'products'}
+          aria-controls="panel-products"
           onClick={() => setActiveTab('products')}
-          className={`px-4 py-2.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer ${
+          className={`px-4 py-2.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer focus-visible:ring-2 focus-visible:ring-emerald-700 ${
             activeTab === 'products'
               ? 'bg-emerald-800 text-amber-200 shadow-sm'
               : 'bg-white text-stone-700 hover:bg-stone-100 border border-stone-200'
@@ -131,8 +152,13 @@ export const VillageDetailView: React.FC = () => {
         </button>
 
         <button
+          type="button"
+          role="tab"
+          id="tab-gallery"
+          aria-selected={activeTab === 'gallery'}
+          aria-controls="panel-gallery"
           onClick={() => setActiveTab('gallery')}
-          className={`px-4 py-2.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+          className={`px-4 py-2.5 rounded-xl text-xs font-bold transition-all cursor-pointer focus-visible:ring-2 focus-visible:ring-emerald-700 ${
             activeTab === 'gallery'
               ? 'bg-emerald-800 text-amber-200 shadow-sm'
               : 'bg-white text-stone-700 hover:bg-stone-100 border border-stone-200'
@@ -144,7 +170,12 @@ export const VillageDetailView: React.FC = () => {
 
       {/* TAB 1: OVERVIEW */}
       {activeTab === 'overview' && (
-        <div className="space-y-8">
+        <div 
+          role="tabpanel" 
+          id="panel-overview" 
+          aria-labelledby="tab-overview" 
+          className="space-y-8"
+        >
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             
             <div className="lg:col-span-2 space-y-6">
@@ -202,7 +233,7 @@ export const VillageDetailView: React.FC = () => {
 
                 <div className="space-y-3 text-xs text-stone-200 pt-2 border-t border-emerald-800/60">
                   <div>
-                    <span className="text-[10px] text-stone-400 block font-semibold">
+                    <span className="text-[10px] text-stone-300 block font-semibold">
                       {language === 'en' ? 'Altitude:' : 'Ketinggian Tempat:'}
                     </span>
                     <p className="font-bold text-white text-sm">
@@ -211,7 +242,7 @@ export const VillageDetailView: React.FC = () => {
                   </div>
 
                   <div>
-                    <span className="text-[10px] text-stone-400 block font-semibold">
+                    <span className="text-[10px] text-stone-300 block font-semibold">
                       {language === 'en' ? 'Village Office Address:' : 'Alamat Kantor Desa:'}
                     </span>
                     <p className="text-xs leading-relaxed text-stone-300">{village.officeAddress || village.mapLocation}</p>
@@ -221,7 +252,7 @@ export const VillageDetailView: React.FC = () => {
                 <div className="pt-2 space-y-2">
                   <button
                     onClick={() => setActiveTab('peta-lokasi')}
-                    className="w-full py-3 bg-emerald-800 hover:bg-emerald-700 text-white font-bold rounded-2xl text-xs transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer"
+                    className="w-full py-3 bg-emerald-800 hover:bg-emerald-700 text-white font-bold rounded-2xl text-xs transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer focus-visible:ring-2 focus-visible:ring-emerald-400"
                   >
                     <Building2 className="w-4 h-4 text-amber-300" />
                     <span>{language === 'en' ? 'View Village Office Map' : 'Lihat Peta Lokasi Kantor Desa'}</span>
@@ -229,7 +260,7 @@ export const VillageDetailView: React.FC = () => {
 
                   <button
                     onClick={() => setActiveTab('products')}
-                    className="w-full py-3 bg-amber-400 hover:bg-amber-300 text-stone-950 font-extrabold rounded-2xl text-xs transition-all shadow-md cursor-pointer"
+                    className="w-full py-3 bg-amber-400 hover:bg-amber-300 text-stone-950 font-extrabold rounded-2xl text-xs transition-all shadow-md cursor-pointer focus-visible:ring-2 focus-visible:ring-amber-200"
                   >
                     {language === 'en' ? `View Products & Stays Catalog (${villageProducts.length})` : `Lihat Katalog Produk & Layanan (${villageProducts.length})`}
                   </button>
@@ -250,7 +281,12 @@ export const VillageDetailView: React.FC = () => {
 
       {/* TAB 2: PETA KANTOR DESA & KONTAK */}
       {activeTab === 'peta-lokasi' && (
-        <div className="space-y-6">
+        <div 
+          role="tabpanel" 
+          id="panel-peta-lokasi" 
+          aria-labelledby="tab-peta-lokasi" 
+          className="space-y-6"
+        >
           <VillageLocationMap
             villages={villages}
             initialVillageId={village.id}
@@ -261,7 +297,12 @@ export const VillageDetailView: React.FC = () => {
 
       {/* TAB 3: PRODUCTS */}
       {activeTab === 'products' && (
-        <div className="space-y-6">
+        <div 
+          role="tabpanel" 
+          id="panel-products" 
+          aria-labelledby="tab-products" 
+          className="space-y-6"
+        >
           <div className="border-b border-stone-200 pb-3">
             <h2 className="text-xl font-bold font-serif-title text-stone-900">
               {language === 'en' ? `Products & Services Catalog of ${village.name} (${villageProducts.length})` : `Katalog Produk & Layanan ${village.name} (${villageProducts.length})`}
@@ -284,7 +325,12 @@ export const VillageDetailView: React.FC = () => {
 
       {/* TAB 4: GALLERY */}
       {activeTab === 'gallery' && (
-        <div className="space-y-6">
+        <div 
+          role="tabpanel" 
+          id="panel-gallery" 
+          aria-labelledby="tab-gallery" 
+          className="space-y-6"
+        >
           <div className="border-b border-stone-200 pb-3">
             <h2 className="text-xl font-bold font-serif-title text-stone-900">
               {language === 'en' ? `Photo Gallery of Charming ${village.name}` : `Galeri Foto Pesona ${village.name}`}
@@ -297,7 +343,7 @@ export const VillageDetailView: React.FC = () => {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {village.gallery.map((imgUrl, i) => (
               <div key={i} className="h-64 rounded-2xl overflow-hidden border border-stone-200 shadow-md">
-                <img src={imgUrl} alt={`gallery-${i}`} className="w-full h-full object-cover hover:scale-105 transition-transform" referrerPolicy="no-referrer" />
+                <img src={imgUrl} alt={`gallery-${i}`} loading="lazy" decoding="async" className="w-full h-full object-cover hover:scale-105 transition-transform" referrerPolicy="no-referrer" />
               </div>
             ))}
           </div>

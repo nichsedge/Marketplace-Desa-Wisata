@@ -52,6 +52,18 @@ export const CartView: React.FC = () => {
   // Order Receipt Modal
   const [completedOrder, setCompletedOrder] = useState<Order | null>(null);
 
+  React.useEffect(() => {
+    if (completedOrder) {
+      const handleKeyDown = (e: KeyboardEvent) => {
+        if (e.key === 'Escape') {
+          setCompletedOrder(null);
+        }
+      };
+      window.addEventListener('keydown', handleKeyDown);
+      return () => window.removeEventListener('keydown', handleKeyDown);
+    }
+  }, [completedOrder]);
+
   const serviceFee = 0;
   const grandTotal = cartTotal;
 
@@ -118,6 +130,8 @@ export const CartView: React.FC = () => {
                     <img
                       src={itemProd.image}
                       alt={itemProd.title}
+                      loading="lazy"
+                      decoding="async"
                       className="w-20 h-20 rounded-xl object-cover border border-stone-200 shrink-0"
                       referrerPolicy="no-referrer"
                     />
@@ -126,25 +140,33 @@ export const CartView: React.FC = () => {
                         {itemProd.villageName}
                       </span>
                       <h4 
+                        role="button"
+                        tabIndex={0}
                         onClick={() => navigateTo('product-detail', item.product.id)}
-                        className="text-sm font-bold text-stone-900 line-clamp-1 hover:text-emerald-800 cursor-pointer"
+                        onKeyDown={(e) => {
+                          if (e.key === 'Enter' || e.key === ' ') {
+                            e.preventDefault();
+                            navigateTo('product-detail', item.product.id);
+                          }
+                        }}
+                        className="text-sm font-bold text-stone-900 line-clamp-1 hover:text-emerald-800 cursor-pointer rounded focus-visible:ring-2 focus-visible:ring-emerald-700 focus-visible:outline-none"
                       >
                         {itemProd.title}
                       </h4>
                       <p className="text-xs font-extrabold text-emerald-800">
-                        {formatRupiah(itemProd.price)} <span className="text-[10px] text-stone-500 font-normal">{itemProd.unit}</span>
+                        {formatRupiah(itemProd.price)} <span className="text-[10px] text-stone-600 font-normal">{itemProd.unit}</span>
                       </p>
 
                       {/* Date details if any */}
                       {item.bookingDateStart && (
-                        <p className="text-[11px] text-stone-500 flex items-center gap-1">
-                          <Calendar className="w-3 h-3 text-emerald-700" />
+                        <p className="text-[11px] text-stone-600 flex items-center gap-1">
+                          <Calendar className="w-3 h-3 text-emerald-700" aria-hidden="true" />
                           <span>{language === 'en' ? 'Date:' : 'Tgl:'} {item.bookingDateStart} {item.bookingDateEnd ? `${language === 'en' ? 'to' : 's/d'} ${item.bookingDateEnd}` : ''}</span>
                         </p>
                       )}
                       {item.guestCount && (
-                        <p className="text-[11px] text-stone-500 flex items-center gap-1">
-                          <Users className="w-3 h-3 text-emerald-700" />
+                        <p className="text-[11px] text-stone-600 flex items-center gap-1">
+                          <Users className="w-3 h-3 text-emerald-700" aria-hidden="true" />
                           <span>{item.guestCount} {language === 'en' ? 'Guests' : 'Tamu / Orang'}</span>
                         </p>
                       )}
@@ -153,19 +175,23 @@ export const CartView: React.FC = () => {
 
                   {/* Quantity & Controls */}
                   <div className="flex items-center justify-between sm:justify-end w-full sm:w-auto gap-4 pt-2 sm:pt-0 border-t sm:border-t-0 border-stone-100">
-                    <div className="flex items-center gap-2 bg-stone-50 px-2.5 py-1 rounded-xl border border-stone-300">
+                    <div className="flex items-center gap-1 bg-stone-100 p-1 rounded-2xl border border-stone-300">
                       <button
+                        type="button"
                         onClick={() => updateCartQuantity(item.product.id, item.quantity - 1)}
-                        className="text-stone-600 hover:text-stone-900 font-bold cursor-pointer"
+                        aria-label={`${language === 'en' ? 'Decrease quantity of' : 'Kurangi jumlah'} ${itemProd.title}`}
+                        className="min-w-[36px] min-h-[36px] flex items-center justify-center rounded-xl text-stone-700 hover:text-stone-900 hover:bg-stone-200 transition-colors cursor-pointer focus-visible:ring-2 focus-visible:ring-emerald-700"
                       >
-                        <Minus className="w-3.5 h-3.5" />
+                        <Minus className="w-4 h-4" />
                       </button>
-                      <span className="text-xs font-extrabold text-stone-900 min-w-4 text-center">{item.quantity}</span>
+                      <span className="text-xs font-extrabold text-stone-900 min-w-6 text-center">{item.quantity}</span>
                       <button
+                        type="button"
                         onClick={() => updateCartQuantity(item.product.id, item.quantity + 1)}
-                        className="text-stone-600 hover:text-stone-900 font-bold cursor-pointer"
+                        aria-label={`${language === 'en' ? 'Increase quantity of' : 'Tambah jumlah'} ${itemProd.title}`}
+                        className="min-w-[36px] min-h-[36px] flex items-center justify-center rounded-xl text-stone-700 hover:text-stone-900 hover:bg-stone-200 transition-colors cursor-pointer focus-visible:ring-2 focus-visible:ring-emerald-700"
                       >
-                        <Plus className="w-3.5 h-3.5" />
+                        <Plus className="w-4 h-4" />
                       </button>
                     </div>
 
@@ -179,9 +205,11 @@ export const CartView: React.FC = () => {
                     </div>
 
                     <button
+                      type="button"
                       onClick={() => removeFromCart(item.product.id)}
-                      className="p-1.5 text-stone-400 hover:text-rose-600 rounded-lg transition-colors cursor-pointer"
+                      className="min-w-[40px] min-h-[40px] flex items-center justify-center text-stone-500 hover:text-rose-600 rounded-xl hover:bg-rose-50 transition-colors cursor-pointer focus-visible:ring-2 focus-visible:ring-rose-600"
                       title={language === 'en' ? 'Remove' : 'Hapus'}
+                      aria-label={`${language === 'en' ? 'Remove from cart' : 'Hapus dari keranjang'}: ${itemProd.title}`}
                     >
                       <Trash2 className="w-4 h-4" />
                     </button>
@@ -380,12 +408,23 @@ export const CartView: React.FC = () => {
 
       {/* ORDER RECEIPT E-TICKET MODAL */}
       {completedOrder && (
-        <div className="fixed inset-0 z-50 bg-stone-950/80 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto animate-in fade-in">
-          <div className="bg-white max-w-lg w-full rounded-3xl p-6 sm:p-8 shadow-2xl border border-stone-200 space-y-6 relative my-8 print:m-0 print:p-6 print:border-none print:shadow-none">
+        <div 
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="receipt-modal-title"
+          className="fixed inset-0 z-50 bg-stone-950/80 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto animate-in fade-in"
+          onClick={() => { setCompletedOrder(null); navigateTo('home'); }}
+        >
+          <div 
+            className="bg-white max-w-lg w-full rounded-3xl p-6 sm:p-8 shadow-2xl border border-stone-200 space-y-6 relative my-8 print:m-0 print:p-6 print:border-none print:shadow-none"
+            onClick={(e) => e.stopPropagation()}
+          >
             
             <button
+              type="button"
               onClick={() => { setCompletedOrder(null); navigateTo('home'); }}
-              className="absolute top-4 right-4 text-stone-400 hover:text-stone-700 p-1 print:hidden"
+              aria-label={language === 'en' ? 'Close receipt' : 'Tutup bukti tiket'}
+              className="absolute top-4 right-4 min-w-[36px] min-h-[36px] flex items-center justify-center text-stone-500 hover:text-stone-800 rounded-full hover:bg-stone-100 p-1 print:hidden cursor-pointer focus-visible:ring-2 focus-visible:ring-emerald-700"
             >
               <X className="w-6 h-6" />
             </button>
@@ -396,18 +435,20 @@ export const CartView: React.FC = () => {
                 <img 
                   src="/images/logo-saba-lembang.png" 
                   alt="Saba Lembang" 
+                  loading="lazy"
+                  decoding="async"
                   className="w-12 h-12 rounded-full shadow-xs object-contain" 
                 />
               </div>
               <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-100 text-emerald-900 border border-emerald-300 text-[10px] font-bold uppercase tracking-wider">
-                <ShieldCheck className="w-3.5 h-3.5 text-emerald-700" />
+                <ShieldCheck className="w-3.5 h-3.5 text-emerald-700" aria-hidden="true" />
                 <span>
                   {language === 'en'
                     ? 'SABA LEMBANG · LEMBANG REGION INTER-VILLAGE PLATFORM'
                     : 'SABA LEMBANG · PLATFORM INTERDESA KAWASAN LEMBANG'}
                 </span>
               </div>
-              <h2 className="text-xl sm:text-2xl font-extrabold font-serif-title text-stone-900">
+              <h2 id="receipt-modal-title" className="text-xl sm:text-2xl font-extrabold font-serif-title text-stone-900">
                 {language === 'en' ? 'Official E-Ticket & Reservation Receipt' : 'E-Ticket & Bukti Reservasi Resmi'}
               </h2>
               <p className="text-[11px] text-stone-500">

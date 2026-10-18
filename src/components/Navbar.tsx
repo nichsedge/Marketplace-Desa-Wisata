@@ -71,13 +71,24 @@ export const Navbar: React.FC = () => {
   const [modalSearchText, setModalSearchText] = useState('');
   const searchInputRef = useRef<HTMLInputElement>(null);
 
-  // Autofocus input saat modal terbuka
+  // Autofocus input saat modal terbuka & Escape key handler
   useEffect(() => {
     if (searchModalOpen) {
       setModalSearchText(searchQuery || '');
-      setTimeout(() => {
+      const timer = setTimeout(() => {
         searchInputRef.current?.focus();
       }, 50);
+
+      const handleKeyDown = (e: KeyboardEvent) => {
+        if (e.key === 'Escape') {
+          setSearchModalOpen(false);
+        }
+      };
+      window.addEventListener('keydown', handleKeyDown);
+      return () => {
+        clearTimeout(timer);
+        window.removeEventListener('keydown', handleKeyDown);
+      };
     }
   }, [searchModalOpen, searchQuery]);
 
@@ -127,9 +138,11 @@ export const Navbar: React.FC = () => {
         <div className="flex items-center justify-between h-14 sm:h-16 md:h-20 gap-2 sm:gap-3">
           
           {/* Sisi Kiri: Logo Saba Lembang */}
-          <div 
+          <button 
+            type="button"
             onClick={() => navigateTo('home')}
-            className="flex items-center gap-2 sm:gap-2.5 cursor-pointer group shrink-0"
+            aria-label="Saba Lembang - Beranda Platform Interdesa Kawasan Lembang"
+            className="flex items-center gap-2 sm:gap-2.5 text-left cursor-pointer group shrink-0 rounded-xl p-1 focus-visible:ring-2 focus-visible:ring-emerald-700"
           >
             <img 
               src="/images/logo-saba-lembang.png" 
@@ -144,17 +157,17 @@ export const Navbar: React.FC = () => {
                 {language === 'en' ? 'Lembang Region Inter-Village Platform' : 'Platform Interdesa Kawasan Lembang'}
               </span>
             </div>
-          </div>
+          </button>
 
           {/* Bagian Tengah: Menu Navigasi Utama (Hanya Tampil di Desktop Besar) */}
-          <nav className="hidden lg:flex items-center gap-1 xl:gap-1.5 shrink-0">
+          <nav className="hidden lg:flex items-center gap-1 xl:gap-1.5 shrink-0" aria-label="Navigasi Utama">
             {navItems.map((item) => {
               const isActive = page === item.route;
               return (
                 <button
                   key={item.route}
                   onClick={() => navigateTo(item.route)}
-                  className={`flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs xl:text-sm font-semibold whitespace-nowrap transition-all ${
+                  className={`flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs xl:text-sm font-semibold whitespace-nowrap transition-all focus-visible:ring-2 focus-visible:ring-emerald-700 ${
                     isActive
                       ? 'bg-emerald-800 text-amber-200 shadow-xs'
                       : 'text-stone-700 hover:text-emerald-800 hover:bg-stone-100/80'
@@ -179,25 +192,27 @@ export const Navbar: React.FC = () => {
               <button
                 type="button"
                 onClick={() => setLanguage('id')}
-                className={`flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-extrabold transition-all cursor-pointer ${
+                className={`flex items-center gap-1 px-3 py-1.5 rounded-full text-[11px] font-extrabold transition-all cursor-pointer min-h-[32px] focus-visible:ring-2 focus-visible:ring-emerald-700 ${
                   language === 'id'
                     ? 'bg-emerald-800 text-amber-200 shadow-xs'
-                    : 'text-stone-500 hover:text-stone-900'
+                    : 'text-stone-600 hover:text-stone-900'
                 }`}
                 title="Bahasa Indonesia"
+                aria-label="Gunakan Bahasa Indonesia"
               >
-                <Globe className={`w-3 h-3 ${language === 'id' ? 'text-amber-300' : 'text-stone-400'}`} />
+                <Globe className={`w-3 h-3 ${language === 'id' ? 'text-amber-300' : 'text-stone-500'}`} />
                 <span>ID</span>
               </button>
               <button
                 type="button"
                 onClick={() => setLanguage('en')}
-                className={`px-2.5 py-1 rounded-full text-[11px] font-extrabold transition-all cursor-pointer ${
+                className={`px-3 py-1.5 rounded-full text-[11px] font-extrabold transition-all cursor-pointer min-h-[32px] focus-visible:ring-2 focus-visible:ring-emerald-700 ${
                   language === 'en'
                     ? 'bg-emerald-800 text-amber-200 shadow-xs'
-                    : 'text-stone-500 hover:text-stone-900'
+                    : 'text-stone-600 hover:text-stone-900'
                 }`}
                 title="English"
+                aria-label="Switch to English"
               >
                 <span>EN</span>
               </button>
@@ -205,22 +220,26 @@ export const Navbar: React.FC = () => {
 
             {/* Tombol Pencarian - Icon Only */}
             <button 
+              type="button"
               onClick={() => setSearchModalOpen(true)}
-              className="relative p-1.5 sm:p-2.5 rounded-full bg-white border border-stone-200 text-stone-700 hover:bg-stone-100 hover:border-emerald-700 transition-colors shadow-xs shrink-0 cursor-pointer"
+              className="relative min-w-[44px] min-h-[44px] flex items-center justify-center rounded-full bg-white border border-stone-200 text-stone-700 hover:bg-stone-100 hover:border-emerald-700 transition-colors shadow-xs shrink-0 cursor-pointer focus-visible:ring-2 focus-visible:ring-emerald-700"
               title={t('nav.searchPlaceholder')}
+              aria-label={t('nav.searchPlaceholder')}
             >
               <Search className="w-4 h-4 sm:w-5 sm:h-5 text-emerald-800" />
             </button>
 
             {/* Cart Icon */}
             <button
+              type="button"
               onClick={() => navigateTo('cart')}
-              className="relative p-1.5 sm:p-2.5 rounded-full bg-white border border-stone-200 text-stone-700 hover:bg-stone-100 transition-colors shadow-xs shrink-0"
+              className="relative min-w-[44px] min-h-[44px] flex items-center justify-center rounded-full bg-white border border-stone-200 text-stone-700 hover:bg-stone-100 transition-colors shadow-xs shrink-0 focus-visible:ring-2 focus-visible:ring-emerald-700 cursor-pointer"
               title={t('nav.cart')}
+              aria-label={`${t('nav.cart')}, ${cartCount} item`}
             >
               <ShoppingBag className="w-4 h-4 sm:w-5 sm:h-5 text-emerald-800" />
               {cartCount > 0 && (
-                <span className="absolute -top-1 -right-1 bg-amber-500 text-stone-950 font-black text-[10px] w-4.5 h-4.5 sm:w-5 sm:h-5 rounded-full flex items-center justify-center border-2 border-white shadow-xs">
+                <span className="absolute -top-1 -right-1 bg-amber-500 text-stone-950 font-black text-[10px] w-5 h-5 rounded-full flex items-center justify-center border-2 border-white shadow-xs">
                   {cartCount}
                 </span>
               )}
@@ -285,9 +304,11 @@ export const Navbar: React.FC = () => {
 
             {/* Mobile menu toggle */}
             <button
+              type="button"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="lg:hidden p-2 text-stone-700 hover:bg-stone-200/60 rounded-xl transition-colors"
-              aria-label="Menu navigasi"
+              className="lg:hidden p-2.5 min-w-[44px] min-h-[44px] flex items-center justify-center text-stone-700 hover:bg-stone-200/60 rounded-xl transition-colors focus-visible:ring-2 focus-visible:ring-emerald-700 cursor-pointer"
+              aria-expanded={mobileMenuOpen}
+              aria-label={mobileMenuOpen ? (language === 'en' ? 'Close navigation menu' : 'Tutup menu navigasi') : (language === 'en' ? 'Open navigation menu' : 'Buka menu navigasi')}
             >
               {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
             </button>
@@ -300,11 +321,12 @@ export const Navbar: React.FC = () => {
         <div className="lg:hidden border-t border-stone-200 bg-amber-50/95 px-4 pt-3 pb-6 space-y-3 animate-in fade-in slide-in-from-top-2 duration-150">
           <div className="flex items-center gap-2">
             <button
+              type="button"
               onClick={() => {
                 setMobileMenuOpen(false);
                 setSearchModalOpen(true);
               }}
-              className="flex-1 flex items-center justify-between px-4 py-3 bg-white border border-stone-300 rounded-2xl text-left shadow-xs"
+              className="flex-1 flex items-center justify-between px-4 py-3 bg-white border border-stone-300 rounded-2xl text-left shadow-xs focus-visible:ring-2 focus-visible:ring-emerald-700 cursor-pointer"
             >
               <div className="flex items-center gap-2.5 text-stone-500">
                 <Search className="w-4 h-4 text-emerald-800" />
@@ -324,25 +346,27 @@ export const Navbar: React.FC = () => {
               <button
                 type="button"
                 onClick={() => setLanguage('id')}
-                className={`flex items-center gap-1 px-2.5 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+                className={`flex items-center gap-1 px-3 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer min-h-[40px] focus-visible:ring-2 focus-visible:ring-emerald-700 ${
                   language === 'id'
                     ? 'bg-emerald-800 text-amber-200 shadow-xs'
                     : 'text-stone-600 hover:text-stone-900'
                 }`}
                 title="Bahasa Indonesia"
+                aria-label="Bahasa Indonesia"
               >
-                <Globe className={`w-3.5 h-3.5 ${language === 'id' ? 'text-amber-300' : 'text-stone-400'}`} />
+                <Globe className={`w-3.5 h-3.5 ${language === 'id' ? 'text-amber-300' : 'text-stone-500'}`} />
                 <span>ID</span>
               </button>
               <button
                 type="button"
                 onClick={() => setLanguage('en')}
-                className={`px-2.5 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+                className={`px-3 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer min-h-[40px] focus-visible:ring-2 focus-visible:ring-emerald-700 ${
                   language === 'en'
                     ? 'bg-emerald-800 text-amber-200 shadow-xs'
                     : 'text-stone-600 hover:text-stone-900'
                 }`}
                 title="English"
+                aria-label="English"
               >
                 <span>EN</span>
               </button>
@@ -352,9 +376,10 @@ export const Navbar: React.FC = () => {
           <div className="grid grid-cols-2 gap-2 pt-1">
             {navItems.map((item) => (
               <button
+                type="button"
                 key={item.route}
                 onClick={() => { navigateTo(item.route); setMobileMenuOpen(false); }}
-                className={`flex items-center gap-2 p-3 rounded-xl text-xs font-semibold ${
+                className={`flex items-center gap-2 p-3 rounded-xl text-xs font-semibold focus-visible:ring-2 focus-visible:ring-emerald-700 cursor-pointer ${
                   page === item.route
                     ? 'bg-emerald-800 text-amber-200 shadow-sm'
                     : 'bg-white/80 text-stone-700 border border-stone-200/80'
@@ -370,8 +395,9 @@ export const Navbar: React.FC = () => {
             {currentUser && currentUser.role === 'penjual' && (
               <div className="space-y-2">
                 <button
+                  type="button"
                   onClick={() => { navigateTo('dashboard'); setMobileMenuOpen(false); }}
-                  className="w-full flex items-center justify-center gap-2 p-3 bg-emerald-900 text-amber-200 rounded-xl text-xs font-bold shadow-md cursor-pointer"
+                  className="w-full flex items-center justify-center gap-2 p-3 bg-emerald-900 text-amber-200 rounded-xl text-xs font-bold shadow-md cursor-pointer focus-visible:ring-2 focus-visible:ring-emerald-700"
                 >
                   <LayoutDashboard className="w-4 h-4" />
                   <span>
@@ -379,8 +405,9 @@ export const Navbar: React.FC = () => {
                   </span>
                 </button>
                 <button
+                  type="button"
                   onClick={() => { logout(); setMobileMenuOpen(false); }}
-                  className="w-full flex items-center justify-center gap-2 p-2.5 bg-rose-50 text-rose-700 rounded-xl text-xs font-semibold border border-rose-200 cursor-pointer"
+                  className="w-full flex items-center justify-center gap-2 p-2.5 bg-rose-50 text-rose-700 rounded-xl text-xs font-semibold border border-rose-200 cursor-pointer focus-visible:ring-2 focus-visible:ring-rose-600"
                 >
                   <LogOut className="w-4 h-4" />
                   <span>{language === 'en' ? 'Sign Out of Admin Session' : 'Keluar Sesi Admin Desa'}</span>
@@ -395,7 +422,13 @@ export const Navbar: React.FC = () => {
       {/* INTERACTIVE SEARCH MODAL (COMMAND PALETTE STYLE) - ZERO OVERFLOW GUARANTEE */}
       {/* ========================================================================= */}
       {searchModalOpen && (
-        <div className="fixed inset-0 z-50 bg-stone-950/60 backdrop-blur-sm flex items-start justify-center pt-12 sm:pt-20 px-4 animate-in fade-in duration-150">
+        <div 
+          role="dialog"
+          aria-modal="true"
+          aria-label={language === 'en' ? 'Search Products & Villages' : 'Pencarian Produk dan Desa Wisata'}
+          className="fixed inset-0 z-50 bg-stone-950/60 backdrop-blur-sm flex items-start justify-center pt-12 sm:pt-20 px-4 animate-in fade-in duration-150"
+          onClick={() => setSearchModalOpen(false)}
+        >
           <div 
             className="w-full max-w-2xl bg-white rounded-3xl shadow-2xl border border-stone-200 overflow-hidden flex flex-col max-h-[85vh] animate-in zoom-in-95 duration-150"
             onClick={(e) => e.stopPropagation()}
@@ -405,7 +438,7 @@ export const Navbar: React.FC = () => {
               onSubmit={handleModalSubmit}
               className="flex items-center gap-3 p-4 sm:p-5 border-b border-stone-200 bg-stone-50/50"
             >
-              <Search className="w-5 h-5 sm:w-6 sm:h-6 text-emerald-800 shrink-0" />
+              <Search className="w-5 h-5 sm:w-6 sm:h-6 text-emerald-800 shrink-0" aria-hidden="true" />
               <input
                 ref={searchInputRef}
                 type="text"
@@ -416,14 +449,15 @@ export const Navbar: React.FC = () => {
                     ? 'Search homestays, Lembang coffee, dairy, offroad, village profiles...'
                     : 'Cari homestay, kopi Lembang, sayur, offroad, profil desa...'
                 }
-                className="w-full bg-transparent text-stone-900 text-base sm:text-lg font-semibold placeholder:text-stone-400 placeholder:font-normal focus:outline-none"
-                style={{ color: '#1c1917' }}
+                aria-label={language === 'en' ? 'Search query' : 'Kata kunci pencarian'}
+                className="w-full bg-transparent text-stone-900 text-base sm:text-lg font-semibold placeholder:text-stone-500 placeholder:font-normal focus:outline-none"
               />
               {modalSearchText && (
                 <button
                   type="button"
                   onClick={() => setModalSearchText('')}
-                  className="p-1 text-stone-400 hover:text-stone-700 rounded-full hover:bg-stone-200 text-xs"
+                  aria-label={language === 'en' ? 'Clear search text' : 'Hapus kata kunci'}
+                  className="min-w-[36px] min-h-[36px] flex items-center justify-center p-1 text-stone-500 hover:text-stone-800 rounded-full hover:bg-stone-200 text-sm cursor-pointer"
                 >
                   ✕
                 </button>
@@ -431,7 +465,8 @@ export const Navbar: React.FC = () => {
               <button
                 type="button"
                 onClick={() => setSearchModalOpen(false)}
-                className="px-2.5 py-1 text-xs font-bold text-stone-500 bg-stone-200/80 hover:bg-stone-300 rounded-lg transition-colors"
+                aria-label={language === 'en' ? 'Close search modal' : 'Tutup modal pencarian'}
+                className="px-3 py-1.5 text-xs font-bold text-stone-600 bg-stone-200/80 hover:bg-stone-300 rounded-lg transition-colors cursor-pointer"
               >
                 ESC
               </button>
@@ -442,8 +477,8 @@ export const Navbar: React.FC = () => {
               
               {/* Quick Tags (Tampil bila input kosong atau selalu untuk navigasi instan) */}
               <div>
-                <p className="text-[11px] font-bold text-stone-400 uppercase tracking-wider mb-2.5 flex items-center gap-1.5">
-                  <Sparkles className="w-3.5 h-3.5 text-amber-600" />
+                <p className="text-[11px] font-bold text-stone-600 uppercase tracking-wider mb-2.5 flex items-center gap-1.5">
+                  <Sparkles className="w-3.5 h-3.5 text-amber-600" aria-hidden="true" />
                   <span>
                     {language === 'en'
                       ? 'Quick & Popular Searches in Lembang Region:'
@@ -454,8 +489,9 @@ export const Navbar: React.FC = () => {
                   {(language === 'en' ? POPULAR_SEARCH_TAGS_EN : POPULAR_SEARCH_TAGS_ID).map((tag) => (
                     <button
                       key={tag}
+                      type="button"
                       onClick={() => handleTagClick(tag)}
-                      className="px-3 py-1.5 bg-stone-100 hover:bg-emerald-800 hover:text-amber-200 text-stone-700 text-xs font-semibold rounded-xl transition-all border border-stone-200/80 hover:scale-102"
+                      className="px-3.5 py-2 min-h-[36px] bg-stone-100 hover:bg-emerald-800 hover:text-amber-200 text-stone-800 text-xs font-semibold rounded-xl transition-all border border-stone-200/80 hover:scale-102 cursor-pointer focus-visible:ring-2 focus-visible:ring-emerald-700"
                     >
                       {tag}
                     </button>
@@ -466,7 +502,7 @@ export const Navbar: React.FC = () => {
               {/* Live Results Section */}
               {modalSearchText.trim().length > 0 && (
                 <div className="pt-2 border-t border-stone-100">
-                  <p className="text-[11px] font-bold text-stone-400 uppercase tracking-wider mb-3">
+                  <p className="text-[11px] font-bold text-stone-600 uppercase tracking-wider mb-3">
                     {language === 'en'
                       ? 'Matching Products & Tourism Activities:'
                       : 'Hasil Produk & Wisata Terkait:'}
@@ -478,17 +514,20 @@ export const Navbar: React.FC = () => {
                         const locItem = getLocalizedProduct(item, language);
                         const villageDisplay = language === 'en' ? item.villageName.replace('Desa Wisata ', 'Village ') : item.villageName;
                         return (
-                          <div
+                          <button
+                            type="button"
                             key={item.id}
                             onClick={() => {
                               setSearchModalOpen(false);
                               navigateTo('product-detail', item.id);
                             }}
-                            className="flex items-center gap-3.5 p-3 rounded-2xl border border-stone-200/80 hover:border-emerald-700/50 hover:bg-emerald-50/40 cursor-pointer transition-all group"
+                            className="w-full text-left flex items-center gap-3.5 p-3 rounded-2xl border border-stone-200/80 hover:border-emerald-700/50 hover:bg-emerald-50/40 cursor-pointer transition-all group focus-visible:ring-2 focus-visible:ring-emerald-700"
                           >
                             <img
                               src={item.image}
                               alt={locItem.title}
+                              loading="lazy"
+                              decoding="async"
                               className="w-14 h-14 rounded-xl object-cover border border-stone-200 group-hover:scale-105 transition-transform shrink-0"
                             />
                             <div className="flex-1 min-w-0">
@@ -508,12 +547,12 @@ export const Navbar: React.FC = () => {
                               <span>{language === 'en' ? 'View' : 'Buka'}</span>
                               <ArrowRight className="w-4 h-4" />
                             </div>
-                          </div>
+                          </button>
                         );
                       })}
                     </div>
                   ) : (
-                    <div className="py-6 text-center text-stone-500 text-sm">
+                    <div className="py-6 text-center text-stone-600 text-sm">
                       {language === 'en' ? (
                         <>No instant results found for "<strong>{modalSearchText}</strong>".</>
                       ) : (

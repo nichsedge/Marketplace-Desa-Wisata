@@ -8,6 +8,7 @@ import { getLocalizedProduct, getLocalizedCategoryName } from '../i18n/productTr
 
 interface ProductCardProps {
   product: Product;
+  layout?: 'grid' | 'list';
 }
 
 export const formatRupiah = (number?: number | null) => {
@@ -53,7 +54,7 @@ export const getCategoryBadge = (category: string, language: 'id' | 'en' = 'id')
   }
 };
 
-export const ProductCard: React.FC<ProductCardProps> = ({ product: rawProduct }) => {
+export const ProductCard: React.FC<ProductCardProps> = ({ product: rawProduct, layout = 'grid' }) => {
   const { navigateTo, addToCart, recordProductTap, recordWhatsAppLead, t, language } = useApp();
   const product = getLocalizedProduct(rawProduct, language);
   const categoryBadge = getCategoryBadge(product.category, language);
@@ -63,17 +64,38 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product: rawProduct })
     navigateTo('product-detail', product.id);
   };
 
+  const isList = layout === 'list';
+
   return (
-    <div className="group bg-white rounded-2xl overflow-hidden border border-stone-200/90 shadow-xs hover:shadow-xl transition-all duration-300 flex flex-col justify-between hover:-translate-y-1">
+    <div className={`group bg-white rounded-2xl overflow-hidden border border-stone-200/90 shadow-xs hover:shadow-xl transition-all duration-300 flex justify-between ${
+      isList 
+        ? 'flex-col sm:flex-row hover:-translate-y-0.5' 
+        : 'flex-col hover:-translate-y-1'
+    }`}>
       
-      {/* Top Image & Badges */}
+      {/* Top / Left Image & Badges */}
       <div 
-        className="relative h-48 sm:h-52 overflow-hidden cursor-pointer bg-stone-100"
+        role="button"
+        tabIndex={0}
+        aria-label={`${product.title} - ${language === 'en' ? 'Click to view product details' : 'Klik untuk lihat detail produk'}`}
+        className={`relative overflow-hidden cursor-pointer bg-stone-100 focus-visible:ring-2 focus-visible:ring-emerald-700 focus-visible:outline-none ${
+          isList
+            ? 'h-48 sm:h-auto sm:w-64 md:w-72 shrink-0'
+            : 'h-48 sm:h-52'
+        }`}
         onClick={handleCardClick}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            handleCardClick();
+          }
+        }}
       >
         <img
           src={product.image}
           alt={product.title}
+          loading="lazy"
+          decoding="async"
           className="w-full h-full object-cover group-hover:scale-108 transition-transform duration-500"
           referrerPolicy="no-referrer"
         />
@@ -90,13 +112,13 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product: rawProduct })
             </span>
             {product.isFeatured && (
               <span className="inline-flex items-center gap-1 px-2 py-0.5 text-[10px] font-extrabold rounded-full bg-amber-400 text-stone-950 shadow-xs border border-amber-300">
-                <Sparkles className="w-2.5 h-2.5 text-stone-950 fill-stone-950 shrink-0" />
+                <Sparkles className="w-2.5 h-2.5 text-stone-950 fill-stone-950 shrink-0" aria-hidden="true" />
                 <span>{language === 'en' ? 'Featured' : 'Unggulan'}</span>
               </span>
             )}
             {product.videoUrl && (
               <span className="inline-flex items-center gap-1 px-2 py-0.5 text-[10px] font-extrabold rounded-full bg-rose-600 text-white shadow-xs border border-rose-500">
-                <Play className="w-2.5 h-2.5 fill-white shrink-0" />
+                <Play className="w-2.5 h-2.5 fill-white shrink-0" aria-hidden="true" />
                 <span>{t('card.hasVideo')}</span>
               </span>
             )}
@@ -104,7 +126,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product: rawProduct })
 
           {/* Right: Rating Badge */}
           <div className="flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-stone-900/85 backdrop-blur-md text-amber-300 text-xs font-bold border border-white/20 shrink-0 shadow-xs">
-            <Star className="w-3 h-3 fill-amber-300 shrink-0" />
+            <Star className="w-3 h-3 fill-amber-300 shrink-0" aria-hidden="true" />
             <span>{product.rating}</span>
             <span className="text-[10px] text-stone-300 font-normal">({product.totalReviews})</span>
           </div>
@@ -112,7 +134,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product: rawProduct })
 
         {/* Village Location Bottom */}
         <div className="absolute bottom-3 left-3 right-3 flex items-center gap-1.5 text-white text-xs font-medium drop-shadow-md">
-          <MapPin className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
+          <MapPin className="w-3.5 h-3.5 text-emerald-400 shrink-0" aria-hidden="true" />
           <span className="truncate">{product.villageName}</span>
         </div>
       </div>
@@ -123,14 +145,22 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product: rawProduct })
         <div>
           {/* Title */}
           <h3 
+            role="button"
+            tabIndex={0}
             onClick={handleCardClick}
-            className="text-base font-bold text-stone-900 group-hover:text-emerald-800 transition-colors line-clamp-2 cursor-pointer font-sans leading-snug"
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                handleCardClick();
+              }
+            }}
+            className="text-base font-bold text-stone-900 group-hover:text-emerald-800 transition-colors line-clamp-2 cursor-pointer font-sans leading-snug rounded focus-visible:ring-2 focus-visible:ring-emerald-700 focus-visible:outline-none"
           >
             {product.title}
           </h3>
 
           {/* Highlights or Short Description */}
-          <p className="mt-1.5 text-xs text-stone-500 line-clamp-2 leading-relaxed">
+          <p className={`mt-1.5 text-xs text-stone-500 leading-relaxed ${isList ? 'line-clamp-2 sm:line-clamp-3' : 'line-clamp-2'}`}>
             {product.description}
           </p>
         </div>
@@ -155,11 +185,11 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product: rawProduct })
         </div>
 
         {/* Price & Actions */}
-        <div className="pt-3 border-t border-stone-100 space-y-2.5">
+        <div className={`pt-3 border-t border-stone-100 ${isList ? 'space-y-2.5 sm:space-y-0 sm:flex sm:items-center sm:justify-between' : 'space-y-2.5'}`}>
           {/* Price & Unit Display (Dedicated Full-Width Line, Never Truncated) */}
           <div className="flex flex-col">
             {product.originalPrice && (
-              <span className="text-[10px] sm:text-[11px] text-stone-400 line-through">
+              <span className="text-[10px] sm:text-[11px] text-stone-600 line-through font-medium">
                 {formatRupiah(product.originalPrice)}
               </span>
             )}
@@ -168,7 +198,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product: rawProduct })
                 {formatRupiah(product.price)}
               </span>
               {product.unit && (
-                <span className="text-[11px] sm:text-xs font-semibold text-stone-500 whitespace-nowrap">
+                <span className="text-[11px] sm:text-xs font-semibold text-stone-600 whitespace-nowrap">
                   {product.unit}
                 </span>
               )}
@@ -176,7 +206,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product: rawProduct })
           </div>
 
           {/* Action Buttons Row */}
-          <div className="flex items-center gap-2">
+          <div className={`flex items-center gap-2 ${isList ? 'sm:shrink-0' : ''}`}>
             {product.sellerPhone && (
               <button
                 type="button"
@@ -189,7 +219,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product: rawProduct })
                   const url = formatWhatsAppUrl(targetPhone, text);
                   window.open(url, '_blank');
                 }}
-                className="flex-1 py-2 px-3 rounded-xl bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-xs shadow-xs transition-all hover:scale-[1.02] flex items-center justify-center gap-1.5 cursor-pointer"
+                className="flex-1 sm:flex-initial py-2 px-3 rounded-xl bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-xs shadow-xs transition-all hover:scale-[1.02] flex items-center justify-center gap-1.5 cursor-pointer focus-visible:ring-2 focus-visible:ring-emerald-700"
                 title={`Chat WhatsApp langsung dengan ${product.sellerName.replace(/\s*\([^)]*\)$/, '') || product.sellerName}`}
               >
                 <Phone className="w-3.5 h-3.5" />
@@ -197,8 +227,9 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product: rawProduct })
               </button>
             )}
             <button
+              type="button"
               onClick={handleCardClick}
-              className={`${product.sellerPhone ? 'px-3.5' : 'w-full'} py-2 rounded-xl bg-stone-900 hover:bg-stone-800 text-amber-300 font-bold text-xs shadow-xs transition-all hover:scale-[1.02] flex items-center justify-center cursor-pointer`}
+              className={`${product.sellerPhone ? 'px-3.5' : 'w-full'} py-2 rounded-xl bg-stone-900 hover:bg-stone-800 text-amber-300 font-bold text-xs shadow-xs transition-all hover:scale-[1.02] flex items-center justify-center cursor-pointer focus-visible:ring-2 focus-visible:ring-emerald-700`}
             >
               <span>{t('card.viewDetail')}</span>
             </button>

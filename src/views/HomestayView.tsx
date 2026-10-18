@@ -39,6 +39,8 @@ export const HomestayView: React.FC = () => {
         <img
           src="/images/client/suntenjaya/hero-homestay-teras-kayu.webp"
           alt="Homestay Asri Rumah Warga Suntenjaya Lereng Palasari"
+          loading="lazy"
+          decoding="async"
           className="absolute inset-0 w-full h-full object-cover"
           referrerPolicy="no-referrer"
         />
@@ -112,29 +114,30 @@ export const HomestayView: React.FC = () => {
               max={1000000}
               step={25000}
               value={maxPrice}
+              aria-label={language === 'en' ? 'Maximum Price Filter' : 'Filter Batas Harga Maksimal'}
               onChange={(e) => setMaxPrice(Number(e.target.value))}
-              className="w-full accent-emerald-800 cursor-pointer"
+              className="w-full accent-emerald-800 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-700 rounded-lg"
             />
           </div>
 
           {/* Amenities Toggles */}
-          <div className="flex items-center justify-around sm:justify-start gap-4 py-2.5 bg-stone-50 border border-stone-200 rounded-xl px-3">
-            <label className="flex items-center gap-2 text-xs font-semibold text-stone-800 cursor-pointer">
+          <div className="flex items-center justify-around sm:justify-start gap-4 py-2 bg-stone-50 border border-stone-200 rounded-xl px-3">
+            <label className="flex items-center gap-2 text-xs font-semibold text-stone-800 cursor-pointer px-2 py-1 rounded-lg focus-within:ring-2 focus-within:ring-emerald-700">
               <input
                 type="checkbox"
                 checked={requireWifi}
                 onChange={(e) => setRequireWifi(e.target.checked)}
-                className="w-4 h-4 accent-emerald-800 rounded"
+                className="w-4 h-4 accent-emerald-800 rounded cursor-pointer"
               />
               <span>Free WiFi</span>
             </label>
 
-            <label className="flex items-center gap-2 text-xs font-semibold text-stone-800 cursor-pointer">
+            <label className="flex items-center gap-2 text-xs font-semibold text-stone-800 cursor-pointer px-2 py-1 rounded-lg focus-within:ring-2 focus-within:ring-emerald-700">
               <input
                 type="checkbox"
                 checked={requireBreakfast}
                 onChange={(e) => setRequireBreakfast(e.target.checked)}
-                className="w-4 h-4 accent-emerald-800 rounded"
+                className="w-4 h-4 accent-emerald-800 rounded cursor-pointer"
               />
               <span>{language === 'en' ? 'Free Breakfast' : 'Sarapan Gratis'}</span>
             </label>

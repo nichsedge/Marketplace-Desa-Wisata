@@ -34,6 +34,8 @@ export const TourPackagesView: React.FC = () => {
         <img
           src="/images/client/offroad-cikole/convoy-pine-trail.webp"
           alt="Paket Wisata & Offroad Kawasan Lembang"
+          loading="lazy"
+          decoding="async"
           className="absolute inset-0 w-full h-full object-cover"
           referrerPolicy="no-referrer"
         />
@@ -64,6 +66,7 @@ export const TourPackagesView: React.FC = () => {
             <MapPin className="w-4 h-4 text-emerald-700 shrink-0" />
             <select
               value={selectedVillageId}
+              aria-label={language === 'en' ? 'Select Tourism Village' : 'Pilih Desa Wisata'}
               onChange={(e) => setSelectedVillageId(e.target.value)}
               className="px-3 py-2 bg-white border border-stone-300 rounded-xl text-xs sm:text-sm font-bold text-stone-900 shadow-xs focus:outline-none focus:ring-2 focus:ring-emerald-700 cursor-pointer"
             >
@@ -81,6 +84,7 @@ export const TourPackagesView: React.FC = () => {
             <input
               type="text"
               value={searchWord}
+              aria-label={language === 'en' ? 'Search activities and tours' : 'Cari aktivitas dan paket wisata'}
               onChange={(e) => setSearchWord(e.target.value)}
               placeholder={language === 'en' ? 'Search activities, offroad, live-in...' : 'Cari aktivitas, offroad, live-in...'}
               className="w-full pl-9 pr-3 py-2 bg-stone-50 border border-stone-200 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-emerald-700"

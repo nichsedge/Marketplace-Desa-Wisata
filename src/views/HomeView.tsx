@@ -113,7 +113,9 @@ export const HomeView: React.FC = () => {
           <img
             src="/images/client/pasir-angling/hero-valley-panorama.webp"
             alt="Platform Interdesa Kawasan Lembang Lanskap Pegunungan"
-            className="w-full h-full object-cover object-center scale-105 animate-pulse duration-[10000ms]"
+            fetchPriority="high"
+            decoding="async"
+            className="w-full h-full object-cover object-center scale-105 transition-transform duration-700"
             referrerPolicy="no-referrer"
           />
           <div className="absolute inset-0 bg-gradient-to-r from-stone-950/90 via-stone-900/80 to-emerald-950/60" />
@@ -451,13 +453,24 @@ export const HomeView: React.FC = () => {
             return (
               <div
                 key={village.id}
+                role="button"
+                tabIndex={0}
+                aria-label={`${language === 'en' ? 'View details of' : 'Lihat profil'} ${villageName}`}
                 onClick={() => navigateTo('desa-detail', undefined, village.id)}
-                className="bg-white rounded-3xl border border-stone-200/90 shadow-sm overflow-hidden cursor-pointer hover:shadow-xl transition-all hover:-translate-y-1 flex flex-col justify-between group"
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    navigateTo('desa-detail', undefined, village.id);
+                  }
+                }}
+                className="bg-white rounded-3xl border border-stone-200/90 shadow-sm overflow-hidden cursor-pointer hover:shadow-xl transition-all hover:-translate-y-1 flex flex-col justify-between group focus-visible:ring-2 focus-visible:ring-emerald-700 focus-visible:outline-none"
               >
                 <div className="relative h-44 w-full overflow-hidden">
                   <img
                     src={village.image}
                     alt={villageName}
+                    loading="lazy"
+                    decoding="async"
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                     referrerPolicy="no-referrer"
                   />

@@ -201,12 +201,11 @@ export const AuthView: React.FC = () => {
                     placeholder={language === 'en' ? 'Enter password' : 'Masukkan kata sandi'}
                     className="w-full pl-10 pr-10 py-3 bg-stone-50 border border-stone-300 rounded-xl text-xs text-stone-900 font-medium focus:outline-none focus:ring-2 focus:ring-emerald-800 focus:bg-white transition-all"
                   />
-                  <KeyRound className="w-4 h-4 text-stone-400 absolute left-3.5 top-3.5" />
+                  <KeyRound className="w-4 h-4 text-stone-500 absolute left-3.5 top-3.5" aria-hidden="true" />
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
-                    className="p-1 text-stone-400 hover:text-stone-700 absolute right-3 top-3 cursor-pointer"
-                    tabIndex={-1}
+                    className="min-w-[40px] min-h-[40px] flex items-center justify-center p-2 text-stone-500 hover:text-stone-800 absolute right-1.5 top-1.5 cursor-pointer rounded-xl focus-visible:ring-2 focus-visible:ring-emerald-800"
                     aria-label={showPassword ? (language === 'en' ? 'Hide password' : 'Sembunyikan kata sandi') : (language === 'en' ? 'Show password' : 'Tampilkan kata sandi')}
                   >
                     {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
@@ -276,7 +275,7 @@ export const AuthView: React.FC = () => {
                     <span className="block text-[11px] font-bold text-stone-800 group-hover:text-emerald-900 truncate">
                       {pic.picVillageName?.replace('Desa Wisata ', language === 'en' ? 'Village ' : '') || pic.name}
                     </span>
-                    <span className="block text-[10px] text-stone-400 font-mono truncate">
+                    <span className="block text-[10px] text-stone-600 font-mono truncate font-medium">
                       {pic.username}
                     </span>
                   </button>
@@ -291,7 +290,7 @@ export const AuthView: React.FC = () => {
             <button
               type="button"
               onClick={() => navigateTo('home')}
-              className="flex items-center gap-1 font-semibold text-stone-600 hover:text-emerald-800 transition-colors cursor-pointer"
+              className="flex items-center gap-1 font-semibold text-stone-600 hover:text-emerald-800 transition-colors cursor-pointer focus-visible:ring-2 focus-visible:ring-emerald-800 rounded-lg p-1"
             >
               <ChevronLeft className="w-4 h-4" />
               <span>{language === 'en' ? 'Return to Home' : 'Kembali ke Beranda'}</span>
@@ -306,6 +305,9 @@ export const AuthView: React.FC = () => {
       {/* Forgot Password Modal */}
       {showForgotModal && (
         <div 
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="forgot-password-title"
           className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-in fade-in duration-150"
           onClick={(e) => {
             if (e.target === e.currentTarget) setShowForgotModal(false);
@@ -315,15 +317,16 @@ export const AuthView: React.FC = () => {
             <div className="flex items-center justify-between pb-3 border-b border-stone-100">
               <div className="flex items-center gap-2">
                 <div className="p-2 rounded-xl bg-amber-100 text-amber-900">
-                  <HelpCircle className="w-5 h-5" />
+                  <HelpCircle className="w-5 h-5" aria-hidden="true" />
                 </div>
-                <h4 className="text-sm font-bold text-stone-900">
+                <h4 id="forgot-password-title" className="text-sm font-bold text-stone-900">
                   {language === 'en' ? 'Forgot Password' : 'Lupa Kata Sandi'}
                 </h4>
               </div>
               <button
+                type="button"
                 onClick={() => setShowForgotModal(false)}
-                className="p-1 rounded-lg text-stone-400 hover:text-stone-700 cursor-pointer"
+                className="p-1 min-w-[36px] min-h-[36px] flex items-center justify-center rounded-lg text-stone-500 hover:text-stone-800 cursor-pointer focus-visible:ring-2 focus-visible:ring-emerald-800"
                 aria-label={language === 'en' ? 'Close' : 'Tutup'}
               >
                 <X className="w-4 h-4" />

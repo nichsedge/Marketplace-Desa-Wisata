@@ -138,8 +138,10 @@ export const MarketplaceView: React.FC = () => {
           />
           {searchQuery && (
             <button 
+              type="button"
               onClick={() => setSearchQuery('')}
-              className="absolute right-3 top-3 text-stone-400 hover:text-white text-xs cursor-pointer"
+              aria-label={language === 'en' ? 'Clear search query' : 'Hapus kata kunci pencarian'}
+              className="absolute right-3 top-2.5 p-1 text-stone-300 hover:text-white text-xs cursor-pointer rounded-lg hover:bg-white/10 transition-colors focus-visible:ring-2 focus-visible:ring-amber-400"
             >
               ✕
             </button>
@@ -271,15 +273,21 @@ export const MarketplaceView: React.FC = () => {
           {/* View Mode Toggle */}
           <div className="hidden sm:flex items-center bg-stone-100 p-0.5 rounded-xl border border-stone-200 shrink-0">
             <button
+              type="button"
               onClick={() => setViewMode('grid')}
-              className={`p-1.5 rounded-lg transition-colors cursor-pointer ${viewMode === 'grid' ? 'bg-white text-emerald-800 shadow-xs' : 'text-stone-500 hover:text-stone-800'}`}
+              aria-label={language === 'en' ? 'Grid View' : 'Tampilan Grid'}
+              aria-pressed={viewMode === 'grid'}
+              className={`p-1.5 rounded-lg transition-colors cursor-pointer focus-visible:ring-2 focus-visible:ring-emerald-700 ${viewMode === 'grid' ? 'bg-white text-emerald-800 shadow-xs' : 'text-stone-500 hover:text-stone-800'}`}
               title="Tampilan Grid"
             >
               <Grid className="w-4 h-4" />
             </button>
             <button
+              type="button"
               onClick={() => setViewMode('list')}
-              className={`p-1.5 rounded-lg transition-colors cursor-pointer ${viewMode === 'list' ? 'bg-white text-emerald-800 shadow-xs' : 'text-stone-500 hover:text-stone-800'}`}
+              aria-label={language === 'en' ? 'List View' : 'Tampilan List'}
+              aria-pressed={viewMode === 'list'}
+              className={`p-1.5 rounded-lg transition-colors cursor-pointer focus-visible:ring-2 focus-visible:ring-emerald-700 ${viewMode === 'list' ? 'bg-white text-emerald-800 shadow-xs' : 'text-stone-500 hover:text-stone-800'}`}
               title="Tampilan List"
             >
               <List className="w-4 h-4" />
@@ -296,7 +304,7 @@ export const MarketplaceView: React.FC = () => {
           : "space-y-4"
         }>
           {sortedProducts.map(product => (
-            <ProductCard key={product.id} product={product} />
+            <ProductCard key={product.id} product={product} layout={viewMode} />
           ))}
         </div>
       ) : (

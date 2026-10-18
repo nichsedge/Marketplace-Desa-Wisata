@@ -267,6 +267,8 @@ export const ProductDetailView: React.FC = () => {
                 <img
                   src={activeImage}
                   alt={product.title}
+                  loading="lazy"
+                  decoding="async"
                   className="w-full h-full object-cover"
                   referrerPolicy="no-referrer"
                 />
@@ -340,6 +342,8 @@ export const ProductDetailView: React.FC = () => {
                     <img
                       src={imgUrl}
                       alt={`${product.title} ${i + 1}`}
+                      loading="lazy"
+                      decoding="async"
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform"
                       referrerPolicy="no-referrer"
                     />
@@ -399,8 +403,18 @@ export const ProductDetailView: React.FC = () => {
                   return (
                     <div
                       key={idx}
+                      role="button"
+                      tabIndex={0}
+                      aria-pressed={isSelected}
+                      aria-label={`${pkg.name} - ${formatRupiah(pkg.price)} ${pkg.unit}`}
                       onClick={() => setSelectedPackageIndex(idx)}
-                      className={`p-4 rounded-xl border-2 transition-all cursor-pointer ${
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter' || e.key === ' ') {
+                          e.preventDefault();
+                          setSelectedPackageIndex(idx);
+                        }
+                      }}
+                      className={`p-4 rounded-xl border-2 transition-all cursor-pointer focus-visible:ring-2 focus-visible:ring-emerald-700 focus-visible:outline-none ${
                         isSelected
                           ? 'border-emerald-600 bg-emerald-50/70 shadow-sm'
                           : 'border-stone-200 hover:border-emerald-300 bg-stone-50/50'
@@ -580,7 +594,8 @@ export const ProductDetailView: React.FC = () => {
                         key={star}
                         type="button"
                         onClick={() => setNewRating(star)}
-                        className="p-1 hover:scale-110 transition-transform cursor-pointer"
+                        aria-label={language === 'en' ? `Rate ${star} of 5 stars` : `Beri nilai ${star} dari 5 bintang`}
+                        className="p-1 hover:scale-110 transition-transform cursor-pointer focus-visible:ring-2 focus-visible:ring-emerald-600 rounded"
                       >
                         <Star className={`w-5 h-5 ${star <= newRating ? 'fill-amber-400 text-amber-400' : 'text-stone-300'}`} />
                       </button>
@@ -601,7 +616,7 @@ export const ProductDetailView: React.FC = () => {
 
               <button
                 type="submit"
-                className="px-4 py-2 bg-emerald-800 hover:bg-emerald-900 text-white font-bold rounded-xl text-xs flex items-center gap-1.5 shadow-xs cursor-pointer"
+                className="px-4 py-2 bg-emerald-800 hover:bg-emerald-900 text-white font-bold rounded-xl text-xs flex items-center gap-1.5 shadow-xs cursor-pointer focus-visible:ring-2 focus-visible:ring-emerald-700"
               >
                 <Send className="w-3.5 h-3.5" />
                 <span>{language === 'en' ? 'Submit Review' : 'Kirim Ulasan'}</span>
@@ -623,7 +638,7 @@ export const ProductDetailView: React.FC = () => {
                         />
                         <div>
                           <p className="text-xs font-bold text-stone-900">{rev.authorName}</p>
-                          <p className="text-[10px] text-stone-400">{rev.userRole}</p>
+                          <p className="text-[10px] text-stone-600 font-medium">{rev.userRole}</p>
                         </div>
                       </div>
                       <div className="flex items-center gap-1 text-xs font-bold text-amber-500">
@@ -632,11 +647,11 @@ export const ProductDetailView: React.FC = () => {
                       </div>
                     </div>
                     <p className="text-xs text-stone-700 leading-relaxed italic">{rev.comment}</p>
-                    <span className="text-[10px] text-stone-400 block">{rev.date}</span>
+                    <span className="text-[10px] text-stone-500 font-medium block">{rev.date}</span>
                   </div>
                 ))
               ) : (
-                <p className="text-xs text-stone-400 italic text-center py-4">
+                <p className="text-xs text-stone-600 italic text-center py-4">
                   {language === 'en' ? 'No reviews yet for this product. Be the first to leave a review!' : 'Belum ada ulasan untuk produk ini. Jadilah yang pertama memberikan ulasan!'}
                 </p>
               )}
@@ -721,19 +736,23 @@ export const ProductDetailView: React.FC = () => {
                     <span className="text-xs font-bold text-stone-800 block">{language === 'en' ? 'Guests / People' : 'Jumlah Tamu / Orang'}</span>
                     <span className="text-[10px] text-stone-500">{language === 'en' ? 'Subject to village capacity' : 'Maksimal ketersediaan desa'}</span>
                   </div>
-                  <div className="flex items-center gap-3 bg-white px-3 py-1.5 rounded-xl border border-stone-300">
+                  <div className="flex items-center gap-2 bg-white px-2 py-1 rounded-xl border border-stone-300">
                     <button
+                      type="button"
                       onClick={() => setGuestCount(Math.max(1, guestCount - 1))}
-                      className="text-stone-600 hover:text-stone-900 font-bold"
+                      aria-label={language === 'en' ? 'Decrease guests' : 'Kurangi jumlah tamu'}
+                      className="w-8 h-8 rounded-lg flex items-center justify-center hover:bg-stone-100 text-stone-700 active:scale-95 transition-all cursor-pointer focus-visible:ring-2 focus-visible:ring-emerald-700"
                     >
-                      <Minus className="w-3.5 h-3.5" />
+                      <Minus className="w-4 h-4" />
                     </button>
-                    <span className="text-xs font-extrabold text-stone-900 min-w-5 text-center">{guestCount}</span>
+                    <span className="text-xs font-extrabold text-stone-900 min-w-6 text-center">{guestCount}</span>
                     <button
+                      type="button"
                       onClick={() => setGuestCount(guestCount + 1)}
-                      className="text-stone-600 hover:text-stone-900 font-bold"
+                      aria-label={language === 'en' ? 'Increase guests' : 'Tambah jumlah tamu'}
+                      className="w-8 h-8 rounded-lg flex items-center justify-center hover:bg-stone-100 text-stone-700 active:scale-95 transition-all cursor-pointer focus-visible:ring-2 focus-visible:ring-emerald-700"
                     >
-                      <Plus className="w-3.5 h-3.5" />
+                      <Plus className="w-4 h-4" />
                     </button>
                   </div>
                 </div>
@@ -746,19 +765,23 @@ export const ProductDetailView: React.FC = () => {
                     <span className="text-xs font-bold text-stone-800 block">{language === 'en' ? 'Order Quantity' : 'Jumlah Pesanan'}</span>
                     <span className="text-[10px] text-stone-500">{language === 'en' ? `Available: ${product.stockQuota}` : `Stok sedia: ${product.stockQuota}`}</span>
                   </div>
-                  <div className="flex items-center gap-3 bg-white px-3 py-1.5 rounded-xl border border-stone-300">
+                  <div className="flex items-center gap-2 bg-white px-2 py-1 rounded-xl border border-stone-300">
                     <button
+                      type="button"
                       onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                      className="text-stone-600 hover:text-stone-900 font-bold"
+                      aria-label={language === 'en' ? 'Decrease quantity' : 'Kurangi jumlah pesanan'}
+                      className="w-8 h-8 rounded-lg flex items-center justify-center hover:bg-stone-100 text-stone-700 active:scale-95 transition-all cursor-pointer focus-visible:ring-2 focus-visible:ring-emerald-700"
                     >
-                      <Minus className="w-3.5 h-3.5" />
+                      <Minus className="w-4 h-4" />
                     </button>
-                    <span className="text-xs font-extrabold text-stone-900 min-w-5 text-center">{quantity}</span>
+                    <span className="text-xs font-extrabold text-stone-900 min-w-6 text-center">{quantity}</span>
                     <button
+                      type="button"
                       onClick={() => setQuantity(Math.min(product.stockQuota, quantity + 1))}
-                      className="text-stone-600 hover:text-stone-900 font-bold"
+                      aria-label={language === 'en' ? 'Increase quantity' : 'Tambah jumlah pesanan'}
+                      className="w-8 h-8 rounded-lg flex items-center justify-center hover:bg-stone-100 text-stone-700 active:scale-95 transition-all cursor-pointer focus-visible:ring-2 focus-visible:ring-emerald-700"
                     >
-                      <Plus className="w-3.5 h-3.5" />
+                      <Plus className="w-4 h-4" />
                     </button>
                   </div>
                 </div>

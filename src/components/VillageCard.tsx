@@ -17,12 +17,23 @@ export const VillageCard: React.FC<VillageCardProps> = ({ village: rawVillage })
       
       {/* Cover Image */}
       <div 
-        className="relative h-48 overflow-hidden cursor-pointer bg-stone-100"
+        role="button"
+        tabIndex={0}
+        aria-label={`${language === 'en' ? 'View details of' : 'Lihat profil'} ${village.name}`}
+        className="relative h-48 overflow-hidden cursor-pointer bg-stone-100 focus-visible:ring-2 focus-visible:ring-emerald-700 focus-visible:outline-none"
         onClick={() => navigateTo('desa-detail', undefined, village.id)}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            navigateTo('desa-detail', undefined, village.id);
+          }
+        }}
       >
         <img
           src={village.image}
           alt={village.name}
+          loading="lazy"
+          decoding="async"
           className="w-full h-full object-cover group-hover:scale-108 transition-transform duration-500"
           referrerPolicy="no-referrer"
         />
@@ -30,7 +41,7 @@ export const VillageCard: React.FC<VillageCardProps> = ({ village: rawVillage })
 
         {/* Rating badge */}
         <div className="absolute top-3 right-3 flex items-center gap-1 px-2.5 py-1 rounded-full bg-stone-900/80 backdrop-blur-md text-amber-300 text-xs font-bold border border-white/20">
-          <Star className="w-3.5 h-3.5 fill-amber-300" />
+          <Star className="w-3.5 h-3.5 fill-amber-300" aria-hidden="true" />
           <span>{village.rating}</span>
           <span className="text-[10px] text-stone-300">({village.totalReviews})</span>
         </div>
@@ -38,7 +49,7 @@ export const VillageCard: React.FC<VillageCardProps> = ({ village: rawVillage })
         {/* Location badge */}
         <div className="absolute bottom-3 left-3 right-3 text-white">
           <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-emerald-900/80 text-emerald-200 text-[10px] font-bold uppercase tracking-wider mb-1">
-            <TreePine className="w-3 h-3" />
+            <TreePine className="w-3 h-3" aria-hidden="true" />
             {village.province}
           </span>
           <h3 className="text-lg font-bold font-serif-title text-white line-clamp-1">
@@ -77,8 +88,9 @@ export const VillageCard: React.FC<VillageCardProps> = ({ village: rawVillage })
           </div>
 
           <button
+            type="button"
             onClick={() => navigateTo('desa-detail', undefined, village.id)}
-            className="px-3 py-1.5 rounded-lg bg-emerald-50 hover:bg-emerald-100 text-emerald-800 text-xs font-bold transition-colors flex items-center gap-1 group-hover:bg-emerald-800 group-hover:text-amber-200 cursor-pointer"
+            className="px-3 py-1.5 rounded-lg bg-emerald-50 hover:bg-emerald-100 text-emerald-800 text-xs font-bold transition-colors flex items-center gap-1 group-hover:bg-emerald-800 group-hover:text-amber-200 cursor-pointer focus-visible:ring-2 focus-visible:ring-emerald-700"
           >
             <span>{language === 'en' ? 'Village Details' : 'Detail Desa'}</span>
             <ArrowRight className="w-3.5 h-3.5" />

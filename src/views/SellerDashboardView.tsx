@@ -1165,6 +1165,9 @@ export const SellerDashboardView: React.FC = () => {
       {/* ========================================================== */}
       {showPostWizard && (
         <div 
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="post-wizard-title"
           className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-black/75 backdrop-blur-sm"
           onClick={(e) => {
             if (e.target === e.currentTarget) setShowPostWizard(false);
@@ -1195,7 +1198,7 @@ export const SellerDashboardView: React.FC = () => {
                 <span className="text-[10px] uppercase font-bold tracking-widest text-emerald-200 block">
                   {wizardStep === 'pick-media' ? 'Langkah 1: KELOLA MEDIA' : 'Langkah 2: ISI DETAIL'}
                 </span>
-                <h3 className="font-extrabold text-sm sm:text-base tracking-wide uppercase">
+                <h3 id="post-wizard-title" className="font-extrabold text-sm sm:text-base tracking-wide uppercase">
                   {wizardStep === 'pick-media' ? 'Koleksi Media (Foto & Video)' : 'Detail Postingan'}
                 </h3>
               </div>
@@ -1652,6 +1655,9 @@ export const SellerDashboardView: React.FC = () => {
       {/* ========================================================== */}
       {editingProduct && (
         <div 
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="edit-product-title"
           className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-black/80 backdrop-blur-md animate-in fade-in duration-200"
           onClick={(e) => {
             if (e.target === e.currentTarget) setEditingProduct(null);
@@ -1672,7 +1678,7 @@ export const SellerDashboardView: React.FC = () => {
                     </span>
                     <span className="text-[10px] text-stone-400">ID: #{editingProduct.id}</span>
                   </div>
-                  <h3 className="text-base sm:text-lg font-bold text-white font-serif-title truncate max-w-md mt-0.5">
+                  <h3 id="edit-product-title" className="text-base sm:text-lg font-bold text-white font-serif-title truncate max-w-md mt-0.5">
                     Edit Detail & Foto: {editingProduct.title || 'Produk'}
                   </h3>
                 </div>
