@@ -5,7 +5,7 @@ import { TreePine, Compass, Calendar, Sparkles, CheckCircle2, Search, Filter, Ma
 import { matchProductSearch } from '../utils/search';
 
 export const TourPackagesView: React.FC = () => {
-  const { products, villages, navigateTo } = useApp();
+  const { products, villages, navigateTo, language } = useApp();
 
   const [selectedVillageId, setSelectedVillageId] = useState<string>('all');
   const [filterType, setFilterType] = useState<string>('all');
@@ -42,13 +42,15 @@ export const TourPackagesView: React.FC = () => {
         <div className="relative z-10 max-w-2xl space-y-3">
           <span className="px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-400/40 text-xs font-bold uppercase tracking-wider inline-flex items-center gap-1.5">
             <TreePine className="w-4 h-4" />
-            <span>Petualangan & Edukasi Desa Wisata Lembang</span>
+            <span>{language === 'en' ? 'Lembang Village Adventures & Eco-Tours' : 'Petualangan & Edukasi Desa Wisata Lembang'}</span>
           </span>
           <h1 className="text-2xl sm:text-4xl font-extrabold font-serif-title text-white">
-            Paket Wisata, Live-In & Trekking Rimba Lembang
+            {language === 'en' ? 'Tour Packages, Live-In & Rainforest Trekking' : 'Paket Wisata, Live-In & Trekking Rimba Lembang'}
           </h1>
           <p className="text-xs sm:text-sm text-stone-200 leading-relaxed">
-            Dapatkan pengalaman hands-on otentik: live-in bersama keluarga warga desa, offroad Land Rover kanopi pinus Cikole, jelajah megalitikum Batu Loceng Suntenjaya, hingga seni tari Jaipong tradisional di Gudangkahuripan.
+            {language === 'en'
+              ? 'Enjoy hands-on authentic village experiences: live-in with local host families, Land Rover offroad through Cikole pine canopy, discover Suntenjaya Batu Loceng megaliths, to traditional Jaipong dance in Gudangkahuripan.'
+              : 'Dapatkan pengalaman hands-on otentik: live-in bersama keluarga warga desa, offroad Land Rover kanopi pinus Cikole, jelajah megalitikum Batu Loceng Suntenjaya, hingga seni tari Jaipong tradisional di Gudangkahuripan.'}
           </p>
         </div>
       </div>
@@ -65,7 +67,9 @@ export const TourPackagesView: React.FC = () => {
               onChange={(e) => setSelectedVillageId(e.target.value)}
               className="px-3 py-2 bg-white border border-stone-300 rounded-xl text-xs sm:text-sm font-bold text-stone-900 shadow-xs focus:outline-none focus:ring-2 focus:ring-emerald-700 cursor-pointer"
             >
-              <option value="all">🏞️ Semua Desa Wisata di Lembang ({villages.length} Desa)</option>
+              <option value="all">
+                {language === 'en' ? `🏞️ All Tourism Villages in Lembang (${villages.length} Villages)` : `🏞️ Semua Desa Wisata di Lembang (${villages.length} Desa)`}
+              </option>
               {villages.map(v => (
                 <option key={v.id} value={v.id}>{v.name} ({v.villageAltitude || '1.250 mdpl'})</option>
               ))}
@@ -78,7 +82,7 @@ export const TourPackagesView: React.FC = () => {
               type="text"
               value={searchWord}
               onChange={(e) => setSearchWord(e.target.value)}
-              placeholder="Cari aktivitas, offroad, live-in..."
+              placeholder={language === 'en' ? 'Search activities, offroad, live-in...' : 'Cari aktivitas, offroad, live-in...'}
               className="w-full pl-9 pr-3 py-2 bg-stone-50 border border-stone-200 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-emerald-700"
             />
           </div>
@@ -90,25 +94,25 @@ export const TourPackagesView: React.FC = () => {
             onClick={() => setFilterType('all')}
             className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-colors ${filterType === 'all' ? 'bg-emerald-800 text-amber-200 shadow-xs' : 'bg-stone-100 text-stone-700 hover:bg-stone-200'}`}
           >
-            Semua Aktivitas ({packages.length})
+            {language === 'en' ? `All Activities (${packages.length})` : `Semua Aktivitas (${packages.length})`}
           </button>
           <button
             onClick={() => setFilterType('offroad')}
             className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-colors ${filterType === 'offroad' ? 'bg-emerald-800 text-amber-200 shadow-xs' : 'bg-stone-100 text-stone-700 hover:bg-stone-200'}`}
           >
-            🚙 Offroad & Trekking Rimba
+            {language === 'en' ? '🚙 Offroad & Rainforest Trekking' : '🚙 Offroad & Trekking Rimba'}
           </button>
           <button
             onClick={() => setFilterType('susu')}
             className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-colors ${filterType === 'susu' ? 'bg-emerald-800 text-amber-200 shadow-xs' : 'bg-stone-100 text-stone-700 hover:bg-stone-200'}`}
           >
-            🐄 Edukasi Susu & Agrowisata
+            {language === 'en' ? '🐄 Dairy & Agro-Tourism' : '🐄 Edukasi Susu & Agrowisata'}
           </button>
           <button
             onClick={() => setFilterType('livein')}
             className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-colors ${filterType === 'livein' ? 'bg-emerald-800 text-amber-200 shadow-xs' : 'bg-stone-100 text-stone-700 hover:bg-stone-200'}`}
           >
-            ⛺ Live-In & Glamping
+            {language === 'en' ? '⛺ Live-In & Camping' : '⛺ Live-In & Glamping'}
           </button>
         </div>
 
@@ -124,8 +128,12 @@ export const TourPackagesView: React.FC = () => {
       {filteredPackages.length === 0 && (
         <div className="bg-white rounded-3xl p-12 text-center space-y-3 border border-stone-200">
           <TreePine className="w-12 h-12 text-stone-300 mx-auto" />
-          <h3 className="text-base font-bold text-stone-800">Tidak ada paket wisata yang sesuai</h3>
-          <p className="text-xs text-stone-500">Coba pilih semua desa wisata atau bersihkan kata kunci pencarian.</p>
+          <h3 className="text-base font-bold text-stone-800">
+            {language === 'en' ? 'No tour packages match your search' : 'Tidak ada paket wisata yang sesuai'}
+          </h3>
+          <p className="text-xs text-stone-500">
+            {language === 'en' ? 'Try selecting all tourism villages or clear your search keyword.' : 'Coba pilih semua desa wisata atau bersihkan kata kunci pencarian.'}
+          </p>
         </div>
       )}
 

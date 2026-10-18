@@ -16,13 +16,15 @@ import {
   Sparkles,
   Building2
 } from 'lucide-react';
+import { getLocalizedVillage } from '../i18n/productTranslations';
 
 export const VillageDetailView: React.FC = () => {
-  const { villages, selectedVillageId, products, navigateTo } = useApp();
+  const { villages, selectedVillageId, products, navigateTo, language, t } = useApp();
 
   const [activeTab, setActiveTab] = useState<'overview' | 'peta-lokasi' | 'products' | 'gallery'>('overview');
 
-  const village = villages.find(v => v.id === selectedVillageId) || villages[0];
+  const rawVillage = villages.find(v => v.id === selectedVillageId) || villages[0];
+  const village = getLocalizedVillage(rawVillage, language);
   const villageProducts = products.filter(p => p.villageId === village.id);
 
   return (
@@ -35,12 +37,14 @@ export const VillageDetailView: React.FC = () => {
           className="flex items-center gap-1.5 text-xs font-bold text-stone-700 hover:text-emerald-800 transition-colors bg-white px-3.5 py-2 rounded-xl border border-stone-200 shadow-xs w-fit cursor-pointer"
         >
           <ChevronLeft className="w-4 h-4" />
-          <span>Kembali ke Beranda</span>
+          <span>{language === 'en' ? 'Back to Home' : 'Kembali ke Beranda'}</span>
         </button>
 
         {/* Village Switcher Dropdown */}
         <div className="flex flex-wrap sm:flex-nowrap items-center gap-2 w-full sm:w-auto">
-          <span className="text-xs font-bold text-stone-600 shrink-0">Pilih Desa Wisata:</span>
+          <span className="text-xs font-bold text-stone-600 shrink-0">
+            {language === 'en' ? 'Select Village:' : 'Pilih Desa Wisata:'}
+          </span>
           <select
             value={village.id}
             onChange={(e) => navigateTo('desa-detail', undefined, e.target.value)}
@@ -71,10 +75,10 @@ export const VillageDetailView: React.FC = () => {
             <div className="flex items-center gap-1 px-3 py-1 rounded-full bg-stone-900/80 text-amber-300 text-xs font-bold border border-white/20">
               <Star className="w-3.5 h-3.5 fill-amber-300" />
               <span>{village.rating}</span>
-              <span className="text-stone-300">({village.totalReviews} ulasan)</span>
+              <span className="text-stone-300">({village.totalReviews} {t('card.reviews')})</span>
             </div>
             <span className="px-3 py-1 rounded-full bg-emerald-900/80 border border-emerald-400/40 text-emerald-200 text-xs font-medium">
-              Ketinggian: {village.villageAltitude || '1.250 mdpl'}
+              {language === 'en' ? 'Altitude:' : 'Ketinggian:'} {village.villageAltitude || '1.250 mdpl'}
             </span>
           </div>
 
@@ -99,7 +103,7 @@ export const VillageDetailView: React.FC = () => {
               : 'bg-white text-stone-700 hover:bg-stone-100 border border-stone-200'
           }`}
         >
-          Profil & Potensi
+          {language === 'en' ? 'Overview & Heritage' : 'Profil & Potensi'}
         </button>
 
         <button
@@ -111,7 +115,7 @@ export const VillageDetailView: React.FC = () => {
           }`}
         >
           <Building2 className="w-3.5 h-3.5" />
-          <span>Peta Lokasi Kantor Desa</span>
+          <span>{language === 'en' ? 'Village Office Map' : 'Peta Lokasi Kantor Desa'}</span>
         </button>
 
         <button
@@ -123,7 +127,7 @@ export const VillageDetailView: React.FC = () => {
           }`}
         >
           <Store className="w-3.5 h-3.5" />
-          <span>Produk & Layanan ({villageProducts.length})</span>
+          <span>{language === 'en' ? `Products & Services (${villageProducts.length})` : `Produk & Layanan (${villageProducts.length})`}</span>
         </button>
 
         <button
@@ -134,7 +138,7 @@ export const VillageDetailView: React.FC = () => {
               : 'bg-white text-stone-700 hover:bg-stone-100 border border-stone-200'
           }`}
         >
-          Galeri Foto
+          {language === 'en' ? 'Photo Gallery' : 'Galeri Foto'}
         </button>
       </div>
 
@@ -148,7 +152,7 @@ export const VillageDetailView: React.FC = () => {
               <div className="bg-white p-6 sm:p-8 rounded-3xl border border-stone-200 shadow-xs space-y-4">
                 <h3 className="text-lg font-bold font-serif-title text-stone-900 flex items-center gap-2">
                   <BookOpen className="w-5 h-5 text-emerald-800" />
-                  <span>Sekilas & Sejarah {village.name}</span>
+                  <span>{language === 'en' ? `Overview & Heritage of ${village.name}` : `Sekilas & Sejarah ${village.name}`}</span>
                 </h3>
                 <p className="text-xs sm:text-sm text-stone-600 leading-relaxed">
                   {village.description}
@@ -162,14 +166,16 @@ export const VillageDetailView: React.FC = () => {
               <div className="bg-white p-6 sm:p-8 rounded-3xl border border-stone-200 shadow-xs space-y-4">
                 <h3 className="text-lg font-bold font-serif-title text-stone-900 flex items-center gap-2">
                   <TreePine className="w-5 h-5 text-emerald-800" />
-                  <span>Kebudayaan & Karakteristik Desa</span>
+                  <span>{language === 'en' ? 'Culture & Local Characteristics' : 'Kebudayaan & Karakteristik Desa'}</span>
                 </h3>
                 <p className="text-xs sm:text-sm text-stone-600 leading-relaxed">
                   {village.culture}
                 </p>
 
                 <div className="pt-2">
-                  <h4 className="text-xs font-bold text-stone-800 mb-2.5">Potensi & Daya Tarik Unggulan:</h4>
+                  <h4 className="text-xs font-bold text-stone-800 mb-2.5">
+                    {language === 'en' ? 'Signature Potentials & Highlights:' : 'Potensi & Daya Tarik Unggulan:'}
+                  </h4>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
                     {village.highlights.map((hl, i) => (
                       <div key={i} className="p-3 bg-amber-50/80 rounded-xl border border-amber-200/80 text-xs font-bold text-amber-950 flex items-center gap-2">
@@ -187,7 +193,7 @@ export const VillageDetailView: React.FC = () => {
               <div className="bg-gradient-to-br from-emerald-950 to-stone-900 p-6 sm:p-8 rounded-3xl text-white shadow-xl space-y-5">
                 <div className="space-y-1">
                   <span className="text-[10px] font-bold text-amber-300 uppercase tracking-wider">
-                    Ringkasan Destinasi
+                    {language === 'en' ? 'Destination Summary' : 'Ringkasan Destinasi'}
                   </span>
                   <h3 className="text-xl font-bold font-serif-title text-white">
                     {village.name}
@@ -196,12 +202,18 @@ export const VillageDetailView: React.FC = () => {
 
                 <div className="space-y-3 text-xs text-stone-200 pt-2 border-t border-emerald-800/60">
                   <div>
-                    <span className="text-[10px] text-stone-400 block font-semibold">Ketinggian Tempat:</span>
-                    <p className="font-bold text-white text-sm">{village.villageAltitude || '1.250 mdpl'}</p>
+                    <span className="text-[10px] text-stone-400 block font-semibold">
+                      {language === 'en' ? 'Altitude:' : 'Ketinggian Tempat:'}
+                    </span>
+                    <p className="font-bold text-white text-sm">
+                      {village.villageAltitude ? (language === 'en' ? village.villageAltitude.replace('mdpl', 'MASL') : village.villageAltitude) : (language === 'en' ? '1,250 MASL' : '1.250 mdpl')}
+                    </p>
                   </div>
 
                   <div>
-                    <span className="text-[10px] text-stone-400 block font-semibold">Alamat Kantor Desa:</span>
+                    <span className="text-[10px] text-stone-400 block font-semibold">
+                      {language === 'en' ? 'Village Office Address:' : 'Alamat Kantor Desa:'}
+                    </span>
                     <p className="text-xs leading-relaxed text-stone-300">{village.officeAddress || village.mapLocation}</p>
                   </div>
                 </div>
@@ -212,14 +224,14 @@ export const VillageDetailView: React.FC = () => {
                     className="w-full py-3 bg-emerald-800 hover:bg-emerald-700 text-white font-bold rounded-2xl text-xs transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer"
                   >
                     <Building2 className="w-4 h-4 text-amber-300" />
-                    <span>Lihat Peta Lokasi Kantor Desa</span>
+                    <span>{language === 'en' ? 'View Village Office Map' : 'Lihat Peta Lokasi Kantor Desa'}</span>
                   </button>
 
                   <button
                     onClick={() => setActiveTab('products')}
                     className="w-full py-3 bg-amber-400 hover:bg-amber-300 text-stone-950 font-extrabold rounded-2xl text-xs transition-all shadow-md cursor-pointer"
                   >
-                    Lihat Katalog Produk & Layanan ({villageProducts.length})
+                    {language === 'en' ? `View Products & Stays Catalog (${villageProducts.length})` : `Lihat Katalog Produk & Layanan (${villageProducts.length})`}
                   </button>
                 </div>
               </div>
@@ -252,7 +264,7 @@ export const VillageDetailView: React.FC = () => {
         <div className="space-y-6">
           <div className="border-b border-stone-200 pb-3">
             <h2 className="text-xl font-bold font-serif-title text-stone-900">
-              Katalog Produk & Layanan {village.name} ({villageProducts.length})
+              {language === 'en' ? `Products & Services Catalog of ${village.name} (${villageProducts.length})` : `Katalog Produk & Layanan ${village.name} (${villageProducts.length})`}
             </h2>
           </div>
 
@@ -264,7 +276,7 @@ export const VillageDetailView: React.FC = () => {
             </div>
           ) : (
             <p className="text-xs text-stone-500 py-8 text-center bg-white rounded-2xl border border-stone-200">
-              Belum ada produk terdaftar untuk desa ini.
+              {language === 'en' ? 'No products registered for this village yet.' : 'Belum ada produk terdaftar untuk desa ini.'}
             </p>
           )}
         </div>
@@ -274,8 +286,12 @@ export const VillageDetailView: React.FC = () => {
       {activeTab === 'gallery' && (
         <div className="space-y-6">
           <div className="border-b border-stone-200 pb-3">
-            <h2 className="text-xl font-bold font-serif-title text-stone-900">Galeri Foto Pesona {village.name}</h2>
-            <p className="text-xs text-stone-500">Lanskap alam lereng pegunungan dan kearifan masyarakat lokal</p>
+            <h2 className="text-xl font-bold font-serif-title text-stone-900">
+              {language === 'en' ? `Photo Gallery of Charming ${village.name}` : `Galeri Foto Pesona ${village.name}`}
+            </h2>
+            <p className="text-xs text-stone-500">
+              {language === 'en' ? 'Mountain slope landscapes and authentic local heritage wisdom' : 'Lanskap alam lereng pegunungan dan kearifan masyarakat lokal'}
+            </p>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">

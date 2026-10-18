@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Village } from '../types';
+import { useApp } from '../context/AppContext';
 import { 
   MapPin, 
   ExternalLink, 
@@ -25,6 +26,7 @@ export const VillageLocationMap: React.FC<VillageLocationMapProps> = ({
   className = '',
   showTitle = true
 }) => {
+  const { language } = useApp();
   const [activeVillageId, setActiveVillageId] = useState<string>(
     initialVillageId || (villages.length > 0 ? villages[0].id : 'des-01')
   );
@@ -68,20 +70,22 @@ export const VillageLocationMap: React.FC<VillageLocationMapProps> = ({
             <div className="space-y-1.5">
               <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-amber-400/20 text-amber-300 border border-amber-400/30 rounded-full text-xs font-semibold">
                 <Building2 className="w-3.5 h-3.5" />
-                <span>Peta Lokasi Kantor Desa</span>
+                <span>{language === 'en' ? 'Village Office Location Map' : 'Peta Lokasi Kantor Desa'}</span>
               </div>
               <h2 className="text-xl sm:text-2xl lg:text-3xl font-extrabold font-serif-title text-white">
-                Lokasi Kantor Desa di Kawasan Lembang
+                {language === 'en' ? 'Village Office Locations in Lembang Region' : 'Lokasi Kantor Desa di Kawasan Lembang'}
               </h2>
               <p className="text-xs sm:text-sm text-stone-300 max-w-2xl">
-                Pilih salah satu desa wisata di bawah untuk melihat lokasi kantor desa secara presisi di peta interaktif.
+                {language === 'en'
+                  ? 'Select one of the tourism villages below to view its precise office location and route on the interactive map.'
+                  : 'Pilih salah satu desa wisata di bawah untuk melihat lokasi kantor desa secara presisi di peta interaktif.'}
               </p>
             </div>
 
             {/* Dropdown Selector on Header (Desktop/Mobile) */}
             <div className="w-full md:w-72 bg-white/10 backdrop-blur-md p-2 rounded-2xl border border-white/20">
               <label className="block text-[10px] uppercase font-extrabold text-amber-300 tracking-wider mb-1 px-1">
-                Pilih Desa:
+                {language === 'en' ? 'Select Village:' : 'Pilih Desa:'}
               </label>
               <div className="relative">
                 <select
@@ -91,7 +95,7 @@ export const VillageLocationMap: React.FC<VillageLocationMapProps> = ({
                 >
                   {villages.map((v) => (
                     <option key={v.id} value={v.id}>
-                      {v.name} ({v.villageAltitude || '1.250 mdpl'})
+                      {language === 'en' ? v.name.replace('Desa Wisata ', 'Village ') : v.name} ({v.villageAltitude ? (language === 'en' ? v.villageAltitude.replace('mdpl', 'MASL') : v.villageAltitude) : (language === 'en' ? '1,250 MASL' : '1.250 mdpl')})
                     </option>
                   ))}
                 </select>
@@ -106,7 +110,7 @@ export const VillageLocationMap: React.FC<VillageLocationMapProps> = ({
       <div className="p-4 bg-stone-50 border-b border-stone-200/80 overflow-x-auto scrollbar-none flex items-center gap-2">
         <span className="text-xs font-bold text-stone-700 shrink-0 flex items-center gap-1 mr-1">
           <Navigation className="w-3.5 h-3.5 text-emerald-800" />
-          <span>Pilih Cepat:</span>
+          <span>{language === 'en' ? 'Quick Select:' : 'Pilih Cepat:'}</span>
         </span>
         {villages.map((v) => {
           const isActive = v.id === activeVillageId;
@@ -120,7 +124,7 @@ export const VillageLocationMap: React.FC<VillageLocationMapProps> = ({
                   : 'bg-white text-stone-700 hover:bg-stone-200/70 border border-stone-200'
               }`}
             >
-              {v.name.replace('Desa Wisata ', 'Desa ')}
+              {language === 'en' ? v.name.replace('Desa Wisata ', 'Village ') : v.name.replace('Desa Wisata ', 'Desa ')}
             </button>
           );
         })}
@@ -154,14 +158,14 @@ export const VillageLocationMap: React.FC<VillageLocationMapProps> = ({
                   {currentVillage.province || 'Jawa Barat'}
                 </span>
                 <span className="px-2.5 py-0.5 bg-amber-100 text-amber-950 rounded-full text-[11px] font-bold border border-amber-200">
-                  {currentVillage.villageAltitude || '1.250 mdpl'}
+                  {currentVillage.villageAltitude ? (language === 'en' ? currentVillage.villageAltitude.replace('mdpl', 'MASL') : currentVillage.villageAltitude) : (language === 'en' ? '1,250 MASL' : '1.250 mdpl')}
                 </span>
               </div>
               <h3 className="text-2xl font-extrabold font-serif-title text-stone-900">
-                {currentVillage.name}
+                {language === 'en' ? currentVillage.name.replace('Desa Wisata ', 'Village ') : currentVillage.name}
               </h3>
               <p className="text-xs text-stone-500 mt-1">
-                Kecamatan Lembang, Kabupaten Bandung Barat
+                {language === 'en' ? 'Lembang District, West Bandung Regency' : 'Kecamatan Lembang, Kabupaten Bandung Barat'}
               </p>
             </div>
 
@@ -169,7 +173,7 @@ export const VillageLocationMap: React.FC<VillageLocationMapProps> = ({
             <div className="p-4 bg-stone-50 rounded-2xl border border-stone-200/80 space-y-2">
               <div className="flex items-center gap-2 text-stone-800 text-xs font-bold">
                 <Building2 className="w-4 h-4 text-emerald-700 shrink-0" />
-                <span>Alamat Kantor Desa:</span>
+                <span>{language === 'en' ? 'Village Office Address:' : 'Alamat Kantor Desa:'}</span>
               </div>
               <p className="text-xs text-stone-700 leading-relaxed font-medium pl-6">
                 {currentVillage.officeAddress || currentVillage.mapLocation || 'Jl. Raya Lembang, Kab. Bandung Barat'}
@@ -177,10 +181,9 @@ export const VillageLocationMap: React.FC<VillageLocationMapProps> = ({
               
               <div className="pt-2 border-t border-stone-200/60 pl-6 flex items-center gap-2 text-[11px] text-stone-500">
                 <Clock className="w-3.5 h-3.5 text-stone-400 shrink-0" />
-                <span>Jam Pelayanan: Senin - Jumat (08.00 - 15.00 WIB)</span>
+                <span>{language === 'en' ? 'Office Hours: Monday - Friday (08:00 - 15:00 WIB)' : 'Jam Pelayanan: Senin - Jumat (08.00 - 15.00 WIB)'}</span>
               </div>
             </div>
-
 
           </div>
 
@@ -193,7 +196,7 @@ export const VillageLocationMap: React.FC<VillageLocationMapProps> = ({
               className="flex-1 py-3 px-4 bg-stone-900 hover:bg-stone-800 text-amber-200 font-bold rounded-xl text-xs transition-all shadow-xs flex items-center justify-center gap-2 cursor-pointer"
             >
               <Navigation className="w-4 h-4 text-amber-300" />
-              <span>Buka Petunjuk Arah di Google Maps</span>
+              <span>{language === 'en' ? 'Get Directions on Google Maps' : 'Buka Petunjuk Arah di Google Maps'}</span>
               <ExternalLink className="w-3.5 h-3.5 text-stone-400" />
             </a>
           </div>

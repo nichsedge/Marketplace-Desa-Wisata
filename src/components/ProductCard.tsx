@@ -1,9 +1,10 @@
 import React from 'react';
 import { Product } from '../types';
 import { useApp } from '../context/AppContext';
-import { Star, MapPin, ShoppingBag, Eye, ShieldCheck, Sparkles, Phone } from 'lucide-react';
+import { Star, MapPin, ShoppingBag, Eye, ShieldCheck, Sparkles, Phone, Play } from 'lucide-react';
 import { formatWhatsAppUrl } from '../utils/whatsapp';
 import { UserAvatar } from './UserAvatar';
+import { getLocalizedProduct, getLocalizedCategoryName } from '../i18n/productTranslations';
 
 interface ProductCardProps {
   product: Product;
@@ -20,40 +21,47 @@ export const formatRupiah = (number?: number | null) => {
   }).format(number);
 };
 
-export const getCategoryBadge = (category: string) => {
+export const getCategoryBadge = (category: string, language: 'id' | 'en' = 'id') => {
+  const label = getLocalizedCategoryName(category, language);
   switch (category) {
     case 'sembako':
-      return { label: 'Sembako', bg: 'bg-emerald-100 text-emerald-950 border-emerald-300' };
+      return { label, bg: 'bg-emerald-100 text-emerald-950 border-emerald-300' };
     case 'tanaman-hias':
-      return { label: 'Tanaman Hias', bg: 'bg-teal-100 text-teal-950 border-teal-300' };
+      return { label, bg: 'bg-teal-100 text-teal-950 border-teal-300' };
     case 'minuman-komoditas':
-      return { label: 'Minuman & Komoditas', bg: 'bg-amber-100 text-amber-950 border-amber-300' };
+      return { label, bg: 'bg-amber-100 text-amber-950 border-amber-300' };
     case 'buah-herba':
-      return { label: 'Buah & Herba', bg: 'bg-lime-100 text-lime-950 border-lime-300' };
+      return { label, bg: 'bg-lime-100 text-lime-950 border-lime-300' };
     case 'kuliner':
-      return { label: 'Kuliner', bg: 'bg-rose-100 text-rose-950 border-rose-300' };
+      return { label, bg: 'bg-rose-100 text-rose-950 border-rose-300' };
     case 'olahan-susu':
-      return { label: 'Olahan Susu Kemasan', bg: 'bg-sky-100 text-sky-950 border-sky-300' };
+      return { label, bg: 'bg-sky-100 text-sky-950 border-sky-300' };
     case 'wisata-alam':
     case 'paket-wisata':
-      return { label: 'Wisata Alam', bg: 'bg-emerald-100 text-emerald-900 border-emerald-300' };
+      return { label, bg: 'bg-emerald-100 text-emerald-900 border-emerald-300' };
     case 'penginapan-lokal':
     case 'homestay':
-      return { label: 'Penginapan Lokal', bg: 'bg-indigo-100 text-indigo-950 border-indigo-300' };
+      return { label, bg: 'bg-indigo-100 text-indigo-950 border-indigo-300' };
     case 'suvenir':
-      return { label: 'Suvenir & Kriya', bg: 'bg-orange-100 text-orange-900 border-orange-200' };
+      return { label, bg: 'bg-orange-100 text-orange-900 border-orange-200' };
     case 'umkm':
-      return { label: 'Produk UMKM', bg: 'bg-cyan-100 text-cyan-900 border-cyan-200' };
+      return { label, bg: 'bg-cyan-100 text-cyan-900 border-cyan-200' };
     case 'destinasi':
-      return { label: 'Tiket Wisata', bg: 'bg-stone-100 text-stone-900 border-stone-300' };
+      return { label, bg: 'bg-stone-100 text-stone-900 border-stone-300' };
     default:
-      return { label: 'Produk Desa', bg: 'bg-stone-100 text-stone-800 border-stone-200' };
+      return { label, bg: 'bg-stone-100 text-stone-800 border-stone-200' };
   }
 };
 
-export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
-  const { navigateTo, addToCart } = useApp();
-  const categoryBadge = getCategoryBadge(product.category);
+export const ProductCard: React.FC<ProductCardProps> = ({ product: rawProduct }) => {
+  const { navigateTo, addToCart, recordProductTap, recordWhatsAppLead, t, language } = useApp();
+  const product = getLocalizedProduct(rawProduct, language);
+  const categoryBadge = getCategoryBadge(product.category, language);
+
+  const handleCardClick = () => {
+    recordProductTap(rawProduct);
+    navigateTo('product-detail', product.id);
+  };
 
   return (
     <div className="group bg-white rounded-2xl overflow-hidden border border-stone-200/90 shadow-xs hover:shadow-xl transition-all duration-300 flex flex-col justify-between hover:-translate-y-1">
@@ -61,7 +69,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
       {/* Top Image & Badges */}
       <div 
         className="relative h-48 sm:h-52 overflow-hidden cursor-pointer bg-stone-100"
-        onClick={() => navigateTo('product-detail', product.id)}
+        onClick={handleCardClick}
       >
         <img
           src={product.image}
@@ -75,7 +83,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
 
         {/* Top Badges Bar (Unified Flex to Prevent Any Overlap) */}
         <div className="absolute top-3 inset-x-3 flex items-start justify-between gap-2 pointer-events-none z-10">
-          {/* Left: Category & Featured Tag (Stacked Vertically) */}
+          {/* Left: Category & Featured & Video Tag (Stacked Vertically) */}
           <div className="flex flex-col items-start gap-1 max-w-[calc(100%-85px)]">
             <span className={`px-2.5 py-0.5 text-[10px] sm:text-[11px] font-extrabold rounded-full border shadow-xs truncate max-w-full backdrop-blur-xs ${categoryBadge.bg}`}>
               {categoryBadge.label}
@@ -83,7 +91,13 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
             {product.isFeatured && (
               <span className="inline-flex items-center gap-1 px-2 py-0.5 text-[10px] font-extrabold rounded-full bg-amber-400 text-stone-950 shadow-xs border border-amber-300">
                 <Sparkles className="w-2.5 h-2.5 text-stone-950 fill-stone-950 shrink-0" />
-                <span>Unggulan</span>
+                <span>{language === 'en' ? 'Featured' : 'Unggulan'}</span>
+              </span>
+            )}
+            {product.videoUrl && (
+              <span className="inline-flex items-center gap-1 px-2 py-0.5 text-[10px] font-extrabold rounded-full bg-rose-600 text-white shadow-xs border border-rose-500">
+                <Play className="w-2.5 h-2.5 fill-white shrink-0" />
+                <span>{t('card.hasVideo')}</span>
               </span>
             )}
           </div>
@@ -109,7 +123,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
         <div>
           {/* Title */}
           <h3 
-            onClick={() => navigateTo('product-detail', product.id)}
+            onClick={handleCardClick}
             className="text-base font-bold text-stone-900 group-hover:text-emerald-800 transition-colors line-clamp-2 cursor-pointer font-sans leading-snug"
           >
             {product.title}
@@ -168,6 +182,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
                 type="button"
                 onClick={(e) => {
                   e.stopPropagation();
+                  recordWhatsAppLead(product, 1, product.price, 'Inquiry Chat WA dari kartu produk');
                   const targetPhone = product.sellerPhone;
                   const sellerDisplayName = product.sellerName.replace(/\s*\([^)]*\)$/, '') || product.sellerName;
                   const text = `Halo Admin / CP ${sellerDisplayName} (${product.villageName}), saya tertarik dengan produk "${product.title}" (${formatRupiah(product.price)} ${product.unit}). Apakah masih tersedia?`;
@@ -178,14 +193,14 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
                 title={`Chat WhatsApp langsung dengan ${product.sellerName.replace(/\s*\([^)]*\)$/, '') || product.sellerName}`}
               >
                 <Phone className="w-3.5 h-3.5" />
-                <span>Chat WA</span>
+                <span>{t('card.orderWa')}</span>
               </button>
             )}
             <button
-              onClick={() => navigateTo('product-detail', product.id)}
+              onClick={handleCardClick}
               className={`${product.sellerPhone ? 'px-3.5' : 'w-full'} py-2 rounded-xl bg-stone-900 hover:bg-stone-800 text-amber-300 font-bold text-xs shadow-xs transition-all hover:scale-[1.02] flex items-center justify-center cursor-pointer`}
             >
-              <span>Detail</span>
+              <span>{t('card.viewDetail')}</span>
             </button>
           </div>
         </div>

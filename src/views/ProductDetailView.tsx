@@ -23,9 +23,14 @@ import {
   BedDouble,
   TreePine,
   Sparkles,
-  MessageCircle
+  MessageCircle,
+  Play,
+  Video,
+  ImageIcon
 } from 'lucide-react';
 import { WHATSAPP_PHONE, formatWhatsAppUrl, createProductWhatsAppMessage } from '../utils/whatsapp';
+import { parseVideoUrl } from '../utils/video';
+import { getLocalizedProduct } from '../i18n/productTranslations';
 
 export const ProductDetailView: React.FC = () => {
   const { 
@@ -35,10 +40,15 @@ export const ProductDetailView: React.FC = () => {
     addToCart, 
     reviews, 
     addReview,
-    showToast
+    showToast,
+    language,
+    t,
+    recordProductTap,
+    recordWhatsAppLead
   } = useApp();
 
-  const product = products.find(p => p.id === selectedProductId) || products[0];
+  const rawProduct = products.find(p => p.id === selectedProductId) || products[0];
+  const product = getLocalizedProduct(rawProduct, language);
 
   const getTomorrowDate = () => {
     const d = new Date();
@@ -52,6 +62,7 @@ export const ProductDetailView: React.FC = () => {
     return d.toISOString().split('T')[0];
   };
 
+  const [activeMediaType, setActiveMediaType] = useState<'image' | 'video'>('image');
   const [activeImage, setActiveImage] = useState(product.image);
   const [quantity, setQuantity] = useState(1);
   const [bookingDateStart, setBookingDateStart] = useState(getTomorrowDate());
@@ -63,8 +74,9 @@ export const ProductDetailView: React.FC = () => {
     product.packages && product.packages.length > 0 ? 0 : null
   );
 
-  // Keep state in sync when switching between products
+  // Keep state in sync and track view when switching between products
   useEffect(() => {
+    setActiveMediaType('image');
     setActiveImage(product.image);
     setQuantity(1);
     setBookingDateStart(getTomorrowDate());
@@ -73,6 +85,9 @@ export const ProductDetailView: React.FC = () => {
     setSpecialNotes('');
     setSelectedPackageIndex(product.packages && product.packages.length > 0 ? 0 : null);
     window.scrollTo({ top: 0, behavior: 'smooth' });
+
+    // Track product view (Tap tracking)
+    recordProductTap(product);
   }, [product.id, product.image, product.packages]);
 
   // Review Form
@@ -90,7 +105,7 @@ export const ProductDetailView: React.FC = () => {
   const activePrice = selectedPackage ? selectedPackage.price : product.price;
   const activeUnit = selectedPackage ? selectedPackage.unit : product.unit;
 
-  const categoryBadge = getCategoryBadge(product.category);
+  const categoryBadge = getCategoryBadge(product.category, language);
   const isHomestay = product.category === 'homestay' || product.category === 'penginapan-lokal';
   const nights = isHomestay ? calculateNights(bookingDateStart, bookingDateEnd) : 1;
   const totalPrice = isHomestay
@@ -161,6 +176,10 @@ export const ProductDetailView: React.FC = () => {
     });
     const targetPhone = product.sellerPhone || WHATSAPP_PHONE;
     const url = formatWhatsAppUrl(targetPhone, text);
+
+    // Record WhatsApp conversion lead (Option A tracking)
+    recordWhatsAppLead(productForWa, quantity, totalPrice, combinedNotes);
+
     window.open(url, '_blank');
   };
 
@@ -179,6 +198,10 @@ export const ProductDetailView: React.FC = () => {
     const text = `Halo Admin ${product.villageName} (${sellerDisplayName}), saya ingin bertanya tentang "${product.title}" (${product.unit}).`;
     const targetPhone = product.sellerPhone || WHATSAPP_PHONE;
     const url = formatWhatsAppUrl(targetPhone, text);
+
+    // Record WhatsApp interaction lead (Option A tracking)
+    recordWhatsAppLead(product, 1, product.price, 'Inquiry via Chat WA');
+
     window.open(url, '_blank');
   };
 
@@ -192,7 +215,7 @@ export const ProductDetailView: React.FC = () => {
           className="flex items-center gap-1.5 text-xs font-bold text-stone-700 hover:text-emerald-800 transition-colors bg-white px-3.5 py-2 rounded-xl border border-stone-200 shadow-xs"
         >
           <ChevronLeft className="w-4 h-4" />
-          <span>Kembali ke Marketplace</span>
+          <span>{t('detail.back')}</span>
         </button>
 
         <div className="flex items-center gap-2">
@@ -202,7 +225,7 @@ export const ProductDetailView: React.FC = () => {
             title="Bagikan Produk"
           >
             <Share2 className="w-4 h-4 text-emerald-700" />
-            <span className="hidden sm:inline">Bagikan</span>
+            <span className="hidden sm:inline">{t('detail.share')}</span>
           </button>
         </div>
       </div>
@@ -215,35 +238,109 @@ export const ProductDetailView: React.FC = () => {
           
           {/* Gallery */}
           <div className="space-y-3">
-            <div className="relative h-72 sm:h-96 rounded-2xl overflow-hidden border border-stone-200 bg-stone-100 shadow-md">
-              <img
-                src={activeImage}
-                alt={product.title}
-                className="w-full h-full object-cover"
-                referrerPolicy="no-referrer"
-              />
+            {/* Media Mode Switcher (If videoUrl is available) */}
+            {product.videoUrl && (
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={() => setActiveMediaType('image')}
+                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+                    activeMediaType === 'image'
+                      ? 'bg-emerald-800 text-amber-200 shadow-xs'
+                      : 'bg-white text-stone-700 border border-stone-200 hover:bg-stone-50'
+                  }`}
+                >
+                  <ImageIcon className="w-3.5 h-3.5" />
+                  <span>{t('detail.tabPhotos')}</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setActiveMediaType('video')}
+                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+                    activeMediaType === 'video'
+                      ? 'bg-rose-700 text-white shadow-xs'
+                      : 'bg-white text-stone-700 border border-stone-200 hover:bg-stone-50'
+                  }`}
+                >
+                  <Play className="w-3.5 h-3.5 fill-current" />
+                  <span>{t('detail.tabVideo')}</span>
+                </button>
+              </div>
+            )}
+
+            <div className="relative h-72 sm:h-96 rounded-2xl overflow-hidden border border-stone-200 bg-stone-900 shadow-md">
+              {activeMediaType === 'video' && product.videoUrl ? (
+                (() => {
+                  const parsed = parseVideoUrl(product.videoUrl);
+                  if (parsed.type === 'youtube' || parsed.type === 'vimeo') {
+                    return (
+                      <iframe
+                        src={parsed.embedUrl}
+                        title={product.title}
+                        className="w-full h-full rounded-2xl border-0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowFullScreen
+                      />
+                    );
+                  }
+                  return (
+                    <video
+                      controls
+                      autoPlay
+                      src={parsed.directUrl || product.videoUrl}
+                      className="w-full h-full object-cover rounded-2xl"
+                    />
+                  );
+                })()
+              ) : (
+                <img
+                  src={activeImage}
+                  alt={product.title}
+                  className="w-full h-full object-cover"
+                  referrerPolicy="no-referrer"
+                />
+              )}
               <span className={`absolute top-4 left-4 px-3 py-1 rounded-full text-xs font-bold border shadow-md ${categoryBadge.bg}`}>
                 {categoryBadge.label}
               </span>
             </div>
 
-            {/* Gallery Thumbnails */}
-            {allGalleryImages.length > 1 && (
-              <div className="flex items-center gap-3 overflow-x-auto pb-1">
-                {allGalleryImages.map((imgUrl, i) => (
-                  <button
-                    key={i}
-                    type="button"
-                    onClick={() => setActiveImage(imgUrl)}
-                    className={`w-20 h-20 rounded-xl overflow-hidden border-2 shrink-0 transition-all cursor-pointer ${
-                      activeImage === imgUrl ? 'border-emerald-700 scale-105 shadow-md' : 'border-stone-200 opacity-70 hover:opacity-100'
-                    }`}
-                  >
-                    <img src={imgUrl} alt={`${product.title} ${i + 1}`} className="w-full h-full object-cover" referrerPolicy="no-referrer" />
-                  </button>
-                ))}
-              </div>
-            )}
+            {/* Gallery Thumbnails (Images + Video Thumbnail if available) */}
+            <div className="flex items-center gap-3 overflow-x-auto pb-1">
+              {product.videoUrl && (
+                <button
+                  type="button"
+                  onClick={() => setActiveMediaType('video')}
+                  className={`w-20 h-20 rounded-xl overflow-hidden border-2 shrink-0 transition-all cursor-pointer bg-stone-900 flex flex-col items-center justify-center text-white ${
+                    activeMediaType === 'video'
+                      ? 'border-rose-500 scale-105 shadow-md ring-2 ring-rose-400/50'
+                      : 'border-stone-200 opacity-80 hover:opacity-100'
+                  }`}
+                  title="Putar Video"
+                >
+                  <div className="w-8 h-8 rounded-full bg-rose-600 flex items-center justify-center mb-1">
+                    <Play className="w-4 h-4 fill-white text-white ml-0.5" />
+                  </div>
+                  <span className="text-[10px] font-extrabold uppercase tracking-wider text-rose-300">Video</span>
+                </button>
+              )}
+
+              {allGalleryImages.map((imgUrl, i) => (
+                <button
+                  key={i}
+                  type="button"
+                  onClick={() => {
+                    setActiveMediaType('image');
+                    setActiveImage(imgUrl);
+                  }}
+                  className={`w-20 h-20 rounded-xl overflow-hidden border-2 shrink-0 transition-all cursor-pointer ${
+                    activeMediaType === 'image' && activeImage === imgUrl ? 'border-emerald-700 scale-105 shadow-md' : 'border-stone-200 opacity-70 hover:opacity-100'
+                  }`}
+                >
+                  <img src={imgUrl} alt={`${product.title} ${i + 1}`} className="w-full h-full object-cover" referrerPolicy="no-referrer" />
+                </button>
+              ))}
+            </div>
           </div>
 
           {/* Product Header & Title */}
@@ -262,12 +359,12 @@ export const ProductDetailView: React.FC = () => {
               <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-100 text-amber-900 border border-amber-300 font-bold">
                 <Star className="w-4 h-4 fill-amber-500 text-amber-500" />
                 <span>{product.rating}</span>
-                <span className="text-stone-600 font-normal">({product.totalReviews} ulasan)</span>
+                <span className="text-stone-600 font-normal">({product.totalReviews} {t('card.reviews')})</span>
               </div>
 
               <div className="flex items-center gap-1 text-emerald-800 font-semibold">
                 <CheckCircle2 className="w-4 h-4" />
-                <span>Ketersediaan Stok: {product.stockQuota} unit</span>
+                <span>{t('detail.stock')} {product.stockQuota} {t('detail.units')}</span>
               </div>
             </div>
           </div>
@@ -279,9 +376,9 @@ export const ProductDetailView: React.FC = () => {
                 <div>
                   <h3 className="font-bold text-stone-900 text-sm uppercase tracking-wider flex items-center gap-2">
                     <Sparkles className="w-4 h-4 text-amber-500" />
-                    <span>Pilihan Paket Tersedia ({product.packages.length} Opsi)</span>
+                    <span>{language === 'en' ? `Available Package Tiers (${product.packages.length} Options)` : `Pilihan Paket Tersedia (${product.packages.length} Opsi)`}</span>
                   </h3>
-                  <p className="text-xs text-stone-500 mt-0.5">Pilih paket untuk melihat detail rute, fasilitas, dan harga</p>
+                  <p className="text-xs text-stone-500 mt-0.5">{language === 'en' ? 'Select a package to view route details, amenities, and pricing' : 'Pilih paket untuk melihat detail rute, fasilitas, dan harga'}</p>
                 </div>
               </div>
 
@@ -336,7 +433,7 @@ export const ProductDetailView: React.FC = () => {
           {/* Description */}
           <div className="bg-white p-6 rounded-2xl border border-stone-200 shadow-xs space-y-3">
             <h3 className="font-bold text-stone-900 text-sm font-sans uppercase tracking-wider">
-              Deskripsi Produk / Layanan
+              {t('detail.description')}
             </h3>
             <p className="text-xs sm:text-sm text-stone-600 leading-relaxed whitespace-pre-line">
               {product.description}
@@ -345,7 +442,7 @@ export const ProductDetailView: React.FC = () => {
             {/* Highlights bullet list */}
             {product.highlights && product.highlights.length > 0 && (
               <div className="pt-3 border-t border-stone-100">
-                <h4 className="text-xs font-bold text-stone-800 mb-2">Keunggulan Utama:</h4>
+                <h4 className="text-xs font-bold text-stone-800 mb-2">{t('detail.highlights')}:</h4>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                   {product.highlights.map((hl, i) => (
                     <div key={i} className="flex items-center gap-2 text-xs text-stone-700 font-medium">
@@ -362,7 +459,7 @@ export const ProductDetailView: React.FC = () => {
           {product.facilities && product.facilities.length > 0 && (
             <div className="bg-white p-6 rounded-2xl border border-stone-200 shadow-xs space-y-3">
               <h3 className="font-bold text-stone-900 text-sm uppercase tracking-wider">
-                Fasilitas & Kelengkapan Termasuk
+                {language === 'en' ? 'Included Facilities & Amenities' : 'Fasilitas & Kelengkapan Termasuk'}
               </h3>
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                 {product.facilities.map((fac, i) => (
@@ -380,7 +477,7 @@ export const ProductDetailView: React.FC = () => {
             <div className="bg-white p-6 rounded-2xl border border-stone-200 shadow-xs space-y-4">
               <h3 className="font-bold text-stone-900 text-sm uppercase tracking-wider flex items-center gap-2">
                 <Clock className="w-4 h-4 text-emerald-700" />
-                <span>Rencana Perjalanan (Itinerary)</span>
+                <span>{language === 'en' ? 'Tour Itinerary' : 'Rencana Perjalanan (Itinerary)'}</span>
               </h3>
               <div className="space-y-3 pl-2 border-l-2 border-emerald-600">
                 {product.itinerary.map((item, i) => (
@@ -397,9 +494,9 @@ export const ProductDetailView: React.FC = () => {
           {/* Seller / Host Profile Card */}
           <div className="bg-gradient-to-r from-stone-900 to-emerald-950 p-6 rounded-2xl text-white shadow-lg space-y-4">
             <div className="flex items-center justify-between">
-              <span className="text-[11px] font-bold text-amber-300 uppercase tracking-wider">Informasi Penjual / Tuan Rumah</span>
+              <span className="text-[11px] font-bold text-amber-300 uppercase tracking-wider">{language === 'en' ? 'Seller / Host Information' : 'Informasi Penjual / Tuan Rumah'}</span>
               <span className="inline-flex items-center gap-1 text-[10px] bg-emerald-500/20 text-emerald-300 px-2.5 py-0.5 rounded-full border border-emerald-500/30">
-                <ShieldCheck className="w-3 h-3 text-emerald-400" /> Terverifikasi Desa
+                <ShieldCheck className="w-3 h-3 text-emerald-400" /> {language === 'en' ? 'Village Verified' : 'Terverifikasi Desa'}
               </span>
             </div>
 
@@ -427,7 +524,7 @@ export const ProductDetailView: React.FC = () => {
               className="w-full py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-xl text-xs flex items-center justify-center gap-2 shadow-md transition-colors cursor-pointer"
             >
               <Phone className="w-4 h-4" />
-              <span>Chat WhatsApp Admin Produk / CP ({sellerDisplayName})</span>
+              <span>{language === 'en' ? `Chat WhatsApp Product Host / CP (${sellerDisplayName})` : `Chat WhatsApp Admin Produk / CP (${sellerDisplayName})`}</span>
             </button>
           </div>
 
@@ -435,31 +532,37 @@ export const ProductDetailView: React.FC = () => {
           <div className="bg-white p-6 rounded-2xl border border-stone-200 shadow-xs space-y-6">
             <div className="flex items-center justify-between border-b border-stone-200 pb-3">
               <h3 className="font-bold text-stone-900 text-sm uppercase tracking-wider">
-                Ulasan Wisatawan ({productReviews.length})
+                {language === 'en' ? `Visitor Reviews (${productReviews.length})` : `Ulasan Wisatawan (${productReviews.length})`}
               </h3>
               <div className="flex items-center gap-1 text-xs font-bold text-amber-600">
                 <Star className="w-4 h-4 fill-amber-500" />
-                <span>{product.rating} dari 5.0</span>
+                <span>{language === 'en' ? `${product.rating} out of 5.0` : `${product.rating} dari 5.0`}</span>
               </div>
             </div>
 
             {/* Add Review Form */}
             <form onSubmit={handleReviewSubmit} className="bg-stone-50 p-4 rounded-xl border border-stone-200 space-y-3">
-              <p className="text-xs font-bold text-stone-800">Tulis Ulasan Pengalaman Anda</p>
+              <p className="text-xs font-bold text-stone-800">
+                {language === 'en' ? 'Write Your Experience Review' : 'Tulis Ulasan Pengalaman Anda'}
+              </p>
               
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
                 <div>
-                  <label className="text-[11px] font-bold text-stone-700 block mb-1">Nama Anda (Opsional):</label>
+                  <label className="text-[11px] font-bold text-stone-700 block mb-1">
+                    {language === 'en' ? 'Your Name (Optional):' : 'Nama Anda (Opsional):'}
+                  </label>
                   <input
                     type="text"
                     value={reviewAuthorName}
                     onChange={(e) => setReviewAuthorName(e.target.value)}
-                    placeholder="Contoh: Budi Santoso / Wisatawan Jakarta"
+                    placeholder={language === 'en' ? 'E.g. John Doe / Traveler' : 'Contoh: Budi Santoso / Wisatawan Jakarta'}
                     className="w-full p-2.5 bg-white border border-stone-300 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-emerald-600"
                   />
                 </div>
                 <div>
-                  <label className="text-[11px] font-bold text-stone-700 block mb-1">Beri Nilai Bintang:</label>
+                  <label className="text-[11px] font-bold text-stone-700 block mb-1">
+                    {language === 'en' ? 'Star Rating:' : 'Beri Nilai Bintang:'}
+                  </label>
                   <div className="flex items-center gap-1 h-9">
                     {[1, 2, 3, 4, 5].map((star) => (
                       <button
@@ -479,7 +582,7 @@ export const ProductDetailView: React.FC = () => {
               <textarea
                 value={newComment}
                 onChange={(e) => setNewComment(e.target.value)}
-                placeholder="Bagikan ulasan pengalaman Anda saat tinggal atau menggunakan produk ini..."
+                placeholder={language === 'en' ? 'Share your review and experience with this product or stay...' : 'Bagikan ulasan pengalaman Anda saat tinggal atau menggunakan produk ini...'}
                 rows={3}
                 required
                 className="w-full p-3 bg-white border border-stone-300 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-emerald-600"
@@ -490,7 +593,7 @@ export const ProductDetailView: React.FC = () => {
                 className="px-4 py-2 bg-emerald-800 hover:bg-emerald-900 text-white font-bold rounded-xl text-xs flex items-center gap-1.5 shadow-xs cursor-pointer"
               >
                 <Send className="w-3.5 h-3.5" />
-                <span>Kirim Ulasan</span>
+                <span>{language === 'en' ? 'Submit Review' : 'Kirim Ulasan'}</span>
               </button>
             </form>
 
@@ -522,7 +625,9 @@ export const ProductDetailView: React.FC = () => {
                   </div>
                 ))
               ) : (
-                <p className="text-xs text-stone-400 italic text-center py-4">Belum ada ulasan untuk produk ini. Jadilah yang pertama memberikan ulasan!</p>
+                <p className="text-xs text-stone-400 italic text-center py-4">
+                  {language === 'en' ? 'No reviews yet for this product. Be the first to leave a review!' : 'Belum ada ulasan untuk produk ini. Jadilah yang pertama memberikan ulasan!'}
+                </p>
               )}
             </div>
 
@@ -538,7 +643,9 @@ export const ProductDetailView: React.FC = () => {
             <div className="p-4 bg-amber-50 rounded-2xl border border-amber-200 space-y-2">
               <div className="flex items-baseline justify-between">
                 <div>
-                  <span className="text-[11px] font-bold text-amber-900 uppercase tracking-wider block">Harga Resmi Desa</span>
+                  <span className="text-[11px] font-bold text-amber-900 uppercase tracking-wider block">
+                    {language === 'en' ? 'Official Village Price' : 'Harga Resmi Desa'}
+                  </span>
                   <span className="text-2xl font-black text-emerald-800 font-sans">
                     {formatRupiah(activePrice)}
                   </span>
@@ -552,7 +659,7 @@ export const ProductDetailView: React.FC = () => {
               </div>
               {selectedPackage && (
                 <div className="pt-2 border-t border-amber-200/80 flex items-center justify-between text-xs">
-                  <span className="text-stone-600 font-medium">Paket Terpilih:</span>
+                  <span className="text-stone-600 font-medium">{language === 'en' ? 'Selected Package:' : 'Paket Terpilih:'}</span>
                   <span className="font-bold text-emerald-900 truncate max-w-[200px]" title={selectedPackage.name}>
                     {selectedPackage.name}
                   </span>
@@ -568,12 +675,12 @@ export const ProductDetailView: React.FC = () => {
                 <div className="space-y-3 p-4 bg-stone-50 rounded-2xl border border-stone-200">
                   <label className="text-xs font-bold text-stone-800 flex items-center gap-1.5">
                     <Calendar className="w-4 h-4 text-emerald-700" />
-                    <span>Pilih Tanggal Booking</span>
+                    <span>{language === 'en' ? 'Select Booking Date' : 'Pilih Tanggal Booking'}</span>
                   </label>
                   
                   <div className="grid grid-cols-2 gap-2">
                     <div>
-                      <span className="text-[10px] text-stone-500 font-semibold block">Check-in / Mulai</span>
+                      <span className="text-[10px] text-stone-500 font-semibold block">{language === 'en' ? 'Check-in / Start' : 'Check-in / Mulai'}</span>
                       <input
                         type="date"
                         value={bookingDateStart}
@@ -583,7 +690,7 @@ export const ProductDetailView: React.FC = () => {
                     </div>
                     {product.category === 'homestay' && (
                       <div>
-                        <span className="text-[10px] text-stone-500 font-semibold block">Check-out</span>
+                        <span className="text-[10px] text-stone-500 font-semibold block">{language === 'en' ? 'Check-out' : 'Check-out'}</span>
                         <input
                           type="date"
                           value={bookingDateEnd}
@@ -600,8 +707,8 @@ export const ProductDetailView: React.FC = () => {
               {(product.category === 'homestay' || product.category === 'paket-wisata') && (
                 <div className="p-4 bg-stone-50 rounded-2xl border border-stone-200 flex items-center justify-between">
                   <div>
-                    <span className="text-xs font-bold text-stone-800 block">Jumlah Tamu / Orang</span>
-                    <span className="text-[10px] text-stone-500">Maksimal ketersediaan desa</span>
+                    <span className="text-xs font-bold text-stone-800 block">{language === 'en' ? 'Guests / People' : 'Jumlah Tamu / Orang'}</span>
+                    <span className="text-[10px] text-stone-500">{language === 'en' ? 'Subject to village capacity' : 'Maksimal ketersediaan desa'}</span>
                   </div>
                   <div className="flex items-center gap-3 bg-white px-3 py-1.5 rounded-xl border border-stone-300">
                     <button
@@ -625,8 +732,8 @@ export const ProductDetailView: React.FC = () => {
               {product.category !== 'homestay' && product.category !== 'paket-wisata' && (
                 <div className="p-4 bg-stone-50 rounded-2xl border border-stone-200 flex items-center justify-between">
                   <div>
-                    <span className="text-xs font-bold text-stone-800 block">Jumlah Pesanan</span>
-                    <span className="text-[10px] text-stone-500">Stok sedia: {product.stockQuota}</span>
+                    <span className="text-xs font-bold text-stone-800 block">{language === 'en' ? 'Order Quantity' : 'Jumlah Pesanan'}</span>
+                    <span className="text-[10px] text-stone-500">{language === 'en' ? `Available: ${product.stockQuota}` : `Stok sedia: ${product.stockQuota}`}</span>
                   </div>
                   <div className="flex items-center gap-3 bg-white px-3 py-1.5 rounded-xl border border-stone-300">
                     <button
@@ -648,12 +755,14 @@ export const ProductDetailView: React.FC = () => {
 
               {/* Special Notes */}
               <div>
-                <label className="text-[11px] font-bold text-stone-700 block mb-1">Catatan Khusus (Opsional):</label>
+                <label className="text-[11px] font-bold text-stone-700 block mb-1">
+                  {language === 'en' ? 'Special Notes (Optional):' : 'Catatan Khusus (Opsional):'}
+                </label>
                 <input
                   type="text"
                   value={specialNotes}
                   onChange={(e) => setSpecialNotes(e.target.value)}
-                  placeholder="Contoh: Minta jam check-in awal / Alergi..."
+                  placeholder={language === 'en' ? 'E.g. Early check-in request / Dietary preferences...' : 'Contoh: Minta jam check-in awal / Alergi...'}
                   className="w-full p-2.5 bg-stone-50 border border-stone-200 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-emerald-600"
                 />
               </div>
@@ -664,12 +773,12 @@ export const ProductDetailView: React.FC = () => {
             <div className="pt-4 border-t border-stone-200 space-y-1.5">
               {product.category === 'homestay' && (
                 <div className="flex items-center justify-between text-xs text-stone-500">
-                  <span>Rincian ({nights} malam x {quantity} unit):</span>
+                  <span>{language === 'en' ? `Details (${nights} nights x ${quantity} units):` : `Rincian (${nights} malam x ${quantity} unit):`}</span>
                   <span className="font-semibold text-stone-700">{formatRupiah(product.price)} x {nights} x {quantity}</span>
                 </div>
               )}
               <div className="flex items-center justify-between">
-                <span className="text-xs font-bold text-stone-700">Total Biaya:</span>
+                <span className="text-xs font-bold text-stone-700">{language === 'en' ? 'Total Cost:' : 'Total Biaya:'}</span>
                 <span className="text-xl font-black text-emerald-800">{formatRupiah(totalPrice)}</span>
               </div>
             </div>
@@ -681,7 +790,7 @@ export const ProductDetailView: React.FC = () => {
                 className="w-full py-4 bg-emerald-800 hover:bg-emerald-900 text-white font-extrabold rounded-2xl text-xs sm:text-sm shadow-xl transition-all hover:scale-[1.02] flex items-center justify-center gap-2 border-2 border-amber-300 cursor-pointer"
               >
                 <MessageCircle className="w-5 h-5 fill-white text-emerald-800" />
-                <span>Pesan Sekarang via WhatsApp Admin Produk / CP</span>
+                <span>{t('detail.directOrderWa')}</span>
               </button>
 
               <button
@@ -689,7 +798,7 @@ export const ProductDetailView: React.FC = () => {
                 className="w-full py-3 bg-amber-100 hover:bg-amber-200 text-amber-950 font-bold rounded-2xl text-xs border border-amber-300 transition-colors flex items-center justify-center gap-2 cursor-pointer"
               >
                 <ShoppingBag className="w-4 h-4 text-emerald-800" />
-                <span>+ Masukkan ke Keranjang Belanja</span>
+                <span>{t('detail.addToCart')}</span>
               </button>
 
               <button
@@ -697,12 +806,12 @@ export const ProductDetailView: React.FC = () => {
                 className="w-full py-2.5 bg-stone-100 hover:bg-stone-200 text-stone-700 font-semibold rounded-2xl text-xs transition-colors flex items-center justify-center gap-1.5 cursor-pointer"
               >
                 <Phone className="w-3.5 h-3.5 text-emerald-700" />
-                <span>Tanya / Chat Admin Produk ({sellerDisplayName})</span>
+                <span>{language === 'en' ? `Chat Seller (${sellerDisplayName})` : `Tanya / Chat Admin Produk (${sellerDisplayName})`}</span>
               </button>
             </div>
 
             <p className="text-[10px] text-stone-500 text-center font-medium">
-              ✨ Pemesanan langsung terhubung ke kontak CP resmi produk ({sellerDisplayName})
+              {language === 'en' ? `✨ Direct booking connected to official seller contact (${sellerDisplayName})` : `✨ Pemesanan langsung terhubung ke kontak CP resmi produk (${sellerDisplayName})`}
             </p>
 
           </div>
@@ -714,7 +823,7 @@ export const ProductDetailView: React.FC = () => {
       {relatedProducts.length > 0 && (
         <div className="pt-12 border-t border-stone-200 space-y-6">
           <h2 className="text-xl sm:text-2xl font-extrabold font-serif-title text-stone-900">
-            Produk Lain dari {product.villageName}
+            {language === 'en' ? `Other Products & Stays from ${product.villageName}` : `Produk Lain dari ${product.villageName}`}
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
             {relatedProducts.map(p => (

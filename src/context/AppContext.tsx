@@ -1,7 +1,16 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { Product, Village, CartItem, Order, Review, User, ProductCategory, OrderStatus } from '../types';
+import { Product, Village, CartItem, Order, Review, User, ProductCategory, OrderStatus, InteractionEvent, AnalyticsStats } from '../types';
 import { INITIAL_PRODUCTS, INITIAL_VILLAGES, INITIAL_REVIEWS, INITIAL_ORDERS, MOCK_PICS } from '../data/mockData';
 import { getCartItemTotal } from '../utils/booking';
+import { translations, Language, TranslationKey } from '../i18n/translations';
+import { 
+  getStoredEvents, 
+  trackProductTap, 
+  trackSearchQuery, 
+  trackWhatsAppClick, 
+  trackDealCompleted, 
+  calculateAnalyticsStats 
+} from '../utils/analytics';
 
 export type PageRoute =
   | 'home'
@@ -21,6 +30,11 @@ interface ToastState {
 }
 
 interface AppContextType {
+  // Localization / i18n
+  language: Language;
+  setLanguage: (lang: Language) => void;
+  t: (key: TranslationKey, params?: Record<string, string | number>) => string;
+
   // Navigation & Page state
   page: PageRoute;
   selectedProductId: string | null;
@@ -89,6 +103,22 @@ interface AppContextType {
   // Reviews
   addReview: (productId: string, rating: number, comment: string, authorName?: string) => void;
 
+  // Analytics & Interaction Tracking (Option A)
+  analyticsEvents: InteractionEvent[];
+  recordProductTap: (product: Product) => void;
+  recordSearch: (query: string, resultCount?: number) => void;
+  recordWhatsAppLead: (
+    product: Product,
+    quantity?: number,
+    totalAmount?: number,
+    notes?: string,
+    customerName?: string,
+    customerPhone?: string
+  ) => Order;
+  confirmOrderDeal: (orderId: string) => void;
+  cancelOrder: (orderId: string) => void;
+  getVillageAnalytics: (villageId?: string) => AnalyticsStats;
+
   // Toast
   toast: ToastState | null;
   showToast: (message: string, type?: 'success' | 'info' | 'error') => void;
@@ -132,6 +162,65 @@ const getInitialPage = (): PageRoute => {
 };
 
 export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  // Localization / i18n
+  const [language, setLanguageState] = useState<Language>(() => {
+    if (typeof window !== 'undefined') {
+      try {
+        const searchParams = new URLSearchParams(window.location.search);
+        const urlLang = searchParams.get('lang')?.toLowerCase();
+        if (urlLang === 'en' || urlLang === 'id') {
+          localStorage.setItem('saba_lang', urlLang);
+          return urlLang;
+        }
+
+        const saved = localStorage.getItem('saba_lang');
+        if (saved === 'en' || saved === 'id') return saved;
+      } catch {
+        // storage fallback
+      }
+    }
+    return 'id';
+  });
+
+  const setLanguage = (lang: Language) => {
+    setLanguageState(lang);
+    if (typeof window !== 'undefined') {
+      try {
+        localStorage.setItem('saba_lang', lang);
+        document.documentElement.lang = lang;
+        const url = new URL(window.location.href);
+        if (url.searchParams.has('lang')) {
+          url.searchParams.set('lang', lang);
+          window.history.replaceState(window.history.state, '', url.toString());
+        }
+      } catch {
+        // ignore storage error
+      }
+    }
+  };
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      try {
+        document.documentElement.lang = language;
+        localStorage.setItem('saba_lang', language);
+      } catch {
+        // ignore storage error
+      }
+    }
+  }, [language]);
+
+  const t = (key: TranslationKey, params?: Record<string, string | number>): string => {
+    const dict = translations[language] || translations.id;
+    let text: string = dict[key] || translations.id[key] || key;
+    if (params) {
+      Object.entries(params).forEach(([k, v]) => {
+        text = text.replace(new RegExp(`\\{${k}\\}`, 'g'), String(v));
+      });
+    }
+    return text;
+  };
+
   const [page, setPage] = useState<PageRoute>(getInitialPage());
   const [selectedProductId, setSelectedProductId] = useState<string | null>(null);
   const [selectedVillageId, setSelectedVillageId] = useState<string | null>(null);
@@ -153,6 +242,9 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
   // User auth state: Default is null (Regular Buyer/Guest doesn't need login)
   const [currentUser, setCurrentUser] = useState<User | null>(null);
+
+  // Analytics & Interaction tracking state
+  const [analyticsEvents, setAnalyticsEvents] = useState<InteractionEvent[]>(() => getStoredEvents());
 
   // Toast state
   const [toast, setToast] = useState<ToastState | null>(null);
@@ -260,6 +352,9 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     paymentMethod: string,
     notes?: string
   ) => {
+    const primaryVillageId = cart[0]?.product?.villageId;
+    const primaryVillageName = cart[0]?.product?.villageName;
+
     const newOrder: Order = {
       id: `ORD-${new Date().getFullYear()}-${Math.floor(100 + Math.random() * 900)}`,
       customerName,
@@ -268,14 +363,29 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       items: [...cart],
       totalAmount: cartTotal,
       paymentMethod,
-      status: 'diproses',
-      createdAt: new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' }),
-      notes
+      status: 'menunggu',
+      createdAt: new Date().toLocaleDateString(language === 'id' ? 'id-ID' : 'en-US', {
+        day: 'numeric',
+        month: 'short',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+      }),
+      notes,
+      source: 'cart_checkout',
+      villageId: primaryVillageId,
+      villageName: primaryVillageName
     };
+
+    // Track analytics for cart checkout
+    cart.forEach(item => {
+      trackWhatsAppClick(item.product, item.quantity, getCartItemTotal(item));
+    });
+    setAnalyticsEvents(getStoredEvents());
 
     setOrders(prev => [newOrder, ...prev]);
     clearCart();
-    showToast(`Pesanan #${newOrder.id} berhasil dibuat!`, 'success');
+    showToast(language === 'id' ? `Pesanan #${newOrder.id} berhasil dibuat!` : `Order #${newOrder.id} created successfully!`, 'success');
     return newOrder;
   };
 
@@ -395,8 +505,84 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     showToast('Terima kasih! Ulasan Anda telah terpublikasi.', 'success');
   };
 
+  // Analytics & Interaction Handlers (Option A)
+  const recordProductTap = (product: Product) => {
+    trackProductTap(product);
+    setAnalyticsEvents(getStoredEvents());
+  };
+
+  const recordSearch = (query: string, resultCount?: number) => {
+    trackSearchQuery(query, resultCount);
+    setAnalyticsEvents(getStoredEvents());
+  };
+
+  const recordWhatsAppLead = (
+    product: Product,
+    quantity = 1,
+    totalAmount?: number,
+    notes?: string,
+    customerName = 'Wisatawan (WA Lead)',
+    customerPhone?: string
+  ): Order => {
+    const finalTotal = totalAmount || product.price * quantity;
+    trackWhatsAppClick(product, quantity, finalTotal);
+    setAnalyticsEvents(getStoredEvents());
+
+    // Automatically create a pending order in Admin Desa system
+    const newOrder: Order = {
+      id: `ORD-WA-${Date.now().toString().slice(-4)}`,
+      customerName,
+      customerEmail: 'via.whatsapp@sabalembang.id',
+      customerPhone: customerPhone || product.sellerPhone || 'Pengunjung WhatsApp',
+      items: [{
+        product,
+        quantity,
+        notes
+      }],
+      totalAmount: finalTotal,
+      paymentMethod: 'WhatsApp Fast Checkout',
+      status: 'menunggu',
+      createdAt: new Date().toLocaleDateString(language === 'id' ? 'id-ID' : 'en-US', {
+        day: 'numeric',
+        month: 'short',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+      }),
+      notes: notes || `Inquiry via WhatsApp dari produk "${product.title}"`,
+      villageId: product.villageId,
+      villageName: product.villageName,
+      source: 'direct_wa'
+    };
+
+    setOrders(prev => [newOrder, ...prev]);
+    return newOrder;
+  };
+
+  const confirmOrderDeal = (orderId: string) => {
+    const targetOrder = orders.find(o => o.id === orderId);
+    if (targetOrder) {
+      trackDealCompleted(targetOrder);
+      setAnalyticsEvents(getStoredEvents());
+    }
+    updateOrderStatus(orderId, 'selesai');
+    showToast(language === 'id' ? `Pesanan #${orderId} telah dikonfirmasi DEAL / LUNAS!` : `Order #${orderId} confirmed as COMPLETED / PAID!`, 'success');
+  };
+
+  const cancelOrder = (orderId: string) => {
+    updateOrderStatus(orderId, 'dibatalkan');
+    showToast(language === 'id' ? `Pesanan #${orderId} ditandai batal.` : `Order #${orderId} marked as cancelled.`, 'info');
+  };
+
+  const getVillageAnalytics = (villageId?: string): AnalyticsStats => {
+    return calculateAnalyticsStats(analyticsEvents, orders, villageId);
+  };
+
   return (
     <AppContext.Provider value={{
+      language,
+      setLanguage,
+      t,
       page,
       selectedProductId,
       selectedVillageId,
@@ -436,6 +622,13 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       updateOrderStatus,
       updateVillage,
       addReview,
+      analyticsEvents,
+      recordProductTap,
+      recordSearch,
+      recordWhatsAppLead,
+      confirmOrderDeal,
+      cancelOrder,
+      getVillageAnalytics,
       toast,
       showToast
     }}>

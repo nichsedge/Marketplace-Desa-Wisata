@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { MessageCircle, X, Send, MapPin } from 'lucide-react';
+import { useApp } from '../context/AppContext';
 import { WHATSAPP_PHONE, formatWhatsAppUrl, createGeneralWhatsAppMessage } from '../utils/whatsapp';
 
 export const FloatingWhatsApp: React.FC = () => {
+  const { language } = useApp();
   const [isOpen, setIsOpen] = useState(false);
   const [customMsg, setCustomMsg] = useState('');
 
@@ -35,7 +37,9 @@ export const FloatingWhatsApp: React.FC = () => {
               </div>
               <div>
                 <h4 className="font-bold text-sm leading-tight">Admin Saba Lembang</h4>
-                <p className="text-[11px] text-emerald-200">Platform Interdesa Kawasan Lembang</p>
+                <p className="text-[11px] text-emerald-200">
+                  {language === 'en' ? 'Lembang Region Inter-Village Platform' : 'Platform Interdesa Kawasan Lembang'}
+                </p>
               </div>
             </div>
             <button 
@@ -49,35 +53,41 @@ export const FloatingWhatsApp: React.FC = () => {
           {/* Chat Body */}
           <div className="p-4 bg-amber-50/40 space-y-3 text-xs">
             <div className="bg-white p-3.5 rounded-2xl rounded-tl-none border border-stone-200 shadow-xs space-y-1.5 max-w-[90%]">
-              <p className="font-semibold text-emerald-900">Sampurasun! 🙏</p>
-              <p className="text-stone-700 leading-relaxed">
-                Ada yang bisa kami bantu seputar produk komoditas, homestay, atau paket wisata desa di Kawasan Lembang?
+              <p className="font-semibold text-emerald-900">
+                {language === 'en' ? 'Welcome to Saba Lembang! 🙏' : 'Sampurasun! 🙏'}
               </p>
-              <span className="text-[10px] text-stone-400 block text-right">Admin Online</span>
+              <p className="text-stone-700 leading-relaxed">
+                {language === 'en'
+                  ? 'How can we help you regarding local commodities, homestays, or tour packages in Lembang Region?'
+                  : 'Ada yang bisa kami bantu seputar produk komoditas, homestay, atau paket wisata desa di Kawasan Lembang?'}
+              </p>
+              <span className="text-[10px] text-stone-400 block text-right">
+                {language === 'en' ? 'Admin Online' : 'Admin Online'}
+              </span>
             </div>
 
             {/* Quick Prompt Suggestions */}
             <div className="flex flex-wrap gap-1.5 pt-1">
               <button
                 type="button"
-                onClick={() => setCustomMsg('Halo Admin Saba Lembang, saya ingin tanya ketersediaan Penginapan & Homestay di Kawasan Lembang.')}
-                className="px-2.5 py-1 bg-white border border-stone-200 hover:border-emerald-700 text-stone-700 rounded-full text-[11px] transition-colors"
+                onClick={() => setCustomMsg(language === 'en' ? 'Hello Saba Lembang Admin, I would like to inquire about homestays and stays in Lembang Region.' : 'Halo Admin Saba Lembang, saya ingin tanya ketersediaan Penginapan & Homestay di Kawasan Lembang.')}
+                className="px-2.5 py-1 bg-white border border-stone-200 hover:border-emerald-700 text-stone-700 rounded-full text-[11px] transition-colors cursor-pointer"
               >
-                🏡 Penginapan & Homestay
+                {language === 'en' ? '🏡 Stays & Homestays' : '🏡 Penginapan & Homestay'}
               </button>
               <button
                 type="button"
-                onClick={() => setCustomMsg('Halo Admin Saba Lembang, saya ingin info Paket Wisata Alam, Camping & Offroad Cikole.')}
-                className="px-2.5 py-1 bg-white border border-stone-200 hover:border-emerald-700 text-stone-700 rounded-full text-[11px] transition-colors"
+                onClick={() => setCustomMsg(language === 'en' ? 'Hello Saba Lembang Admin, I would like information about nature tours, camping & Cikole offroad.' : 'Halo Admin Saba Lembang, saya ingin info Paket Wisata Alam, Camping & Offroad Cikole.')}
+                className="px-2.5 py-1 bg-white border border-stone-200 hover:border-emerald-700 text-stone-700 rounded-full text-[11px] transition-colors cursor-pointer"
               >
-                🎒 Paket Wisata Alam
+                {language === 'en' ? '🎒 Nature Tours & Offroad' : '🎒 Paket Wisata Alam'}
               </button>
               <button
                 type="button"
-                onClick={() => setCustomMsg('Halo Admin Saba Lembang, saya ingin konsultasi produk Kopi, Sayuran Organik, & Olahan Susu desa wisata.')}
-                className="px-2.5 py-1 bg-white border border-stone-200 hover:border-emerald-700 text-stone-700 rounded-full text-[11px] transition-colors"
+                onClick={() => setCustomMsg(language === 'en' ? 'Hello Saba Lembang Admin, I would like to consult on specialty coffee, organic crops & fresh dairy products.' : 'Halo Admin Saba Lembang, saya ingin konsultasi produk Kopi, Sayuran Organik, & Olahan Susu desa wisata.')}
+                className="px-2.5 py-1 bg-white border border-stone-200 hover:border-emerald-700 text-stone-700 rounded-full text-[11px] transition-colors cursor-pointer"
               >
-                ☕ Kopi & Komoditas
+                {language === 'en' ? '☕ Coffee & Produce' : '☕ Kopi & Komoditas'}
               </button>
             </div>
           </div>
@@ -88,12 +98,12 @@ export const FloatingWhatsApp: React.FC = () => {
               type="text"
               value={customMsg}
               onChange={(e) => setCustomMsg(e.target.value)}
-              placeholder="Tulis pertanyaan Anda..."
+              placeholder={language === 'en' ? 'Type your inquiry here...' : 'Tulis pertanyaan Anda...'}
               className="flex-1 px-3.5 py-2.5 bg-stone-100 border border-stone-200 rounded-2xl text-xs text-stone-800 focus:outline-none focus:ring-2 focus:ring-emerald-700"
             />
             <button
               type="submit"
-              className="p-2.5 rounded-2xl bg-emerald-700 hover:bg-emerald-800 text-white shadow-md transition-all hover:scale-105"
+              className="p-2.5 rounded-2xl bg-emerald-700 hover:bg-emerald-800 text-white shadow-md transition-all hover:scale-105 cursor-pointer"
               title="Kirim ke WhatsApp"
             >
               <Send className="w-4 h-4" />
@@ -107,14 +117,14 @@ export const FloatingWhatsApp: React.FC = () => {
       <button
         onClick={() => setIsOpen(!isOpen)}
         className="flex items-center gap-2.5 px-4 py-3 bg-emerald-700 hover:bg-emerald-800 text-white rounded-full shadow-2xl transition-all duration-300 hover:scale-105 border-2 border-white group cursor-pointer"
-        title="Bantuan WhatsApp Admin Desa"
+        title={language === 'en' ? 'Village Admin WhatsApp Support' : 'Bantuan WhatsApp Admin Desa'}
       >
         <div className="relative">
           <MessageCircle className="w-6 h-6 fill-white text-emerald-700" />
           <span className="absolute -top-1 -right-1 w-2.5 h-2.5 bg-amber-400 rounded-full animate-ping"></span>
         </div>
         <span className="text-xs font-bold font-sans tracking-wide">
-          {isOpen ? 'Tutup Chat' : 'Tanya Admin Desa'}
+          {isOpen ? (language === 'en' ? 'Close Chat' : 'Tutup Chat') : (language === 'en' ? 'Chat Village Admin' : 'Tanya Admin Desa')}
         </span>
       </button>
 

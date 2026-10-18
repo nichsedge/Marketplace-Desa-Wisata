@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { useApp } from '../context/AppContext';
 import { ProductCard } from '../components/ProductCard';
 import { UserAvatar } from '../components/UserAvatar';
+import { getLocalizedVillage } from '../i18n/productTranslations';
 import { 
   Search, 
   MapPin, 
@@ -34,7 +35,10 @@ export const HomeView: React.FC = () => {
     navigateTo, 
     setSearchQuery, 
     setCategoryFilter,
-    setVillageFilter
+    setVillageFilter,
+    recordSearch,
+    language,
+    t
   } = useApp();
 
   const [heroSearch, setHeroSearch] = useState('');
@@ -62,6 +66,9 @@ export const HomeView: React.FC = () => {
 
   const handleHeroSearch = (e: React.FormEvent) => {
     e.preventDefault();
+    if (heroSearch.trim()) {
+      recordSearch(heroSearch.trim());
+    }
     setSearchQuery(heroSearch);
     if (heroCategory !== 'all') setCategoryFilter(heroCategory);
     if (heroVillage !== 'all') setVillageFilter(heroVillage);
@@ -70,16 +77,16 @@ export const HomeView: React.FC = () => {
 
   const selectedVillageObj = villages.find(v => v.id === heroVillage);
   const villageDisplayTitle = heroVillage === 'all' 
-    ? 'Semua Desa di Lembang' 
-    : (selectedVillageObj ? selectedVillageObj.name.replace('Desa Wisata ', 'Desa ') : 'Pilih Desa');
+    ? (language === 'en' ? 'All Villages in Lembang' : 'Semua Desa di Lembang') 
+    : (selectedVillageObj ? selectedVillageObj.name.replace('Desa Wisata ', language === 'en' ? 'Village ' : 'Desa ') : (language === 'en' ? 'Select Village' : 'Pilih Desa'));
 
   const CATEGORY_OPTIONS: { id: ProductCategory | 'all'; label: string; icon: string }[] = [
-    { id: 'all', label: 'Semua Kelompok', icon: '✨' },
-    { id: 'minuman-komoditas', label: 'Minuman & Kopi Specialty', icon: '☕' },
-    { id: 'wisata-alam', label: 'Wisata Alam & Offroad', icon: '🌲' },
-    { id: 'kuliner', label: 'Kuliner & Camilan Tradisional', icon: '🍲' },
-    { id: 'olahan-susu', label: 'Olahan Susu Kemasan', icon: '🥛' },
-    { id: 'penginapan-lokal', label: 'Penginapan Lokal & Homestay', icon: '🏡' },
+    { id: 'all', label: language === 'en' ? 'All Categories' : 'Semua Kelompok', icon: '✨' },
+    { id: 'minuman-komoditas', label: language === 'en' ? 'Coffee & Specialty Crops' : 'Minuman & Kopi Specialty', icon: '☕' },
+    { id: 'wisata-alam', label: language === 'en' ? 'Eco-Tours & Offroad' : 'Wisata Alam & Offroad', icon: '🌲' },
+    { id: 'kuliner', label: language === 'en' ? 'Traditional Culinary' : 'Kuliner & Camilan Tradisional', icon: '🍲' },
+    { id: 'olahan-susu', label: language === 'en' ? 'Packaged Dairy' : 'Olahan Susu Kemasan', icon: '🥛' },
+    { id: 'penginapan-lokal', label: language === 'en' ? 'Stays & Homestays' : 'Penginapan Lokal & Homestay', icon: '🏡' },
   ];
 
   const selectedCategoryObj = CATEGORY_OPTIONS.find(c => c.id === heroCategory);
@@ -88,11 +95,11 @@ export const HomeView: React.FC = () => {
   const featuredProducts = products.filter(p => p.isFeatured || p.rating >= 4.9).slice(0, 8);
 
   const categoryCards: { id: ProductCategory; title: string; subtitle: string; icon: React.ReactNode; color: string }[] = [
-    { id: 'minuman-komoditas', title: 'Minuman & Komoditas', subtitle: 'Kopi Arabika & Maguru Kopi (Suntenjaya, Jayagiri)', icon: <Coffee className="w-6 h-6 text-amber-700" />, color: 'bg-amber-50 border-amber-200' },
-    { id: 'wisata-alam', title: 'Wisata Alam & Seni', subtitle: 'Offroad, Camping, Jaipong & Megalitikum (Cikole, Gudangkahuripan, Suntenjaya)', icon: <TreePine className="w-6 h-6 text-emerald-800" />, color: 'bg-emerald-50 border-emerald-300' },
-    { id: 'kuliner', title: 'Kuliner Tradisional', subtitle: 'Tahu Susu, Kicimpring & Ranginang (Wangunsari)', icon: <Utensils className="w-6 h-6 text-rose-700" />, color: 'bg-rose-50 border-rose-200' },
-    { id: 'olahan-susu', title: 'Olahan Susu Kemasan', subtitle: 'Susu Murni, Yoghurt & Tahu Susu (Sukajaya)', icon: <Milk className="w-6 h-6 text-sky-700" />, color: 'bg-sky-50 border-sky-200' },
-    { id: 'penginapan-lokal', title: 'Penginapan Lokal', subtitle: 'Homestay & Sewa Rumah Pegunungan Lembang (Suntenjaya)', icon: <BedDouble className="w-6 h-6 text-indigo-700" />, color: 'bg-indigo-50 border-indigo-200' },
+    { id: 'minuman-komoditas', title: language === 'en' ? 'Coffee & Specialty' : 'Minuman & Komoditas', subtitle: language === 'en' ? 'Arabica Coffee & Maguru Kopi (Suntenjaya, Jayagiri)' : 'Kopi Arabika & Maguru Kopi (Suntenjaya, Jayagiri)', icon: <Coffee className="w-6 h-6 text-amber-700" />, color: 'bg-amber-50 border-amber-200' },
+    { id: 'wisata-alam', title: language === 'en' ? 'Nature Tours & Arts' : 'Wisata Alam & Seni', subtitle: language === 'en' ? 'Offroad, Camping, Jaipong & Megalithic Sites (Cikole, Gudangkahuripan, Suntenjaya)' : 'Offroad, Camping, Jaipong & Megalitikum (Cikole, Gudangkahuripan, Suntenjaya)', icon: <TreePine className="w-6 h-6 text-emerald-800" />, color: 'bg-emerald-50 border-emerald-300' },
+    { id: 'kuliner', title: language === 'en' ? 'Traditional Culinary' : 'Kuliner Tradisional', subtitle: language === 'en' ? 'Milk Tofu, Kicimpring & Ranginang (Wangunsari)' : 'Tahu Susu, Kicimpring & Ranginang (Wangunsari)', icon: <Utensils className="w-6 h-6 text-rose-700" />, color: 'bg-rose-50 border-rose-200' },
+    { id: 'olahan-susu', title: language === 'en' ? 'Packaged Dairy' : 'Olahan Susu Kemasan', subtitle: language === 'en' ? 'Pure Milk, Yoghurt & Milk Tofu (Sukajaya)' : 'Susu Murni, Yoghurt & Tahu Susu (Sukajaya)', icon: <Milk className="w-6 h-6 text-sky-700" />, color: 'bg-sky-50 border-sky-200' },
+    { id: 'penginapan-lokal', title: language === 'en' ? 'Local Stays' : 'Penginapan Lokal', subtitle: language === 'en' ? 'Highland Homestays & House Rentals (Suntenjaya)' : 'Homestay & Sewa Rumah Pegunungan Lembang (Suntenjaya)', icon: <BedDouble className="w-6 h-6 text-indigo-700" />, color: 'bg-indigo-50 border-indigo-200' },
   ];
 
   return (
@@ -117,18 +124,29 @@ export const HomeView: React.FC = () => {
           
           <div className="inline-flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-1 sm:py-1.5 rounded-full bg-emerald-500/20 text-amber-300 border border-amber-400/40 text-[11px] sm:text-sm font-semibold backdrop-blur-md max-w-full">
             <Sparkles className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-amber-400 shrink-0" />
-            <span className="truncate">Platform Interdesa Kawasan Lembang</span>
+            <span className="truncate">{t('hero.badge')}</span>
           </div>
 
           <h1 className="text-2xl sm:text-4xl lg:text-6xl font-extrabold font-serif-title text-white tracking-tight leading-tight">
-            Jelajahi Pesona Alam & <br className="hidden sm:inline" />
-            <span className="text-amber-300 underline decoration-emerald-500 underline-offset-8">
-              Platform Interdesa Kawasan Lembang
-            </span>
+            {language === 'en' ? (
+              <>
+                Explore the Natural Charm & <br className="hidden sm:inline" />
+                <span className="text-amber-300 underline decoration-emerald-500 underline-offset-8">
+                  Inter-Village Platform of Lembang
+                </span>
+              </>
+            ) : (
+              <>
+                Jelajahi Pesona Alam & <br className="hidden sm:inline" />
+                <span className="text-amber-300 underline decoration-emerald-500 underline-offset-8">
+                  Platform Interdesa Kawasan Lembang
+                </span>
+              </>
+            )}
           </h1>
 
           <p className="text-stone-200 text-xs sm:text-base lg:text-lg max-w-2xl mx-auto leading-relaxed">
-            Temukan kopi specialty, kuliner khas tradisional, olahan susu murni, wisata alam & offroad, hingga penginapan homestay asri langsung dari petani, peternak, dan warga lokal di Kawasan Lembang.
+            {t('hero.subtitle')}
           </p>
 
           {/* Interactive Search Box with Custom Dropdowns */}
@@ -143,7 +161,7 @@ export const HomeView: React.FC = () => {
                 type="text"
                 value={heroSearch}
                 onChange={(e) => setHeroSearch(e.target.value)}
-                placeholder="Cari kopi, offroad, homestay, tahu susu, susu murni, jaipong..."
+                placeholder={t('hero.searchPlaceholder')}
                 className="w-full bg-transparent text-xs sm:text-sm text-stone-900 placeholder-stone-400 focus:outline-none font-medium"
               />
               {heroSearch && (
@@ -172,7 +190,9 @@ export const HomeView: React.FC = () => {
                     <MapPin className="w-4 h-4" />
                   </div>
                   <div className="min-w-0">
-                    <span className="block text-[9px] sm:text-[10px] uppercase font-extrabold text-emerald-800 tracking-wider">Lokasi Desa</span>
+                    <span className="block text-[9px] sm:text-[10px] uppercase font-extrabold text-emerald-800 tracking-wider">
+                      {t('hero.locationLabel')}
+                    </span>
                     <span className="block text-xs sm:text-sm font-bold text-stone-900 truncate">
                       {villageDisplayTitle}
                     </span>
@@ -185,8 +205,12 @@ export const HomeView: React.FC = () => {
               {isVillageOpen && (
                 <div className="absolute top-full left-0 right-0 md:right-auto md:w-96 mt-2 bg-white rounded-2xl sm:rounded-3xl shadow-2xl border border-stone-200 p-2 z-50 animate-in fade-in slide-in-from-top-2 duration-150">
                   <div className="px-3 py-2 border-b border-stone-100 flex items-center justify-between">
-                    <span className="text-[10px] sm:text-[11px] font-extrabold text-stone-400 uppercase tracking-wider">Pilih Desa di Kawasan Lembang</span>
-                    <span className="text-[9px] sm:text-[10px] font-bold text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded-full">{villages.length} Desa</span>
+                    <span className="text-[10px] sm:text-[11px] font-extrabold text-stone-400 uppercase tracking-wider">
+                      {t('hero.selectVillage')}
+                    </span>
+                    <span className="text-[9px] sm:text-[10px] font-bold text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded-full">
+                      {villages.length} {language === 'en' ? 'Villages' : 'Desa'}
+                    </span>
                   </div>
 
                   <div className="py-1 max-h-60 sm:max-h-72 overflow-y-auto space-y-1">
@@ -206,9 +230,11 @@ export const HomeView: React.FC = () => {
                       <div className="flex items-center gap-2 sm:gap-2.5 min-w-0">
                         <span className="text-base sm:text-lg shrink-0">🏞️</span>
                         <div className="min-w-0">
-                          <span className="block text-xs font-bold leading-tight truncate">Semua Desa di Lembang</span>
+                          <span className="block text-xs font-bold leading-tight truncate">
+                            {t('hero.allVillages')}
+                          </span>
                           <span className={`block text-[10px] sm:text-[11px] mt-0.5 truncate ${heroVillage === 'all' ? 'text-emerald-200' : 'text-stone-500'}`}>
-                            Kawasan Lembang (1.200 - 1.400 mdpl)
+                            {language === 'en' ? 'Lembang Region (1,200 - 1,400 masl)' : 'Kawasan Lembang (1.200 - 1.400 mdpl)'}
                           </span>
                         </div>
                       </div>
@@ -274,9 +300,11 @@ export const HomeView: React.FC = () => {
                     <Layers className="w-4 h-4" />
                   </div>
                   <div className="min-w-0">
-                    <span className="block text-[9px] sm:text-[10px] uppercase font-extrabold text-amber-800 tracking-wider">Kelompok Produk</span>
+                    <span className="block text-[9px] sm:text-[10px] uppercase font-extrabold text-amber-800 tracking-wider">
+                      {t('hero.categoryLabel')}
+                    </span>
                     <span className="block text-xs sm:text-sm font-bold text-stone-900 truncate">
-                      {selectedCategoryObj?.label || 'Semua Kelompok'}
+                      {selectedCategoryObj?.label || t('hero.allCategories')}
                     </span>
                   </div>
                 </div>
@@ -287,7 +315,9 @@ export const HomeView: React.FC = () => {
               {isCategoryOpen && (
                 <div className="absolute top-full left-0 right-0 md:left-auto md:right-0 mt-2 bg-white rounded-2xl sm:rounded-3xl shadow-2xl border border-stone-200 p-2 z-50 animate-in fade-in slide-in-from-top-2 duration-150">
                   <div className="px-3 py-2 border-b border-stone-100">
-                    <span className="text-[10px] sm:text-[11px] font-extrabold text-stone-400 uppercase tracking-wider">Pilih Kelompok Produk</span>
+                    <span className="text-[10px] sm:text-[11px] font-extrabold text-stone-400 uppercase tracking-wider">
+                      {t('hero.selectCategory')}
+                    </span>
                   </div>
                   <div className="py-1 max-h-60 sm:max-h-72 overflow-y-auto space-y-1">
                     {CATEGORY_OPTIONS.map(cat => {
@@ -326,7 +356,7 @@ export const HomeView: React.FC = () => {
                 className="w-full md:w-auto px-6 py-3 bg-emerald-800 hover:bg-emerald-900 text-amber-200 font-bold rounded-xl sm:rounded-2xl md:rounded-full text-xs sm:text-sm shadow-md transition-all hover:scale-105 flex items-center justify-center gap-2 shrink-0 cursor-pointer"
               >
                 <Search className="w-4 h-4" />
-                <span>Cari</span>
+                <span>{t('hero.searchBtn')}</span>
               </button>
             </div>
           </form>
@@ -335,15 +365,15 @@ export const HomeView: React.FC = () => {
           <div className="pt-2 sm:pt-4 flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-8 text-white/90 text-xs sm:text-sm font-medium">
             <div className="flex items-center gap-2">
               <ShieldCheck className="w-4 h-4 text-emerald-400 shrink-0" />
-              <span>Langsung ke Petani & Warga Desa</span>
+              <span>{t('hero.pillDirect')}</span>
             </div>
             <div className="flex items-center gap-2">
               <Mountain className="w-4 h-4 text-amber-400 shrink-0" />
-              <span>Ketinggian 1.200 - 1.400 mdpl</span>
+              <span>{t('hero.pillAltitude')}</span>
             </div>
             <div className="flex items-center gap-2">
               <Heart className="w-4 h-4 text-rose-400 shrink-0" />
-              <span>100% Dampak Langsung Warga Lokal</span>
+              <span>{t('hero.pillImpact')}</span>
             </div>
           </div>
         </div>
@@ -353,20 +383,36 @@ export const HomeView: React.FC = () => {
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="bg-white rounded-3xl p-6 sm:p-8 border border-stone-200 shadow-md grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
           <div className="space-y-1">
-            <p className="text-2xl sm:text-4xl font-black font-serif-title text-emerald-800">{villages.length} Desa</p>
-            <p className="text-xs sm:text-sm text-stone-600 font-medium">Jaringan Wisata Lembang</p>
+            <p className="text-2xl sm:text-4xl font-black font-serif-title text-emerald-800">
+              {villages.length} {language === 'en' ? 'Villages' : 'Desa'}
+            </p>
+            <p className="text-xs sm:text-sm text-stone-600 font-medium">
+              {language === 'en' ? 'Lembang Tourism Network' : 'Jaringan Wisata Lembang'}
+            </p>
           </div>
           <div className="space-y-1">
-            <p className="text-2xl sm:text-4xl font-black font-serif-title text-emerald-800">{categoryCards.length} Kelompok</p>
-            <p className="text-xs sm:text-sm text-stone-600 font-medium">Komoditas & Produk Unggulan</p>
+            <p className="text-2xl sm:text-4xl font-black font-serif-title text-emerald-800">
+              {categoryCards.length} {language === 'en' ? 'Categories' : 'Kelompok'}
+            </p>
+            <p className="text-xs sm:text-sm text-stone-600 font-medium">
+              {language === 'en' ? 'Flagship Commodities & Products' : 'Komoditas & Produk Unggulan'}
+            </p>
           </div>
           <div className="space-y-1">
-            <p className="text-2xl sm:text-4xl font-black font-serif-title text-emerald-800">1.400 mdpl</p>
-            <p className="text-xs sm:text-sm text-stone-600 font-medium">Ketinggian Alam Pegunungan</p>
+            <p className="text-2xl sm:text-4xl font-black font-serif-title text-emerald-800">
+              1.400 {language === 'en' ? 'MASL' : 'mdpl'}
+            </p>
+            <p className="text-xs sm:text-sm text-stone-600 font-medium">
+              {language === 'en' ? 'Highland Mountain Altitude' : 'Ketinggian Alam Pegunungan'}
+            </p>
           </div>
           <div className="space-y-1">
-            <p className="text-2xl sm:text-4xl font-black font-serif-title text-emerald-800">Langsung</p>
-            <p className="text-xs sm:text-sm text-stone-600 font-medium">Ke Petani & Warga Desa</p>
+            <p className="text-2xl sm:text-4xl font-black font-serif-title text-emerald-800">
+              {language === 'en' ? 'Direct' : 'Langsung'}
+            </p>
+            <p className="text-xs sm:text-sm text-stone-600 font-medium">
+              {language === 'en' ? 'To Farmers & Villagers' : 'Ke Petani & Warga Desa'}
+            </p>
           </div>
         </div>
       </section>
@@ -375,81 +421,90 @@ export const HomeView: React.FC = () => {
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-stone-200 pb-4">
           <div>
-            <span className="text-emerald-700 font-bold text-xs uppercase tracking-wider">Destinasi Pilihan</span>
+            <span className="text-emerald-700 font-bold text-xs uppercase tracking-wider">
+              {language === 'en' ? 'Featured Destinations' : 'Destinasi Pilihan'}
+            </span>
             <h2 className="text-2xl sm:text-3xl font-extrabold font-serif-title text-stone-900 mt-1">
-              Jelajahi {villages.length} Desa Wisata di Kawasan Lembang
+              {language === 'en' ? `Explore ${villages.length} Tourism Villages in Lembang Region` : `Jelajahi ${villages.length} Desa Wisata di Kawasan Lembang`}
             </h2>
             <p className="text-xs sm:text-sm text-stone-600 mt-1">
-              Setiap desa memiliki karakter alam, cagar budaya, dan keunggulan produk yang khas.
+              {language === 'en' ? 'Each village offers unique highland landscapes, cultural heritage, and authentic commodities.' : 'Setiap desa memiliki karakter alam, cagar budaya, dan keunggulan produk yang khas.'}
             </p>
           </div>
           <button
             onClick={() => navigateTo('desa-detail')}
             className="text-xs font-bold text-emerald-800 hover:text-emerald-900 flex items-center gap-1 group shrink-0 cursor-pointer"
           >
-            <span>Buka Direktori Lengkap Desa</span>
+            <span>{language === 'en' ? 'Open Full Village Directory' : 'Buka Direktori Lengkap Desa'}</span>
             <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
           </button>
         </div>
 
         {/* 8 Village Cards Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {villages.map((village) => (
-            <div
-              key={village.id}
-              onClick={() => navigateTo('desa-detail', undefined, village.id)}
-              className="bg-white rounded-3xl border border-stone-200/90 shadow-sm overflow-hidden cursor-pointer hover:shadow-xl transition-all hover:-translate-y-1 flex flex-col justify-between group"
-            >
-              <div className="relative h-44 w-full overflow-hidden">
-                <img
-                  src={village.image}
-                  alt={village.name}
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                  referrerPolicy="no-referrer"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-stone-950/80 via-transparent to-transparent" />
-                <div className="absolute top-3 left-3 bg-amber-400 text-stone-950 font-bold text-[10px] px-2.5 py-1 rounded-full shadow-md">
-                  {village.villageAltitude || '1.250 mdpl'}
+          {villages.map((village) => {
+            const locVillage = getLocalizedVillage(village, language);
+            const altitudeText = locVillage.villageAltitude
+              ? (language === 'en' ? locVillage.villageAltitude.replace('mdpl', 'MASL') : locVillage.villageAltitude)
+              : (language === 'en' ? '1,250 MASL' : '1.250 mdpl');
+            const villageName = language === 'en' ? village.name.replace('Desa Wisata ', 'Village ') : village.name;
+            return (
+              <div
+                key={village.id}
+                onClick={() => navigateTo('desa-detail', undefined, village.id)}
+                className="bg-white rounded-3xl border border-stone-200/90 shadow-sm overflow-hidden cursor-pointer hover:shadow-xl transition-all hover:-translate-y-1 flex flex-col justify-between group"
+              >
+                <div className="relative h-44 w-full overflow-hidden">
+                  <img
+                    src={village.image}
+                    alt={villageName}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    referrerPolicy="no-referrer"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-stone-950/80 via-transparent to-transparent" />
+                  <div className="absolute top-3 left-3 bg-amber-400 text-stone-950 font-bold text-[10px] px-2.5 py-1 rounded-full shadow-md">
+                    {altitudeText}
+                  </div>
+                  <div className="absolute top-3 right-3 bg-stone-900/80 backdrop-blur-sm text-amber-300 font-bold text-[10px] px-2.5 py-1 rounded-full border border-white/20">
+                    ★ {village.rating} ({village.totalReviews})
+                  </div>
+                  <div className="absolute bottom-3 left-3 right-3 text-white">
+                    <h3 className="font-serif-title font-extrabold text-base leading-snug">{villageName}</h3>
+                    <p className="text-[11px] text-stone-300 flex items-center gap-1 mt-0.5">
+                      <MapPin className="w-3 h-3 text-emerald-400 shrink-0" />
+                      <span className="truncate">{village.location}</span>
+                    </p>
+                  </div>
                 </div>
-                <div className="absolute top-3 right-3 bg-stone-900/80 backdrop-blur-sm text-amber-300 font-bold text-[10px] px-2.5 py-1 rounded-full border border-white/20">
-                  ★ {village.rating} ({village.totalReviews})
-                </div>
-                <div className="absolute bottom-3 left-3 right-3 text-white">
-                  <h3 className="font-serif-title font-extrabold text-base leading-snug">{village.name}</h3>
-                  <p className="text-[11px] text-stone-300 flex items-center gap-1 mt-0.5">
-                    <MapPin className="w-3 h-3 text-emerald-400 shrink-0" />
-                    <span className="truncate">{village.location}</span>
+
+                <div className="p-4 space-y-3 flex-1 flex flex-col justify-between">
+                  <p className="text-xs text-stone-600 line-clamp-2 leading-relaxed">
+                    {locVillage.description}
                   </p>
-                </div>
-              </div>
 
-              <div className="p-4 space-y-3 flex-1 flex flex-col justify-between">
-                <p className="text-xs text-stone-600 line-clamp-2 leading-relaxed">
-                  {village.description}
-                </p>
+                  <div className="space-y-2 pt-2 border-t border-stone-100">
+                    <div className="flex flex-wrap gap-1">
+                      {locVillage.highlights.slice(0, 2).map((hl, idx) => (
+                        <span key={idx} className="text-[10px] bg-emerald-50 text-emerald-800 px-2 py-0.5 rounded-md font-medium border border-emerald-200">
+                          {hl}
+                        </span>
+                      ))}
+                    </div>
 
-                <div className="space-y-2 pt-2 border-t border-stone-100">
-                  <div className="flex flex-wrap gap-1">
-                    {village.highlights.slice(0, 2).map((hl, idx) => (
-                      <span key={idx} className="text-[10px] bg-emerald-50 text-emerald-800 px-2 py-0.5 rounded-md font-medium border border-emerald-200">
-                        {hl}
+                    <div className="flex items-center justify-between pt-1">
+                      <span className="text-[10px] text-stone-500 font-medium">
+                        Admin: <strong className="text-stone-700">{village.managerName.split('(')[0]}</strong>
                       </span>
-                    ))}
-                  </div>
-
-                  <div className="flex items-center justify-between pt-1">
-                    <span className="text-[10px] text-stone-500 font-medium">
-                      Admin: <strong className="text-stone-700">{village.managerName.split('(')[0]}</strong>
-                    </span>
-                    <span className="text-xs font-bold text-emerald-700 group-hover:translate-x-0.5 transition-transform flex items-center gap-1">
-                      <span>Detail</span>
-                      <ArrowRight className="w-3.5 h-3.5" />
-                    </span>
+                      <span className="text-xs font-bold text-emerald-700 group-hover:translate-x-0.5 transition-transform flex items-center gap-1">
+                        <span>{language === 'en' ? 'Details' : 'Detail'}</span>
+                        <ArrowRight className="w-3.5 h-3.5" />
+                      </span>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </section>
 
@@ -457,16 +512,18 @@ export const HomeView: React.FC = () => {
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-stone-200 pb-4">
           <div>
-            <span className="text-emerald-700 font-bold text-xs uppercase tracking-wider">Katalog Terpadu</span>
+            <span className="text-emerald-700 font-bold text-xs uppercase tracking-wider">
+              {language === 'en' ? 'Integrated Catalog' : 'Katalog Terpadu'}
+            </span>
             <h2 className="text-2xl sm:text-3xl font-extrabold font-serif-title text-stone-900 mt-1">
-              {categoryCards.length} Kelompok Produk & Komoditas Desa
+              {language === 'en' ? `${categoryCards.length} Product Groups & Village Commodities` : `${categoryCards.length} Kelompok Produk & Komoditas Desa`}
             </h2>
           </div>
           <button
             onClick={() => { setCategoryFilter('all'); navigateTo('marketplace'); }}
             className="text-xs font-bold text-emerald-800 hover:text-emerald-900 flex items-center gap-1 group cursor-pointer"
           >
-            <span>Buka Marketplace</span>
+            <span>{language === 'en' ? 'Open Marketplace' : 'Buka Marketplace'}</span>
             <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
           </button>
         </div>
@@ -494,19 +551,21 @@ export const HomeView: React.FC = () => {
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-stone-200 pb-4">
           <div>
-            <span className="text-emerald-700 font-bold text-xs uppercase tracking-wider">Paling Direkomendasikan · Langsung ke Kontak CP</span>
+            <span className="text-emerald-700 font-bold text-xs uppercase tracking-wider">
+              {language === 'en' ? 'Most Recommended · Direct to Contact Person' : 'Paling Direkomendasikan · Langsung ke Kontak CP'}
+            </span>
             <h2 className="text-2xl sm:text-3xl font-extrabold font-serif-title text-stone-900 mt-1">
-              Produk & Layanan Unggulan Kawasan Lembang
+              {language === 'en' ? 'Flagship Products & Services of Lembang Region' : 'Produk & Layanan Unggulan Kawasan Lembang'}
             </h2>
             <p className="text-xs sm:text-sm text-stone-600 mt-1">
-              Terhubung langsung dengan Kontak Person (CP) & Admin resmi tiap produk desa tanpa perantara.
+              {language === 'en' ? 'Connect directly with verified Contact Persons (CP) & village admins with zero middlemen.' : 'Terhubung langsung dengan Kontak Person (CP) & Admin resmi tiap produk desa tanpa perantara.'}
             </p>
           </div>
           <button
             onClick={() => navigateTo('marketplace')}
             className="text-xs font-bold text-emerald-800 hover:text-emerald-900 flex items-center gap-1 group cursor-pointer"
           >
-            <span>Buka Semua Produk Marketplace</span>
+            <span>{language === 'en' ? 'View All Marketplace Products' : 'Buka Semua Produk Marketplace'}</span>
             <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
           </button>
         </div>
@@ -522,17 +581,21 @@ export const HomeView: React.FC = () => {
       <section className="bg-stone-900 text-stone-100 rounded-3xl mx-4 sm:mx-6 lg:mx-8 p-8 sm:p-12 border border-stone-800 space-y-8">
         <div className="max-w-3xl mx-auto text-center space-y-3">
           <span className="px-3 py-1 bg-amber-400/20 text-amber-300 border border-amber-400/30 rounded-full text-xs font-bold">
-            Dampak Nyata Ekonomi Desa
+            {language === 'en' ? 'Real Village Economic Impact' : 'Dampak Nyata Ekonomi Desa'}
           </span>
           <h2 className="text-2xl sm:text-4xl font-extrabold font-serif-title text-white">
-            "Pariwisata Berkelanjutan yang Menyejahterakan Petani, Peternak & Pengrajin Lembang"
+            {language === 'en' 
+              ? '"Sustainable Tourism Empowering Lembang\'s Farmers, Breeders & Artisans"'
+              : '"Pariwisata Berkelanjutan yang Menyejahterakan Petani, Peternak & Pengrajin Lembang"'}
           </h2>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-4">
           <div className="bg-stone-800/80 p-6 rounded-2xl border border-stone-700/80 space-y-4">
             <p className="text-xs sm:text-sm text-stone-300 italic leading-relaxed">
-              "Melalui portal Saba Lembang ini, produk tahu susu, ranginang gurih, dan olahan komoditas kami di Wangunsari semakin cepat terhubung langsung ke wisatawan dan pemesan."
+              {language === 'en'
+                ? '"Through this Saba Lembang platform, our milk tofu, savory ranginang, and processed commodities in Wangunsari connect directly and quickly to tourists and buyers."'
+                : '"Melalui portal Saba Lembang ini, produk tahu susu, ranginang gurih, dan olahan komoditas kami di Wangunsari semakin cepat terhubung langsung ke wisatawan dan pemesan."'}
             </p>
             <div className="flex items-center gap-3 pt-2 border-t border-stone-700">
               <UserAvatar
@@ -542,14 +605,18 @@ export const HomeView: React.FC = () => {
               />
               <div>
                 <p className="text-xs font-bold text-white">Kang Sandi Permana</p>
-                <p className="text-[10px] text-amber-300">Admin Desa Wisata Wangunsari</p>
+                <p className="text-[10px] text-amber-300">
+                  {language === 'en' ? 'Admin of Wangunsari Tourism Village' : 'Admin Desa Wisata Wangunsari'}
+                </p>
               </div>
             </div>
           </div>
 
           <div className="bg-stone-800/80 p-6 rounded-2xl border border-stone-700/80 space-y-4">
             <p className="text-xs sm:text-sm text-stone-300 italic leading-relaxed">
-              "Biji kopi Arabika single origin lereng Suntenjaya kini semakin dikenal luas. Komunikasi dengan wisatawan sangat praktis melalui kontak Admin Desa."
+              {language === 'en'
+                ? '"Our single-origin Arabica coffee beans from Suntenjaya slopes are gaining wider recognition. Communication with tourists is seamless through Village Admin contacts."'
+                : '"Biji kopi Arabika single origin lereng Suntenjaya kini semakin dikenal luas. Komunikasi dengan wisatawan sangat praktis melalui kontak Admin Desa."'}
             </p>
             <div className="flex items-center gap-3 pt-2 border-t border-stone-700">
               <UserAvatar
@@ -559,14 +626,18 @@ export const HomeView: React.FC = () => {
               />
               <div>
                 <p className="text-xs font-bold text-white">Kang Asep Suhendar</p>
-                <p className="text-[10px] text-amber-300">Admin Desa Wisata Suntenjaya</p>
+                <p className="text-[10px] text-amber-300">
+                  {language === 'en' ? 'Admin of Suntenjaya Tourism Village' : 'Admin Desa Wisata Suntenjaya'}
+                </p>
               </div>
             </div>
           </div>
 
           <div className="bg-stone-800/80 p-6 rounded-2xl border border-stone-700/80 space-y-4">
             <p className="text-xs sm:text-sm text-stone-300 italic leading-relaxed">
-              "Platform ini memudahkan kami mencari produk asli desa di Lembang, mulai dari offroad di Cikole, kopi specialty di Suntenjaya & Jayagiri, hingga olahan susu murni di Sukajaya."
+              {language === 'en'
+                ? '"This platform makes it effortless to find authentic village products in Lembang, from Cikole offroad trails, specialty coffee in Suntenjaya & Jayagiri, to fresh pure dairy in Sukajaya."'
+                : '"Platform ini memudahkan kami mencari produk asli desa di Lembang, mulai dari offroad di Cikole, kopi specialty di Suntenjaya & Jayagiri, hingga olahan susu murni di Sukajaya."'}
             </p>
             <div className="flex items-center gap-3 pt-2 border-t border-stone-700">
               <UserAvatar
@@ -576,7 +647,9 @@ export const HomeView: React.FC = () => {
               />
               <div>
                 <p className="text-xs font-bold text-white">Siti Rahmawati</p>
-                <p className="text-[10px] text-amber-300">Wisatawan Asal Jakarta</p>
+                <p className="text-[10px] text-amber-300">
+                  {language === 'en' ? 'Tourist from Jakarta' : 'Wisatawan Asal Jakarta'}
+                </p>
               </div>
             </div>
           </div>
@@ -588,10 +661,12 @@ export const HomeView: React.FC = () => {
         <div className="bg-gradient-to-br from-emerald-800 to-emerald-950 p-8 sm:p-12 rounded-3xl text-white shadow-2xl space-y-6 relative overflow-hidden">
           <div className="relative z-10 space-y-3">
             <h2 className="text-2xl sm:text-4xl font-extrabold font-serif-title">
-              Siap Menikmati Sejuknya Liburan di Kawasan Lembang?
+              {language === 'en' ? 'Ready to Experience a Refreshing Vacation in Lembang?' : 'Siap Menikmati Sejuknya Liburan di Kawasan Lembang?'}
             </h2>
             <p className="text-stone-200 text-xs sm:text-sm max-w-xl mx-auto leading-relaxed">
-              Dapatkan pengalaman autentik di ketinggian pegunungan Lembang, nikmati udara segar berkabut, dukung ekonomi warga lokal, dan rasakan kehangatan keramahan warga desa.
+              {language === 'en'
+                ? 'Enjoy authentic highland experiences in misty mountain air, support local village economy, and embrace warm rural hospitality.'
+                : 'Dapatkan pengalaman autentik di ketinggian pegunungan Lembang, nikmati udara segar berkabut, dukung ekonomi warga lokal, dan rasakan kehangatan keramahan warga desa.'}
             </p>
             <div className="pt-4 flex flex-wrap items-center justify-center gap-4">
               <button
@@ -599,7 +674,7 @@ export const HomeView: React.FC = () => {
                 className="px-8 py-3.5 bg-amber-400 hover:bg-amber-300 text-stone-900 font-extrabold rounded-full text-xs sm:text-sm shadow-lg transition-all hover:scale-105 flex items-center gap-2 cursor-pointer"
               >
                 <ShoppingBag className="w-4 h-4" />
-                <span>Mulai Jelajah & Kontak Langsung CP Produk</span>
+                <span>{language === 'en' ? 'Start Exploring & Contact Product Hosts' : 'Mulai Jelajah & Kontak Langsung CP Produk'}</span>
               </button>
             </div>
           </div>

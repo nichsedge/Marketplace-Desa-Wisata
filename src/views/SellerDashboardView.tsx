@@ -41,7 +41,12 @@ import {
   ExternalLink,
   Layers,
   Tag,
-  UploadCloud
+  UploadCloud,
+  BarChart3,
+  MessageCircle,
+  Activity,
+  Play,
+  Video
 } from 'lucide-react';
 
 export const SellerDashboardView: React.FC = () => {
@@ -58,10 +63,16 @@ export const SellerDashboardView: React.FC = () => {
     login,
     logout,
     navigateTo,
-    showToast
+    showToast,
+    confirmOrderDeal,
+    cancelOrder,
+    getVillageAnalytics,
+    analyticsEvents,
+    language,
+    t
   } = useApp();
 
-  const [activeTab, setActiveTab] = useState<'feed' | 'profile' | 'orders'>('feed');
+  const [activeTab, setActiveTab] = useState<'feed' | 'profile' | 'orders' | 'analytics'>('feed');
   const [feedCategoryFilter, setFeedCategoryFilter] = useState<ProductCategory | 'all'>('all');
   
   // Current active village for PIC
@@ -73,6 +84,8 @@ export const SellerDashboardView: React.FC = () => {
   const filteredVillageProducts = feedCategoryFilter === 'all' 
     ? villageProducts 
     : villageProducts.filter(p => p.category === feedCategoryFilter);
+
+  const analyticsStats = getVillageAnalytics(currentVillage.id);
 
   // Edit village profile state
   const [editVillageName, setEditVillageName] = useState(currentVillage.name);
@@ -104,6 +117,7 @@ export const SellerDashboardView: React.FC = () => {
   const [postUnit, setPostUnit] = useState('/malam');
   const [postStock, setPostStock] = useState<number>(3);
   const [postCategory, setPostCategory] = useState<ProductCategory>('homestay');
+  const [postVideoUrl, setPostVideoUrl] = useState('');
   
   // Editing existing product state
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
@@ -209,6 +223,7 @@ export const SellerDashboardView: React.FC = () => {
       sellerPhone: currentUser?.phone || currentVillage.contactPhone,
       image: selectedImage,
       gallery: [selectedImage],
+      videoUrl: postVideoUrl.trim() || undefined,
       description: postDescription || 'Konten dan penawaran aktual dari Desa Wisata.',
       highlights: ['Foto Asli Lokasi', 'Dikelola Langsung Admin Desa', 'Kualitas Terjamin'],
       stockQuota: Number(postStock),
@@ -227,6 +242,7 @@ export const SellerDashboardView: React.FC = () => {
     setPostPrice(250000);
     setPostStock(3);
     setPostCategory('homestay');
+    setPostVideoUrl('');
   };
 
   const handleSaveVillageProfile = (e: React.FormEvent) => {
@@ -287,13 +303,17 @@ export const SellerDashboardView: React.FC = () => {
         <div className="space-y-2">
           <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-amber-50 text-amber-900 rounded-full text-xs font-bold border border-amber-200">
             <ShieldCheck className="w-3.5 h-3.5 text-amber-700" />
-            <span>Akses Terbatas: Khusus Admin Desa</span>
+            <span>
+              {language === 'en' ? 'Restricted Access: Village Admin Only' : 'Akses Terbatas: Khusus Admin Desa'}
+            </span>
           </div>
           <h2 className="text-xl sm:text-2xl font-black font-serif-title text-stone-900">
-            Dasbor Pengelola Desa Wisata
+            {language === 'en' ? 'Tourism Village Admin Dashboard' : 'Dasbor Pengelola Desa Wisata'}
           </h2>
           <p className="text-xs text-stone-600 leading-relaxed">
-            Halaman ini khusus diperuntukkan bagi Admin Desa resmi di Kawasan Lembang untuk mengelola katalog, foto aktual, dan pesanan. Wisatawan umum dapat langsung berbelanja tanpa perlu login.
+            {language === 'en'
+              ? 'This dashboard is reserved for authorized Village Admins across Lembang Region to manage catalogs, real media, and bookings. General visitors can explore and shop directly without logging in.'
+              : 'Halaman ini khusus diperuntukkan bagi Admin Desa resmi di Kawasan Lembang untuk mengelola katalog, foto aktual, dan pesanan. Wisatawan umum dapat langsung berbelanja tanpa perlu login.'}
           </p>
         </div>
 
@@ -303,7 +323,7 @@ export const SellerDashboardView: React.FC = () => {
             className="w-full py-3.5 bg-emerald-800 hover:bg-emerald-900 text-amber-200 font-bold rounded-xl text-xs sm:text-sm shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer"
           >
             <Lock className="w-4 h-4" />
-            <span>Masuk ke Portal Admin Desa</span>
+            <span>{language === 'en' ? 'Sign In to Village Admin Portal' : 'Masuk ke Portal Admin Desa'}</span>
           </button>
         </div>
       </div>
@@ -360,28 +380,28 @@ export const SellerDashboardView: React.FC = () => {
             <DollarSign className="w-5 h-5 sm:w-6 sm:h-6" />
           </div>
           <div>
-            <p className="text-[10px] sm:text-[11px] text-stone-500 font-semibold uppercase">Pendapatan Desa</p>
-            <p className="text-sm sm:text-lg font-black text-stone-900">{formatRupiah(totalRevenue)}</p>
+            <p className="text-[10px] sm:text-[11px] text-stone-500 font-semibold uppercase">Pendapatan Deal</p>
+            <p className="text-sm sm:text-lg font-black text-stone-900">{formatRupiah(analyticsStats.totalRevenue)}</p>
           </div>
         </div>
 
         <div className="bg-white p-4 sm:p-5 rounded-2xl border border-stone-200 shadow-xs flex items-center gap-3">
           <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-amber-100 text-amber-900 flex items-center justify-center shrink-0">
-            <Package className="w-5 h-5 sm:w-6 sm:h-6" />
+            <MessageCircle className="w-5 h-5 sm:w-6 sm:h-6" />
           </div>
           <div>
-            <p className="text-[10px] sm:text-[11px] text-stone-500 font-semibold uppercase">Pesanan Aktif</p>
-            <p className="text-sm sm:text-lg font-black text-stone-900">{pendingOrders} Pesanan</p>
+            <p className="text-[10px] sm:text-[11px] text-stone-500 font-semibold uppercase">Chat WA Masuk (Leads)</p>
+            <p className="text-sm sm:text-lg font-black text-stone-900">{analyticsStats.totalWaChats} Chat</p>
           </div>
         </div>
 
         <div className="bg-white p-4 sm:p-5 rounded-2xl border border-stone-200 shadow-xs flex items-center gap-3">
           <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-sky-100 text-sky-900 flex items-center justify-center shrink-0">
-            <Store className="w-5 h-5 sm:w-6 sm:h-6" />
+            <Eye className="w-5 h-5 sm:w-6 sm:h-6" />
           </div>
           <div>
-            <p className="text-[10px] sm:text-[11px] text-stone-500 font-semibold uppercase">Listing Desa</p>
-            <p className="text-sm sm:text-lg font-black text-stone-900">{villageProducts.length} Konten</p>
+            <p className="text-[10px] sm:text-[11px] text-stone-500 font-semibold uppercase">Total Tap Produk</p>
+            <p className="text-sm sm:text-lg font-black text-stone-900">{analyticsStats.totalViews} Kali Dilihat</p>
           </div>
         </div>
 
@@ -390,8 +410,8 @@ export const SellerDashboardView: React.FC = () => {
             <TrendingUp className="w-5 h-5 sm:w-6 sm:h-6" />
           </div>
           <div>
-            <p className="text-[10px] sm:text-[11px] text-stone-500 font-semibold uppercase">Rating {currentVillage.name}</p>
-            <p className="text-sm sm:text-lg font-black text-stone-900">{currentVillage.rating} / 5.0 ★</p>
+            <p className="text-[10px] sm:text-[11px] text-stone-500 font-semibold uppercase">Konversi Penjualan</p>
+            <p className="text-sm sm:text-lg font-black text-emerald-800">{analyticsStats.conversionRate}% ({analyticsStats.totalCompletedDeals} Deal)</p>
           </div>
         </div>
       </div>
@@ -400,7 +420,7 @@ export const SellerDashboardView: React.FC = () => {
       <div className="flex flex-wrap items-center gap-2 border-b border-stone-200 pb-2">
         <button
           onClick={() => setActiveTab('feed')}
-          className={`px-4 py-2.5 rounded-xl text-xs font-bold transition-all flex items-center gap-2 ${
+          className={`px-4 py-2.5 rounded-xl text-xs font-bold transition-all flex items-center gap-2 cursor-pointer ${
             activeTab === 'feed'
               ? 'bg-emerald-800 text-amber-200 shadow-sm'
               : 'bg-white text-stone-700 border border-stone-200 hover:bg-stone-50'
@@ -412,7 +432,7 @@ export const SellerDashboardView: React.FC = () => {
 
         <button
           onClick={() => setActiveTab('profile')}
-          className={`px-4 py-2.5 rounded-xl text-xs font-bold transition-all flex items-center gap-2 ${
+          className={`px-4 py-2.5 rounded-xl text-xs font-bold transition-all flex items-center gap-2 cursor-pointer ${
             activeTab === 'profile'
               ? 'bg-emerald-800 text-amber-200 shadow-sm'
               : 'bg-white text-stone-700 border border-stone-200 hover:bg-stone-50'
@@ -424,14 +444,26 @@ export const SellerDashboardView: React.FC = () => {
 
         <button
           onClick={() => setActiveTab('orders')}
-          className={`px-4 py-2.5 rounded-xl text-xs font-bold transition-all flex items-center gap-2 ${
+          className={`px-4 py-2.5 rounded-xl text-xs font-bold transition-all flex items-center gap-2 cursor-pointer ${
             activeTab === 'orders'
               ? 'bg-emerald-800 text-amber-200 shadow-sm'
               : 'bg-white text-stone-700 border border-stone-200 hover:bg-stone-50'
           }`}
         >
           <Package className="w-4 h-4" />
-          <span>Pesanan Wisatawan ({orders.length})</span>
+          <span>Pesanan Wisatawan ({villageOrders.length})</span>
+        </button>
+
+        <button
+          onClick={() => setActiveTab('analytics')}
+          className={`px-4 py-2.5 rounded-xl text-xs font-bold transition-all flex items-center gap-2 cursor-pointer ${
+            activeTab === 'analytics'
+              ? 'bg-emerald-800 text-amber-200 shadow-sm'
+              : 'bg-white text-stone-700 border border-stone-200 hover:bg-stone-50'
+          }`}
+        >
+          <Activity className="w-4 h-4 text-amber-400" />
+          <span>Analitik & Interaksi Pengunjung</span>
         </button>
       </div>
 
@@ -477,7 +509,7 @@ export const SellerDashboardView: React.FC = () => {
           {/* Post Grid (Wireframe Screen 1 & 4 layout) */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
             {filteredVillageProducts.map((p) => {
-              const badge = getCategoryBadge(p.category);
+              const badge = getCategoryBadge(p.category, language);
               return (
                 <div 
                   key={p.id}
@@ -712,21 +744,28 @@ export const SellerDashboardView: React.FC = () => {
             <table className="w-full text-left text-xs text-stone-800">
               <thead className="bg-stone-50 text-stone-500 font-bold uppercase border-b border-stone-200">
                 <tr>
-                  <th className="p-3">ID Pesanan</th>
+                  <th className="p-3">ID & Sumber</th>
                   <th className="p-3">Pemesan</th>
                   <th className="p-3">Item Dipesan</th>
                   <th className="p-3">Total</th>
                   <th className="p-3">Status</th>
-                  <th className="p-3 text-right">Ubah Status</th>
+                  <th className="p-3 text-right">Aksi & Status</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-stone-100">
                 {villageOrders.map((o) => (
                   <tr key={o.id} className="hover:bg-stone-50/80 transition-colors">
-                    <td className="p-3 font-mono font-bold text-stone-900">{o.id}</td>
+                    <td className="p-3">
+                      <p className="font-mono font-bold text-stone-900">{o.id}</p>
+                      <span className={`inline-block text-[9px] font-extrabold px-2 py-0.5 rounded-full mt-1 ${
+                        o.source === 'direct_wa' ? 'bg-emerald-100 text-emerald-800 border border-emerald-300' : 'bg-stone-100 text-stone-600'
+                      }`}>
+                        {o.source === 'direct_wa' ? '💬 WhatsApp Lead' : '🛒 Web Cart'}
+                      </span>
+                    </td>
                     <td className="p-3">
                       <p className="font-bold text-stone-900">{o.customerName}</p>
-                      <p className="text-[10px] text-stone-400">{o.customerPhone}</p>
+                      <p className="text-[10px] text-stone-500">{o.customerPhone}</p>
                     </td>
                     <td className="p-3">
                       <div className="space-y-0.5">
@@ -739,30 +778,234 @@ export const SellerDashboardView: React.FC = () => {
                     </td>
                     <td className="p-3 font-extrabold text-emerald-800">{formatRupiah(o.totalAmount)}</td>
                     <td className="p-3">
-                      <span className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold ${
+                      <span className={`px-2.5 py-1 rounded-full text-[10px] font-bold ${
                         o.status === 'selesai' ? 'bg-emerald-100 text-emerald-900 border border-emerald-300' :
                         o.status === 'diproses' ? 'bg-amber-100 text-amber-900 border border-amber-300' :
+                        o.status === 'menunggu' ? 'bg-sky-100 text-sky-900 border border-sky-300' :
                         'bg-stone-100 text-stone-700'
                       }`}>
-                        {o.status.toUpperCase()}
+                        {o.status === 'selesai' ? '✅ SELESAI / DEAL' :
+                         o.status === 'menunggu' ? '⏳ MENUNGGU WA' :
+                         o.status.toUpperCase()}
                       </span>
                     </td>
                     <td className="p-3 text-right">
-                      <select
-                        value={o.status}
-                        onChange={(e) => updateOrderStatus(o.id, e.target.value as OrderStatus)}
-                        className="p-1.5 bg-stone-50 border border-stone-300 rounded-lg text-xs font-bold focus:outline-none"
-                      >
-                        <option value="menunggu">Menunggu</option>
-                        <option value="diproses">Diproses</option>
-                        <option value="selesai">Selesai</option>
-                        <option value="dibatalkan">Dibatalkan</option>
-                      </select>
+                      <div className="flex items-center justify-end gap-1.5 flex-wrap">
+                        {o.status !== 'selesai' && (
+                          <button
+                            type="button"
+                            onClick={() => confirmOrderDeal(o.id)}
+                            className="px-2.5 py-1.5 bg-emerald-700 hover:bg-emerald-800 text-white rounded-lg font-bold text-[11px] shadow-xs flex items-center gap-1 cursor-pointer transition-transform hover:scale-102"
+                            title="Konfirmasi tamu telah membayar/deal via WhatsApp"
+                          >
+                            <Check className="w-3 h-3" />
+                            <span>Deal / Lunas</span>
+                          </button>
+                        )}
+                        {o.status !== 'dibatalkan' && o.status !== 'selesai' && (
+                          <button
+                            type="button"
+                            onClick={() => cancelOrder(o.id)}
+                            className="px-2 py-1.5 bg-stone-100 hover:bg-rose-50 text-stone-600 hover:text-rose-700 rounded-lg font-semibold text-[11px] border border-stone-200 cursor-pointer"
+                            title="Tandai pesanan batal"
+                          >
+                            Batal
+                          </button>
+                        )}
+                        <select
+                          value={o.status}
+                          onChange={(e) => updateOrderStatus(o.id, e.target.value as OrderStatus)}
+                          className="p-1 bg-stone-50 border border-stone-300 rounded-lg text-xs font-semibold focus:outline-none"
+                        >
+                          <option value="menunggu">Menunggu</option>
+                          <option value="diproses">Diproses</option>
+                          <option value="selesai">Selesai</option>
+                          <option value="dibatalkan">Dibatalkan</option>
+                        </select>
+                      </div>
                     </td>
                   </tr>
                 ))}
               </tbody>
             </table>
+          </div>
+        </div>
+      )}
+
+      {/* ========================================================== */}
+      {/* TAB 4: ANALITIK & CORONG KONVERSI (OPTION A ZERO-COST) */}
+      {/* ========================================================== */}
+      {activeTab === 'analytics' && (
+        <div className="space-y-6">
+          {/* Header Bar */}
+          <div className="bg-white p-6 rounded-3xl border border-stone-200 shadow-sm flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+            <div>
+              <div className="flex items-center gap-2">
+                <span className="p-2 rounded-xl bg-emerald-100 text-emerald-800">
+                  <Activity className="w-5 h-5" />
+                </span>
+                <h3 className="font-bold text-stone-900 text-base sm:text-lg font-serif-title">
+                  Statistik & Corong Konversi Pengunjung ({currentVillage.name})
+                </h3>
+              </div>
+              <p className="text-xs text-stone-500 mt-1">
+                Lacak interaksi nyata pengunjung: dari membuka halaman produk (Tap), mencari kata kunci, mengklik chat WhatsApp, hingga konfirmasi transaksi pembelian deal.
+              </p>
+            </div>
+
+            <div className="flex items-center gap-2">
+              <span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-emerald-50 border border-emerald-200 text-emerald-800 rounded-xl text-xs font-bold">
+                <ShieldCheck className="w-4 h-4 text-emerald-600" />
+                <span>Zero-Cost Serverless Tracking</span>
+              </span>
+            </div>
+          </div>
+
+          {/* 5 Funnel Cards */}
+          <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
+            <div className="bg-white p-4 rounded-2xl border border-stone-200 shadow-xs space-y-1">
+              <span className="text-[10px] font-bold text-stone-400 uppercase tracking-wider block">1. Tap Produk</span>
+              <p className="text-xl sm:text-2xl font-black text-stone-900">{analyticsStats.totalViews}</p>
+              <p className="text-[10px] text-stone-500">Kunjungan produk dilihat</p>
+            </div>
+
+            <div className="bg-white p-4 rounded-2xl border border-stone-200 shadow-xs space-y-1">
+              <span className="text-[10px] font-bold text-stone-400 uppercase tracking-wider block">2. Pencarian</span>
+              <p className="text-xl sm:text-2xl font-black text-stone-900">{analyticsStats.totalSearches}</p>
+              <p className="text-[10px] text-stone-500">Kueri kata kunci dicari</p>
+            </div>
+
+            <div className="bg-white p-4 rounded-2xl border border-stone-200 shadow-xs space-y-1">
+              <span className="text-[10px] font-bold text-amber-700 uppercase tracking-wider block">3. Chat WA (Leads)</span>
+              <p className="text-xl sm:text-2xl font-black text-amber-700">{analyticsStats.totalWaChats}</p>
+              <p className="text-[10px] text-stone-500">Calon pembeli klik WA</p>
+            </div>
+
+            <div className="bg-white p-4 rounded-2xl border border-stone-200 shadow-xs space-y-1">
+              <span className="text-[10px] font-bold text-emerald-700 uppercase tracking-wider block">4. Deal Terjual</span>
+              <p className="text-xl sm:text-2xl font-black text-emerald-800">{analyticsStats.totalCompletedDeals}</p>
+              <p className="text-[10px] text-stone-500">Dikonfirmasi Admin</p>
+            </div>
+
+            <div className="col-span-2 md:col-span-1 bg-gradient-to-br from-emerald-800 to-emerald-950 p-4 rounded-2xl text-white shadow-sm space-y-1">
+              <span className="text-[10px] font-bold text-amber-300 uppercase tracking-wider block">5. Rasio Konversi</span>
+              <p className="text-xl sm:text-2xl font-black text-amber-300">{analyticsStats.conversionRate}%</p>
+              <p className="text-[10px] text-emerald-200">Deals / Chat WA</p>
+            </div>
+          </div>
+
+          {/* 2 Grid Tables: Top Searches & Top Viewed Products */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {/* Top Searches */}
+            <div className="bg-white p-6 rounded-3xl border border-stone-200 shadow-xs space-y-4">
+              <div className="flex items-center justify-between border-b border-stone-100 pb-3">
+                <h4 className="font-bold text-stone-900 text-sm flex items-center gap-2">
+                  <Search className="w-4 h-4 text-emerald-700" />
+                  <span>Kata Kunci Paling Sering Dicari</span>
+                </h4>
+                <span className="text-[10px] font-bold text-stone-400 uppercase">Frekuensi</span>
+              </div>
+              {analyticsStats.topSearches.length > 0 ? (
+                <div className="space-y-2">
+                  {analyticsStats.topSearches.map((s, idx) => (
+                    <div key={idx} className="flex items-center justify-between p-2.5 rounded-xl bg-stone-50 hover:bg-emerald-50/50 transition-colors text-xs">
+                      <span className="font-bold text-stone-800 flex items-center gap-2">
+                        <span className="w-5 h-5 rounded-full bg-stone-200 text-stone-600 text-[10px] flex items-center justify-center font-mono">
+                          {idx + 1}
+                        </span>
+                        <span>"{s.query}"</span>
+                      </span>
+                      <span className="font-extrabold text-emerald-800 bg-white px-2.5 py-0.5 rounded-lg border border-stone-200">
+                        {s.count}x dicari
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <p className="text-xs text-stone-400 italic py-4 text-center">Belum ada data pencarian yang terekam.</p>
+              )}
+            </div>
+
+            {/* Top Viewed Products */}
+            <div className="bg-white p-6 rounded-3xl border border-stone-200 shadow-xs space-y-4">
+              <div className="flex items-center justify-between border-b border-stone-100 pb-3">
+                <h4 className="font-bold text-stone-900 text-sm flex items-center gap-2">
+                  <Eye className="w-4 h-4 text-emerald-700" />
+                  <span>Produk Paling Banyak Dilihat (Tap)</span>
+                </h4>
+                <span className="text-[10px] font-bold text-stone-400 uppercase">Kunjungan</span>
+              </div>
+              {analyticsStats.topViewedProducts.length > 0 ? (
+                <div className="space-y-2">
+                  {analyticsStats.topViewedProducts.map((p, idx) => (
+                    <div key={idx} className="flex items-center justify-between p-2.5 rounded-xl bg-stone-50 hover:bg-emerald-50/50 transition-colors text-xs">
+                      <span className="font-bold text-stone-800 truncate max-w-[200px] sm:max-w-[250px] flex items-center gap-2">
+                        <span className="w-5 h-5 rounded-full bg-stone-200 text-stone-600 text-[10px] flex items-center justify-center font-mono shrink-0">
+                          {idx + 1}
+                        </span>
+                        <span className="truncate">{p.title}</span>
+                      </span>
+                      <span className="font-extrabold text-emerald-800 bg-white px-2.5 py-0.5 rounded-lg border border-stone-200 shrink-0">
+                        {p.views}x tap
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <p className="text-xs text-stone-400 italic py-4 text-center">Belum ada kunjungan produk yang terekam.</p>
+              )}
+            </div>
+          </div>
+
+          {/* Live Visitor Activity Stream */}
+          <div className="bg-white p-6 rounded-3xl border border-stone-200 shadow-xs space-y-4">
+            <div className="flex items-center justify-between border-b border-stone-100 pb-3">
+              <div>
+                <h4 className="font-bold text-stone-900 text-sm flex items-center gap-2">
+                  <Activity className="w-4 h-4 text-emerald-700" />
+                  <span>Feed Interaksi Real-Time Wisatawan</span>
+                </h4>
+                <p className="text-xs text-stone-500">Aktivitas terkini yang dilakukan pengunjung di web Saba Lembang.</p>
+              </div>
+              <span className="text-xs font-bold text-emerald-800 bg-emerald-50 px-2.5 py-1 rounded-full border border-emerald-200">
+                Live Data
+              </span>
+            </div>
+
+            <div className="space-y-2 max-h-72 overflow-y-auto pr-1">
+              {analyticsEvents.slice(0, 10).map((ev) => (
+                <div key={ev.id} className="flex items-center justify-between p-3 rounded-2xl bg-stone-50 border border-stone-100 text-xs">
+                  <div className="flex items-center gap-3">
+                    <span className={`p-1.5 rounded-xl ${
+                      ev.type === 'deal_completed' ? 'bg-emerald-100 text-emerald-800' :
+                      ev.type === 'wa_chat' ? 'bg-amber-100 text-amber-900' :
+                      ev.type === 'search' ? 'bg-sky-100 text-sky-800' :
+                      'bg-stone-200 text-stone-700'
+                    }`}>
+                      {ev.type === 'deal_completed' ? <CheckCircle2 className="w-4 h-4" /> :
+                       ev.type === 'wa_chat' ? <MessageCircle className="w-4 h-4" /> :
+                       ev.type === 'search' ? <Search className="w-4 h-4" /> :
+                       <Eye className="w-4 h-4" />}
+                    </span>
+                    <div>
+                      <p className="font-bold text-stone-900">
+                        {ev.type === 'deal_completed' ? `Transaksi Berhasil / Deal (${formatRupiah(ev.amount)})` :
+                         ev.type === 'wa_chat' ? `Pengunjung Chat WhatsApp (${ev.productTitle || 'Produk'})` :
+                         ev.type === 'search' ? `Pencarian kata kunci: "${ev.query}"` :
+                         `Pengunjung membuka detail: "${ev.productTitle || 'Produk'}"`}
+                      </p>
+                      <p className="text-[10px] text-stone-400">
+                        {ev.villageName || currentVillage.name}
+                      </p>
+                    </div>
+                  </div>
+
+                  <span className="text-[10px] text-stone-400 font-mono shrink-0">
+                    {new Date(ev.timestamp).toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' })}
+                  </span>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       )}
@@ -1055,6 +1298,24 @@ export const SellerDashboardView: React.FC = () => {
                       </button>
                     ))}
                   </div>
+                </div>
+
+                {/* VIDEO URL (OPSIONAL) */}
+                <div>
+                  <label className="block text-xs font-extrabold text-stone-800 uppercase tracking-wider mb-1 flex items-center justify-between">
+                    <span>LINK VIDEO (OPSIONAL)</span>
+                    <span className="text-[10px] text-emerald-700 font-bold lowercase">YouTube / Shorts / MP4</span>
+                  </label>
+                  <input
+                    type="url"
+                    value={postVideoUrl}
+                    onChange={(e) => setPostVideoUrl(e.target.value)}
+                    placeholder="https://www.youtube.com/watch?v=... atau https://youtu.be/..."
+                    className="w-full p-2.5 bg-stone-50 border border-stone-300 rounded-xl text-xs font-medium text-stone-900 focus:outline-none focus:ring-2 focus:ring-emerald-600"
+                  />
+                  <p className="text-[10px] text-stone-400 mt-1">
+                    Calon wisatawan bisa memutar video langsung di galeri detail produk.
+                  </p>
                 </div>
 
                 {/* POSTING BUTTON */}
@@ -1396,6 +1657,21 @@ export const SellerDashboardView: React.FC = () => {
                         onChange={(e) => setEditHighlightsText(e.target.value)}
                         placeholder="Contoh: Single Origin, Pemandangan Lereng, WiFi, Sarapan Sunda"
                         className="w-full p-2.5 bg-stone-50 border border-stone-300 rounded-xl font-medium text-stone-800 focus:bg-white focus:ring-2 focus:ring-emerald-700 focus:outline-none"
+                      />
+                    </div>
+
+                    {/* Video URL */}
+                    <div>
+                      <label className="font-bold text-stone-800 block mb-1 flex items-center justify-between text-xs">
+                        <span>Link Video YouTube / MP4 (Opsional):</span>
+                        <span className="text-[11px] text-emerald-700 font-semibold">Tampil di galeri detail</span>
+                      </label>
+                      <input
+                        type="url"
+                        value={editingProduct.videoUrl || ''}
+                        onChange={(e) => setEditingProduct({ ...editingProduct, videoUrl: e.target.value })}
+                        placeholder="Contoh: https://www.youtube.com/watch?v=... atau https://youtu.be/..."
+                        className="w-full p-2.5 bg-stone-50 border border-stone-300 rounded-xl font-medium text-stone-800 focus:bg-white focus:ring-2 focus:ring-emerald-700 focus:outline-none text-xs"
                       />
                     </div>
                   </div>

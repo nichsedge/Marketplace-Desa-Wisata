@@ -60,13 +60,16 @@
 
 ---
 
-## 💻 Tech Stack & Deployment
+## 💻 Tech Stack & Architecture Capabilities
 - **Runtime & Package Manager:** **Bun** (`bun` v1.3+)
 - **Frontend SPA:** React 19 + TypeScript + Vite 6
 - **Styling:** Tailwind CSS v4 + Motion (`framer-motion`) + Lucide React
 - **Hosting / Deployment:** Vercel SPA (Hobby tier gratis, konfigurasi rewrite di `vercel.json`).
 - **Domain Target:** Menyesuaikan konfigurasi domain klien (*Custom Domain*)
-- **Aset Gambar Lokal & Avatar Standar:** Seluruh aset foto katalog produk dan galeri desa tersimpan lokal di `public/images/`. Profil pengguna, Admin Desa, ulasan, dan testimoni menggunakan avatar standar *"no profile picture"* ala WhatsApp (`public/images/default-avatar.svg` via komponen `<UserAvatar />`) dan dilarang memakai foto wajah orang dummy/stok Unsplash.
+- **Aset Gambar & Video Lokal:** Seluruh aset foto katalog produk dan galeri desa tersimpan lokal di `public/images/`. Video lokal terkompresi tersimpan di `public/videos/` dan mendukung embed eksternal YouTube / Vimeo.
+- **Bilingual Support (ID/EN):** Menggunakan kamus i18n terstruktur di `src/i18n/translations.ts` dengan toggle bahasa di Navbar & Footer tanpa perlu library pihak ketiga berlebih.
+- **Visitor Funnel Tracking (Opsi A - Hybrid Deal Confirmation):** Pelacakan aktivitas pengunjung berbasis client-side `localStorage` + integrasi GA4 (`trackProductTap`, `trackSearchQuery`, `trackWhatsAppClick`, `trackDealCompleted`). Admin Desa mengonfirmasi pesanan lunas langsung di dasbor sehingga konversi dan omzet terhitung otomatis tanpa butuh server backend berbayar.
+- **Avatar Standar WhatsApp:** Profil pengguna, Admin Desa, ulasan, dan testimoni menggunakan avatar standar *"no profile picture"* ala WhatsApp (`public/images/default-avatar.svg` via komponen `<UserAvatar />`) dan dilarang memakai foto wajah orang dummy/stok Unsplash.
 
 ---
 

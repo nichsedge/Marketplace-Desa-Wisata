@@ -18,7 +18,7 @@ import {
 } from 'lucide-react';
 
 export const AuthView: React.FC = () => {
-  const { loginWithCredentials, navigateTo } = useApp();
+  const { loginWithCredentials, navigateTo, language } = useApp();
 
   const [usernameOrEmail, setUsernameOrEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -33,7 +33,11 @@ export const AuthView: React.FC = () => {
     setErrorMessage(null);
 
     if (!usernameOrEmail.trim() || !password.trim()) {
-      setErrorMessage('Mohon masukkan username/email dan kata sandi.');
+      setErrorMessage(
+        language === 'en'
+          ? 'Please enter your username/email and password.'
+          : 'Mohon masukkan username/email dan kata sandi.'
+      );
       return;
     }
 
@@ -44,7 +48,11 @@ export const AuthView: React.FC = () => {
       const success = loginWithCredentials(usernameOrEmail, password);
       setIsLoading(false);
       if (!success) {
-        setErrorMessage('Username atau kata sandi yang Anda masukkan salah. Silakan coba lagi.');
+        setErrorMessage(
+          language === 'en'
+            ? 'The username or password you entered is incorrect. Please try again.'
+            : 'Username atau kata sandi yang Anda masukkan salah. Silakan coba lagi.'
+        );
       }
     }, 400);
   };
@@ -78,24 +86,28 @@ export const AuthView: React.FC = () => {
                   SABA LEMBANG
                 </span>
                 <span className="text-[11px] text-emerald-200">
-                  Desa Wisata Terpadu
+                  {language === 'en' ? 'Integrated Tourism Villages' : 'Desa Wisata Terpadu'}
                 </span>
               </div>
             </div>
 
             <div className="pt-6">
               <h2 className="text-2xl font-bold font-serif-title leading-snug text-white">
-                Portal Pengelola Kawasan Lembang
+                {language === 'en' ? 'Lembang Region Admin Portal' : 'Portal Pengelola Kawasan Lembang'}
               </h2>
               <p className="text-xs text-emerald-200/90 leading-relaxed mt-2">
-                Sistem pengelolaan terpadu katalog komoditas, reservasi homestay, dan informasi destinasi desa wisata di Kawasan Lembang.
+                {language === 'en'
+                  ? 'Integrated management system for commodity catalogs, homestay reservations, and tourism village destination information in Lembang Region.'
+                  : 'Sistem pengelolaan terpadu katalog komoditas, reservasi homestay, dan informasi destinasi desa wisata di Kawasan Lembang.'}
               </p>
             </div>
           </div>
 
           {/* Bottom Security / Trust Notice */}
           <div className="relative z-10 pt-8 border-t border-emerald-800/60 text-[11px] text-emerald-300/80 space-y-1">
-            <p className="font-semibold text-white">Jaringan 6 Desa Wisata Lembang</p>
+            <p className="font-semibold text-white">
+              {language === 'en' ? 'Network of 6 Lembang Tourism Villages' : 'Jaringan 6 Desa Wisata Lembang'}
+            </p>
             <p className="text-[10px] text-emerald-300/70">Suntenjaya · Cikole · Jayagiri · Wangunsari · Gudangkahuripan · Sukajaya</p>
           </div>
         </div>
@@ -120,10 +132,12 @@ export const AuthView: React.FC = () => {
             {/* Header */}
             <div>
               <h1 className="text-2xl font-black font-serif-title text-stone-900">
-                Masuk ke Akun Pengelola
+                {language === 'en' ? 'Sign In to Admin Account' : 'Masuk ke Akun Pengelola'}
               </h1>
               <p className="text-xs text-stone-500 mt-1">
-                Silakan masukkan username atau email akun Admin Desa Anda untuk melanjutkan.
+                {language === 'en'
+                  ? 'Please enter your Village Admin username or email to continue.'
+                  : 'Silakan masukkan username atau email akun Admin Desa Anda untuk melanjutkan.'}
               </p>
             </div>
 
@@ -143,7 +157,7 @@ export const AuthView: React.FC = () => {
               {/* Username Field */}
               <div>
                 <label className="text-xs font-bold text-stone-700 block mb-1.5">
-                  Username atau Email
+                  {language === 'en' ? 'Username or Email' : 'Username atau Email'}
                 </label>
                 <div className="relative">
                   <input
@@ -154,7 +168,7 @@ export const AuthView: React.FC = () => {
                       setUsernameOrEmail(e.target.value);
                       if (errorMessage) setErrorMessage(null);
                     }}
-                    placeholder="Masukkan username atau email"
+                    placeholder={language === 'en' ? 'Enter username or email' : 'Masukkan username atau email'}
                     className="w-full pl-10 pr-4 py-3 bg-stone-50 border border-stone-300 rounded-xl text-xs text-stone-900 font-medium focus:outline-none focus:ring-2 focus:ring-emerald-800 focus:bg-white transition-all"
                   />
                   <UserIcon className="w-4 h-4 text-stone-400 absolute left-3.5 top-3.5" />
@@ -165,14 +179,14 @@ export const AuthView: React.FC = () => {
               <div>
                 <div className="flex items-center justify-between mb-1.5">
                   <label className="text-xs font-bold text-stone-700">
-                    Kata Sandi
+                    {language === 'en' ? 'Password' : 'Kata Sandi'}
                   </label>
                   <button
                     type="button"
                     onClick={() => setShowForgotModal(true)}
                     className="text-[11px] text-emerald-800 font-semibold hover:underline cursor-pointer"
                   >
-                    Lupa kata sandi?
+                    {language === 'en' ? 'Forgot password?' : 'Lupa kata sandi?'}
                   </button>
                 </div>
                 <div className="relative">
@@ -184,7 +198,7 @@ export const AuthView: React.FC = () => {
                       setPassword(e.target.value);
                       if (errorMessage) setErrorMessage(null);
                     }}
-                    placeholder="Masukkan kata sandi"
+                    placeholder={language === 'en' ? 'Enter password' : 'Masukkan kata sandi'}
                     className="w-full pl-10 pr-10 py-3 bg-stone-50 border border-stone-300 rounded-xl text-xs text-stone-900 font-medium focus:outline-none focus:ring-2 focus:ring-emerald-800 focus:bg-white transition-all"
                   />
                   <KeyRound className="w-4 h-4 text-stone-400 absolute left-3.5 top-3.5" />
@@ -193,7 +207,7 @@ export const AuthView: React.FC = () => {
                     onClick={() => setShowPassword(!showPassword)}
                     className="p-1 text-stone-400 hover:text-stone-700 absolute right-3 top-3 cursor-pointer"
                     tabIndex={-1}
-                    aria-label={showPassword ? 'Sembunyikan kata sandi' : 'Tampilkan kata sandi'}
+                    aria-label={showPassword ? (language === 'en' ? 'Hide password' : 'Sembunyikan kata sandi') : (language === 'en' ? 'Show password' : 'Tampilkan kata sandi')}
                   >
                     {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                   </button>
@@ -209,7 +223,7 @@ export const AuthView: React.FC = () => {
                     onChange={(e) => setRememberMe(e.target.checked)}
                     className="rounded text-emerald-800 focus:ring-emerald-800 w-4 h-4"
                   />
-                  <span>Ingat saya di perangkat ini</span>
+                  <span>{language === 'en' ? 'Remember me on this device' : 'Ingat saya di perangkat ini'}</span>
                 </label>
               </div>
 
@@ -222,12 +236,12 @@ export const AuthView: React.FC = () => {
                 {isLoading ? (
                   <>
                     <Loader2 className="w-4 h-4 animate-spin text-amber-300" />
-                    <span>Memverifikasi...</span>
+                    <span>{language === 'en' ? 'Verifying...' : 'Memverifikasi...'}</span>
                   </>
                 ) : (
                   <>
                     <Lock className="w-4 h-4" />
-                    <span>Masuk</span>
+                    <span>{language === 'en' ? 'Sign In' : 'Masuk'}</span>
                     <ArrowRight className="w-4 h-4" />
                   </>
                 )}
@@ -240,10 +254,10 @@ export const AuthView: React.FC = () => {
               <div className="flex items-center justify-between">
                 <span className="text-[11px] font-bold text-stone-500 uppercase tracking-wider flex items-center gap-1">
                   <Sparkles className="w-3.5 h-3.5 text-amber-500" />
-                  <span>Akun Demo Admin Desa:</span>
+                  <span>{language === 'en' ? 'Village Admin Demo Accounts:' : 'Akun Demo Admin Desa:'}</span>
                 </span>
                 <span className="text-[10px] text-emerald-800 font-semibold bg-emerald-50 px-2 py-0.5 rounded-md">
-                  Klik untuk Isi Otomatis
+                  {language === 'en' ? 'Click to Auto-fill' : 'Klik untuk Isi Otomatis'}
                 </span>
               </div>
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-1.5">
@@ -257,10 +271,10 @@ export const AuthView: React.FC = () => {
                       setErrorMessage(null);
                     }}
                     className="p-2 text-left bg-stone-50 hover:bg-emerald-50 hover:border-emerald-300 border border-stone-200 rounded-xl transition-all cursor-pointer group"
-                    title={`Masuk sebagai ${pic.name} (${pic.username})`}
+                    title={language === 'en' ? `Sign in as ${pic.name} (${pic.username})` : `Masuk sebagai ${pic.name} (${pic.username})`}
                   >
                     <span className="block text-[11px] font-bold text-stone-800 group-hover:text-emerald-900 truncate">
-                      {pic.picVillageName?.replace('Desa Wisata ', '') || pic.name}
+                      {pic.picVillageName?.replace('Desa Wisata ', language === 'en' ? 'Village ' : '') || pic.name}
                     </span>
                     <span className="block text-[10px] text-stone-400 font-mono truncate">
                       {pic.username}
@@ -280,7 +294,7 @@ export const AuthView: React.FC = () => {
               className="flex items-center gap-1 font-semibold text-stone-600 hover:text-emerald-800 transition-colors cursor-pointer"
             >
               <ChevronLeft className="w-4 h-4" />
-              <span>Kembali ke Beranda</span>
+              <span>{language === 'en' ? 'Return to Home' : 'Kembali ke Beranda'}</span>
             </button>
             <span>© 2026 Saba Lembang</span>
           </div>
@@ -303,19 +317,23 @@ export const AuthView: React.FC = () => {
                 <div className="p-2 rounded-xl bg-amber-100 text-amber-900">
                   <HelpCircle className="w-5 h-5" />
                 </div>
-                <h4 className="text-sm font-bold text-stone-900">Lupa Kata Sandi</h4>
+                <h4 className="text-sm font-bold text-stone-900">
+                  {language === 'en' ? 'Forgot Password' : 'Lupa Kata Sandi'}
+                </h4>
               </div>
               <button
                 onClick={() => setShowForgotModal(false)}
                 className="p-1 rounded-lg text-stone-400 hover:text-stone-700 cursor-pointer"
-                aria-label="Tutup"
+                aria-label={language === 'en' ? 'Close' : 'Tutup'}
               >
                 <X className="w-4 h-4" />
               </button>
             </div>
 
             <p className="text-xs text-stone-600 leading-relaxed">
-              Untuk keamanan akun pengelola desa wisata, reset kata sandi dilakukan melalui konfirmasi administrator kawasan. Silakan hubungi pusat bantuan pengelola untuk pemulihan akses.
+              {language === 'en'
+                ? 'For the security of tourism village management accounts, password resets are processed via regional administrator confirmation. Please contact the help center for access recovery.'
+                : 'Untuk keamanan akun pengelola desa wisata, reset kata sandi dilakukan melalui konfirmasi administrator kawasan. Silakan hubungi pusat bantuan pengelola untuk pemulihan akses.'}
             </p>
 
             <div className="pt-2">
@@ -325,7 +343,7 @@ export const AuthView: React.FC = () => {
                 rel="noreferrer"
                 className="w-full py-2.5 bg-emerald-800 hover:bg-emerald-900 text-amber-200 text-xs font-bold rounded-xl shadow-xs flex items-center justify-center gap-1.5 transition-colors"
               >
-                Hubungi Bantuan via WhatsApp
+                {language === 'en' ? 'Contact Support via WhatsApp' : 'Hubungi Bantuan via WhatsApp'}
               </a>
             </div>
           </div>

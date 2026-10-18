@@ -4,7 +4,7 @@ import { ProductCard, formatRupiah } from '../components/ProductCard';
 import { BedDouble, Wifi, Utensils, ShieldCheck, MapPin, Sparkles, Filter } from 'lucide-react';
 
 export const HomestayView: React.FC = () => {
-  const { products, villages, navigateTo } = useApp();
+  const { products, villages, navigateTo, language } = useApp();
 
   const [selectedVillageId, setSelectedVillageId] = useState<string>('all');
   const [maxPrice, setMaxPrice] = useState<number>(1000000);
@@ -47,13 +47,15 @@ export const HomestayView: React.FC = () => {
         <div className="relative z-10 max-w-2xl space-y-3">
           <span className="px-3 py-1 rounded-full bg-indigo-500/20 text-indigo-300 border border-indigo-400/40 text-xs font-bold uppercase tracking-wider inline-flex items-center gap-1.5">
             <BedDouble className="w-4 h-4" />
-            <span>Homestay & Glamping Lembang</span>
+            <span>{language === 'en' ? 'Homestays & Mountain Stays' : 'Homestay & Glamping Lembang'}</span>
           </span>
           <h1 className="text-2xl sm:text-4xl font-extrabold font-serif-title text-white">
-            Menginap Sejuk di Pegunungan Kawasan Lembang
+            {language === 'en' ? 'Cool Mountain Stays in Lembang Region' : 'Menginap Sejuk di Pegunungan Kawasan Lembang'}
           </h1>
           <p className="text-xs sm:text-sm text-stone-200 leading-relaxed">
-            Nikmati suasana pedesaan yang asri pada ketinggian 1.200 - 1.400 mdpl, udara berkabut sejuk, dan kehangatan tuan rumah warga lokal di desa-desa wisata Lembang. Dilengkapi air hangat, sarapan tradisional, dan pemandangan hijau alami.
+            {language === 'en' 
+              ? 'Enjoy serene highland living at 1,200 - 1,400 MASL, misty mountain air, and genuine local villager hospitality across Lembang tourism villages. Equipped with hot water, traditional breakfast, and lush valley panoramas.'
+              : 'Nikmati suasana pedesaan yang asri pada ketinggian 1.200 - 1.400 mdpl, udara berkabut sejuk, dan kehangatan tuan rumah warga lokal di desa-desa wisata Lembang. Dilengkapi air hangat, sarapan tradisional, dan pemandangan hijau alami.'}
           </p>
         </div>
       </div>
@@ -63,10 +65,14 @@ export const HomestayView: React.FC = () => {
         <div className="flex items-center justify-between pb-3 border-b border-stone-200">
           <h3 className="text-sm font-bold text-stone-900 flex items-center gap-2">
             <Filter className="w-4 h-4 text-emerald-800" />
-            <span>Filter Ketersediaan Homestay</span>
+            <span>{language === 'en' ? 'Homestay Availability Filter' : 'Filter Ketersediaan Homestay'}</span>
           </h3>
           <span className="text-xs text-stone-500">
-            Ditemukan <strong className="text-stone-900">{filteredHomestays.length}</strong> homestay
+            {language === 'en' ? (
+              <>Found <strong className="text-stone-900">{filteredHomestays.length}</strong> homestays</>
+            ) : (
+              <>Ditemukan <strong className="text-stone-900">{filteredHomestays.length}</strong> homestay</>
+            )}
           </span>
         </div>
 
@@ -76,16 +82,20 @@ export const HomestayView: React.FC = () => {
           <div className="space-y-1.5">
             <label className="text-xs font-bold text-stone-700 flex items-center gap-1">
               <MapPin className="w-3.5 h-3.5 text-emerald-700" />
-              <span>Pilih Desa Wisata:</span>
+              <span>{language === 'en' ? 'Select Tourism Village:' : 'Pilih Desa Wisata:'}</span>
             </label>
             <select
               value={selectedVillageId}
               onChange={(e) => setSelectedVillageId(e.target.value)}
               className="w-full px-3 py-2.5 bg-white border border-stone-300 rounded-xl text-xs sm:text-sm font-bold text-stone-900 shadow-xs focus:outline-none focus:ring-2 focus:ring-emerald-700 cursor-pointer"
             >
-              <option value="all">🏞️ Semua Desa Wisata di Lembang ({villages.length} Desa)</option>
+              <option value="all">
+                {language === 'en' ? `🏞️ All Tourism Villages in Lembang (${villages.length} Villages)` : `🏞️ Semua Desa Wisata di Lembang (${villages.length} Desa)`}
+              </option>
               {villages.map(v => (
-                <option key={v.id} value={v.id}>{v.name} ({v.villageAltitude || '1.250 mdpl'})</option>
+                <option key={v.id} value={v.id}>
+                  {language === 'en' ? v.name.replace('Desa Wisata ', 'Village ') : v.name} ({v.villageAltitude ? (language === 'en' ? v.villageAltitude.replace('mdpl', 'MASL') : v.villageAltitude) : (language === 'en' ? '1,250 MASL' : '1.250 mdpl')})
+                </option>
               ))}
             </select>
           </div>
@@ -93,7 +103,7 @@ export const HomestayView: React.FC = () => {
           {/* Max Price */}
           <div className="space-y-1.5">
             <div className="flex justify-between text-xs font-bold text-stone-700">
-              <span>Maksimal Harga:</span>
+              <span>{language === 'en' ? 'Max Price:' : 'Maksimal Harga:'}</span>
               <span className="text-emerald-800">{formatRupiah(maxPrice)}</span>
             </div>
             <input
@@ -126,7 +136,7 @@ export const HomestayView: React.FC = () => {
                 onChange={(e) => setRequireBreakfast(e.target.checked)}
                 className="w-4 h-4 accent-emerald-800 rounded"
               />
-              <span>Sarapan Gratis</span>
+              <span>{language === 'en' ? 'Free Breakfast' : 'Sarapan Gratis'}</span>
             </label>
           </div>
 
@@ -143,8 +153,12 @@ export const HomestayView: React.FC = () => {
       {filteredHomestays.length === 0 && (
         <div className="bg-white rounded-3xl p-12 text-center space-y-3 border border-stone-200">
           <BedDouble className="w-12 h-12 text-stone-300 mx-auto" />
-          <h3 className="text-base font-bold text-stone-800">Tidak ada homestay yang sesuai filter</h3>
-          <p className="text-xs text-stone-500">Coba naikkan batas harga maksimal atau pilih semua desa wisata.</p>
+          <h3 className="text-base font-bold text-stone-800">
+            {language === 'en' ? 'No homestays match the filter' : 'Tidak ada homestay yang sesuai filter'}
+          </h3>
+          <p className="text-xs text-stone-500">
+            {language === 'en' ? 'Try increasing the maximum price limit or select all tourism villages.' : 'Coba naikkan batas harga maksimal atau pilih semua desa wisata.'}
+          </p>
         </div>
       )}
 

@@ -73,6 +73,7 @@ export interface Product {
   stockQuota: number;
   isAvailable: boolean;
   isFeatured?: boolean;
+  videoUrl?: string;
   // Metadata provenance (real vs dummy / simulation)
   isDummy?: boolean;
   dataSource?: 'real' | 'dummy';
@@ -104,6 +105,33 @@ export interface Order {
   status: OrderStatus;
   createdAt: string;
   notes?: string;
+  villageId?: string;
+  villageName?: string;
+  source?: 'direct_wa' | 'cart_checkout';
+}
+
+export interface InteractionEvent {
+  id: string;
+  type: 'product_tap' | 'search' | 'wa_chat' | 'deal_completed';
+  productId?: string;
+  productTitle?: string;
+  villageId?: string;
+  villageName?: string;
+  query?: string;
+  orderId?: string;
+  amount?: number;
+  timestamp: string;
+}
+
+export interface AnalyticsStats {
+  totalViews: number;
+  totalSearches: number;
+  totalWaChats: number;
+  totalCompletedDeals: number;
+  totalRevenue: number;
+  conversionRate: number;
+  topSearches: { query: string; count: number }[];
+  topViewedProducts: { id: string; title: string; views: number }[];
 }
 
 export interface Review {

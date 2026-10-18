@@ -43,6 +43,7 @@ export const REAL_PRODUCTS: Product[] = [
       "Kemasan Alumunium Foil Zipper + Valve Udara"
     ],
     "stockQuota": 150,
+    "videoUrl": "/videos/kopi-palasari-roasting.mp4",
     "isAvailable": true,
     "isFeatured": true,
     "isDummy": false,
@@ -401,6 +402,7 @@ export const REAL_PRODUCTS: Product[] = [
       }
     ],
     "stockQuota": 50,
+    "videoUrl": "/videos/offroad-cikole-preview.mp4",
     "isAvailable": true,
     "isFeatured": true,
     "isDummy": false,
@@ -564,6 +566,7 @@ export const REAL_PRODUCTS: Product[] = [
       "Didampingi Pengrawit & Seniman Senior Desa"
     ],
     "stockQuota": 40,
+    "videoUrl": "https://www.youtube.com/watch?v=FfC5W5U0b1w",
     "isAvailable": true,
     "isFeatured": true,
     "isDummy": false,

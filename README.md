@@ -41,6 +41,24 @@ Saat ini mencakup 6 Desa Wisata aktif (Desa Wisata Cibodas dan Cikahuripan disem
     - **Desa Sukajaya:** `pic.sukajaya` / `sukajaya123` (*Ibu Siti Maryam*)
     - *(PIC Cibodas & Cikahuripan dinonaktifkan sementara)*
 
+## 🌐 Fitur Bilingual (Bahasa Indonesia & English)
+Platform mendukung peralihan bahasa instan (**ID / EN**) tanpa perlu reload halaman, mencakup seluruh teks navigasi, hero, katalog marketplace, detail produk, keranjang belanja, hingga dasbor Admin Desa. Pengunjung asing maupun domestik dapat bertukar bahasa secara mulus melalui tombol toggle di Navbar dan Footer.
+
+## 🎬 Integrasi Media Video Produk & Wisata
+Selain foto galeri berkualitas tinggi, platform kini mendukung penyematan video aktual:
+- **Format yang Didukung:** Tautan YouTube (watch, shorts, embed, youtu.be), Vimeo, dan berkas video direct `.mp4` / `.webm` (terkompresi ringan untuk web di `public/videos/`).
+- **Antarmuka Pengunjung:** Tab terpisah *"📷 Foto Galeri"* dan *"▶ Video Produk & Wisata"* di halaman detail produk, serta badge video interaktif di kartu marketplace.
+- **Form Admin Desa:** Admin Desa dapat langsung memasukkan URL video YouTube atau link video MP4 saat memposting produk baru lewat Wizard 4 langkah maupun saat mengedit katalog.
+
+## 📊 Analitik Corong Pengunjung & Konfirmasi Pembelian (Funnel Analytics - Opsi A)
+Melacak interaksi pengunjung tanpa membutuhkan server backend berbayar (zero-cost serverless di Vercel SPA):
+- **Pelacakan Langkah Lengkap Corong Wisatawan:**
+  1. **Tap Produk:** Mencatat setiap kali kartu produk dilihat/diklik pengunjung.
+  2. **Pencarian Kata Kunci:** Mencatat query pencarian populer dan jumlah hasil yang ditemukan.
+  3. **Chat WA (Leads):** Mencatat klik tombol *"Beli Langsung via WhatsApp"* atau *"Tanya Admin Desa"* sebagai prospek pembeli baru (otomatis terdaftar di tab pesanan dasbor).
+  4. **Deal / Pembelian Lunas (Opsi A):** Admin Desa dapat mengonfirmasi pesanan yang telah lunas/selesai langsung dari dasbor dengan menekan tombol **"✅ Deal / Lunas"**, yang secara instan menghitung rasio konversi (*Conversion Rate*) dan omzet riil.
+- **Kompatibilitas Google Analytics 4 (GA4):** Semua event juga diteruskan secara otomatis ke `window.gtag` jika ID GA4 dikonfigurasi.
+
 ## 📦 Aset Visual Lokal & Avatar Standar WhatsApp
 Seluruh foto katalog produk, homestay, dan lanskap 7 desa aktif tersimpan secara lokal di folder `public/images/`. Untuk avatar profil Admin Desa, pembeli, ulasan, dan testimoni, sistem menerapkan avatar default *"no profile picture"* ala WhatsApp (`/images/default-avatar.svg` via komponen `<UserAvatar />`) yang bersih dan seragam, tanpa menggunakan foto wajah stok/dummy.
 

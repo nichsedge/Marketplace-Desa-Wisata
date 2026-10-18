@@ -18,11 +18,13 @@ import {
   LogOut,
   Phone,
   ArrowRight,
-  Sparkles
+  Sparkles,
+  Globe
 } from 'lucide-react';
 import { scoreProductSearch } from '../utils/search';
+import { getLocalizedProduct } from '../i18n/productTranslations';
 
-const POPULAR_SEARCH_TAGS = [
+const POPULAR_SEARCH_TAGS_ID = [
   '☕ Kopi Arabika Pasir Angling',
   '🏛️ Megalitikum Batu Loceng',
   '🚜 Offroad Land Rover Cikole',
@@ -31,6 +33,17 @@ const POPULAR_SEARCH_TAGS = [
   '☕ Maguru Kopi Jayagiri',
   '🥛 Susu Murni Sukajaya',
   '🎭 Tari Jaipong Gudangkahuripan'
+];
+
+const POPULAR_SEARCH_TAGS_EN = [
+  '☕ Arabica Coffee Pasir Angling',
+  '🏛️ Megalithic Batu Loceng',
+  '🚜 Offroad Land Rover Cikole',
+  '🏕️ Camping Pasir Angling',
+  '🍲 Milk Tofu Wangunsari',
+  '☕ Maguru Coffee Jayagiri',
+  '🥛 Pure Milk Sukajaya',
+  '🎭 Jaipong Dance Gudangkahuripan'
 ];
 
 export const Navbar: React.FC = () => {
@@ -45,7 +58,11 @@ export const Navbar: React.FC = () => {
     setSearchQuery,
     setCategoryFilter,
     setVillageFilter,
-    products
+    products,
+    language,
+    setLanguage,
+    t,
+    recordSearch
   } = useApp();
 
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -77,6 +94,7 @@ export const Navbar: React.FC = () => {
   const handleModalSubmit = (e?: React.FormEvent) => {
     if (e) e.preventDefault();
     if (modalSearchText.trim()) {
+      recordSearch(modalSearchText.trim(), modalMatches.length);
       setSearchQuery(modalSearchText.trim());
       setCategoryFilter('all');
       setVillageFilter('all');
@@ -87,6 +105,7 @@ export const Navbar: React.FC = () => {
 
   const handleTagClick = (tag: string) => {
     const cleanedTag = tag.replace(/^[^\w\s]+/, '').trim();
+    recordSearch(cleanedTag);
     setSearchQuery(cleanedTag);
     setCategoryFilter('all');
     setVillageFilter('all');
@@ -95,11 +114,11 @@ export const Navbar: React.FC = () => {
   };
 
   const navItems: { label: string; route: PageRoute; icon: React.ReactNode }[] = [
-    { label: 'Beranda', route: 'home', icon: <Home className="w-4 h-4" /> },
-    { label: 'Marketplace', route: 'marketplace', icon: <Compass className="w-4 h-4" /> },
-    { label: 'Homestay', route: 'homestay', icon: <BedDouble className="w-4 h-4" /> },
-    { label: 'Paket Wisata', route: 'paket-wisata', icon: <TreePine className="w-4 h-4" /> },
-    { label: 'Profil Desa', route: 'desa-detail', icon: <MapPin className="w-4 h-4" /> },
+    { label: t('nav.home'), route: 'home', icon: <Home className="w-4 h-4" /> },
+    { label: t('nav.marketplace'), route: 'marketplace', icon: <Compass className="w-4 h-4" /> },
+    { label: t('nav.homestay'), route: 'homestay', icon: <BedDouble className="w-4 h-4" /> },
+    { label: t('nav.packages'), route: 'paket-wisata', icon: <TreePine className="w-4 h-4" /> },
+    { label: t('nav.villages'), route: 'desa-detail', icon: <MapPin className="w-4 h-4" /> },
   ];
 
   return (
@@ -122,7 +141,7 @@ export const Navbar: React.FC = () => {
                 Saba<span className="text-emerald-700">Lembang</span>
               </span>
               <span className="hidden 2xl:block text-[10px] font-medium tracking-widest text-amber-800 uppercase font-sans">
-                Platform Interdesa Kawasan Lembang
+                {language === 'en' ? 'Lembang Region Inter-Village Platform' : 'Platform Interdesa Kawasan Lembang'}
               </span>
             </div>
           </div>
@@ -148,14 +167,47 @@ export const Navbar: React.FC = () => {
             })}
           </nav>
 
-          {/* Sisi Kanan: Search Button, Kontak, Keranjang, & Akun */}
-          <div className="flex items-center gap-1.5 sm:gap-3 shrink-0">
+          {/* Sisi Kanan: Search Button, Language Switcher, Keranjang, & Akun */}
+          <div className="flex items-center gap-1.5 sm:gap-2.5 shrink-0">
             
-            {/* Tombol Pencarian - Icon Only, tidak menggencet navbar */}
+            {/* Language Switcher Segmented Control */}
+            <div 
+              className="flex items-center bg-stone-100 border border-stone-200 rounded-full p-0.5 shadow-2xs"
+              role="group"
+              aria-label="Pilih Bahasa / Language Selector"
+            >
+              <button
+                type="button"
+                onClick={() => setLanguage('id')}
+                className={`flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-extrabold transition-all cursor-pointer ${
+                  language === 'id'
+                    ? 'bg-emerald-800 text-amber-200 shadow-xs'
+                    : 'text-stone-500 hover:text-stone-900'
+                }`}
+                title="Bahasa Indonesia"
+              >
+                <Globe className={`w-3 h-3 ${language === 'id' ? 'text-amber-300' : 'text-stone-400'}`} />
+                <span>ID</span>
+              </button>
+              <button
+                type="button"
+                onClick={() => setLanguage('en')}
+                className={`px-2.5 py-1 rounded-full text-[11px] font-extrabold transition-all cursor-pointer ${
+                  language === 'en'
+                    ? 'bg-emerald-800 text-amber-200 shadow-xs'
+                    : 'text-stone-500 hover:text-stone-900'
+                }`}
+                title="English"
+              >
+                <span>EN</span>
+              </button>
+            </div>
+
+            {/* Tombol Pencarian - Icon Only */}
             <button 
               onClick={() => setSearchModalOpen(true)}
               className="relative p-1.5 sm:p-2.5 rounded-full bg-white border border-stone-200 text-stone-700 hover:bg-stone-100 hover:border-emerald-700 transition-colors shadow-xs shrink-0 cursor-pointer"
-              title="Cari homestay, kopi, wisata..."
+              title={t('nav.searchPlaceholder')}
             >
               <Search className="w-4 h-4 sm:w-5 sm:h-5 text-emerald-800" />
             </button>
@@ -164,7 +216,7 @@ export const Navbar: React.FC = () => {
             <button
               onClick={() => navigateTo('cart')}
               className="relative p-1.5 sm:p-2.5 rounded-full bg-white border border-stone-200 text-stone-700 hover:bg-stone-100 transition-colors shadow-xs shrink-0"
-              title="Keranjang Belanja"
+              title={t('nav.cart')}
             >
               <ShoppingBag className="w-4 h-4 sm:w-5 sm:h-5 text-emerald-800" />
               {cartCount > 0 && (
@@ -191,7 +243,7 @@ export const Navbar: React.FC = () => {
                   <div className="hidden sm:flex flex-col text-left text-xs leading-none pr-1">
                     <span className="font-bold text-white truncate max-w-[120px]">{currentUser.name}</span>
                     <span className="text-[10px] font-semibold text-amber-300 mt-0.5">
-                      ⭐ Admin {currentUser.picVillageName?.replace('Desa Wisata ', '') || 'Desa'}
+                      ⭐ Admin {currentUser.picVillageName?.replace('Desa Wisata ', language === 'en' ? 'Village ' : '') || 'Desa'}
                     </span>
                   </div>
                   <ChevronDown className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-amber-200 shrink-0" />
@@ -202,7 +254,7 @@ export const Navbar: React.FC = () => {
                   <div className="px-4 pb-3 border-b border-stone-100">
                     <div className="inline-flex items-center gap-1 text-[10px] font-bold text-emerald-800 uppercase tracking-wider bg-emerald-50 px-2 py-0.5 rounded-full mb-1">
                       <ShieldCheck className="w-3 h-3" />
-                      <span>Admin Desa Terverifikasi</span>
+                      <span>{language === 'en' ? 'Verified Village Admin' : 'Admin Desa Terverifikasi'}</span>
                     </div>
                     <p className="text-sm font-bold text-stone-900 truncate mt-0.5">{currentUser.name}</p>
                     <p className="text-xs text-stone-500 truncate">{currentUser.picVillageName || currentUser.villageName}</p>
@@ -214,14 +266,16 @@ export const Navbar: React.FC = () => {
                       className="w-full flex items-center gap-2 px-3 py-2 text-xs font-bold text-emerald-900 hover:bg-emerald-50 rounded-xl transition-colors text-left cursor-pointer"
                     >
                       <LayoutDashboard className="w-4 h-4 text-emerald-700" />
-                      <span>Buka Dasbor ({currentUser.picVillageName?.replace('Desa Wisata ', '') || currentUser.villageName})</span>
+                      <span>
+                        {language === 'en' ? 'Open Dashboard' : 'Buka Dasbor'} ({currentUser.picVillageName?.replace('Desa Wisata ', language === 'en' ? 'Village ' : '') || currentUser.villageName})
+                      </span>
                     </button>
                     <button
                       onClick={() => { logout(); setUserDropdownOpen(false); }}
                       className="w-full flex items-center gap-2 px-3 py-2 text-xs font-medium text-rose-600 hover:bg-rose-50 rounded-xl transition-colors text-left cursor-pointer"
                     >
                       <LogOut className="w-4 h-4" />
-                      <span>Keluar Sesi Admin Desa</span>
+                      <span>{language === 'en' ? 'Sign Out of Admin Session' : 'Keluar Sesi Admin Desa'}</span>
                     </button>
                   </div>
                 </div>
@@ -244,19 +298,56 @@ export const Navbar: React.FC = () => {
       {/* Mobile Drawer Menu */}
       {mobileMenuOpen && (
         <div className="lg:hidden border-t border-stone-200 bg-amber-50/95 px-4 pt-3 pb-6 space-y-3 animate-in fade-in slide-in-from-top-2 duration-150">
-          <button
-            onClick={() => {
-              setMobileMenuOpen(false);
-              setSearchModalOpen(true);
-            }}
-            className="w-full flex items-center justify-between px-4 py-3 bg-white border border-stone-300 rounded-2xl text-left shadow-xs"
-          >
-            <div className="flex items-center gap-2.5 text-stone-500">
-              <Search className="w-4 h-4 text-emerald-800" />
-              <span className="text-sm font-medium">{searchQuery || 'Cari homestay, kopi, wisata...'}</span>
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => {
+                setMobileMenuOpen(false);
+                setSearchModalOpen(true);
+              }}
+              className="flex-1 flex items-center justify-between px-4 py-3 bg-white border border-stone-300 rounded-2xl text-left shadow-xs"
+            >
+              <div className="flex items-center gap-2.5 text-stone-500">
+                <Search className="w-4 h-4 text-emerald-800" />
+                <span className="text-sm font-medium">{searchQuery || t('nav.searchPlaceholder')}</span>
+              </div>
+              <span className="text-xs font-bold text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded-md">
+                {language === 'en' ? 'Open' : 'Buka'}
+              </span>
+            </button>
+
+            {/* Mobile Language Switcher Segmented Control */}
+            <div 
+              className="flex items-center bg-stone-100 border border-stone-300 rounded-2xl p-1 shadow-xs shrink-0"
+              role="group"
+              aria-label="Pilih Bahasa / Language Selector"
+            >
+              <button
+                type="button"
+                onClick={() => setLanguage('id')}
+                className={`flex items-center gap-1 px-2.5 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+                  language === 'id'
+                    ? 'bg-emerald-800 text-amber-200 shadow-xs'
+                    : 'text-stone-600 hover:text-stone-900'
+                }`}
+                title="Bahasa Indonesia"
+              >
+                <Globe className={`w-3.5 h-3.5 ${language === 'id' ? 'text-amber-300' : 'text-stone-400'}`} />
+                <span>ID</span>
+              </button>
+              <button
+                type="button"
+                onClick={() => setLanguage('en')}
+                className={`px-2.5 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+                  language === 'en'
+                    ? 'bg-emerald-800 text-amber-200 shadow-xs'
+                    : 'text-stone-600 hover:text-stone-900'
+                }`}
+                title="English"
+              >
+                <span>EN</span>
+              </button>
             </div>
-            <span className="text-xs font-bold text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded-md">Buka</span>
-          </button>
+          </div>
 
           <div className="grid grid-cols-2 gap-2 pt-1">
             {navItems.map((item) => (
@@ -283,14 +374,16 @@ export const Navbar: React.FC = () => {
                   className="w-full flex items-center justify-center gap-2 p-3 bg-emerald-900 text-amber-200 rounded-xl text-xs font-bold shadow-md cursor-pointer"
                 >
                   <LayoutDashboard className="w-4 h-4" />
-                  <span>Buka Dasbor ({currentUser.picVillageName?.replace('Desa Wisata ', '') || currentUser.villageName})</span>
+                  <span>
+                    {language === 'en' ? 'Open Dashboard' : 'Buka Dasbor'} ({currentUser.picVillageName?.replace('Desa Wisata ', language === 'en' ? 'Village ' : '') || currentUser.villageName})
+                  </span>
                 </button>
                 <button
                   onClick={() => { logout(); setMobileMenuOpen(false); }}
                   className="w-full flex items-center justify-center gap-2 p-2.5 bg-rose-50 text-rose-700 rounded-xl text-xs font-semibold border border-rose-200 cursor-pointer"
                 >
                   <LogOut className="w-4 h-4" />
-                  <span>Keluar Sesi Admin Desa</span>
+                  <span>{language === 'en' ? 'Sign Out of Admin Session' : 'Keluar Sesi Admin Desa'}</span>
                 </button>
               </div>
             )}
@@ -318,7 +411,11 @@ export const Navbar: React.FC = () => {
                 type="text"
                 value={modalSearchText}
                 onChange={(e) => setModalSearchText(e.target.value)}
-                placeholder="Cari homestay, kopi Lembang, sayur, offroad, profil desa..."
+                placeholder={
+                  language === 'en'
+                    ? 'Search homestays, Lembang coffee, dairy, offroad, village profiles...'
+                    : 'Cari homestay, kopi Lembang, sayur, offroad, profil desa...'
+                }
                 className="w-full bg-transparent text-stone-900 text-base sm:text-lg font-semibold placeholder:text-stone-400 placeholder:font-normal focus:outline-none"
                 style={{ color: '#1c1917' }}
               />
@@ -347,10 +444,14 @@ export const Navbar: React.FC = () => {
               <div>
                 <p className="text-[11px] font-bold text-stone-400 uppercase tracking-wider mb-2.5 flex items-center gap-1.5">
                   <Sparkles className="w-3.5 h-3.5 text-amber-600" />
-                  <span>Pencarian Cepat & Populer di Kawasan Lembang:</span>
+                  <span>
+                    {language === 'en'
+                      ? 'Quick & Popular Searches in Lembang Region:'
+                      : 'Pencarian Cepat & Populer di Kawasan Lembang:'}
+                  </span>
                 </p>
                 <div className="flex flex-wrap gap-2">
-                  {POPULAR_SEARCH_TAGS.map((tag) => (
+                  {(language === 'en' ? POPULAR_SEARCH_TAGS_EN : POPULAR_SEARCH_TAGS_ID).map((tag) => (
                     <button
                       key={tag}
                       onClick={() => handleTagClick(tag)}
@@ -366,48 +467,58 @@ export const Navbar: React.FC = () => {
               {modalSearchText.trim().length > 0 && (
                 <div className="pt-2 border-t border-stone-100">
                   <p className="text-[11px] font-bold text-stone-400 uppercase tracking-wider mb-3">
-                    Hasil Produk & Wisata Terkait:
+                    {language === 'en'
+                      ? 'Matching Products & Tourism Activities:'
+                      : 'Hasil Produk & Wisata Terkait:'}
                   </p>
                   
                   {modalMatches.length > 0 ? (
                     <div className="space-y-2">
-                      {modalMatches.map((item) => (
-                        <div
-                          key={item.id}
-                          onClick={() => {
-                            setSearchModalOpen(false);
-                            navigateTo('product-detail', item.id);
-                          }}
-                          className="flex items-center gap-3.5 p-3 rounded-2xl border border-stone-200/80 hover:border-emerald-700/50 hover:bg-emerald-50/40 cursor-pointer transition-all group"
-                        >
-                          <img
-                            src={item.image}
-                            alt={item.title}
-                            className="w-14 h-14 rounded-xl object-cover border border-stone-200 group-hover:scale-105 transition-transform shrink-0"
-                          />
-                          <div className="flex-1 min-w-0">
-                            <h4 className="text-sm font-bold text-stone-900 group-hover:text-emerald-800 transition-colors truncate">
-                              {item.title}
-                            </h4>
-                            <div className="flex items-center gap-2 mt-1">
-                              <span className="text-[10px] font-bold text-emerald-800 bg-emerald-100/70 px-2 py-0.5 rounded-md">
-                                {item.villageName}
-                              </span>
-                              <span className="text-xs font-extrabold text-stone-800">
-                                Rp {item.price.toLocaleString('id-ID')}
-                              </span>
+                      {modalMatches.map((item) => {
+                        const locItem = getLocalizedProduct(item, language);
+                        const villageDisplay = language === 'en' ? item.villageName.replace('Desa Wisata ', 'Village ') : item.villageName;
+                        return (
+                          <div
+                            key={item.id}
+                            onClick={() => {
+                              setSearchModalOpen(false);
+                              navigateTo('product-detail', item.id);
+                            }}
+                            className="flex items-center gap-3.5 p-3 rounded-2xl border border-stone-200/80 hover:border-emerald-700/50 hover:bg-emerald-50/40 cursor-pointer transition-all group"
+                          >
+                            <img
+                              src={item.image}
+                              alt={locItem.title}
+                              className="w-14 h-14 rounded-xl object-cover border border-stone-200 group-hover:scale-105 transition-transform shrink-0"
+                            />
+                            <div className="flex-1 min-w-0">
+                              <h4 className="text-sm font-bold text-stone-900 group-hover:text-emerald-800 transition-colors truncate">
+                                {locItem.title}
+                              </h4>
+                              <div className="flex items-center gap-2 mt-1">
+                                <span className="text-[10px] font-bold text-emerald-800 bg-emerald-100/70 px-2 py-0.5 rounded-md">
+                                  {villageDisplay}
+                                </span>
+                                <span className="text-xs font-extrabold text-stone-800">
+                                  Rp {item.price.toLocaleString('id-ID')}
+                                </span>
+                              </div>
+                            </div>
+                            <div className="shrink-0 flex items-center gap-1 text-xs font-bold text-emerald-800 group-hover:translate-x-1 transition-transform">
+                              <span>{language === 'en' ? 'View' : 'Buka'}</span>
+                              <ArrowRight className="w-4 h-4" />
                             </div>
                           </div>
-                          <div className="shrink-0 flex items-center gap-1 text-xs font-bold text-emerald-800 group-hover:translate-x-1 transition-transform">
-                            <span>Buka</span>
-                            <ArrowRight className="w-4 h-4" />
-                          </div>
-                        </div>
-                      ))}
+                        );
+                      })}
                     </div>
                   ) : (
                     <div className="py-6 text-center text-stone-500 text-sm">
-                      Tidak ditemukan hasil instan untuk "<strong>{modalSearchText}</strong>".
+                      {language === 'en' ? (
+                        <>No instant results found for "<strong>{modalSearchText}</strong>".</>
+                      ) : (
+                        <>Tidak ditemukan hasil instan untuk "<strong>{modalSearchText}</strong>".</>
+                      )}
                     </div>
                   )}
                 </div>
@@ -417,14 +528,18 @@ export const Navbar: React.FC = () => {
             {/* Modal Footer */}
             <div className="p-3.5 bg-stone-100 border-t border-stone-200 flex items-center justify-between">
               <span className="text-xs text-stone-500 font-medium hidden sm:inline">
-                Gunakan <kbd className="px-1.5 py-0.5 bg-white border border-stone-300 rounded text-[10px] font-mono font-bold">↵ Enter</kbd> untuk buka katalog lengkap
+                {language === 'en' ? (
+                  <>Press <kbd className="px-1.5 py-0.5 bg-white border border-stone-300 rounded text-[10px] font-mono font-bold">↵ Enter</kbd> to view full catalog</>
+                ) : (
+                  <>Gunakan <kbd className="px-1.5 py-0.5 bg-white border border-stone-300 rounded text-[10px] font-mono font-bold">↵ Enter</kbd> untuk buka katalog lengkap</>
+                )}
               </span>
               <button
                 type="button"
                 onClick={() => handleModalSubmit()}
                 className="w-full sm:w-auto px-4 py-2 bg-emerald-800 hover:bg-emerald-900 text-amber-200 rounded-xl text-xs font-bold shadow-xs flex items-center justify-center gap-1.5 transition-all ml-auto"
               >
-                <span>Lihat Seluruh Hasil di Marketplace</span>
+                <span>{language === 'en' ? 'View All Results in Marketplace' : 'Lihat Seluruh Hasil di Marketplace'}</span>
                 <ArrowRight className="w-3.5 h-3.5" />
               </button>
             </div>

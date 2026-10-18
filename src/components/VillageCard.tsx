@@ -2,13 +2,15 @@ import React from 'react';
 import { Village } from '../types';
 import { useApp } from '../context/AppContext';
 import { MapPin, Star, ArrowRight, Store, TreePine } from 'lucide-react';
+import { getLocalizedVillage } from '../i18n/productTranslations';
 
 interface VillageCardProps {
   village: Village;
 }
 
-export const VillageCard: React.FC<VillageCardProps> = ({ village }) => {
-  const { navigateTo } = useApp();
+export const VillageCard: React.FC<VillageCardProps> = ({ village: rawVillage }) => {
+  const { navigateTo, language } = useApp();
+  const village = getLocalizedVillage(rawVillage, language);
 
   return (
     <div className="group bg-white rounded-2xl overflow-hidden border border-stone-200/90 shadow-xs hover:shadow-xl transition-all duration-300 flex flex-col justify-between hover:-translate-y-1">
@@ -40,7 +42,7 @@ export const VillageCard: React.FC<VillageCardProps> = ({ village }) => {
             {village.province}
           </span>
           <h3 className="text-lg font-bold font-serif-title text-white line-clamp-1">
-            {village.name}
+            {language === 'en' ? village.name.replace('Desa Wisata ', 'Village ') : village.name}
           </h3>
         </div>
       </div>
@@ -71,14 +73,14 @@ export const VillageCard: React.FC<VillageCardProps> = ({ village }) => {
         <div className="pt-3 border-t border-stone-100 flex items-center justify-between gap-2">
           <div className="flex items-center gap-1.5 text-xs text-stone-600 font-medium">
             <Store className="w-3.5 h-3.5 text-emerald-700" />
-            <span>{village.totalListings} Produk & Layanan</span>
+            <span>{village.totalListings} {language === 'en' ? 'Products & Stays' : 'Produk & Layanan'}</span>
           </div>
 
           <button
             onClick={() => navigateTo('desa-detail', undefined, village.id)}
-            className="px-3 py-1.5 rounded-lg bg-emerald-50 hover:bg-emerald-100 text-emerald-800 text-xs font-bold transition-colors flex items-center gap-1 group-hover:bg-emerald-800 group-hover:text-amber-200"
+            className="px-3 py-1.5 rounded-lg bg-emerald-50 hover:bg-emerald-100 text-emerald-800 text-xs font-bold transition-colors flex items-center gap-1 group-hover:bg-emerald-800 group-hover:text-amber-200 cursor-pointer"
           >
-            <span>Detail Desa</span>
+            <span>{language === 'en' ? 'Village Details' : 'Detail Desa'}</span>
             <ArrowRight className="w-3.5 h-3.5" />
           </button>
         </div>

@@ -29,18 +29,21 @@ export const MarketplaceView: React.FC = () => {
     setRatingFilter,
     sortBy,
     setSortBy,
-    resetFilters
+    resetFilters,
+    recordSearch,
+    t,
+    language
   } = useApp();
 
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
 
   const categories: { id: ProductCategory | 'all'; label: string }[] = [
-    { id: 'all', label: 'Semua Produk' },
-    { id: 'minuman-komoditas', label: '☕ Kopi & Komoditas' },
-    { id: 'wisata-alam', label: '🌲 Wisata Alam & Offroad' },
-    { id: 'kuliner', label: '🍲 Kuliner & Camilan' },
-    { id: 'olahan-susu', label: '🥛 Olahan Susu Kemasan' },
-    { id: 'penginapan-lokal', label: '🏡 Penginapan & Homestay' },
+    { id: 'all', label: language === 'en' ? 'All Products' : 'Semua Produk' },
+    { id: 'minuman-komoditas', label: language === 'en' ? '☕ Coffee & Crops' : '☕ Kopi & Komoditas' },
+    { id: 'wisata-alam', label: language === 'en' ? '🌲 Eco-Tours & Offroad' : '🌲 Wisata Alam & Offroad' },
+    { id: 'kuliner', label: language === 'en' ? '🍲 Culinary & Snacks' : '🍲 Kuliner & Camilan' },
+    { id: 'olahan-susu', label: language === 'en' ? '🥛 Packaged Dairy' : '🥛 Olahan Susu Kemasan' },
+    { id: 'penginapan-lokal', label: language === 'en' ? '🏡 Stays & Homestays' : '🏡 Penginapan & Homestay' },
   ];
 
   // Filter products based on active filters & smart search scoring
@@ -101,13 +104,15 @@ export const MarketplaceView: React.FC = () => {
         <div className="space-y-2">
           <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-amber-400/20 text-amber-300 rounded-full text-xs font-semibold">
             <ShoppingBag className="w-3.5 h-3.5" />
-            <span>Katalog Resmi Jaringan Desa Wisata Lembang</span>
+            <span>{language === 'en' ? 'Official Catalog of Lembang Tourism Village Network' : 'Katalog Resmi Jaringan Desa Wisata Lembang'}</span>
           </div>
           <h1 className="text-2xl sm:text-4xl font-extrabold font-serif-title">
-            Marketplace Platform Interdesa Kawasan Lembang
+            {language === 'en' ? 'Lembang Region Inter-Village Platform Marketplace' : 'Marketplace Platform Interdesa Kawasan Lembang'}
           </h1>
           <p className="text-xs sm:text-sm text-stone-300 max-w-xl leading-relaxed">
-            Pesan langsung kopi specialty, kuliner khas tradisional, olahan susu murni, paket wisata alam & offroad, hingga penginapan homestay lokal langsung dari petani, peternak, dan warga lokal di Kawasan Lembang.
+            {language === 'en'
+              ? 'Directly order specialty coffee, traditional culinary delights, pure dairy products, eco-tours & offroad packages, to scenic homestays directly from local farmers, breeders, and residents across Lembang Area.'
+              : 'Pesan langsung kopi specialty, kuliner khas tradisional, olahan susu murni, paket wisata alam & offroad, hingga penginapan homestay lokal langsung dari petani, peternak, dan warga lokal di Kawasan Lembang.'}
           </p>
         </div>
 
@@ -118,7 +123,17 @@ export const MarketplaceView: React.FC = () => {
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="Cari produk, komoditas, homestay..."
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' && searchQuery.trim()) {
+                recordSearch(searchQuery.trim(), sortedProducts.length);
+              }
+            }}
+            onBlur={() => {
+              if (searchQuery.trim()) {
+                recordSearch(searchQuery.trim(), sortedProducts.length);
+              }
+            }}
+            placeholder={language === 'en' ? 'Search products, commodities, stays...' : 'Cari produk, komoditas, homestay...'}
             className="w-full pl-10 pr-4 py-2.5 bg-white/10 backdrop-blur-md border border-white/20 rounded-xl text-xs sm:text-sm text-white placeholder-stone-400 focus:outline-none focus:ring-2 focus:ring-amber-400"
           />
           {searchQuery && (
@@ -136,7 +151,7 @@ export const MarketplaceView: React.FC = () => {
       <div className="bg-white p-3 sm:p-4 rounded-2xl border border-stone-200 shadow-xs flex items-center gap-2 overflow-x-auto scrollbar-none">
         <span className="text-xs font-bold text-stone-700 flex items-center gap-1 shrink-0 mr-1">
           <MapPin className="w-4 h-4 text-emerald-700" />
-          <span>Pilih Desa:</span>
+          <span>{language === 'en' ? 'Select Village:' : 'Pilih Desa:'}</span>
         </span>
 
         <button
@@ -147,7 +162,7 @@ export const MarketplaceView: React.FC = () => {
               : 'bg-stone-100 text-stone-700 hover:bg-stone-200'
           }`}
         >
-          Semua Desa ({villages.length})
+          {language === 'en' ? `All Villages (${villages.length})` : `Semua Desa (${villages.length})`}
         </button>
 
         {villages.map(v => (
@@ -188,9 +203,13 @@ export const MarketplaceView: React.FC = () => {
         {/* Left: Result Counter & Active Filter / Reset */}
         <div className="flex flex-wrap items-center justify-between sm:justify-start gap-2.5">
           <p className="text-xs font-semibold text-stone-600">
-            Menampilkan <span className="font-extrabold text-stone-900">{sortedProducts.length}</span> produk & layanan
+            {language === 'en' ? (
+              <>Showing <span className="font-extrabold text-stone-900">{sortedProducts.length}</span> products & services</>
+            ) : (
+              <>Menampilkan <span className="font-extrabold text-stone-900">{sortedProducts.length}</span> produk & layanan</>
+            )}
             {searchQuery.trim() && (
-              <span> untuk "<strong className="text-emerald-800">{searchQuery}</strong>"</span>
+              <span> {language === 'en' ? 'for' : 'untuk'} "<strong className="text-emerald-800">{searchQuery}</strong>"</span>
             )}
           </p>
 
@@ -200,7 +219,7 @@ export const MarketplaceView: React.FC = () => {
               className="inline-flex items-center gap-1 px-2.5 py-1 bg-amber-100/80 hover:bg-amber-200 text-amber-900 rounded-full text-xs font-bold transition-colors cursor-pointer"
               title="Hapus kata kunci pencarian"
             >
-              <span>Kata kunci: {searchQuery}</span>
+              <span>{language === 'en' ? 'Keyword:' : 'Kata kunci:'} {searchQuery}</span>
               <X className="w-3 h-3" />
             </button>
           )}
@@ -211,7 +230,7 @@ export const MarketplaceView: React.FC = () => {
               className="inline-flex items-center gap-1 px-2.5 py-1 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 rounded-lg text-xs font-bold border border-emerald-200 transition-colors cursor-pointer shrink-0"
             >
               <RotateCcw className="w-3 h-3" />
-              <span>Reset Filter</span>
+              <span>{t('market.resetFilters')}</span>
             </button>
           )}
         </div>
@@ -227,7 +246,7 @@ export const MarketplaceView: React.FC = () => {
               aria-label="Filter Rating Minimal"
               className="w-full sm:w-auto px-2 sm:px-2.5 py-2 bg-stone-50 hover:bg-stone-100 border border-stone-200 rounded-xl text-[11px] sm:text-xs text-stone-800 font-bold focus:outline-none focus:ring-2 focus:ring-emerald-600 cursor-pointer"
             >
-              <option value={0}>Semua Rating</option>
+              <option value={0}>{language === 'en' ? 'All Ratings' : 'Semua Rating'}</option>
               <option value={4.0}>⭐ 4.0+</option>
               <option value={4.5}>⭐ 4.5+</option>
               <option value={4.8}>⭐ 4.8+</option>
@@ -242,10 +261,10 @@ export const MarketplaceView: React.FC = () => {
               aria-label="Urutkan Produk"
               className="w-full sm:w-auto px-2 sm:px-2.5 py-2 bg-stone-50 hover:bg-stone-100 border border-stone-200 rounded-xl text-[11px] sm:text-xs text-stone-800 font-bold focus:outline-none focus:ring-2 focus:ring-emerald-600 cursor-pointer"
             >
-              <option value="popular">Terpopuler</option>
-              <option value="price-asc">Termurah</option>
-              <option value="price-desc">Tertinggi</option>
-              <option value="rating">Rating ⭐</option>
+              <option value="popular">{language === 'en' ? 'Most Popular' : 'Terpopuler'}</option>
+              <option value="price-asc">{language === 'en' ? 'Lowest Price' : 'Termurah'}</option>
+              <option value="price-desc">{language === 'en' ? 'Highest Price' : 'Tertinggi'}</option>
+              <option value="rating">{language === 'en' ? 'Top Rating ⭐' : 'Rating ⭐'}</option>
             </select>
           </div>
 
@@ -286,14 +305,20 @@ export const MarketplaceView: React.FC = () => {
             <ShoppingBag className="w-8 h-8" />
           </div>
           <div>
-            <h3 className="text-base font-bold text-stone-900">Tidak Ada Produk Yang Sesuai</h3>
-            <p className="text-xs text-stone-500 mt-1">Coba ubah filter desa, kelompok produk, harga, atau kata kunci pencarian Anda.</p>
+            <h3 className="text-base font-bold text-stone-900">
+              {language === 'en' ? 'No Matching Products Found' : 'Tidak Ada Produk Yang Sesuai'}
+            </h3>
+            <p className="text-xs text-stone-500 mt-1">
+              {language === 'en' 
+                ? 'Try adjusting your village filter, category, price, or search keyword.' 
+                : 'Coba ubah filter desa, kelompok produk, harga, atau kata kunci pencarian Anda.'}
+            </p>
           </div>
           <button
             onClick={resetFilters}
             className="px-5 py-2.5 bg-emerald-800 hover:bg-emerald-900 text-amber-200 font-bold rounded-xl text-xs shadow-md transition-all cursor-pointer"
           >
-            Reset Semua Filter
+            {language === 'en' ? 'Reset All Filters' : 'Reset Semua Filter'}
           </button>
         </div>
       )}
