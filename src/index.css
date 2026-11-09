@@ -103,10 +103,12 @@
     display: none !important;
   }
 
-  body {
+  html, body, #root {
     background: #ffffff !important;
     color: #1c1917 !important;
     overflow: visible !important;
+    height: auto !important;
+    min-height: auto !important;
     width: 100% !important;
   }
 

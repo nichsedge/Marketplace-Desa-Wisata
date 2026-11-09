@@ -212,7 +212,8 @@ export const CartView: React.FC = () => {
   };
 
   return (
-    <div className={`max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8 ${completedOrder ? 'print:hidden' : ''}`}>
+    <>
+      <div className={`max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8 ${completedOrder ? 'print:hidden' : ''}`}>
       
       {/* Header */}
       <div className="border-b border-stone-200 pb-4 flex items-center justify-between">
@@ -596,6 +597,7 @@ export const CartView: React.FC = () => {
           </button>
         </div>
       )}
+      </div>
 
       {/* ORDER RECEIPT E-TICKET MODAL */}
       {completedOrder && (
@@ -751,22 +753,9 @@ export const CartView: React.FC = () => {
 
             {/* Actions (Hidden when printing) */}
             <div className="space-y-2 pt-2 print:hidden">
-              {/* Midtrans Official Payment Slip (PDF) if available */}
-              {completedOrder.midtransPdfUrl && (
-                <a
-                  href={completedOrder.midtransPdfUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-full py-3 bg-sky-700 hover:bg-sky-800 text-white font-bold rounded-2xl text-xs shadow-md flex items-center justify-center gap-2 transition-all hover:scale-[1.01]"
-                >
-                  <Download className="w-4 h-4" />
-                  <span>{language === 'en' ? 'Download Midtrans Payment Slip (PDF)' : 'Unduh Bukti Pembayaran Resmi Midtrans (PDF)'}</span>
-                </a>
-              )}
-
               <button
                 onClick={() => window.print()}
-                className="w-full py-3 bg-emerald-800 hover:bg-emerald-900 text-amber-200 font-bold rounded-2xl text-xs shadow-md flex items-center justify-center gap-2 transition-all hover:scale-[1.01]"
+                className="w-full py-3.5 bg-emerald-800 hover:bg-emerald-900 text-amber-200 font-bold rounded-2xl text-xs sm:text-sm shadow-md flex items-center justify-center gap-2 transition-all hover:scale-[1.01]"
               >
                 <Printer className="w-4 h-4" />
                 <span>{language === 'en' ? 'Print / Save as PDF (Official Receipt)' : 'Cetak / Simpan PDF (Resi Resmi)'}</span>
@@ -783,7 +772,6 @@ export const CartView: React.FC = () => {
           </div>
         </div>
       )}
-
-    </div>
+    </>
   );
 };
