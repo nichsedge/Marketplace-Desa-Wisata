@@ -384,6 +384,52 @@ KNOWN_CURATION_RULES = {
         "webPath": "-",
         "targetProduct": "Homestay Rumah Warga Lereng Palasari Suntenjaya (Sewa Kamar / Rumah)",
         "reason": "Sudut bidikan duplikat dan komposisi identik dengan foto 17.13.51."
+    },
+
+    # -------------------------------------------------------------
+    # 12. PEMBARUAN 09/11/2026: TANAMAN HIAS SUKULEN GUDANGKAHURIPAN
+    # -------------------------------------------------------------
+    "20261109/Agave titanota shark shoi.jpg": {
+        "decision": "accepted_hero",
+        "webPath": "/images/client/gudangkahuripan/sukulen-agave-titanota-shark-shoi.webp",
+        "targetProduct": "Tanaman Hias Sukulen Agave Titanota Shark Shoi",
+        "reason": "Foto tanaman hias sukulen Agave Titanota Shark Shoi eksotis dengan bentuk daun tebal berduri rapi dalam pot budidaya, siap adopsi pecinta tanaman hias."
+    },
+    "20261109/Agave titanota dwarf .jpg": {
+        "decision": "accepted_hero",
+        "webPath": "/images/client/gudangkahuripan/sukulen-agave-titanota-dwarf.webp",
+        "targetProduct": "Tanaman Hias Sukulen Agave Titanota Dwarf (Kompak)",
+        "reason": "Varian Agave Titanota kerdil (dwarf) berkarakter roset padat dan duri putih tegas yang sangat diminati kolektor tanaman hias premium."
+    },
+    "20261109/Agave Rancho Tambor.jpg": {
+        "decision": "accepted_hero",
+        "webPath": "/images/client/gudangkahuripan/sukulen-agave-rancho-tambor.webp",
+        "targetProduct": "Tanaman Hias Sukulen Agave Rancho Tambor",
+        "reason": "Koleksi sukulen Agave Rancho Tambor langka dengan siluet roset simetris dan duri tepi eksotis hasil budidaya perajin Gudangkahuripan."
+    },
+    "20261109/Sansieviera boncel var.jpg": {
+        "decision": "accepted_hero",
+        "webPath": "/images/client/gudangkahuripan/sukulen-sansevieria-boncel-variegata.webp",
+        "targetProduct": "Tanaman Hias Sansevieria Boncel Variegata (Lidah Mertua Mini)",
+        "reason": "Sansevieria Boncel bentuk jemari silindris variegata dengan semburat warna kuning-hijau elegan, tanaman pembersih udara dekoratif meja dan ruangan."
+    },
+    "20261109/Sansieviera robusta var.jpg": {
+        "decision": "accepted_hero",
+        "webPath": "/images/client/gudangkahuripan/sukulen-sansevieria-robusta-variegata.webp",
+        "targetProduct": "Tanaman Hias Sansevieria Robusta Variegata",
+        "reason": "Sansevieria Robusta varian variegata berdaun lebar tebal dan corak daun belang cerah, daya tahan tinggi dan mempercantik interior rumah."
+    },
+    "20261109/Seculent.jpg": {
+        "decision": "accepted_hero",
+        "webPath": "/images/client/gudangkahuripan/sukulen-mini-campur.webp",
+        "targetProduct": "Sukulen Mini Pot Koleksi Hias Meja (Aneka Jenis Sukulen)",
+        "reason": "Sukulen mini pot ramah kantong Rp 10.000 cocok untuk suvenir acara, hampers oleh-oleh Lembang, serta hiasan meja belajar/kerja."
+    },
+    "20261109/Echeveria lilacina.jpg": {
+        "decision": "accepted_hero",
+        "webPath": "/images/client/gudangkahuripan/sukulen-echeveria-lilacina.webp",
+        "targetProduct": "Tanaman Hias Sukulen Echeveria Lilacina (Ghost Echeveria)",
+        "reason": "Echeveria Lilacina berkelopak menyerupai bunga mawar dengan lapisan lilin keperakan (ghost succulent) yang anggun dan memesona."
     }
 }
 

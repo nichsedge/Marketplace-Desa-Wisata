@@ -65,23 +65,28 @@ export const SYNONYM_MAP: Record<string, string[]> = {
   jeep: ['offroad', '4x4', 'land rover', 'landy'],
   trekking: ['hiking', 'lintas alam', 'susur rimba', 'hutan', 'jalan'],
   hiking: ['trekking', 'lintas alam', 'hutan', 'gunung'],
-  wisata: ['tur', 'tour', 'paket', 'tiket', 'wahana', 'rekreasi', 'petualangan'],
+  wisata: ['tur', 'tour', 'paket', 'tiket', 'wahana', 'rekreasi', 'petualangan', 'bundling'],
+  bundling: ['paket', 'lintas desa', 'tur', 'tour', 'trip', 'trail', 'petualangan'],
+  paket: ['bundling', 'tur', 'tour', 'trip', 'wisata'],
   wahana: ['tiket', 'wisata', 'spot', 'rekreasi'],
   tiket: ['karcis', 'masuk', 'wahana', 'spot'],
 
   // Suvenir & Kerajinan
-  suvenir: ['souvenir', 'oleh-oleh', 'kerajinan', 'kriya', 'anyaman', 'bambu', 'cinderamata'],
-  souvenir: ['suvenir', 'oleh-oleh', 'kerajinan', 'kriya', 'anyaman'],
+  suvenir: ['souvenir', 'oleh-oleh', 'kerajinan', 'kriya', 'anyaman', 'bambu', 'cinderamata', 'sukulen'],
+  souvenir: ['suvenir', 'oleh-oleh', 'kerajinan', 'kriya', 'anyaman', 'sukulen'],
   kerajinan: ['kriya', 'anyaman', 'bambu', 'suvenir', 'souvenir', 'kadaplak'],
   kriya: ['kerajinan', 'anyaman', 'bambu', 'suvenir'],
   anyaman: ['bambu', 'kerajinan', 'kriya'],
   bambu: ['anyaman', 'kerajinan', 'kriya'],
 
   // Tanaman & Bunga
-  tanaman: ['bunga', 'sukulen', 'kaktus', 'pot', 'flora', 'florikultura', 'media tanam'],
+  tanaman: ['bunga', 'sukulen', 'succulent', 'agave', 'sansevieria', 'kaktus', 'pot', 'flora', 'florikultura', 'media tanam'],
   bunga: ['tanaman', 'krisan', 'flora', 'agrowisata'],
-  sukulen: ['succulent', 'kaktus', 'tanaman', 'pot'],
-  pot: ['tembikar', 'keramik', 'tanaman', 'media tanam'],
+  sukulen: ['succulent', 'seculent', 'agave', 'titanota', 'sansevieria', 'kaktus', 'tanaman', 'pot'],
+  succulent: ['sukulen', 'seculent', 'agave', 'titanota', 'sansevieria', 'tanaman'],
+  agave: ['sukulen', 'succulent', 'titanota', 'tanaman', 'kaktus'],
+  sansevieria: ['sansieviera', 'boncel', 'robusta', 'lidah mertua', 'sukulen', 'tanaman'],
+  pot: ['tembikar', 'keramik', 'tanaman', 'media tanam', 'sukulen'],
   kaktus: ['sukulen', 'tanaman']
 };
 

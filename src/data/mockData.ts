@@ -152,12 +152,15 @@ export const INITIAL_VILLAGES: Village[] = [
     highlights: [
       'Workshop Tari Tradisional Jaipong',
       'Pelatihan Tabuh Gamelan Degung Sunda',
+      'Budidaya Tanaman Hias Sukulen & Agave Eksotis',
       'Literasi Kearifan Lokal & Sejarah Lembang',
       'Sanggar Seni Budaya Kamandaka'
     ],
     image: '/images/client/gudangkahuripan/hero-tari-jaipong-materi.webp',
     gallery: [
       '/images/client/gudangkahuripan/hero-tari-jaipong-materi.webp',
+      '/images/client/gudangkahuripan/sukulen-agave-titanota-shark-shoi.webp',
+      '/images/client/gudangkahuripan/sukulen-sansevieria-boncel-variegata.webp',
       '/images/client/gudangkahuripan/jaipong-peserta-senyum.webp',
       '/images/client/gudangkahuripan/jaipong-pelatihan-kompak.webp',
       '/images/client/gudangkahuripan/jaipong-praktek-lapangan.webp'
@@ -169,7 +172,7 @@ export const INITIAL_VILLAGES: Village[] = [
     contactPhone: '+62 812-3344-7788',
     instagram: '@gudangkahuripan.lembang',
     managerName: 'Teh Rina Melati (Admin Desa Gudangkahuripan)',
-    totalListings: 1
+    totalListings: 8
   },
   {
     id: 'des-08',

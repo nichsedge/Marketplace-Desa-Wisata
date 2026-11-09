@@ -82,6 +82,7 @@ export const HomeView: React.FC = () => {
 
   const CATEGORY_OPTIONS: { id: ProductCategory | 'all'; label: string; icon: string }[] = [
     { id: 'all', label: language === 'en' ? 'All Categories' : 'Semua Kelompok', icon: '✨' },
+    { id: 'tanaman-hias', label: language === 'en' ? 'Succulents & Highland Plants' : 'Tanaman Hias Sukulen', icon: '🌵' },
     { id: 'minuman-komoditas', label: language === 'en' ? 'Coffee & Specialty Crops' : 'Minuman & Kopi Specialty', icon: '☕' },
     { id: 'wisata-alam', label: language === 'en' ? 'Eco-Tours & Offroad' : 'Wisata Alam & Offroad', icon: '🌲' },
     { id: 'kuliner', label: language === 'en' ? 'Traditional Culinary' : 'Kuliner & Camilan Tradisional', icon: '🍲' },
@@ -95,6 +96,7 @@ export const HomeView: React.FC = () => {
   const featuredProducts = products.filter(p => p.isFeatured || p.rating >= 4.9).slice(0, 8);
 
   const categoryCards: { id: ProductCategory; title: string; subtitle: string; icon: React.ReactNode; color: string }[] = [
+    { id: 'tanaman-hias', title: language === 'en' ? 'Succulents & Plants' : 'Tanaman Hias Sukulen', subtitle: language === 'en' ? 'Agave Titanota, Sansevieria & Mini Succulents (Gudangkahuripan)' : 'Agave Titanota, Sansevieria & Sukulen Mini (Gudangkahuripan)', icon: <Flower2 className="w-6 h-6 text-emerald-700" />, color: 'bg-emerald-50 border-emerald-300' },
     { id: 'minuman-komoditas', title: language === 'en' ? 'Coffee & Specialty' : 'Minuman & Komoditas', subtitle: language === 'en' ? 'Arabica Coffee & Maguru Kopi (Suntenjaya, Jayagiri)' : 'Kopi Arabika & Maguru Kopi (Suntenjaya, Jayagiri)', icon: <Coffee className="w-6 h-6 text-amber-700" />, color: 'bg-amber-50 border-amber-200' },
     { id: 'wisata-alam', title: language === 'en' ? 'Nature Tours & Arts' : 'Wisata Alam & Seni', subtitle: language === 'en' ? 'Offroad, Camping, Jaipong & Megalithic Sites (Cikole, Gudangkahuripan, Suntenjaya)' : 'Offroad, Camping, Jaipong & Megalitikum (Cikole, Gudangkahuripan, Suntenjaya)', icon: <TreePine className="w-6 h-6 text-emerald-800" />, color: 'bg-emerald-50 border-emerald-300' },
     { id: 'kuliner', title: language === 'en' ? 'Traditional Culinary' : 'Kuliner Tradisional', subtitle: language === 'en' ? 'Milk Tofu, Kicimpring & Ranginang (Wangunsari)' : 'Tahu Susu, Kicimpring & Ranginang (Wangunsari)', icon: <Utensils className="w-6 h-6 text-rose-700" />, color: 'bg-rose-50 border-rose-200' },

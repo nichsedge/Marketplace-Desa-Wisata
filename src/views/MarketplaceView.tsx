@@ -39,8 +39,10 @@ export const MarketplaceView: React.FC = () => {
 
   const categories: { id: ProductCategory | 'all'; label: string }[] = [
     { id: 'all', label: language === 'en' ? 'All Products' : 'Semua Produk' },
+    { id: 'tanaman-hias', label: language === 'en' ? '🌵 Succulents & Plants' : '🌵 Tanaman Hias Sukulen' },
     { id: 'minuman-komoditas', label: language === 'en' ? '☕ Coffee & Crops' : '☕ Kopi & Komoditas' },
     { id: 'wisata-alam', label: language === 'en' ? '🌲 Eco-Tours & Offroad' : '🌲 Wisata Alam & Offroad' },
+    { id: 'paket-wisata', label: language === 'en' ? '🎒 Tour & Bundling' : '🎒 Paket Wisata & Bundling' },
     { id: 'kuliner', label: language === 'en' ? '🍲 Culinary & Snacks' : '🍲 Kuliner & Camilan' },
     { id: 'olahan-susu', label: language === 'en' ? '🥛 Packaged Dairy' : '🥛 Olahan Susu Kemasan' },
     { id: 'penginapan-lokal', label: language === 'en' ? '🏡 Stays & Homestays' : '🏡 Penginapan & Homestay' },
@@ -54,14 +56,29 @@ export const MarketplaceView: React.FC = () => {
         return false;
       } else if (categoryFilter === 'wisata-alam' && product.category !== 'wisata-alam' && product.category !== 'paket-wisata') {
         return false;
-      } else if (categoryFilter !== 'penginapan-lokal' && categoryFilter !== 'wisata-alam' && product.category !== categoryFilter) {
+      } else if (categoryFilter === 'paket-wisata' && product.category !== 'paket-wisata' && product.category !== 'wisata-alam') {
+        return false;
+      } else if (categoryFilter !== 'penginapan-lokal' && categoryFilter !== 'wisata-alam' && categoryFilter !== 'paket-wisata' && product.category !== categoryFilter) {
         return false;
       }
     }
 
-    // Village filter
-    if (villageFilter !== 'all' && product.villageId !== villageFilter) {
-      return false;
+    // Village filter (includes direct village match and inter-village bundling packages)
+    if (villageFilter !== 'all') {
+      const isDirectMatch = product.villageId === villageFilter;
+      const targetVillage = villages.find(v => v.id === villageFilter);
+      const isBundlingMention = targetVillage && (
+        product.title.toLowerCase().includes('bundling') || 
+        product.location.toLowerCase().includes('lintas')
+      ) && (
+        product.location.toLowerCase().includes(targetVillage.name.replace('Desa Wisata ', '').toLowerCase()) ||
+        product.description.toLowerCase().includes(targetVillage.name.replace('Desa Wisata ', '').toLowerCase()) ||
+        product.highlights.some(h => h.toLowerCase().includes(targetVillage.name.replace('Desa Wisata ', '').toLowerCase()))
+      );
+
+      if (!isDirectMatch && !isBundlingMention) {
+        return false;
+      }
     }
 
     // Rating Filter

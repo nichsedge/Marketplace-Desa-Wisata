@@ -14,14 +14,27 @@ export const TourPackagesView: React.FC = () => {
   const packages = products.filter(p => p.category === 'paket-wisata' || p.category === 'wisata-alam');
 
   const filteredPackages = packages.filter(pkg => {
-    if (selectedVillageId !== 'all' && pkg.villageId !== selectedVillageId) return false;
+    if (selectedVillageId !== 'all') {
+      const isDirectMatch = pkg.villageId === selectedVillageId;
+      const targetVillage = villages.find(v => v.id === selectedVillageId);
+      const isBundlingMention = targetVillage && (
+        pkg.title.toLowerCase().includes('bundling') || 
+        pkg.location.toLowerCase().includes('lintas')
+      ) && (
+        pkg.location.toLowerCase().includes(targetVillage.name.replace('Desa Wisata ', '').toLowerCase()) ||
+        pkg.description.toLowerCase().includes(targetVillage.name.replace('Desa Wisata ', '').toLowerCase()) ||
+        pkg.highlights.some(h => h.toLowerCase().includes(targetVillage.name.replace('Desa Wisata ', '').toLowerCase()))
+      );
+
+      if (!isDirectMatch && !isBundlingMention) return false;
+    }
     
     if (searchWord.trim()) {
       if (!matchProductSearch(pkg, searchWord)) return false;
     }
-    if (filterType === 'susu' && !pkg.title.toLowerCase().includes('susu') && !pkg.description.toLowerCase().includes('susu') && !pkg.description.toLowerCase().includes('paprika') && !pkg.description.toLowerCase().includes('sayur') && !pkg.description.toLowerCase().includes('agro') && !pkg.description.toLowerCase().includes('kebun')) return false;
-    if (filterType === 'kopi' && !pkg.title.toLowerCase().includes('kopi') && !pkg.description.toLowerCase().includes('kopi')) return false;
+    if (filterType === 'bundling' && !pkg.title.toLowerCase().includes('bundling') && !pkg.location.toLowerCase().includes('lintas')) return false;
     if (filterType === 'offroad' && !pkg.title.toLowerCase().includes('offroad') && !pkg.description.toLowerCase().includes('offroad') && !pkg.title.toLowerCase().includes('trekking') && !pkg.description.toLowerCase().includes('trekking') && !pkg.title.toLowerCase().includes('pinus') && !pkg.description.toLowerCase().includes('pinus')) return false;
+    if (filterType === 'susu' && !pkg.title.toLowerCase().includes('susu') && !pkg.description.toLowerCase().includes('susu') && !pkg.description.toLowerCase().includes('paprika') && !pkg.description.toLowerCase().includes('sayur') && !pkg.description.toLowerCase().includes('agro') && !pkg.description.toLowerCase().includes('kebun')) return false;
     if (filterType === 'livein' && !pkg.title.toLowerCase().includes('live-in') && !pkg.description.toLowerCase().includes('live-in') && !pkg.title.toLowerCase().includes('glamping') && !pkg.title.toLowerCase().includes('camping') && !pkg.title.toLowerCase().includes('tenda') && !pkg.description.toLowerCase().includes('camping') && !pkg.description.toLowerCase().includes('tenda')) return false;
     return true;
   });
@@ -99,6 +112,12 @@ export const TourPackagesView: React.FC = () => {
             className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-colors ${filterType === 'all' ? 'bg-emerald-800 text-amber-200 shadow-xs' : 'bg-stone-100 text-stone-700 hover:bg-stone-200'}`}
           >
             {language === 'en' ? `All Activities (${packages.length})` : `Semua Aktivitas (${packages.length})`}
+          </button>
+          <button
+            onClick={() => setFilterType('bundling')}
+            className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-colors ${filterType === 'bundling' ? 'bg-emerald-800 text-amber-200 shadow-xs' : 'bg-stone-100 text-stone-700 hover:bg-stone-200'}`}
+          >
+            {language === 'en' ? '🎒 Inter-Village Bundling (3)' : '🎒 Bundling Lintas Desa (3)'}
           </button>
           <button
             onClick={() => setFilterType('offroad')}

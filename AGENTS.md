@@ -8,8 +8,12 @@
   2. **Desa Wisata Cikole** (1.400 mdpl - Wisata Alam: Paket camping pinus, sewa tenda kanopi, tiket wahana, offroad rimba Sukawana Land Rover Abah)
   3. **Desa Wisata Jayagiri** (1.350 mdpl - Kopi Spesialti: Maguru Kopi Pa Maliki)
   4. **Desa Wisata Wangunsari** (1.200 mdpl - Kuliner Tradisional: Tahu Susu Lembut, Kicimpring Singkong, Ranginang rasa terasi, Peuyeum Ketan PO)
-  5. **Desa Wisata Gudangkahuripan** (1.220 mdpl - Seni & Budaya: Paket Pelatihan Wisata Budaya Tari Jaipong & Gamelan Pa Mei Wisana)
+  5. **Desa Wisata Gudangkahuripan** (1.220 mdpl - Seni Budaya & Tanaman Hias: Paket Pelatihan Wisata Budaya Tari Jaipong & Gamelan Pa Mei Wisana, serta Sentra Budidaya Tanaman Hias Sukulen & Agave Eksotis: Agave Titanota Shark Shoi, Titanota Dwarf, Rancho Tambor, Sansevieria Boncel & Robusta Variegata, Echeveria Lilacina, Sukulen Mini)
   6. **Desa Wisata Sukajaya** (1.260 mdpl - Olahan Susu Kemasan: Susu Sapi Murni Pasteurisasi, Tahu Susu, Yoghurt Yoghvit & Mat Pochi Toko Barokah Pa Emin)
+- **Paket Bundling Interdesa Kawasan Lembang (Pembaruan 09/11/2026):**
+  1. *The Ultimate Lembang Adventure & Coffee Trail (2D1N)*: Land Rover Cikole, Camping Cikole, Hiking Jayagiri, Kopi Suntenjaya (Mulai Rp 650.000/pax, min 12 orang).
+  2. *Volcano View, Dairy, & Heritage Eco-Live In (3D2N)*: Homestay Warga, Kawah Gunung Putri Jayagiri, Edukasi Sapi Sukajaya, Workshop Kamandaka & Suvenir Sukulen Gudangkahuripan (Mulai Rp 850.000/pax, min 10 orang).
+  3. *Lembang Culinary & Cultural Heritage Trip (One Day Tour)*: Workshop Gamelan & Jaipong Gudangkahuripan, Sentra Tahu Wangunsari & Susu Sukajaya, Suvenir Pot Sukulen Mini (Mulai Rp 275.000/pax, min 15 orang).
 - **Sistem Admin Desa & Alur Posting Konten:**
   - Istilah ramah pengguna awam: **"Admin Desa"** digunakan di seluruh antarmuka web.
   - Setiap desa memiliki Admin Desa resmi terverifikasi.

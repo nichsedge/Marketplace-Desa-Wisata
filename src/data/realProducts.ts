@@ -43,7 +43,6 @@ export const REAL_PRODUCTS: Product[] = [
       "Kemasan Alumunium Foil Zipper + Valve Udara"
     ],
     "stockQuota": 150,
-    "videoUrl": "/videos/kopi-palasari-roasting.mp4",
     "isAvailable": true,
     "isFeatured": true,
     "isDummy": false,
@@ -402,7 +401,6 @@ export const REAL_PRODUCTS: Product[] = [
       }
     ],
     "stockQuota": 50,
-    "videoUrl": "/videos/offroad-cikole-preview.mp4",
     "isAvailable": true,
     "isFeatured": true,
     "isDummy": false,
@@ -566,7 +564,6 @@ export const REAL_PRODUCTS: Product[] = [
       "Didampingi Pengrawit & Seniman Senior Desa"
     ],
     "stockQuota": 40,
-    "videoUrl": "https://www.youtube.com/watch?v=FfC5W5U0b1w",
     "isAvailable": true,
     "isFeatured": true,
     "isDummy": false,
@@ -829,5 +826,512 @@ export const REAL_PRODUCTS: Product[] = [
     "dataSource": "real",
     "rawSourceRow": 71,
     "verifiedBadge": "Data Riil Mitra Terverifikasi"
+  },
+  {
+    "id": "real-gudangkahuripan-sukulen-agave-shark-shoi",
+    "title": "Tanaman Hias Sukulen Agave Titanota Shark Shoi",
+    "category": "tanaman-hias",
+    "price": 500000,
+    "unit": "/pot tanaman",
+    "villageId": "des-07",
+    "villageName": "Desa Wisata Gudangkahuripan",
+    "location": "Sentra Budidaya Sukulen Gudangkahuripan, Lembang",
+    "rating": 5.0,
+    "totalReviews": 18,
+    "sellerName": "Admin Desa & Mitra Pembudidaya Sukulen Gudangkahuripan",
+    "sellerBadge": "Sentra Tanaman Hias Resmi",
+    "sellerAvatar": "/images/default-avatar.svg",
+    "sellerPhone": "6281221520514",
+    "image": "/images/client/gudangkahuripan/sukulen-agave-titanota-shark-shoi.webp",
+    "gallery": [
+      "/images/client/gudangkahuripan/sukulen-agave-titanota-shark-shoi.webp",
+      "/images/client/gudangkahuripan/sukulen-agave-titanota-dwarf.webp",
+      "/images/client/gudangkahuripan/sukulen-agave-rancho-tambor.webp"
+    ],
+    "description": "Koleksi sukulen premium Agave Titanota varian Shark Shoi dengan karakter duri tepi tebal bergerigi khas rahang hiu. Tumbuh subur dan adaptif di dataran tinggi Gudangkahuripan Lembang (1.220 mdpl). Dikirim lengkap dengan pot dan media tanam porous siap pajang.",
+    "highlights": [
+      "Varian Eksotis Koleksi Agave Titanota Shark Shoi",
+      "Duri Tepi Karakteristik Kuat & Berkarakter",
+      "Hasil Budidaya Dataran Tinggi Gudangkahuripan Lembang",
+      "Include Pot & Media Tanam Porous Khusus Sukulen",
+      "Perawatan Mudah, Tahan Cuaca Kering & Minim Air"
+    ],
+    "stockQuota": 20,
+    "isAvailable": true,
+    "isFeatured": true,
+    "isDummy": false,
+    "dataSource": "real",
+    "rawSourceRow": 101,
+    "verifiedBadge": "Data Riil Mitra Terverifikasi",
+    "clientFolderName": "20261109"
+  },
+  {
+    "id": "real-gudangkahuripan-sukulen-agave-dwarf",
+    "title": "Tanaman Hias Sukulen Agave Titanota Dwarf (Kompak)",
+    "category": "tanaman-hias",
+    "price": 500000,
+    "unit": "/pot tanaman",
+    "villageId": "des-07",
+    "villageName": "Desa Wisata Gudangkahuripan",
+    "location": "Sentra Budidaya Sukulen Gudangkahuripan, Lembang",
+    "rating": 4.9,
+    "totalReviews": 14,
+    "sellerName": "Admin Desa & Mitra Pembudidaya Sukulen Gudangkahuripan",
+    "sellerBadge": "Sentra Tanaman Hias Resmi",
+    "sellerAvatar": "/images/default-avatar.svg",
+    "sellerPhone": "6281221520514",
+    "image": "/images/client/gudangkahuripan/sukulen-agave-titanota-dwarf.webp",
+    "gallery": [
+      "/images/client/gudangkahuripan/sukulen-agave-titanota-dwarf.webp",
+      "/images/client/gudangkahuripan/sukulen-agave-titanota-shark-shoi.webp"
+    ],
+    "description": "Agave Titanota varian Dwarf berpostur pendek kompak dengan bentukan roset yang rapat dan duri putih lebar yang kontras. Pilihan favorit kolektor tanaman hias arsitektural untuk dekorasi meja kerja, balkon, atau teras rumah minimalis.",
+    "highlights": [
+      "Postur Kerdil Kompak (Dwarf) Simetris Cantik",
+      "Bentukan Roset Padat dengan Duri Putih Tegas",
+      "Cocok untuk Hiasan Meja Kerja & Teras Minimalis",
+      "Sudah Berakar Kuat & Sehat Siap Display",
+      "Pengiriman Aman ke Seluruh Nusantara"
+    ],
+    "stockQuota": 15,
+    "isAvailable": true,
+    "isFeatured": false,
+    "isDummy": false,
+    "dataSource": "real",
+    "rawSourceRow": 102,
+    "verifiedBadge": "Data Riil Mitra Terverifikasi",
+    "clientFolderName": "20261109"
+  },
+  {
+    "id": "real-gudangkahuripan-sukulen-agave-rancho-tambor",
+    "title": "Tanaman Hias Sukulen Agave Rancho Tambor",
+    "category": "tanaman-hias",
+    "price": 500000,
+    "unit": "/pot tanaman",
+    "villageId": "des-07",
+    "villageName": "Desa Wisata Gudangkahuripan",
+    "location": "Sentra Budidaya Sukulen Gudangkahuripan, Lembang",
+    "rating": 5.0,
+    "totalReviews": 12,
+    "sellerName": "Admin Desa & Mitra Pembudidaya Sukulen Gudangkahuripan",
+    "sellerBadge": "Sentra Tanaman Hias Resmi",
+    "sellerAvatar": "/images/default-avatar.svg",
+    "sellerPhone": "6281221520514",
+    "image": "/images/client/gudangkahuripan/sukulen-agave-rancho-tambor.webp",
+    "gallery": [
+      "/images/client/gudangkahuripan/sukulen-agave-rancho-tambor.webp"
+    ],
+    "description": "Agave Rancho Tambor langka dengan daun melebar melengkung simetris berpadu duri tepi berwarna cokelat kemerahan tegas. Dibudidayakan secara telaten oleh perajin tanaman hias Gudangkahuripan dengan sirkulasi udara pegunungan Lembang yang prima.",
+    "highlights": [
+      "Koleksi Agave Langka Rancho Tambor Asli",
+      "Bentuk Daun Melebar Menawan & Roset Seimbang",
+      "Duri Tepi Tajam Kontras Bernilai Estetika Tinggi",
+      "Perawatan Sangat Minim (Cukup Siram 1x Seminggu)",
+      "Ditanam di Media Pasir Malang & Pumice Berkualitas"
+    ],
+    "stockQuota": 10,
+    "isAvailable": true,
+    "isFeatured": false,
+    "isDummy": false,
+    "dataSource": "real",
+    "rawSourceRow": 103,
+    "verifiedBadge": "Data Riil Mitra Terverifikasi",
+    "clientFolderName": "20261109"
+  },
+  {
+    "id": "real-gudangkahuripan-sukulen-sansevieria-boncel-var",
+    "title": "Tanaman Hias Sansevieria Boncel Variegata (Lidah Mertua Mini)",
+    "category": "tanaman-hias",
+    "price": 250000,
+    "originalPrice": 280000,
+    "unit": "/pot tanaman",
+    "villageId": "des-07",
+    "villageName": "Desa Wisata Gudangkahuripan",
+    "location": "Sentra Budidaya Sukulen Gudangkahuripan, Lembang",
+    "rating": 4.9,
+    "totalReviews": 22,
+    "sellerName": "Admin Desa & Mitra Pembudidaya Sukulen Gudangkahuripan",
+    "sellerBadge": "Sentra Tanaman Hias Resmi",
+    "sellerAvatar": "/images/default-avatar.svg",
+    "sellerPhone": "6281221520514",
+    "image": "/images/client/gudangkahuripan/sukulen-sansevieria-boncel-variegata.webp",
+    "gallery": [
+      "/images/client/gudangkahuripan/sukulen-sansevieria-boncel-variegata.webp"
+    ],
+    "description": "Sansevieria Cylindrica Boncel mutasi langka variegata dengan garis kuning-krim cerah di sepanjang jemari daun bulatnya. Tanaman indoor pembersih udara nomor satu yang mampu menyerap polutan berbahaya sekaligus mempercantik ruangan meja dan interior.",
+    "highlights": [
+      "Mutasi Variegata Kuning Cerah Eksotis",
+      "Bentuk Unik Menyerupai Telapak Jemari Kipas",
+      "Tanaman Indoor Penyerap Toksin & Pembersih Udara",
+      "Tahan di Ruangan Ber-AC & Minim Cahaya Langsung",
+      "Media Tanam Bersih Bebas Hama"
+    ],
+    "stockQuota": 25,
+    "isAvailable": true,
+    "isFeatured": true,
+    "isDummy": false,
+    "dataSource": "real",
+    "rawSourceRow": 104,
+    "verifiedBadge": "Data Riil Mitra Terverifikasi",
+    "clientFolderName": "20261109"
+  },
+  {
+    "id": "real-gudangkahuripan-sukulen-sansevieria-robusta-var",
+    "title": "Tanaman Hias Sansevieria Robusta Variegata",
+    "category": "tanaman-hias",
+    "price": 250000,
+    "unit": "/pot tanaman",
+    "villageId": "des-07",
+    "villageName": "Desa Wisata Gudangkahuripan",
+    "location": "Sentra Budidaya Sukulen Gudangkahuripan, Lembang",
+    "rating": 4.8,
+    "totalReviews": 19,
+    "sellerName": "Admin Desa & Mitra Pembudidaya Sukulen Gudangkahuripan",
+    "sellerBadge": "Sentra Tanaman Hias Resmi",
+    "sellerAvatar": "/images/default-avatar.svg",
+    "sellerPhone": "6281221520514",
+    "image": "/images/client/gudangkahuripan/sukulen-sansevieria-robusta-variegata.webp",
+    "gallery": [
+      "/images/client/gudangkahuripan/sukulen-sansevieria-robusta-variegata.webp"
+    ],
+    "description": "Sansevieria Robusta dengan daun tegak lebar berlapis corak belang hijau tua dan semburat kuning variegata alami. Sangat bandel, tidak mudah layu, dan memberi aksen hijau mewah pada sudut ruang tamu, kantor, maupun kafe.",
+    "highlights": [
+      "Daun Lebar Kokoh dengan Corak Variegata Elegan",
+      "Sangat Tahan Banting & Jarang Diserang Hama",
+      "Tanaman Hias Penghasil Oksigen Alami",
+      "Cocok untuk Aksen Sudut Ruangan / Kafe",
+      "Sudah Termasuk Pot Siap Pajang"
+    ],
+    "stockQuota": 20,
+    "isAvailable": true,
+    "isFeatured": false,
+    "isDummy": false,
+    "dataSource": "real",
+    "rawSourceRow": 105,
+    "verifiedBadge": "Data Riil Mitra Terverifikasi",
+    "clientFolderName": "20261109"
+  },
+  {
+    "id": "real-gudangkahuripan-sukulen-mini-campur",
+    "title": "Sukulen Mini Pot Koleksi Hias Meja (Aneka Jenis Sukulen)",
+    "category": "tanaman-hias",
+    "price": 10000,
+    "unit": "/pot mini",
+    "villageId": "des-07",
+    "villageName": "Desa Wisata Gudangkahuripan",
+    "location": "Sentra Budidaya Sukulen Gudangkahuripan, Lembang",
+    "rating": 5.0,
+    "totalReviews": 48,
+    "sellerName": "Admin Desa & Mitra Pembudidaya Sukulen Gudangkahuripan",
+    "sellerBadge": "Sentra Tanaman Hias Resmi",
+    "sellerAvatar": "/images/default-avatar.svg",
+    "sellerPhone": "6281221520514",
+    "image": "/images/client/gudangkahuripan/sukulen-mini-campur.webp",
+    "gallery": [
+      "/images/client/gudangkahuripan/sukulen-mini-campur.webp",
+      "/images/client/gudangkahuripan/sukulen-echeveria-lilacina.webp"
+    ],
+    "description": "Sukulen mini pot imut dan cantik dengan harga sangat terjangkau hanya Rp 10.000 per pot. Tersedia beragam varian bentuk dan warna menarik. Sangat diminati sebagai suvenir pernikahan, cinderamata studi tur desa, hadiah kantor, maupun koleksi hias meja belajar.",
+    "highlights": [
+      "Harga Super Terjangkau Rp 10.000 / Pot Mini",
+      "Pilihan Aneka Varian Daun Berbunga Cantik",
+      "Sangat Cocok untuk Suvenir Event & Cinderamata",
+      "Kompak Menghias Meja Kerja & Jendela Kamar",
+      "Pemesanan Jumlah Besar Disediakan Kemasan Khusus"
+    ],
+    "stockQuota": 200,
+    "isAvailable": true,
+    "isFeatured": true,
+    "isDummy": false,
+    "dataSource": "real",
+    "rawSourceRow": 106,
+    "verifiedBadge": "Data Riil Mitra Terverifikasi",
+    "clientFolderName": "20261109"
+  },
+  {
+    "id": "real-gudangkahuripan-sukulen-echeveria-lilacina",
+    "title": "Tanaman Hias Sukulen Echeveria Lilacina (Ghost Echeveria)",
+    "category": "tanaman-hias",
+    "price": 30000,
+    "unit": "/pot",
+    "villageId": "des-07",
+    "villageName": "Desa Wisata Gudangkahuripan",
+    "location": "Sentra Budidaya Sukulen Gudangkahuripan, Lembang",
+    "rating": 4.9,
+    "totalReviews": 26,
+    "sellerName": "Admin Desa & Mitra Pembudidaya Sukulen Gudangkahuripan",
+    "sellerBadge": "Sentra Tanaman Hias Resmi",
+    "sellerAvatar": "/images/default-avatar.svg",
+    "sellerPhone": "6281221520514",
+    "image": "/images/client/gudangkahuripan/sukulen-echeveria-lilacina.webp",
+    "gallery": [
+      "/images/client/gudangkahuripan/sukulen-echeveria-lilacina.webp",
+      "/images/client/gudangkahuripan/sukulen-mini-campur.webp"
+    ],
+    "description": "Echeveria Lilacina anggun berdaun perak kebiruan (Ghost Echeveria) yang tersusun rapi membentuk kelopak bunga mawar mekar. Dilapisi serbuk lilin pelindung (farina) alami yang memberikan efek pastel menawan di bawah sinar matahari pagi pegunungan.",
+    "highlights": [
+      "Bentuk Kelopak Roset Menyerupai Bunga Mawar Merekah",
+      "Lapisan Lilin Farina Alami Berwarna Perak Pastel",
+      "Bisa Tumbuh Membesar hingga Diameter 15-20 cm",
+      "Karakteristik Tahan Kering & Perawatan Sederhana",
+      "Include Pot D-10cm & Media Tanam Porous"
+    ],
+    "stockQuota": 60,
+    "isAvailable": true,
+    "isFeatured": false,
+    "isDummy": false,
+    "dataSource": "real",
+    "rawSourceRow": 107,
+    "verifiedBadge": "Data Riil Mitra Terverifikasi",
+    "clientFolderName": "20261109"
+  },
+  {
+    "id": "real-bundling-ultimate-adventure-coffee-trail",
+    "title": "The Ultimate Lembang Adventure & Coffee Trail (2D1N Bundling)",
+    "category": "paket-wisata",
+    "price": 650000,
+    "unit": "/pax (min 12 orang)",
+    "villageId": "des-03",
+    "villageName": "Desa Wisata Cikole",
+    "location": "Lintas 3 Desa: Cikole - Jayagiri - Suntenjaya, Lembang",
+    "rating": 5.0,
+    "totalReviews": 45,
+    "sellerName": "Konsorsium Interdesa Saba Lembang (PIC Cikole & Suntenjaya)",
+    "sellerBadge": "Paket Bundling Resmi Interdesa",
+    "sellerAvatar": "/images/default-avatar.svg",
+    "sellerPhone": "6281322000600",
+    "image": "/images/client/offroad-cikole/convoy-pine-trail.webp",
+    "gallery": [
+      "/images/client/offroad-cikole/convoy-pine-trail.webp",
+      "/images/real/gunung-putri-jayagiri.jpg",
+      "/images/client/pasir-angling/hero-valley-panorama.webp",
+      "/images/client/kopi-angling/hero-pouch-v60.webp",
+      "/images/client/offroad-cikole/tourist-group-celebration.webp"
+    ],
+    "description": "Paket bundling petualangan interdesa terlengkap selama 2 Hari 1 Malam yang menggabungkan sensasi ekspedisi offroad Land Rover menembus rimba pinus Cikole, trekking jalur rimba sejuk Jayagiri, berkemah di bawah kanopi bintang Cikole, jamuan makan nasi liwet hangat khas Sunda, serta sesi edukasi budidaya dan cupping kopi Arabika specialty di kebun Pasir Angling Suntenjaya. Didampingi penuh oleh pemandu lokal dan armada 4x4 prima (1 unit Land Rover per 6 orang). Harga mulai dari Rp 650.000 / pax dengan kuota rombongan minimal 12 orang.",
+    "highlights": [
+      "Sewa Land Rover 4x4 + Driver Berpengalaman (1 Unit Isi 6 Orang)",
+      "Jalur Trekking & Hiking Rimba Pinus Jayagiri Menuju Ketinggian",
+      "Tiket Camping Ground Hutan Pinus Cikole + Sewa Tenda Dome & Matras",
+      "Jamuan Makan Nasi Liwet Sunda Hangat Tradisional",
+      "Edukasi Budidaya & Cupping Kopi Arabika Suntenjaya",
+      "Pemandu Lokal Berlisensi Sepanjang 2 Hari 1 Malam"
+    ],
+    "facilities": [
+      "Armada Land Rover 4x4 + Driver & BBM (1 unit/6 pax)",
+      "Tenda Dome + Matras Spons & Sleeping Bag",
+      "Makan Nasi Liwet Tradisional & Coffee Break",
+      "Tiket Camping Ground Cikole & Jalur Hiking Jayagiri",
+      "Sesi Workshop & Icip Kopi Arabika Suntenjaya",
+      "Pemandu Lokal (Tour Guide) & P3K Terstandar"
+    ],
+    "itinerary": [
+      {
+        "time": "Hari 1 - 08:30",
+        "activity": "Titik temu di Basecamp Cikole, briefing & pembagian unit Land Rover (1 unit isi 6 orang)"
+      },
+      {
+        "time": "Hari 1 - 09:30",
+        "activity": "Ekspedisi Offroad Rimba Pinus Sukawana & jalur lumpur menantang Cikole"
+      },
+      {
+        "time": "Hari 1 - 13:00",
+        "activity": "Makan siang Nasi Liwet Sunda hangat beralas daun pisang"
+      },
+      {
+        "time": "Hari 1 - 15:00",
+        "activity": "Trekking rimba pinus Jayagiri dan check-in tapak perkemahan Cikole"
+      },
+      {
+        "time": "Hari 1 - 19:00",
+        "activity": "Malam keakraban api unggun, jagung bakar, dan coffee break hangat"
+      },
+      {
+        "time": "Hari 2 - 06:00",
+        "activity": "Sunrise walk & sarapan pagi udara sejuk 1.400 mdpl"
+      },
+      {
+        "time": "Hari 2 - 08:30",
+        "activity": "Perjalanan menuju Desa Wisata Suntenjaya via jalur panorama perbukitan"
+      },
+      {
+        "time": "Hari 2 - 10:00",
+        "activity": "Edukasi Kopi Arabika Suntenjaya: petik merah, greenhouse, dan cupping kopi"
+      },
+      {
+        "time": "Hari 2 - 12:30",
+        "activity": "Makan siang bersama, pembagian suvenir kopi, dan penutupan tur"
+      }
+    ],
+    "stockQuota": 40,
+    "isAvailable": true,
+    "isFeatured": true,
+    "isDummy": false,
+    "dataSource": "real",
+    "rawSourceRow": 201,
+    "verifiedBadge": "Data Riil Mitra Terverifikasi",
+    "clientFolderName": "Bundling-Paket-1"
+  },
+  {
+    "id": "real-bundling-volcano-dairy-heritage-livein",
+    "title": "Volcano View, Dairy, & Heritage Eco-Live In (3D2N Bundling)",
+    "category": "paket-wisata",
+    "price": 850000,
+    "unit": "/pax (min 10 orang)",
+    "villageId": "des-07",
+    "villageName": "Desa Wisata Gudangkahuripan",
+    "location": "Lintas 3 Desa: Sukajaya - Jayagiri - Gudangkahuripan, Lembang",
+    "rating": 5.0,
+    "totalReviews": 36,
+    "sellerName": "Konsorsium Interdesa Saba Lembang (PIC Gudangkahuripan & Sukajaya)",
+    "sellerBadge": "Paket Bundling Resmi Interdesa",
+    "sellerAvatar": "/images/default-avatar.svg",
+    "sellerPhone": "6281221520514",
+    "image": "/images/real/gunung-putri-jayagiri.jpg",
+    "gallery": [
+      "/images/real/gunung-putri-jayagiri.jpg",
+      "/images/client/gudangkahuripan/hero-tari-jaipong-materi.webp",
+      "/images/client/sukajaya/hero-toko-barokah-susu-murni.webp",
+      "/images/client/gudangkahuripan/sukulen-sansevieria-boncel-variegata.webp",
+      "/images/client/suntenjaya/hero-homestay-teras-kayu.webp"
+    ],
+    "description": "Paket interdesa live-in mendalam selama 3 Hari 2 Malam menjelajahi harmoni alam vulkanik, kehidupan peternak sapi perah, dan kekayaan seni budaya Sunda. Peserta menginap di homestay rumah warga lokal, menikmati sajian menu kuliner rumahan otentik, menyaksikan panorama kawah dari puncak Gunung Putri Jayagiri, berinteraksi langsung dalam edukasi perah sapi Sukajaya, mengikuti workshop tari Jaipong & gamelan di Sanggar Seni Kamandaka Gudangkahuripan, serta membawa pulang suvenir eksklusif 1 pot tanaman hias sukulen asli Gudangkahuripan. Harga mulai dari Rp 850.000 / pax dengan kuota rombongan minimal 10 orang.",
+    "highlights": [
+      "Sewa Homestay Kamar Bersih di Rumah Warga (3 Hari 2 Malam)",
+      "Makan Penuh Menu Lokal Masakan Rumahan Pasundan",
+      "Tiket Masuk & Trekking Samudra Awan Puncak Gunung Putri Jayagiri",
+      "Edukasi Perah Susu Sapi & Pengolahan Pasteurisasi Sukajaya",
+      "Workshop Seni Budaya Tari Jaipong & Gamelan Sanggar Kamandaka",
+      "Pemandu Lokal Warga Berpengalaman Sepanjang Acara",
+      "Suvenir Eksklusif 1 Pot Tanaman Hias Sukulen Gudangkahuripan"
+    ],
+    "facilities": [
+      "Penginapan Homestay Warga (Kamar Bersih & Air Hangat)",
+      "Konsumsi Lengkap (3x Sarapan, 2x Makan Siang, 2x Makan Malam)",
+      "Tiket Masuk Seluruh Destinasi Wisata Terjadwal",
+      "Instruktur Workshop Budaya & Fasilitator Edukasi Sapi",
+      "Suvenir Resmi: 1 Pot Tanaman Hias Sukulen Gudangkahuripan / Pax",
+      "Pemandu Lokal Warga & Asuransi Perjalanan Desa"
+    ],
+    "itinerary": [
+      {
+        "time": "Hari 1 - 13:00",
+        "activity": "Penyambutan tamu di Balai Desa & check-in homestay rumah induk semang warga"
+      },
+      {
+        "time": "Hari 1 - 15:30",
+        "activity": "Kunjungan peternakan sapi perah Sukajaya: praktik perah susu segar & demo pasteurisasi"
+      },
+      {
+        "time": "Hari 1 - 19:00",
+        "activity": "Makan malam masakan rumahan Sunda bersama keluarga induk semang"
+      },
+      {
+        "time": "Hari 2 - 04:30",
+        "activity": "Trekking pagi berburu sunrise dan samudra awan di puncak Gunung Putri Jayagiri"
+      },
+      {
+        "time": "Hari 2 - 08:00",
+        "activity": "Sarapan pagi khas pegunungan dan istirahat santai di homestay"
+      },
+      {
+        "time": "Hari 2 - 13:30",
+        "activity": "Workshop kebudayaan Kamandaka: praktik Tari Jaipong & tabuh Gamelan Degung Sunda"
+      },
+      {
+        "time": "Hari 2 - 16:30",
+        "activity": "Kunjungan sentra budidaya sukulen Gudangkahuripan & pemilihan suvenir sukulen"
+      },
+      {
+        "time": "Hari 2 - 19:00",
+        "activity": "Malam ramah tamah kebudayaan & bincang kearifan lokal Pasundan"
+      },
+      {
+        "time": "Hari 3 - 07:30",
+        "activity": "Sarapan bersama induk semang, penyerahan suvenir pot sukulen, dan pelepasan kepulangan"
+      }
+    ],
+    "stockQuota": 30,
+    "isAvailable": true,
+    "isFeatured": true,
+    "isDummy": false,
+    "dataSource": "real",
+    "rawSourceRow": 202,
+    "verifiedBadge": "Data Riil Mitra Terverifikasi",
+    "clientFolderName": "Bundling-Paket-2"
+  },
+  {
+    "id": "real-bundling-culinary-cultural-heritage-trip",
+    "title": "Lembang Culinary & Cultural Heritage Trip (One Day Tour Bundling)",
+    "category": "paket-wisata",
+    "price": 275000,
+    "unit": "/pax (min 15 orang)",
+    "villageId": "des-05",
+    "villageName": "Desa Wisata Wangunsari",
+    "location": "Lintas 3 Desa: Gudangkahuripan - Wangunsari - Sukajaya, Lembang",
+    "rating": 4.9,
+    "totalReviews": 54,
+    "sellerName": "Konsorsium Interdesa Saba Lembang (PIC Wangunsari & Gudangkahuripan)",
+    "sellerBadge": "Paket Bundling Resmi Interdesa",
+    "sellerAvatar": "/images/default-avatar.svg",
+    "sellerPhone": "6285221738102",
+    "image": "/images/client/wangunsari/tahu-susu-agus-kemasan-10pcs.webp",
+    "gallery": [
+      "/images/client/wangunsari/tahu-susu-agus-kemasan-10pcs.webp",
+      "/images/client/gudangkahuripan/hero-tari-jaipong-materi.webp",
+      "/images/client/sukajaya/hero-yoghvit-botol.webp",
+      "/images/client/gudangkahuripan/sukulen-mini-campur.webp",
+      "/images/client/wangunsari/kicimpring-singkong-renyah.webp"
+    ],
+    "description": "Tur sehari penuh (One Day Tour) sarat edukasi rasa dan nilai tradisi Pasundan di koridor Lembang. Mengikuti workshop interaktif seni budaya gamelan dan tari Jaipong Sunda di Gudangkahuripan, menikmati makan siang bersama kuliner otentik Lembang, berkunjung ke sentra produksi tahu susu lembut Tahu Agus Wangunsari serta sentra olahan yoghurt susu Toko Barokah Sukajaya, didampingi pemandu lokal desa, dan membawa pulang suvenir cantik pot sukulen mini Gudangkahuripan. Harga terjangkau mulai dari Rp 275.000 / pax dengan kuota rombongan minimal 15 orang.",
+    "highlights": [
+      "Tiket Workshop Seni Budaya Sunda Tari Jaipong & Gamelan Gudangkahuripan",
+      "1x Makan Siang Tradisional Sunda Lengkap & Air Mineral",
+      "Kunjungan Eksklusif Dapur Produksi Tahu Susu Lembut Asli Wangunsari",
+      "Kunjungan Sentra Pengolahan Susu Sapi & Yoghurt Aneka Rasa Sukajaya",
+      "Pemandu Lokal Warga (Local Guide) Ramah & Informatif",
+      "Suvenir Resmi: Pot Sukulen Mini Cantik Gudangkahuripan / Pax"
+    ],
+    "facilities": [
+      "Tiket Masuk & Pelatih Sanggar Seni Kamandaka",
+      "1x Makan Siang Prasmanan Khas Sunda",
+      "Icip Tahu Susu Hangat & Sampel Minuman Olahan Susu",
+      "Pemandu Wisata Lokal Berdedikasi",
+      "Suvenir 1 Pot Sukulen Mini Gudangkahuripan / Pax"
+    ],
+    "itinerary": [
+      {
+        "time": "08:30",
+        "activity": "Titik kumpul di Sanggar Seni Gudangkahuripan, sambutan selamat datang"
+      },
+      {
+        "time": "09:00",
+        "activity": "Workshop seni gamelan degung & pengenalan gerak dasar tari Jaipong Sunda"
+      },
+      {
+        "time": "11:30",
+        "activity": "Makan siang bersama menu khas masakan Pasundan"
+      },
+      {
+        "time": "13:00",
+        "activity": "Menuju sentra Tahu Susu Wangunsari: melihat dapur pencetakan dan icip tahu susu panas"
+      },
+      {
+        "time": "14:30",
+        "activity": "Menuju sentra Susu Sukajaya Toko Barokah: belanja susu segar pasteurisasi dan yoghurt"
+      },
+      {
+        "time": "16:00",
+        "activity": "Pembagian suvenir pot sukulen mini Gudangkahuripan dan penutupan One Day Tour"
+      }
+    ],
+    "stockQuota": 60,
+    "isAvailable": true,
+    "isFeatured": true,
+    "isDummy": false,
+    "dataSource": "real",
+    "rawSourceRow": 203,
+    "verifiedBadge": "Data Riil Mitra Terverifikasi",
+    "clientFolderName": "Bundling-Paket-3"
   }
 ];

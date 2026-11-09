@@ -32,7 +32,9 @@ const POPULAR_SEARCH_TAGS_ID = [
   '🍲 Tahu Susu Wangunsari',
   '☕ Maguru Kopi Jayagiri',
   '🥛 Susu Murni Sukajaya',
-  '🎭 Tari Jaipong Gudangkahuripan'
+  '🎭 Tari Jaipong Gudangkahuripan',
+  '🌵 Sukulen Agave Gudangkahuripan',
+  '🎒 Paket Bundling Interdesa'
 ];
 
 const POPULAR_SEARCH_TAGS_EN = [
@@ -43,16 +45,18 @@ const POPULAR_SEARCH_TAGS_EN = [
   '🍲 Milk Tofu Wangunsari',
   '☕ Maguru Coffee Jayagiri',
   '🥛 Pure Milk Sukajaya',
-  '🎭 Jaipong Dance Gudangkahuripan'
+  '🎭 Jaipong Dance Gudangkahuripan',
+  '🌵 Succulent Agave Gudangkahuripan',
+  '🎒 Inter-Village Tour Bundling'
 ];
 
 const QUICK_VILLAGE_TAGS = [
-  { id: 'des-01', name: 'Suntenjaya', icon: '☕', highlight: 'Kopi & Budaya' },
-  { id: 'des-02', name: 'Cikole', icon: '🌲', highlight: 'Camping & Offroad' },
-  { id: 'des-03', name: 'Jayagiri', icon: '⛰️', highlight: 'Maguru Kopi' },
-  { id: 'des-04', name: 'Wangunsari', icon: '🍲', highlight: 'Tahu Susu & Kuliner' },
-  { id: 'des-05', name: 'Gudangkahuripan', icon: '🎭', highlight: 'Tari Jaipong' },
-  { id: 'des-06', name: 'Sukajaya', icon: '🥛', highlight: 'Susu Murni' },
+  { id: 'des-01', name: 'Suntenjaya', icon: '☕', highlight: 'Kopi & Megalitikum' },
+  { id: 'des-03', name: 'Cikole', icon: '🌲', highlight: 'Camping & Offroad' },
+  { id: 'des-04', name: 'Jayagiri', icon: '⛰️', highlight: 'Maguru Kopi' },
+  { id: 'des-05', name: 'Wangunsari', icon: '🍲', highlight: 'Tahu Susu & Kuliner' },
+  { id: 'des-07', name: 'Gudangkahuripan', icon: '🎭', highlight: 'Tari Jaipong & Sukulen' },
+  { id: 'des-08', name: 'Sukajaya', icon: '🥛', highlight: 'Susu Murni' },
 ];
 
 export const Navbar: React.FC = () => {

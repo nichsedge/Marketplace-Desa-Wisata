@@ -348,6 +348,203 @@ export const PRODUCT_TRANSLATIONS_EN: Record<string, LocalizedProductData> = {
       'Blended with Fresh Milk from Sukajaya Dairy Farmers',
       'Crispy Outside, Incredibly Soft and Melting Inside'
     ]
+  },
+
+  // 19. Sukulen: Agave Titanota Shark Shoi
+  'real-gudangkahuripan-sukulen-agave-shark-shoi': {
+    title: 'Exotic Succulent Agave Titanota Shark Shoi Gudangkahuripan',
+    unit: '/potted plant',
+    description: 'Premium succulent collection Agave Titanota Shark Shoi variant featuring prominent shark-jaw-like serrated spiny margins. Thrives adaptively in the crisp highland climate of Gudangkahuripan Lembang (1,220 MASL). Shipped fully potted with high-drainage porous succulent mix ready to display.',
+    highlights: [
+      'Exotic Agave Titanota Shark Shoi Collector Specimen',
+      'Bold Distinctive Spiny Tooth Margins',
+      'Cultivated in Gudangkahuripan Highland Nursery',
+      'Includes Pot & Porous High-Drainage Substrate',
+      'Drought-Tolerant & Low-Maintenance Care'
+    ]
+  },
+
+  // 20. Sukulen: Agave Titanota Dwarf
+  'real-gudangkahuripan-sukulen-agave-dwarf': {
+    title: 'Compact Potted Agave Titanota Dwarf Succulent',
+    unit: '/potted plant',
+    description: 'Agave Titanota Dwarf variant with a short, compact, tightly packed rosette and striking broad white teeth. A favorite choice among botanical architecture collectors for desk, balcony, or minimalist home terrace decoration.',
+    highlights: [
+      'Compact & Symmetrical Rosette Stature',
+      'Dense Leaf Arrangement with Prominent White Spines',
+      'Ideal for Work Desks & Minimalist Terraces',
+      'Fully Rooted, Healthy & Ready to Display',
+      'Safe Nationwide Protective Plant Packaging'
+    ]
+  },
+
+  // 21. Sukulen: Agave Rancho Tambor
+  'real-gudangkahuripan-sukulen-agave-rancho-tambor': {
+    title: 'Rare Exotic Succulent Agave Rancho Tambor',
+    unit: '/potted plant',
+    description: 'Rare Agave Rancho Tambor featuring gracefully recurved broad leaves with pronounced reddish-brown marginal teeth. Meticulously cultivated by Gudangkahuripan ornamental plant growers under optimal mountain air circulation.',
+    highlights: [
+      'Genuine Rare Agave Rancho Tambor Variety',
+      'Broad Sculptural Leaves with Balanced Rosette',
+      'Striking High-Aesthetic Marginal Teeth',
+      'Minimal Care (Water Once a Week)',
+      'Planted in Premium Pumice & Volcanic Sand Blend'
+    ]
+  },
+
+  // 22. Sukulen: Sansevieria Boncel Variegata
+  'real-gudangkahuripan-sukulen-sansevieria-boncel-var': {
+    title: 'Sansevieria Cylindrica Boncel Variegata (Starfish Sansevieria)',
+    unit: '/potted plant',
+    description: 'Sansevieria Cylindrica Boncel rare variegata mutation with bright creamy-yellow stripes along its round fan-shaped fingers. Top-rated indoor air purifying plant that absorbs harmful indoor pollutants while adding a sleek Japandi or Scandinavian design accent.',
+    highlights: [
+      'Exotic Creamy-Yellow Variegated Mutation',
+      'Unique Architectural Fan-Fingered Growth Habit',
+      'Premier Indoor Air-Purifying Toxin Absorber',
+      'Thrives in Air-Conditioned & Indirect Light Rooms',
+      'Pest-Free Clean Indoor Potting Medium'
+    ]
+  },
+
+  // 23. Sukulen: Sansevieria Robusta Variegata
+  'real-gudangkahuripan-sukulen-sansevieria-robusta-var': {
+    title: 'Sansevieria Robusta Variegata Highland Indoor Plant',
+    unit: '/potted plant',
+    description: 'Sansevieria Robusta with broad upright leaves layered with deep green bands and vibrant yellow variegated hues. Exceptionally hardy and drought-tolerant, bringing an opulent natural green accent to living rooms, offices, or boutique cafes.',
+    highlights: [
+      'Broad Sturdy Foliage with Elegant Variegated Streaks',
+      'Ultra-Resilient & Naturally Pest Resistant',
+      'Natural Daytime & Nighttime Oxygen Producer',
+      'Perfect Accent for Room Corners and Cafes',
+      'Shipped Complete with Ready-to-Display Pot'
+    ]
+  },
+
+  // 24. Sukulen: Sukulen Mini Pot Campur
+  'real-gudangkahuripan-sukulen-mini-campur': {
+    title: 'Assorted Mini Potted Succulents for Desk & Tabletop Decor',
+    unit: '/mini pot',
+    description: 'Charming mini potted succulents at an accessible price of just Rp 10,000 per pot. Available in diverse rosette shapes and delightful colors. Popular as wedding souvenirs, village study tour tokens, office gifts, or lively study desk accents.',
+    highlights: [
+      'Affordable Rp 10,000 / Mini Pot',
+      'Diverse Range of Rose-like & Geometric Shapes',
+      'Ideal for Event Favors & Village Memorabilia',
+      'Compact Size Fitting Workstations & Windowsills',
+      'Custom Gift Packaging for Bulk / Event Orders'
+    ]
+  },
+
+  // 25. Sukulen: Echeveria Lilacina
+  'real-gudangkahuripan-sukulen-echeveria-lilacina': {
+    title: 'Echeveria Lilacina (Ghost Echeveria Succulent)',
+    unit: '/pot',
+    description: 'Graceful silvery-blue Echeveria Lilacina (Ghost Echeveria) with symmetrically arranged leaves resembling an open rose blossom. Coated with a natural protective farina wax powder that gives off an ethereal pastel glow under highland morning sunlight.',
+    highlights: [
+      'Rose-like Symmetrical Rosette Petals',
+      'Natural Silvery Pastel Farina Powder Coating',
+      'Grows Up to 15-20 cm in Diameter',
+      'Drought-Tolerant with Straightforward Care',
+      'Includes 10cm Pot & Well-Draining Medium'
+    ]
+  },
+
+  // 26. Bundling Paket 1: The Ultimate Lembang Adventure & Coffee Trail
+  'real-bundling-ultimate-adventure-coffee-trail': {
+    title: 'The Ultimate Lembang Adventure & Coffee Trail (2D1N Bundling Tour)',
+    unit: '/pax (min. 12 persons)',
+    description: 'The definitive 2-Day 1-Night inter-village adventure package combining 4x4 Land Rover offroad thrills through Cikole pine trails, Jayagiri ridge trekking, overnight camping under pine forest stars, authentic warm Sundanese Nasi Liwet banquet, and specialty Arabica coffee cupping at Suntenjaya plantation. Accompanied by licensed local guides and rugged Landy fleets (1 vehicle per 6 pax). Starting from Rp 650,000 / pax (min. 12 persons).',
+    highlights: [
+      'Land Rover 4x4 + Pro Driver Fleet (1 Unit per 6 Persons)',
+      'Jayagiri Misty Pine Ridge Trekking Trail to High Altitudes',
+      'Cikole Pine Forest Camp Pass + Complete Dome Tent & Mat Rental',
+      'Sundanese Warm Nasi Liwet Banana-Leaf Banquet',
+      'Hands-On Arabica Coffee Tour & Cupping in Suntenjaya',
+      'Dedicated Licensed Local Guides Throughout 2D1N'
+    ],
+    facilities: [
+      'Land Rover 4x4 + Driver & Fuel (1 unit / 6 pax)',
+      'Dome Tent + Foam Mat & Sleeping Bag',
+      'Traditional Nasi Liwet Meals & Hot Coffee Breaks',
+      'Cikole Camp Pass & Jayagiri Hiking Permits',
+      'Suntenjaya Arabica Coffee Workshop & Tasting',
+      'Certified Tour Guide & Standard First Aid'
+    ],
+    itinerary: [
+      { time: 'Day 1 - 08:30', activity: 'Rendezvous at Cikole Basecamp, safety briefing & Landy fleet boarding (6 pax/unit)' },
+      { time: 'Day 1 - 09:30', activity: 'Land Rover offroad expedition across Sukawana muddy tracks & pine canopy' },
+      { time: 'Day 1 - 13:00', activity: 'Sundanese warm banana-leaf Nasi Liwet feast' },
+      { time: 'Day 1 - 15:00', activity: 'Jayagiri pine trekking and Cikole campsite dome tent check-in' },
+      { time: 'Day 1 - 19:00', activity: 'Campfire gathering, roasted corn, and warm mountain coffee break' },
+      { time: 'Day 2 - 06:00', activity: 'Sunrise walk & crisp mountain breakfast at 1,400 MASL' },
+      { time: 'Day 2 - 08:30', activity: 'Scenic country drive to Desa Wisata Suntenjaya' },
+      { time: 'Day 2 - 10:00', activity: 'Suntenjaya Arabica Coffee tour: red cherry picking, greenhouse drying, & cupping' },
+      { time: 'Day 2 - 12:30', activity: 'Community farewell lunch, coffee souvenir distribution, and tour closing' }
+    ]
+  },
+
+  // 27. Bundling Paket 2: Volcano View, Dairy, & Heritage Eco-Live In
+  'real-bundling-volcano-dairy-heritage-livein': {
+    title: 'Volcano View, Dairy, & Heritage Eco-Live In (3D2N Bundling Tour)',
+    unit: '/pax (min. 10 persons)',
+    description: 'An immersive 3-Day 2-Night inter-village cultural live-in journey harmonizing volcanic wonders, dairy farming traditions, and Sundanese performing arts. Guests lodge in villager homes, savor home-cooked family recipes, witness crater panoramas from Mount Putri Jayagiri peak, experience hands-on dairy milking in Sukajaya, participate in Jaipong dance and Degung gamelan workshops at Sanggar Kamandaka Gudangkahuripan, and bring home an exotic potted succulent from Gudangkahuripan. Starting from Rp 850,000 / pax (min. 10 persons).',
+    highlights: [
+      'Clean Villager Homestay Accommodation (3 Days 2 Nights)',
+      'Full Board Authentic Sundanese Home-Style Meals',
+      'Sea of Clouds Sunrise Pass at Mount Putri Jayagiri Ridge',
+      'Dairy Cattle Milking & Pasteurization Workshop in Sukajaya',
+      'Jaipong Dance & Gamelan Workshop at Sanggar Kamandaka',
+      'Friendly Experienced Local Villager Guides',
+      'Exclusive Souvenir: 1 Potted Succulent Plant from Gudangkahuripan'
+    ],
+    facilities: [
+      'Villager Homestay Rooms (Clean Bed & Hot Bath Water)',
+      'Full Board Catering (3x Breakfast, 2x Lunch, 2x Dinner)',
+      'Admission Passes to All Scheduled Village Destinations',
+      'Cultural Workshop Instructors & Dairy Farm Facilitators',
+      'Official Souvenir: 1 Potted Gudangkahuripan Succulent / Pax',
+      'Local Tour Guide & Village Travel Coverage'
+    ],
+    itinerary: [
+      { time: 'Day 1 - 13:00', activity: 'Warm welcome at Village Hall & check-in with host families' },
+      { time: 'Day 1 - 15:30', activity: 'Sukajaya Dairy Farm visit: hands-on cow milking & pasteurization demo' },
+      { time: 'Day 1 - 19:00', activity: 'Authentic home-cooked Sundanese dinner with host family' },
+      { time: 'Day 2 - 04:30', activity: 'Early morning sunrise trek to Mount Putri Jayagiri sea of clouds ridge' },
+      { time: 'Day 2 - 08:00', activity: 'Highland breakfast and leisurely homestay rest' },
+      { time: 'Day 2 - 13:30', activity: 'Gudangkahuripan cultural immersion: Jaipong dance practice & Degung gamelan' },
+      { time: 'Day 2 - 16:30', activity: 'Gudangkahuripan succulent nursery visit & souvenir plant selection' },
+      { time: 'Day 2 - 19:00', activity: 'Cultural fellowship night & Pasundan heritage storytelling' },
+      { time: 'Day 3 - 07:30', activity: 'Host family breakfast, potted succulent souvenir handoff, & farewell' }
+    ]
+  },
+
+  // 28. Bundling Paket 3: Lembang Culinary & Cultural Heritage Trip
+  'real-bundling-culinary-cultural-heritage-trip': {
+    title: 'Lembang Culinary & Cultural Heritage Trip (One Day Tour Bundling)',
+    unit: '/pax (min. 15 persons)',
+    description: 'A vibrant full-day inter-village tour packed with gastronomic education and living Sundanese heritage. Enjoy interactive gamelan and Jaipong dance masterclasses in Gudangkahuripan, a traditional Sundanese lunch banquet, visits to Wangunsari silken milk tofu kitchens and Sukajaya probiotic dairy centers, all escorted by dedicated local guides, and bring home an adorable mini potted succulent. Starting from Rp 275,000 / pax (min. 15 persons).',
+    highlights: [
+      'Gudangkahuripan Degung Gamelan & Jaipong Cultural Workshop',
+      'Full Traditional Sundanese Lunch Banquet & Mineral Water',
+      'Exclusive Behind-the-Scenes Tour of Wangunsari Milk Tofu Kitchens',
+      'Visit to Sukajaya Fresh Dairy & Probiotic Yoghurt Production Hub',
+      'Informative & Enthusiastic Local Villager Guide',
+      'Official Souvenir: 1 Mini Potted Succulent from Gudangkahuripan / Pax'
+    ],
+    facilities: [
+      'Sanggar Kamandaka Admission & Cultural Master Instructor',
+      '1x Sundanese Buffet Lunch Feast',
+      'Fresh Warm Milk Tofu & Probiotic Dairy Product Tastings',
+      'Dedicated Local Village Tour Guide',
+      '1 Mini Potted Succulent Plant Souvenir / Pax'
+    ],
+    itinerary: [
+      { time: '08:30', activity: 'Assembly at Gudangkahuripan Cultural Studio & welcome greeting' },
+      { time: '09:00', activity: 'Hands-on Sundanese Degung gamelan workshop & Jaipong dance basics' },
+      { time: '11:30', activity: 'Traditional Sundanese lunch banquet' },
+      { time: '13:00', activity: 'Tour to Wangunsari Milk Tofu kitchens: witness molding & taste warm fried tofu' },
+      { time: '14:30', activity: 'Visit Toko Barokah Sukajaya: shop fresh pasteurized milk & artisan yoghurt' },
+      { time: '16:00', activity: 'Gudangkahuripan mini succulent souvenir handover & tour conclusion' }
+    ]
   }
 };
 
@@ -399,12 +596,13 @@ export const VILLAGE_TRANSLATIONS_EN: Record<string, LocalizedVillageData> = {
     ]
   },
   'des-07': {
-    description: 'Gudangkahuripan is a center for Sundanese traditional arts and culture in Lembang, presenting Jaipong dance, Degung gamelan workshops, and ancient oral history led by Pa Mei Wisana.',
-    history: 'Gudangkahuripan preserves ancestral Pasundan art forms as an active cultural bridge for young generations and visiting tourists.',
-    culture: 'Vibrant gamelan music, spirited Jaipong dance, traditional costume artistry, and cultural storytelling.',
+    description: 'Gudangkahuripan is a center for Sundanese traditional arts, culture, and exotic highland succulents in Lembang, presenting Jaipong dance, Degung gamelan workshops, and boutique succulent nurseries led by local artisans.',
+    history: 'Gudangkahuripan preserves ancestral Pasundan art forms as an active cultural bridge for young generations and visiting tourists, while flourishing as a highland succulent & agave cultivation hub.',
+    culture: 'Vibrant gamelan music, spirited Jaipong dance, traditional costume artistry, and patient botanical succulent horticulture.',
     highlights: [
       'Hands-on Sundanese Degung Gamelan Workshop',
       'Traditional Jaipong Dance Masterclasses',
+      'Exotic Succulent & Agave Titanota Nurseries',
       'Local History & Cultural Storytelling',
       'Guided by Senior Village Cultural Maestro'
     ]
@@ -437,6 +635,9 @@ export const localizeUnit = (unit: string, language: 'id' | 'en'): string => {
     '/paket edukasi': '/edu package',
     '/pax': '/pax',
     '/pax (min 6 orang)': '/pax (min. 6 persons)',
+    '/pax (min 10 orang)': '/pax (min. 10 persons)',
+    '/pax (min 12 orang)': '/pax (min. 12 persons)',
+    '/pax (min 15 orang)': '/pax (min. 15 persons)',
     '/pax nett': '/pax nett',
     '/armada/hari': '/vehicle/day',
     '/cangkir': '/cup',
@@ -450,6 +651,9 @@ export const localizeUnit = (unit: string, language: 'id' | 'en'): string => {
     '/botol 250ml': '/250ml bottle',
     '/liter': '/liter',
     '/kotak': '/box',
+    '/pot tanaman': '/potted plant',
+    '/pot mini': '/mini pot',
+    '/pot': '/pot',
     '/hari': '/day',
     '/porsi': '/portion'
   };

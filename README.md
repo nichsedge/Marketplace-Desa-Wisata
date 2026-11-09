@@ -19,8 +19,13 @@ Saat ini mencakup 6 Desa Wisata aktif (Desa Wisata Cibodas dan Cikahuripan disem
 2. **Desa Wisata Cikole (1.400 mdpl):** Wisata Alam (Paket camping kanopi pinus, offroad rimba Sukawana Land Rover Abah). (Admin: *Kang Dadan Ridwan*)
 3. **Desa Wisata Jayagiri (1.350 mdpl):** Kopi Spesialti (Maguru Kopi Pa Maliki lereng Jayagiri). (Admin: *Teh Eni Rohaeni*)
 4. **Desa Wisata Wangunsari (1.200 mdpl):** Kuliner Tradisional (Tahu Susu lembut Rp 5.000/kemasan 10 pcs, Kicimpring Singkong, Ranginang terasi Rp 65.000/kg, Peuyeum Ketan PO). (Admin: *Kang Sandi Permana*)
-5. **Desa Wisata Gudangkahuripan (1.220 mdpl):** Seni & Budaya (Paket Wisata Budaya Tari Jaipong & Gamelan Pa Mei Wisana). (Admin: *Kang Agus Hidayat*)
+5. **Desa Wisata Gudangkahuripan (1.220 mdpl):** Seni Budaya & Tanaman Hias Sukulen (Paket Wisata Budaya Tari Jaipong & Gamelan Pa Mei Wisana, serta Sentra Sukulen & Agave Eksotis). (Admin: *Kang Agus Hidayat*)
 6. **Desa Wisata Sukajaya (1.260 mdpl):** Olahan Susu Kemasan (Susu Sapi Murni Pasteurisasi, Tahu Susu, Yoghurt Yoghvit & Mat Pochi Toko Barokah Pa Emin). (Admin: *Ibu Siti Maryam*)
+
+### 🎒 Paket Bundling Interdesa Terpadu (Pembaruan 09/11/2026)
+- **Paket 1: The Ultimate Lembang Adventure & Coffee Trail (2D1N):** Sewa Land Rover + Driver (1 unit isi 6 orang), Hiking Jayagiri, Tiket Camping Pinus Cikole, Sewa Tenda & Matras, Nasi Liwet Sunda, Edukasi Kopi Suntenjaya, Pemandu Lokal (*Start from Rp 650.000/pax, min. 12 orang*).
+- **Paket 2: Volcano View, Dairy, & Heritage Eco-Live In (3D2N):** Sewa Homestay Warga, Menu Masakan Lokal, Sunrise Gunung Putri Jayagiri, Edukasi Sapi Sukajaya, Workshop Kamandaka, Pemandu Lokal, Suvenir 1 Pot Sukulen Gudangkahuripan (*Start from Rp 850.000/pax, min. 10 orang*).
+- **Paket 3: Lembang Culinary & Cultural Heritage Trip (One Day Tour):** Workshop Seni Budaya Sunda Gudangkahuripan, Makan Siang Tradisional, Sentra Tahu Wangunsari & Susu Sukajaya, Pemandu Lokal, Suvenir Pot Sukulen Mini (*Start from Rp 275.000/pax, min. 15 orang*).
 
 ## 🗺️ Fitur Peta Interaktif Kantor Desa
 

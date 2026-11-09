@@ -1,18 +1,18 @@
 # 📸 Pelacak & Log Kurasi Media Lapangan (Saba Lembang)
-> **Waktu Pembaruan Terakhir:** 2026-10-01 19:05:36 WIB  
+> **Waktu Pembaruan Terakhir:** 2026-11-09 20:10:34 WIB  
 > **Status Pelacakan:** Otomatis & Terverifikasi  
-> **Total Berkas Terdaftar:** **185 berkas** (14 Hero Web, 36 Galeri Web, 5 Video Dicadangkan, 130 Dilewati/Redundan)
+> **Total Berkas Terdaftar:** **192 berkas** (21 Hero Web, 36 Galeri Web, 5 Video Dicadangkan, 130 Dilewati/Redundan)
 
 ---
 
 ## 🎯 Ringkasan Eksekutif Kurasi
 | Kategori Status | Jumlah Berkas | Keterangan & Perlakuan di Web |
 | :--- | :---: | :--- |
-| **⭐ Accepted (Hero Utama)** | **14** | Foto kualitas premium terbaik, tampil di cover kartu marketplace & header detail produk |
+| **⭐ Accepted (Hero Utama)** | **21** | Foto kualitas premium terbaik, tampil di cover kartu marketplace & header detail produk |
 | **🖼️ Accepted (Galeri/Slider)** | **36** | Foto pendukung autentik, tampil di slider thumbnail & album detail produk |
 | **🎥 Skipped (Format Video)** | **5** | Video ukuran besar (25MB - 184MB). Dicadangkan untuk promosi reels / IG / YouTube |
 | **⏭️ Skipped (Burst / Redundan)** | **130** | Foto duplikat burst kamera, dokumentasi internal rapat, atau sudut yang telah terwakili |
-| **🆕 Berkas Baru Terdeteksi** | **1** | Berkas baru yang ditambahkan oleh klien pada unduhan terbaru |
+| **🆕 Berkas Baru Terdeteksi** | **0** | Berkas baru yang ditambahkan oleh klien pada unduhan terbaru |
 
 ---
 
@@ -110,6 +110,20 @@
 | 04 | `WhatsApp Image 2026-09-30 at 12.07.15 (1).jpeg` | 118.7 KB | 1200x1600 | 🖼️ **GALERI WEB** | `/images/client/wangunsari/tahu-susu-nampan-produksi.webp` | Tumpukan kemasan tahu susu kuning segar tersusun rapi di area dapur produksi, siap dikirim ke konsumen. |
 | 05 | `WhatsApp Image 2026-09-30 at 12.07.15.jpeg` | 266.9 KB | 1200x1600 | 🖼️ **GALERI WEB** | `/images/client/wangunsari/tahu-susu-cetakan-potong.webp` | Balok-balok tahu susu segar berwarna kuning alami setelah proses pencetakan dan perendaman bumbu rempah. |
 | 06 | `WhatsApp Image 2026-09-30 at 13.07.55.jpeg` | 116.2 KB | 720x1600 | 🖼️ **GALERI WEB** | `/images/client/wangunsari/tahu-susu-goreng-panas.webp` | Tahu susu siap santap bertekstur lembut di dalam dan garing gurih di luar. |
+
+---
+
+### 📁 Folder: `20261109` (7 Berkas | 7 Hero, 0 Galeri)
+
+| No | Nama Berkas | Ukuran | Resolusi | Status Keputusan | Jalur Aset Web (WebP) | Alasan Keputusan Kurasi |
+| :-: | :--- | :-: | :-: | :--- | :--- | :--- |
+| 01 | `Agave Rancho Tambor.jpg` | 320.4 KB | 1200x1600 | ⭐ **HERO WEB** | `/images/client/gudangkahuripan/sukulen-agave-rancho-tambor.webp` | Koleksi sukulen Agave Rancho Tambor langka dengan siluet roset simetris dan duri tepi eksotis hasil budidaya perajin Gudangkahuripan. |
+| 02 | `Agave titanota dwarf .jpg` | 229.3 KB | 1600x1200 | ⭐ **HERO WEB** | `/images/client/gudangkahuripan/sukulen-agave-titanota-dwarf.webp` | Varian Agave Titanota kerdil (dwarf) berkarakter roset padat dan duri putih tegas yang sangat diminati kolektor tanaman hias premium. |
+| 03 | `Agave titanota shark shoi.jpg` | 282.2 KB | 1200x1600 | ⭐ **HERO WEB** | `/images/client/gudangkahuripan/sukulen-agave-titanota-shark-shoi.webp` | Foto tanaman hias sukulen Agave Titanota Shark Shoi eksotis dengan bentuk daun tebal berduri rapi dalam pot budidaya, siap adopsi pecinta tanaman hias. |
+| 04 | `Echeveria lilacina.jpg` | 211.7 KB | 1200x1600 | ⭐ **HERO WEB** | `/images/client/gudangkahuripan/sukulen-echeveria-lilacina.webp` | Echeveria Lilacina berkelopak menyerupai bunga mawar dengan lapisan lilin keperakan (ghost succulent) yang anggun dan memesona. |
+| 05 | `Sansieviera boncel var.jpg` | 251.6 KB | 1200x1600 | ⭐ **HERO WEB** | `/images/client/gudangkahuripan/sukulen-sansevieria-boncel-variegata.webp` | Sansevieria Boncel bentuk jemari silindris variegata dengan semburat warna kuning-hijau elegan, tanaman pembersih udara dekoratif meja dan ruangan. |
+| 06 | `Sansieviera robusta var.jpg` | 402.1 KB | 1600x1200 | ⭐ **HERO WEB** | `/images/client/gudangkahuripan/sukulen-sansevieria-robusta-variegata.webp` | Sansevieria Robusta varian variegata berdaun lebar tebal dan corak daun belang cerah, daya tahan tinggi dan mempercantik interior rumah. |
+| 07 | `Seculent.jpg` | 372.8 KB | 1200x1600 | ⭐ **HERO WEB** | `/images/client/gudangkahuripan/sukulen-mini-campur.webp` | Sukulen mini pot ramah kantong Rp 10.000 cocok untuk suvenir acara, hampers oleh-oleh Lembang, serta hiasan meja belajar/kerja. |
 
 ---
 
