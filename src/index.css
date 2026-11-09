@@ -87,3 +87,43 @@
   }
 }
 
+/* Print Optimization for Official Receipts & E-Tickets */
+@media print {
+  @page {
+    margin: 1.2cm;
+    size: A4 portrait;
+  }
+
+  /* Global hide non-print elements */
+  nav,
+  footer,
+  header,
+  .print\:hidden,
+  [data-print-hide] {
+    display: none !important;
+  }
+
+  body {
+    background: #ffffff !important;
+    color: #1c1917 !important;
+    overflow: visible !important;
+    width: 100% !important;
+  }
+
+  /* Clean up dialog/modal overlay for print */
+  [role="dialog"] {
+    position: static !important;
+    inset: auto !important;
+    background: transparent !important;
+    backdrop-filter: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    overflow: visible !important;
+    display: block !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    box-shadow: none !important;
+  }
+}
+
+

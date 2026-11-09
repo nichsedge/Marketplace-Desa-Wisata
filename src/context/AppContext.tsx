@@ -84,7 +84,8 @@ interface AppContextType {
     customerEmail: string,
     customerPhone: string,
     paymentMethod: string,
-    notes?: string
+    notes?: string,
+    extraOrderData?: Partial<Order>
   ) => Order;
 
   // User Auth (Admin / PIC only)
@@ -350,20 +351,21 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     customerEmail: string,
     customerPhone: string,
     paymentMethod: string,
-    notes?: string
+    notes?: string,
+    extraOrderData?: Partial<Order>
   ) => {
     const primaryVillageId = cart[0]?.product?.villageId;
     const primaryVillageName = cart[0]?.product?.villageName;
 
     const newOrder: Order = {
-      id: `ORD-${new Date().getFullYear()}-${Math.floor(100 + Math.random() * 900)}`,
+      id: extraOrderData?.id || `ORD-${new Date().getFullYear()}-${Math.floor(100 + Math.random() * 900)}`,
       customerName,
       customerEmail,
       customerPhone,
       items: [...cart],
       totalAmount: cartTotal,
       paymentMethod,
-      status: 'menunggu',
+      status: extraOrderData?.status || 'menunggu',
       createdAt: new Date().toLocaleDateString(language === 'id' ? 'id-ID' : 'en-US', {
         day: 'numeric',
         month: 'short',
@@ -372,20 +374,34 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         minute: '2-digit'
       }),
       notes,
-      source: 'cart_checkout',
+      source: extraOrderData?.source || 'cart_checkout',
       villageId: primaryVillageId,
-      villageName: primaryVillageName
+      villageName: primaryVillageName,
+      ...extraOrderData
     };
 
-    // Track analytics for cart checkout
-    cart.forEach(item => {
-      trackWhatsAppClick(item.product, item.quantity, getCartItemTotal(item));
-    });
+    if (newOrder.status === 'selesai') {
+      trackDealCompleted(newOrder);
+    } else {
+      // Track analytics for cart checkout
+      cart.forEach(item => {
+        trackWhatsAppClick(item.product, item.quantity, getCartItemTotal(item));
+      });
+    }
     setAnalyticsEvents(getStoredEvents());
 
     setOrders(prev => [newOrder, ...prev]);
     clearCart();
-    showToast(language === 'id' ? `Pesanan #${newOrder.id} berhasil dibuat!` : `Order #${newOrder.id} created successfully!`, 'success');
+    showToast(
+      language === 'id'
+        ? newOrder.status === 'selesai'
+          ? `Pembayaran berhasil! Pesanan #${newOrder.id} lunas.`
+          : `Pesanan #${newOrder.id} berhasil dibuat!`
+        : newOrder.status === 'selesai'
+          ? `Payment successful! Order #${newOrder.id} completed.`
+          : `Order #${newOrder.id} created successfully!`,
+      'success'
+    );
     return newOrder;
   };
 

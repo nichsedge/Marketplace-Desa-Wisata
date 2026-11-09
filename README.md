@@ -64,6 +64,17 @@ Melacak interaksi pengunjung tanpa membutuhkan server backend berbayar (zero-cos
   4. **Deal / Pembelian Lunas (Opsi A):** Admin Desa dapat mengonfirmasi pesanan yang telah lunas/selesai langsung dari dasbor dengan menekan tombol **"✅ Deal / Lunas"**, yang secara instan menghitung rasio konversi (*Conversion Rate*) dan omzet riil.
 - **Kompatibilitas Google Analytics 4 (GA4):** Semua event juga diteruskan secara otomatis ke `window.gtag` jika ID GA4 dikonfigurasi.
 
+## 💳 Integrasi Payment Gateway Midtrans (Sandbox Snap)
+Platform telah terintegrasi dengan payment gateway resmi **Midtrans Snap (Sandbox)**:
+- **Metode Pembayaran Digital Lengkap:** QRIS (GoPay, OVO, Dana, ShopeePay, BCA Mobile), Virtual Account Bank (BCA, Mandiri, BRI, BNI), dan Kartu Debit/Kredit.
+- **Arsitektur Aman & Portabel (Zero Vendor Lock-in):**
+  - **Server Key Terlindungi:** Kunci rahasia server disimpan aman di server side (`.env`) dan tidak bocor ke bundle JavaScript browser.
+  - **Vercel Serverless Function (`api/midtrans-token.ts`):** Endpoint serverless gratis yang langsung aktif saat di-deploy ke Vercel.
+  - **Cloudflare Pages Function Fallback (`functions/api/midtrans-token.ts`):** Kompatibel 1:1 sehingga dapat dipindahkan ke Cloudflare Pages kapan saja tanpa mengubah kode frontend.
+  - **Local Development Middleware (`vite.config.ts`):** Pengujian lokal saat `bun run dev` langsung terhubung ke Midtrans Sandbox tanpa perlu server backend eksternal.
+- **E-Ticket Otomatis:** Setelah simulasi pembayaran berhasil, status transaksi langsung tercatat **Lunas**, memicu pelacakan konversi otomatis, dan membuka E-Ticket resmi siap cetak.
+- **Backup Manual WhatsApp:** Opsi konfirmasi langsung via WhatsApp Admin Desa tetap tersedia sebagai alternatif.
+
 ## 📦 Aset Visual Lokal & Avatar Standar WhatsApp
 Seluruh foto katalog produk, homestay, dan lanskap 7 desa aktif tersimpan secara lokal di folder `public/images/`. Untuk avatar profil Admin Desa, pembeli, ulasan, dan testimoni, sistem menerapkan avatar default *"no profile picture"* ala WhatsApp (`/images/default-avatar.svg` via komponen `<UserAvatar />`) yang bersih dan seragam, tanpa menggunakan foto wajah stok/dummy.
 

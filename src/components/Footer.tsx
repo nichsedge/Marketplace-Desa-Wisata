@@ -35,7 +35,7 @@ export const Footer: React.FC = () => {
   const currentModalVillage = villages.find(v => v.id === modalVillageId) || villages[0];
 
   return (
-    <footer className="bg-stone-900 text-stone-300 pt-16 pb-12 border-t border-stone-800">
+    <footer className="bg-stone-900 text-stone-300 pt-16 pb-12 border-t border-stone-800 print:hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Upper Banner - Mission */}

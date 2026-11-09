@@ -107,7 +107,10 @@ export interface Order {
   notes?: string;
   villageId?: string;
   villageName?: string;
-  source?: 'direct_wa' | 'cart_checkout';
+  source?: 'direct_wa' | 'cart_checkout' | 'midtrans_gateway';
+  midtransTransactionId?: string;
+  midtransPaymentType?: string;
+  midtransPdfUrl?: string;
 }
 
 export interface InteractionEvent {

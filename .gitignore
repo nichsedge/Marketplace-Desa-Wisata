@@ -14,6 +14,11 @@ coverage/
 # Ignore heavy raw client media (DSLR photos & videos >500MB)
 assets/real_data_from_client/*/
 
+# Ignore secret api key files
+test_server_key_api_key.txt
+*api_key*
+*.key.txt
+
 # But track lightweight client TSV and curation manifest JSON
 !assets/real_data_from_client/*.tsv
 !assets/real_data_from_client/*.json

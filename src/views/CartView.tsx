@@ -23,10 +23,13 @@ import {
   X,
   MapPin,
   Sparkles,
-  MessageCircle
+  MessageCircle,
+  Loader2,
+  AlertCircle
 } from 'lucide-react';
 import { WHATSAPP_PHONE, formatWhatsAppUrl, createCartWhatsAppMessage } from '../utils/whatsapp';
 import { getLocalizedProduct } from '../i18n/productTranslations';
+import { createMidtransSnapToken, openSnapPaymentModal, loadSnapScript } from '../utils/midtrans';
 
 export const CartView: React.FC = () => {
   const { 
@@ -39,6 +42,7 @@ export const CartView: React.FC = () => {
     navigateTo,
     currentUser,
     language,
+    showToast,
     t
   } = useApp();
 
@@ -46,8 +50,16 @@ export const CartView: React.FC = () => {
   const [customerName, setCustomerName] = useState(currentUser?.name || '');
   const [customerEmail, setCustomerEmail] = useState(currentUser?.email || '');
   const [customerPhone, setCustomerPhone] = useState('+62 812-3456-7890');
-  const [paymentMethod, setPaymentMethod] = useState<string>('Konfirmasi & Bayar via WhatsApp');
+  const [paymentMethod, setPaymentMethod] = useState<string>('Midtrans Instant');
   const [notes, setNotes] = useState<string>('');
+  const [isProcessingPayment, setIsProcessingPayment] = useState<boolean>(false);
+
+  // Preload Midtrans snap script in background
+  React.useEffect(() => {
+    loadSnapScript().catch((err) => {
+      console.warn('Midtrans Snap preload warning:', err);
+    });
+  }, []);
 
   // Order Receipt Modal
   const [completedOrder, setCompletedOrder] = useState<Order | null>(null);
@@ -67,12 +79,124 @@ export const CartView: React.FC = () => {
   const serviceFee = 0;
   const grandTotal = cartTotal;
 
-  const handleCheckoutSubmit = (e: React.FormEvent) => {
+  const handleCheckoutSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (cart.length === 0) return;
-    if (!customerName || !customerPhone) return;
+    if (!customerName || !customerPhone) {
+      showToast(
+        language === 'en' ? 'Please fill in your name and phone number.' : 'Silakan lengkapi nama dan nomor WhatsApp.',
+        'error'
+      );
+      return;
+    }
 
-    // Send to WhatsApp
+    // Midtrans Digital Payment Flow
+    if (paymentMethod === 'Midtrans Instant') {
+      setIsProcessingPayment(true);
+      try {
+        const orderId = `SABA-${new Date().getFullYear()}-${Date.now().toString().slice(-6)}`;
+        const items = cart.map((it) => {
+          const itemProd = getLocalizedProduct(it.product, language);
+          const nights = getCartItemNights(it);
+          const total = getCartItemTotal(it);
+          const unitPrice = Math.round(total / it.quantity);
+          return {
+            id: it.product.id,
+            price: unitPrice,
+            quantity: it.quantity,
+            name: nights > 1 ? `${itemProd.title} (${nights} malam)` : itemProd.title,
+          };
+        });
+
+        const { token } = await createMidtransSnapToken({
+          orderId,
+          grossAmount: grandTotal,
+          customerDetails: {
+            name: customerName,
+            email: customerEmail || 'wisatawan@sabalembang.id',
+            phone: customerPhone,
+          },
+          items,
+        });
+
+        await openSnapPaymentModal(token, {
+          onSuccess: (result) => {
+            setIsProcessingPayment(false);
+            const order = placeOrder(
+              customerName,
+              customerEmail,
+              customerPhone,
+              'Midtrans Digital Payment (Lunas)',
+              notes,
+              {
+                id: result.order_id || orderId,
+                status: 'selesai',
+                source: 'midtrans_gateway',
+                midtransTransactionId: result.transaction_id,
+                midtransPaymentType: result.payment_type,
+                midtransPdfUrl: result.pdf_url,
+              }
+            );
+            setCompletedOrder(order);
+          },
+          onPending: (result) => {
+            setIsProcessingPayment(false);
+            const order = placeOrder(
+              customerName,
+              customerEmail,
+              customerPhone,
+              'Midtrans Digital Payment (Pending)',
+              notes,
+              {
+                id: result.order_id || orderId,
+                status: 'menunggu',
+                source: 'midtrans_gateway',
+                midtransTransactionId: result.transaction_id,
+                midtransPaymentType: result.payment_type,
+                midtransPdfUrl: result.pdf_url,
+              }
+            );
+            setCompletedOrder(order);
+            showToast(
+              language === 'en'
+                ? 'Payment is pending. Please complete transaction in your payment app.'
+                : 'Menunggu pembayaran. Silakan selesaikan pembayaran di simulator / aplikasi Anda.',
+              'info'
+            );
+          },
+          onError: (result) => {
+            setIsProcessingPayment(false);
+            showToast(
+              language === 'en'
+                ? `Payment failed: ${result.status_message || 'Transaction could not be completed'}`
+                : `Pembayaran tidak berhasil: ${result.status_message || 'Transaksi gagal'}`,
+              'error'
+            );
+          },
+          onClose: () => {
+            setIsProcessingPayment(false);
+            showToast(
+              language === 'en'
+                ? 'Payment window closed before completing.'
+                : 'Jendela pembayaran ditutup sebelum transaksi selesai.',
+              'info'
+            );
+          },
+        });
+      } catch (err: any) {
+        setIsProcessingPayment(false);
+        console.error('Midtrans checkout error:', err);
+        showToast(
+          language === 'en'
+            ? `Checkout error: ${err?.message || 'Failed to initiate Midtrans'}`
+            : `Kendala checkout: ${err?.message || 'Gagal memulai pembayaran Midtrans'}`,
+          'error'
+        );
+      }
+      return;
+    }
+
+    // Fallback: Send to WhatsApp
     const waText = createCartWhatsAppMessage(cart, {
       name: customerName,
       phone: customerPhone,
@@ -88,7 +212,7 @@ export const CartView: React.FC = () => {
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+    <div className={`max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8 ${completedOrder ? 'print:hidden' : ''}`}>
       
       {/* Header */}
       <div className="border-b border-stone-200 pb-4 flex items-center justify-between">
@@ -298,56 +422,104 @@ export const CartView: React.FC = () => {
 
               {/* Payment Methods Selection */}
               <div className="space-y-2">
-                <label className="text-xs font-bold text-stone-800 block">
-                  {language === 'en' ? 'Select Payment Method*' : 'Pilih Metode Pembayaran*'}
-                </label>
-                <div className="space-y-2">
+                <div className="flex items-center justify-between">
+                  <label className="text-xs font-bold text-stone-800 block">
+                    {language === 'en' ? 'Select Payment Method*' : 'Pilih Metode Pembayaran*'}
+                  </label>
+                  <span className="text-[10px] text-emerald-800 font-semibold bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
+                    Midtrans Sandbox
+                  </span>
+                </div>
+                <div className="space-y-2.5">
                   
-                  <label className={`flex items-center justify-between p-3 rounded-xl border cursor-pointer transition-all ${
-                    paymentMethod === 'QRIS Instant' ? 'bg-emerald-50 border-emerald-600 text-emerald-900 font-bold' : 'bg-stone-50 border-stone-200 text-stone-700'
+                  {/* Option 1: Midtrans Instant (QRIS, VA, E-Wallet) */}
+                  <label className={`flex items-start justify-between p-3.5 rounded-2xl border cursor-pointer transition-all ${
+                    paymentMethod === 'Midtrans Instant' ? 'bg-emerald-50/70 border-emerald-600 text-emerald-950 font-bold shadow-xs ring-1 ring-emerald-600/30' : 'bg-stone-50 border-stone-200 text-stone-700 hover:bg-stone-100/70'
                   }`}>
-                    <div className="flex items-center gap-2 text-xs">
-                      <QrCode className="w-4 h-4 text-emerald-800" />
-                      <span>QRIS (GoPay, OVO, Dana, ShopeePay, BCA Mobile)</span>
+                    <div className="flex items-start gap-3 text-xs">
+                      <div className="p-2 rounded-xl bg-emerald-100 text-emerald-800 shrink-0 mt-0.5">
+                        <CreditCard className="w-4 h-4" />
+                      </div>
+                      <div className="space-y-1">
+                        <div className="flex items-center gap-2 flex-wrap">
+                          <span className="font-bold text-stone-900">
+                            {language === 'en' ? 'Digital Payment Gateway (Midtrans)' : 'Pembayaran Digital Instan (Midtrans)'}
+                          </span>
+                          <span className="px-2 py-0.5 rounded-full text-[9px] font-extrabold bg-emerald-700 text-white shadow-xs">
+                            {language === 'en' ? 'Auto-Verified' : 'Otomatis & Terverifikasi'}
+                          </span>
+                        </div>
+                        <p className="text-[11px] text-stone-500 font-normal leading-relaxed">
+                          QRIS (GoPay, OVO, Dana, ShopeePay, BCA Mobile), Virtual Account (BCA, Mandiri, BRI, BNI), & Kartu Debit/Kredit.
+                        </p>
+                      </div>
                     </div>
                     <input
                       type="radio"
                       name="payment"
-                      checked={paymentMethod === 'QRIS Instant'}
-                      onChange={() => setPaymentMethod('QRIS Instant')}
-                      className="accent-emerald-800"
+                      checked={paymentMethod === 'Midtrans Instant'}
+                      onChange={() => setPaymentMethod('Midtrans Instant')}
+                      className="accent-emerald-800 mt-1"
                     />
                   </label>
 
-                  <label className={`flex items-center justify-between p-3 rounded-xl border cursor-pointer transition-all ${
-                    paymentMethod === 'Transfer Bank BUMDes' ? 'bg-emerald-50 border-emerald-600 text-emerald-900 font-bold' : 'bg-stone-50 border-stone-200 text-stone-700'
+                  {/* Option 2: WhatsApp Confirmation */}
+                  <label className={`flex items-start justify-between p-3.5 rounded-2xl border cursor-pointer transition-all ${
+                    paymentMethod === 'Konfirmasi & Bayar via WhatsApp' ? 'bg-emerald-50/70 border-emerald-600 text-emerald-950 font-bold shadow-xs' : 'bg-stone-50 border-stone-200 text-stone-700 hover:bg-stone-100/70'
                   }`}>
-                    <div className="flex items-center gap-2 text-xs">
-                      <Building2 className="w-4 h-4 text-emerald-800" />
-                      <span>{language === 'en' ? 'Bank Transfer (BCA / Mandiri / BRI Village BUMDes)' : 'Transfer Bank (BCA / Mandiri / BRI BUMDes)'}</span>
+                    <div className="flex items-start gap-3 text-xs">
+                      <div className="p-2 rounded-xl bg-emerald-100 text-emerald-800 shrink-0 mt-0.5">
+                        <MessageCircle className="w-4 h-4" />
+                      </div>
+                      <div className="space-y-1">
+                        <div className="flex items-center gap-2">
+                          <span className="font-bold text-stone-900">
+                            {language === 'en' ? 'Manual WhatsApp Confirmation' : 'Konfirmasi via WhatsApp Admin Desa'}
+                          </span>
+                        </div>
+                        <p className="text-[11px] text-stone-500 font-normal leading-relaxed">
+                          {language === 'en'
+                            ? 'Connect directly to village managers for manual bank transfer (BUMDes) and custom inquiries.'
+                            : 'Hubungi langsung Admin Desa terkait untuk verifikasi manual atau koordinasi pesanan khusus.'}
+                        </p>
+                      </div>
                     </div>
                     <input
                       type="radio"
                       name="payment"
-                      checked={paymentMethod === 'Transfer Bank BUMDes'}
-                      onChange={() => setPaymentMethod('Transfer Bank BUMDes')}
-                      className="accent-emerald-800"
+                      checked={paymentMethod === 'Konfirmasi & Bayar via WhatsApp'}
+                      onChange={() => setPaymentMethod('Konfirmasi & Bayar via WhatsApp')}
+                      className="accent-emerald-800 mt-1"
                     />
                   </label>
 
-                  <label className={`flex items-center justify-between p-3 rounded-xl border cursor-pointer transition-all ${
-                    paymentMethod === 'Bayar di Tempat (COD Desa)' ? 'bg-emerald-50 border-emerald-600 text-emerald-900 font-bold' : 'bg-stone-50 border-stone-200 text-stone-700'
+                  {/* Option 3: Pay on Site / COD */}
+                  <label className={`flex items-start justify-between p-3.5 rounded-2xl border cursor-pointer transition-all ${
+                    paymentMethod === 'Bayar di Tempat (COD Desa)' ? 'bg-emerald-50/70 border-emerald-600 text-emerald-950 font-bold shadow-xs' : 'bg-stone-50 border-stone-200 text-stone-700 hover:bg-stone-100/70'
                   }`}>
-                    <div className="flex items-center gap-2 text-xs">
-                      <Coins className="w-4 h-4 text-emerald-800" />
-                      <span>{language === 'en' ? 'Pay on Site upon Check-in / Village COD' : 'Bayar di Tempat saat Check-in / COD Desa'}</span>
+                    <div className="flex items-start gap-3 text-xs">
+                      <div className="p-2 rounded-xl bg-amber-100 text-amber-800 shrink-0 mt-0.5">
+                        <Coins className="w-4 h-4" />
+                      </div>
+                      <div className="space-y-1">
+                        <div className="flex items-center gap-2">
+                          <span className="font-bold text-stone-900">
+                            {language === 'en' ? 'Pay on Site upon Check-in (Village COD)' : 'Bayar Tunai di Tempat saat Check-in (COD Desa)'}
+                          </span>
+                        </div>
+                        <p className="text-[11px] text-stone-500 font-normal leading-relaxed">
+                          {language === 'en'
+                            ? 'Pay cash upon arrival at the village destination or homestay.'
+                            : 'Pembayaran tunai langsung kepada pengelola desa saat tiba di lokasi.'}
+                        </p>
+                      </div>
                     </div>
                     <input
                       type="radio"
                       name="payment"
                       checked={paymentMethod === 'Bayar di Tempat (COD Desa)'}
                       onChange={() => setPaymentMethod('Bayar di Tempat (COD Desa)')}
-                      className="accent-emerald-800"
+                      className="accent-emerald-800 mt-1"
                     />
                   </label>
 
@@ -374,10 +546,29 @@ export const CartView: React.FC = () => {
 
               <button
                 type="submit"
-                className="w-full py-4 bg-emerald-800 hover:bg-emerald-900 text-white font-extrabold rounded-2xl text-xs sm:text-sm shadow-xl transition-all hover:scale-[1.02] flex items-center justify-center gap-2 border-2 border-amber-300"
+                disabled={isProcessingPayment}
+                className={`w-full py-4 text-white font-extrabold rounded-2xl text-xs sm:text-sm shadow-xl transition-all hover:scale-[1.02] flex items-center justify-center gap-2 border-2 ${
+                  isProcessingPayment
+                    ? 'bg-stone-500 cursor-not-allowed border-stone-400'
+                    : 'bg-emerald-800 hover:bg-emerald-900 border-amber-300'
+                }`}
               >
-                <MessageCircle className="w-5 h-5 fill-white text-emerald-800" />
-                <span>{t('cart.checkoutWa')}</span>
+                {isProcessingPayment ? (
+                  <>
+                    <Loader2 className="w-5 h-5 animate-spin" />
+                    <span>{t('cart.processingPayment')}</span>
+                  </>
+                ) : paymentMethod === 'Midtrans Instant' ? (
+                  <>
+                    <Sparkles className="w-5 h-5 text-amber-300 fill-amber-300" />
+                    <span>{t('cart.payMidtrans')}</span>
+                  </>
+                ) : (
+                  <>
+                    <MessageCircle className="w-5 h-5 fill-white text-emerald-800" />
+                    <span>{t('cart.checkoutWa')}</span>
+                  </>
+                )}
               </button>
             </form>
           </div>
@@ -412,11 +603,11 @@ export const CartView: React.FC = () => {
           role="dialog"
           aria-modal="true"
           aria-labelledby="receipt-modal-title"
-          className="fixed inset-0 z-50 bg-stone-950/80 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto animate-in fade-in"
+          className="fixed inset-0 z-50 bg-stone-950/80 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto animate-in fade-in print:static print:inset-auto print:bg-white print:p-0 print:m-0 print:overflow-visible print:block"
           onClick={() => { setCompletedOrder(null); navigateTo('home'); }}
         >
           <div 
-            className="bg-white max-w-lg w-full rounded-3xl p-6 sm:p-8 shadow-2xl border border-stone-200 space-y-6 relative my-8 print:m-0 print:p-6 print:border-none print:shadow-none"
+            className="bg-white max-w-lg w-full rounded-3xl p-6 sm:p-8 shadow-2xl border border-stone-200 space-y-6 relative my-8 print:m-0 print:p-8 print:border print:border-stone-300 print:shadow-none print:max-w-none print:w-full print:rounded-2xl"
             onClick={(e) => e.stopPropagation()}
           >
             
@@ -466,10 +657,32 @@ export const CartView: React.FC = () => {
                 </span>
                 <span className="text-sm font-black text-stone-900 font-mono tracking-wider">{completedOrder.id}</span>
               </div>
-              <span className="px-2.5 py-1 bg-emerald-700 text-white rounded-full text-[10px] font-bold shadow-xs">
-                {language === 'en' ? 'Confirmed by Village Admin' : 'Terkonfirmasi Admin Desa'}
+              <span className={`px-2.5 py-1 rounded-full text-[10px] font-bold shadow-xs ${
+                completedOrder.status === 'selesai' ? 'bg-emerald-700 text-white' : 'bg-amber-600 text-white'
+              }`}>
+                {completedOrder.status === 'selesai'
+                  ? (language === 'en' ? 'Paid / Verified' : 'Lunas Terverifikasi')
+                  : (language === 'en' ? 'Confirmed by Village Admin' : 'Terkonfirmasi Admin Desa')}
               </span>
             </div>
+
+            {/* Midtrans Verification Badge if paid via gateway */}
+            {completedOrder.midtransTransactionId && (
+              <div className="p-3 bg-emerald-50 rounded-2xl border border-emerald-200 text-xs text-emerald-950 space-y-1">
+                <div className="flex items-center gap-1.5 font-bold text-emerald-800 text-[11px]">
+                  <CheckCircle2 className="w-3.5 h-3.5 text-emerald-700" />
+                  <span>Gateway Midtrans Sandbox Terverifikasi</span>
+                </div>
+                <div className="flex justify-between text-[10px] text-stone-600 font-mono">
+                  <span>TX ID: {completedOrder.midtransTransactionId}</span>
+                  {completedOrder.midtransPaymentType && (
+                    <span className="uppercase font-semibold text-emerald-800 bg-emerald-100/70 px-1.5 py-0.5 rounded">
+                      {completedOrder.midtransPaymentType.replace('_', ' ')}
+                    </span>
+                  )}
+                </div>
+              </div>
+            )}
 
             {/* QR Code Simulation with verification note */}
             <div className="p-4 bg-stone-50 rounded-2xl border border-dashed border-stone-300 text-center space-y-2">
@@ -538,6 +751,19 @@ export const CartView: React.FC = () => {
 
             {/* Actions (Hidden when printing) */}
             <div className="space-y-2 pt-2 print:hidden">
+              {/* Midtrans Official Payment Slip (PDF) if available */}
+              {completedOrder.midtransPdfUrl && (
+                <a
+                  href={completedOrder.midtransPdfUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full py-3 bg-sky-700 hover:bg-sky-800 text-white font-bold rounded-2xl text-xs shadow-md flex items-center justify-center gap-2 transition-all hover:scale-[1.01]"
+                >
+                  <Download className="w-4 h-4" />
+                  <span>{language === 'en' ? 'Download Midtrans Payment Slip (PDF)' : 'Unduh Bukti Pembayaran Resmi Midtrans (PDF)'}</span>
+                </a>
+              )}
+
               <button
                 onClick={() => window.print()}
                 className="w-full py-3 bg-emerald-800 hover:bg-emerald-900 text-amber-200 font-bold rounded-2xl text-xs shadow-md flex items-center justify-center gap-2 transition-all hover:scale-[1.01]"

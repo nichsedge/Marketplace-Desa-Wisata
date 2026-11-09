@@ -73,6 +73,13 @@
 - **Aset Gambar & Video Lokal:** Seluruh aset foto katalog produk dan galeri desa tersimpan lokal di `public/images/`. Video lokal terkompresi tersimpan di `public/videos/` dan mendukung embed eksternal YouTube / Vimeo.
 - **Bilingual Support (ID/EN):** Menggunakan kamus i18n terstruktur di `src/i18n/translations.ts` dengan toggle bahasa di Navbar & Footer tanpa perlu library pihak ketiga berlebih.
 - **Visitor Funnel Tracking (Opsi A - Hybrid Deal Confirmation):** Pelacakan aktivitas pengunjung berbasis client-side `localStorage` + integrasi GA4 (`trackProductTap`, `trackSearchQuery`, `trackWhatsAppClick`, `trackDealCompleted`). Admin Desa mengonfirmasi pesanan lunas langsung di dasbor sehingga konversi dan omzet terhitung otomatis tanpa butuh server backend berbayar.
+- **Midtrans Payment Gateway (Snap API Sandbox):**
+  - **Arsitektur Zero-Lock-In:**
+    - *Vercel Serverless Function:* `api/midtrans-token.ts` (Server Key aman di `.env`, tidak bocor ke client JS bundle).
+    - *Cloudflare Pages Function Fallback:* `functions/api/midtrans-token.ts` (zero-config fallback siap pakai jika migrasi ke Cloudflare).
+    - *Local Dev Middleware:* Di-handle langsung via custom plugin di `vite.config.ts` sehingga `bun run dev` langsung bisa uji coba pembayaran Sandbox di laptop.
+  - *Frontend Snap Modal:* Script `snap.js` di `index.html` dan helper di `src/utils/midtrans.ts` memunculkan modal resmi Snap (QRIS, VA Bank, E-Wallet).
+  - *Auto Deal Completion & Clean PDF E-Ticket:* Pembayaran sukses otomatis memperbarui pesanan menjadi Lunas (`selesai`), memicu `trackDealCompleted`, dan membuka E-Ticket resmi yang dioptimasi khusus untuk cetak/PDF (`@media print` bersih tanpa navbar/footer/backdrop gelap) serta tombol unduh PDF resmi Midtrans (`midtransPdfUrl`).
 - **Avatar Standar WhatsApp:** Profil pengguna, Admin Desa, ulasan, dan testimoni menggunakan avatar standar *"no profile picture"* ala WhatsApp (`public/images/default-avatar.svg` via komponen `<UserAvatar />`) dan dilarang memakai foto wajah orang dummy/stok Unsplash.
 
 ---
