@@ -103,6 +103,9 @@ Routing dikendalikan via state terpusat `useApp().navigateTo(page: PageRoute)`:
 # Typecheck
 bun run lint
 
+# Automated Invariant & Product Tests
+bun test
+
 # Production Build
 bun run build
 

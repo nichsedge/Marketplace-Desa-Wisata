@@ -101,6 +101,11 @@ Seluruh foto katalog produk, homestay, dan lanskap 7 desa aktif tersimpan secara
    bun run lint
    ```
 
+5. Menjalankan Pengujian Otomatis (Automated Invariant & Data Integrity Tests):
+   ```bash
+   bun test
+   ```
+
 ## 🔄 Pipeline Pembersihan Data Riil Klien & Kompresi WebP (Adaptive Pipeline)
 
 Platform dilengkapi script pemrosesan otomatis berbasis `uv` untuk membaca data riil lapangan dari klien tanpa mengubah file mentah (`assets/real_data_from_client/list produk unggulan marketplace lembang.tsv`):

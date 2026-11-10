@@ -48,6 +48,27 @@ export const ProductDetailView: React.FC = () => {
   } = useApp();
 
   const rawProduct = products.find(p => p.id === selectedProductId) || products[0];
+  if (!rawProduct) {
+    return (
+      <div className="max-w-4xl mx-auto px-4 py-20 text-center space-y-4">
+        <h2 className="text-xl font-bold text-stone-800">
+          {language === 'en' ? 'Product Not Found' : 'Produk Tidak Ditemukan'}
+        </h2>
+        <p className="text-sm text-stone-500">
+          {language === 'en'
+            ? 'The requested product or service could not be loaded.'
+            : 'Produk atau layanan yang Anda tuju tidak tersedia atau telah dipindahkan.'}
+        </p>
+        <button
+          onClick={() => navigateTo('marketplace')}
+          className="px-6 py-2.5 bg-emerald-800 text-white rounded-xl text-xs font-bold hover:bg-emerald-900 transition-colors"
+        >
+          {language === 'en' ? 'Back to Marketplace' : 'Kembali ke Marketplace'}
+        </button>
+      </div>
+    );
+  }
+
   const product = getLocalizedProduct(rawProduct, language);
 
   const getTomorrowDate = () => {
@@ -107,6 +128,7 @@ export const ProductDetailView: React.FC = () => {
 
   const categoryBadge = getCategoryBadge(product.category, language);
   const isHomestay = product.category === 'homestay' || product.category === 'penginapan-lokal';
+  const isPackage = product.category === 'paket-wisata' || product.category === 'wisata-alam';
   const nights = isHomestay ? calculateNights(bookingDateStart, bookingDateEnd) : 1;
   const totalPrice = isHomestay
     ? activePrice * quantity * nights
@@ -148,8 +170,8 @@ export const ProductDetailView: React.FC = () => {
     addToCart(
       productToAdd, 
       quantity, 
-      product.category === 'homestay' || product.category === 'paket-wisata' || product.category === 'wisata-alam' ? bookingDateStart : undefined,
-      product.category === 'homestay' ? bookingDateEnd : undefined,
+      (isHomestay || isPackage) ? bookingDateStart : undefined,
+      isHomestay ? bookingDateEnd : undefined,
       guestCount,
       combinedNotes
     );
@@ -169,9 +191,9 @@ export const ProductDetailView: React.FC = () => {
 
     const text = createProductWhatsAppMessage(productForWa, {
       quantity,
-      bookingDateStart: product.category === 'homestay' || product.category === 'paket-wisata' || product.category === 'wisata-alam' ? bookingDateStart : undefined,
-      bookingDateEnd: product.category === 'homestay' ? bookingDateEnd : undefined,
-      guestCount: product.category === 'homestay' || product.category === 'paket-wisata' || product.category === 'wisata-alam' ? guestCount : undefined,
+      bookingDateStart: (isHomestay || isPackage) ? bookingDateStart : undefined,
+      bookingDateEnd: isHomestay ? bookingDateEnd : undefined,
+      guestCount: (isHomestay || isPackage) ? guestCount : undefined,
       notes: combinedNotes
     });
     const targetPhone = product.sellerPhone || WHATSAPP_PHONE;
@@ -697,7 +719,7 @@ export const ProductDetailView: React.FC = () => {
             <div className="space-y-4">
               
               {/* Date Selectors for Homestay / Tour */}
-              {(product.category === 'homestay' || product.category === 'paket-wisata') && (
+              {(isHomestay || isPackage) && (
                 <div className="space-y-3 p-4 bg-stone-50 rounded-2xl border border-stone-200">
                   <label className="text-xs font-bold text-stone-800 flex items-center gap-1.5">
                     <Calendar className="w-4 h-4 text-emerald-700" />
@@ -714,7 +736,7 @@ export const ProductDetailView: React.FC = () => {
                         className="w-full p-2 bg-white border border-stone-300 rounded-xl text-xs font-bold focus:outline-none focus:ring-2 focus:ring-emerald-600"
                       />
                     </div>
-                    {product.category === 'homestay' && (
+                    {isHomestay && (
                       <div>
                         <span className="text-[10px] text-stone-500 font-semibold block">{language === 'en' ? 'Check-out' : 'Check-out'}</span>
                         <input
@@ -730,7 +752,7 @@ export const ProductDetailView: React.FC = () => {
               )}
 
               {/* Guest Count */}
-              {(product.category === 'homestay' || product.category === 'paket-wisata') && (
+              {(isHomestay || isPackage) && (
                 <div className="p-4 bg-stone-50 rounded-2xl border border-stone-200 flex items-center justify-between">
                   <div>
                     <span className="text-xs font-bold text-stone-800 block">{language === 'en' ? 'Guests / People' : 'Jumlah Tamu / Orang'}</span>
@@ -759,7 +781,7 @@ export const ProductDetailView: React.FC = () => {
               )}
 
               {/* Quantity Counter for Physical Souvenir / Culinary / UMKM */}
-              {product.category !== 'homestay' && product.category !== 'paket-wisata' && (
+              {!isHomestay && !isPackage && (
                 <div className="p-4 bg-stone-50 rounded-2xl border border-stone-200 flex items-center justify-between">
                   <div>
                     <span className="text-xs font-bold text-stone-800 block">{language === 'en' ? 'Order Quantity' : 'Jumlah Pesanan'}</span>
@@ -805,7 +827,7 @@ export const ProductDetailView: React.FC = () => {
 
             {/* Subtotal Calculation */}
             <div className="pt-4 border-t border-stone-200 space-y-1.5">
-              {product.category === 'homestay' && (
+              {isHomestay && (
                 <div className="flex items-center justify-between text-xs text-stone-500">
                   <span>{language === 'en' ? `Details (${nights} nights x ${quantity} units):` : `Rincian (${nights} malam x ${quantity} unit):`}</span>
                   <span className="font-semibold text-stone-700">{formatRupiah(product.price)} x {nights} x {quantity}</span>

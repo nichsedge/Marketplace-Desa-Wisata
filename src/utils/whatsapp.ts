@@ -72,7 +72,8 @@ export const createCartWhatsAppMessage = (
     message += ` (${targetSeller})`;
   }
   message += `\nSaya ingin melakukan pemesanan wisata/produk via platform:\n\n`;
-  message += `👤 *Nama Pemesan:* ${customerInfo.name}\n`;
+  const customerDisplayName = customerInfo.name?.trim() || 'Wisatawan';
+  message += `👤 *Nama Pemesan:* ${customerDisplayName}\n`;
   if (customerInfo.phone) message += `📱 *No. HP/WA:* ${customerInfo.phone}\n`;
   if (customerInfo.address) message += `📍 *Alamat/Kota Asal:* ${customerInfo.address}\n`;
 
