@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { useApp } from '../context/AppContext';
 import { formatRupiah } from '../components/ProductCard';
 import { fetchOrderById } from '../services/orderService';
+import { TicketQRCode } from '../components/TicketQRCode';
 import { 
   ShieldCheck, 
   Search, 
@@ -69,11 +70,16 @@ export const VerifyTicketView: React.FC = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [checkInStateKey, setCheckInStateKey] = useState<number>(0);
 
-  // Auto-search if orderId is present in URL
+  // Auto-search if orderId is present in URL query or hash
   useEffect(() => {
     if (typeof window !== 'undefined') {
       const params = new URLSearchParams(window.location.search);
-      const urlOrderId = params.get('orderId') || params.get('id');
+      let urlOrderId = params.get('orderId') || params.get('id');
+      if (!urlOrderId && window.location.hash.includes('?')) {
+        const hashQuery = window.location.hash.split('?')[1];
+        const hashParams = new URLSearchParams(hashQuery);
+        urlOrderId = hashParams.get('orderId') || hashParams.get('id');
+      }
       if (urlOrderId) {
         setInputOrderId(urlOrderId);
         handleLookup(urlOrderId);
@@ -262,23 +268,33 @@ export const VerifyTicketView: React.FC = () => {
               </div>
             </div>
 
-            {/* Destination Village */}
-            <div className="p-4 bg-emerald-50/70 border border-emerald-200/80 rounded-2xl flex items-center justify-between">
-              <div className="flex items-center gap-2.5">
-                <MapPin className="w-5 h-5 text-emerald-800 shrink-0" />
-                <div>
-                  <span className="text-[10px] font-bold text-stone-500 uppercase block">Lokasi Destinasi Desa</span>
-                  <span className="font-extrabold text-stone-900 text-sm">
-                    {foundOrder.villageName || foundOrder.village_id || 'Kawasan Lembang'}
-                  </span>
+            {/* Destination Village & Visual QR Code */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div className="md:col-span-2 p-4 bg-emerald-50/70 border border-emerald-200/80 rounded-2xl flex flex-col justify-between space-y-3">
+                <div className="flex items-center gap-2.5">
+                  <MapPin className="w-5 h-5 text-emerald-800 shrink-0" />
+                  <div>
+                    <span className="text-[10px] font-bold text-stone-500 uppercase block">Lokasi Destinasi Desa</span>
+                    <span className="font-extrabold text-stone-900 text-sm">
+                      {foundOrder.villageName || foundOrder.village_id || 'Kawasan Lembang'}
+                    </span>
+                  </div>
+                </div>
+                <div className="flex justify-end">
+                  <button
+                    onClick={() => navigateTo('desa-detail', undefined, foundOrder.villageId || foundOrder.village_id)}
+                    className="px-3 py-1.5 bg-emerald-800 text-amber-200 rounded-xl text-xs font-bold hover:bg-emerald-900 transition-colors cursor-pointer"
+                  >
+                    Peta Lokasi Desa
+                  </button>
                 </div>
               </div>
-              <button
-                onClick={() => navigateTo('desa-detail', undefined, foundOrder.villageId || foundOrder.village_id)}
-                className="px-3 py-1.5 bg-emerald-800 text-amber-200 rounded-xl text-xs font-bold hover:bg-emerald-900 transition-colors"
-              >
-                Peta Lokasi Desa
-              </button>
+
+              {/* Scannable E-Ticket QR */}
+              <div className="p-3 bg-stone-50 border border-stone-200 rounded-2xl flex flex-col items-center justify-center text-center">
+                <TicketQRCode orderId={foundOrder.id} size={110} showUrlText={false} />
+                <span className="text-[10px] text-stone-500 font-semibold mt-1">Pindai QR Pintu Masuk</span>
+              </div>
             </div>
 
             {/* Booked Items List */}

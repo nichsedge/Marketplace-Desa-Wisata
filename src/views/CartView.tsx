@@ -38,6 +38,7 @@ import {
   ShippingZoneId, 
   hasPhysicalItems 
 } from '../utils/shipping';
+import { TicketQRCode } from '../components/TicketQRCode';
 
 export const CartView: React.FC = () => {
   const { 
@@ -793,15 +794,18 @@ export const CartView: React.FC = () => {
               </div>
             )}
 
-            {/* QR Code Simulation with verification note */}
-            <div className="p-4 bg-stone-50 rounded-2xl border border-dashed border-stone-300 text-center space-y-2">
-              <div className="w-32 h-32 bg-white border border-stone-200 p-2 rounded-xl mx-auto flex items-center justify-center shadow-xs">
-                <QrCode className="w-28 h-28 text-stone-900" />
-              </div>
-              <p className="text-[11px] font-bold text-emerald-900">
+            {/* Dynamic Scannable QR Code with gatekeeper verification note */}
+            <div className="p-4 bg-stone-50 rounded-2xl border border-dashed border-stone-300 text-center space-y-2.5 print:bg-white print:border-stone-400">
+              <TicketQRCode orderId={completedOrder.id} size={140} />
+              <p className="text-[11px] font-bold text-emerald-900 print:text-stone-900">
                 {language === 'en'
-                  ? 'Show this QR code to the respective Village Admin / Host upon arrival at the location'
-                  : 'Tunjukkan QR Code ini kepada Admin / Pengelola Desa terkait saat tiba di lokasi'}
+                  ? 'Scan or show this QR code to the Village Admin / Gatekeeper upon arrival at location'
+                  : 'Pindai atau tunjukkan QR Code ini kepada Admin Desa / Petugas Pintu Gerbang saat tiba di lokasi'}
+              </p>
+              <p className="text-[10px] text-stone-500 print:text-stone-700">
+                {language === 'en'
+                  ? 'Direct verification link: /cek-pesanan'
+                  : 'Verifikasi validitas E-Ticket langsung via portal /cek-pesanan'}
               </p>
             </div>
 

@@ -242,12 +242,33 @@ uv run scripts/test_availability.py
 
 ---
 
-## 🎟️ Public E-Ticket Verifier & Gatekeeper Check-In (`/cek-pesanan`)
+## 🎟️ Public E-Ticket Verifier & Dynamic QR Code (`/cek-pesanan`)
 
-Halaman publik mandiri untuk memverifikasi keaslian reservasi dan mengonfirmasi check-in di pintu gerbang wisata:
-- **URL Halaman:** `https://sabalembang.id/cek-pesanan` (atau `/verify`)
-- **Pencarian Cepat:** Pencarian nomor tiket dengan pembacaan otomatis parameter query `?orderId=...`.
-- **Fitur Gatekeeper:** Tombol *Konfirmasi Check-In Pengunjung* untuk menandai tiket telah digunakan di lokasi wisata, mencegah pemalsuan tiket ganda.
+Halaman publik mandiri dan generator kode QR dinamis untuk memverifikasi keaslian reservasi serta konfirmasi check-in di pintu gerbang wisata:
+- **Komponen QR Vektor Sharp:** `src/components/TicketQRCode.tsx` menghasilkan QR Code beresolusi tinggi (2x crisp retina, `@media print` pixelated) langsung mengarah ke `https://sabalembang.id/cek-pesanan?orderId=<orderId>`.
+- **E-Ticket Siap Cetak:** Tampil otomatis pada modal tiket transaksi sukses di `CartView.tsx` dan lembar verifikasi `VerifyTicketView.tsx`.
+- **URL Halaman Verifikasi:** `https://sabalembang.id/cek-pesanan` (atau `/verify` / `#cek-pesanan`)
+- **Pencarian Cepat:** Pencarian nomor tiket dengan pembacaan otomatis parameter query maupun hash (`?orderId=...`).
+- **Fitur Gatekeeper:** Tombol *Konfirmasi Check-In Pengunjung* untuk menandai tiket telah digunakan di lokasi wisata, mencegah pemalsuan atau penggunaan tiket ganda.
+
+---
+
+## 🎯 Master Production QA & Test Orchestrator
+
+Satu perintah terpadu untuk menjalankan seluruh matriks audit kualitas kode, build produksi, dan logika bisnis (Zero-Defect Standard):
+
+```bash
+uv run scripts/run_all_audits.py
+```
+
+Audit terotomatisasi ini mencakup:
+1. **TypeScript Strict Typecheck:** `bun run lint` (0 error tipe)
+2. **Production Bundle Compilation:** `bun run build` (Vite code splitting & chunk optimization)
+3. **Smart Multi-Zone Shipping Calculator:** `uv run scripts/test_shipping.py` (5 zona tarif & klasifikasi komoditas)
+4. **Real-Time Availability & Overbooking Guard:** `uv run scripts/test_availability.py` (matematika irisan interval tanggal reservasi)
+5. **Multi-Village Revenue Split Ledger:** `uv run scripts/test_finance_ledger.py` (pembagian hak kas desa 94.3%, kas kawasan 5%, dan MDR 0.7%)
+6. **WhatsApp Notification Dispatcher:** `uv run scripts/test_whatsapp_dispatcher.py` (normalisasi nomor HP & template notifikasi)
+7. **End-to-End Serverless HTTP Pipeline:** Deteksi otomatis dev server untuk menguji endpoint webhook SHA-512 dan persistent orders.
 
 ---
 

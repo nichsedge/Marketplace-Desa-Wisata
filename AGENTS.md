@@ -94,6 +94,7 @@
     - *Local Dev Middleware:* Di-handle langsung via custom plugin di `vite.config.ts` sehingga `bun run dev` langsung bisa uji coba pembayaran Sandbox & Webhook di laptop.
   - *Frontend Snap Modal:* Script `snap.js` di `index.html` dan helper di `src/utils/midtrans.ts` memunculkan modal resmi Snap (QRIS, VA Bank, E-Wallet).
   - *Auto Deal Completion & Clean PDF E-Ticket:* Pembayaran sukses otomatis memperbarui pesanan menjadi Lunas (`selesai`), memicu `trackDealCompleted`, dan membuka E-Ticket resmi yang dioptimasi khusus untuk cetak/PDF (`@media print` bersih tanpa navbar/footer/backdrop gelap) serta tombol unduh PDF resmi Midtrans (`midtransPdfUrl`).
+  - *Dynamic Scannable QR Code:* Komponen `src/components/TicketQRCode.tsx` me-render QR Code resolusi tinggi untuk pemindaian instan oleh Admin Desa / Petugas Pintu Gerbang menuju portal verifikasi `/cek-pesanan?orderId=...`.
 - **Avatar Standar WhatsApp:** Profil pengguna, Admin Desa, ulasan, dan testimoni menggunakan avatar standar *"no profile picture"* ala WhatsApp (`public/images/default-avatar.svg` via komponen `<UserAvatar />`) dan dilarang memakai foto wajah orang dummy/stok Unsplash.
 
 ---
@@ -115,6 +116,9 @@ Routing dikendalikan via state terpusat `useApp().navigateTo(page: PageRoute)`:
 
 ## 🛠️ Verification & Build Commands
 ```bash
+# Master QA & Full Verification Matrix (Zero-Defect Audit)
+uv run scripts/run_all_audits.py
+
 # Typecheck
 bun run lint
 
