@@ -109,6 +109,7 @@ Routing dikendalikan via state terpusat `useApp().navigateTo(page: PageRoute)`:
 - `cart`: Ringkasan pesanan dan modal penerbitan E-Ticket resmi siap cetak (`window.print()`).
 - `auth`: Autentikasi pengelola/Admin Desa.
 - `dashboard`: Dasbor Admin Desa untuk posting konten foto aktual, kelola data desa, dan pantau pesanan.
+- `verify`: Halaman publik verifikasi dan validasi keaslian E-Ticket (`/cek-pesanan`) serta konfirmasi check-in pintu gerbang wisata.
 
 ---
 
@@ -140,6 +141,15 @@ uv run scripts/test_finance_ledger.py
 
 # Automated WhatsApp Notification Dispatcher Simulation
 uv run scripts/test_whatsapp_dispatcher.py
+
+# Smart Multi-Zone Shipping Calculator Audit
+uv run scripts/test_shipping.py
+
+# Real-Time Availability & Overbooking Guard Audit
+uv run scripts/test_availability.py
+
+# Production Deployment Guide Export to PDF
+uv run scripts/md_to_pdf.py docs/PRODUCTION_DEPLOYMENT_GUIDE.md
 ```
 
 ---

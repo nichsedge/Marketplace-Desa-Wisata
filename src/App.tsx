@@ -13,6 +13,7 @@ const VillageDetailView = lazy(() => import('./views/VillageDetailView').then(m 
 const CartView = lazy(() => import('./views/CartView').then(m => ({ default: m.CartView })));
 const AuthView = lazy(() => import('./views/AuthView').then(m => ({ default: m.AuthView })));
 const SellerDashboardView = lazy(() => import('./views/SellerDashboardView').then(m => ({ default: m.SellerDashboardView })));
+const VerifyTicketView = lazy(() => import('./views/VerifyTicketView').then(m => ({ default: m.VerifyTicketView })));
 
 const ViewLoadingFallback: React.FC = () => (
   <div className="min-h-[50vh] flex flex-col items-center justify-center p-8 space-y-3" role="status" aria-label="Memuat halaman...">
@@ -38,6 +39,7 @@ const MainContent: React.FC = () => {
           {page === 'cart' && <CartView />}
           {page === 'auth' && <AuthView />}
           {page === 'dashboard' && <SellerDashboardView />}
+          {page === 'verify' && <VerifyTicketView />}
         </Suspense>
       </div>
       <Footer />

@@ -19,7 +19,8 @@ import {
   Phone,
   ArrowRight,
   Sparkles,
-  Globe
+  Globe,
+  QrCode
 } from 'lucide-react';
 import { scoreProductSearch } from '../utils/search';
 import { getLocalizedProduct } from '../i18n/productTranslations';
@@ -155,6 +156,7 @@ export const Navbar: React.FC = () => {
     { label: t('nav.homestay'), route: 'homestay', icon: <BedDouble className="w-4 h-4" /> },
     { label: t('nav.packages'), route: 'paket-wisata', icon: <TreePine className="w-4 h-4" /> },
     { label: t('nav.villages'), route: 'desa-detail', icon: <MapPin className="w-4 h-4" /> },
+    { label: language === 'en' ? 'Verify Ticket' : 'Cek E-Ticket', route: 'verify', icon: <QrCode className="w-4 h-4" /> },
   ];
 
   return (

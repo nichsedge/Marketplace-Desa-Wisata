@@ -107,6 +107,7 @@ export const Footer: React.FC = () => {
               <li><button onClick={() => navigateTo('homestay')} className="hover:text-emerald-400 transition-colors cursor-pointer">{language === 'en' ? 'Local Stays & Homestays' : 'Penginapan & Homestay Warga'}</button></li>
               <li><button onClick={() => navigateTo('paket-wisata')} className="hover:text-emerald-400 transition-colors cursor-pointer">{language === 'en' ? 'Nature & Offroad Tour Packages' : 'Paket Wisata Alam & Offroad'}</button></li>
               <li><button onClick={() => navigateTo('desa-detail')} className="hover:text-emerald-400 transition-colors cursor-pointer">{language === 'en' ? 'Tourism Village Directory & Profiles' : 'Direktori & Profil Desa Wisata'}</button></li>
+              <li><button onClick={() => navigateTo('verify')} className="hover:text-amber-300 text-amber-200/90 font-bold transition-colors cursor-pointer">{language === 'en' ? 'Verify E-Ticket & Gatekeeper' : 'Cek & Validasi E-Ticket'}</button></li>
             </ul>
           </div>
 

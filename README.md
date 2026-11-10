@@ -206,3 +206,59 @@ Notifikasi otomatis ke nomor HP pengelola desa seketika pembayaran terkonfirmasi
 ```bash
 uv run scripts/test_whatsapp_dispatcher.py
 ```
+
+---
+
+## 🚚 Smart Multi-Zone Shipping & Logistics Calculator
+
+Kalkulasi otomatis biaya kirim untuk komoditas fisik (Kopi, Olahan Susu, Tanaman Hias Sukulen, Kuliner) terpisah dari layanan tiket/homestay:
+- **Modul Utilitas:** `src/utils/shipping.ts`
+- **Zona Pengiriman:**
+  - *Bandung Raya & Cimahi:* Flat kurir lokal Rp 15.000 (1-2 hari)
+  - *Jabodetabek:* Rp 12.000 / kg (1-3 hari)
+  - *Jawa Barat Luar:* Rp 18.000 / kg (2-3 hari)
+  - *Jawa Tengah, DIY, & Jawa Timur:* Rp 24.000 / kg (2-4 hari)
+  - *Luar Pulau Jawa:* Rp 38.000 / kg (3-6 hari)
+- **Integrasi Keranjang & Midtrans:** Total ongkir otomatis ditambahkan ke tagihan pembayaran Snap dan tercatat pada rincian pesanan.
+
+### 🧪 Uji Coba Kalkulator Ongkir via CLI:
+```bash
+uv run scripts/test_shipping.py
+```
+
+---
+
+## 📅 Real-Time Availability & Overbooking Guard
+
+Mencegah bentrok jadwal reservasi homestay dan paket wisata:
+- **Modul Utilitas:** `src/utils/availability.ts`
+- **Pendeteksi Tumpang Tindih:** Menghitung irisan rentang tanggal check-in/out dengan pesanan yang telah lunas (`status: 'selesai'`).
+- **Antarmuka Interaktif:** Menampilkan peringatan overbooked secara visual di halaman detail produk dan otomatis menonaktifkan tombol pemesanan jika tanggal telah terisi.
+
+### 🧪 Uji Coba Logika Overbooking Guard via CLI:
+```bash
+uv run scripts/test_availability.py
+```
+
+---
+
+## 🎟️ Public E-Ticket Verifier & Gatekeeper Check-In (`/cek-pesanan`)
+
+Halaman publik mandiri untuk memverifikasi keaslian reservasi dan mengonfirmasi check-in di pintu gerbang wisata:
+- **URL Halaman:** `https://sabalembang.id/cek-pesanan` (atau `/verify`)
+- **Pencarian Cepat:** Pencarian nomor tiket dengan pembacaan otomatis parameter query `?orderId=...`.
+- **Fitur Gatekeeper:** Tombol *Konfirmasi Check-In Pengunjung* untuk menandai tiket telah digunakan di lokasi wisata, mencegah pemalsuan tiket ganda.
+
+---
+
+## 📘 Panduan Lengkap Go-Live Production
+
+Dokumentasi lengkap panduan migrasi dari sandbox ke transaksi nyata komersial tersedia di:
+- **File Markdown:** `docs/PRODUCTION_DEPLOYMENT_GUIDE.md`
+- **Dokumen PDF Resmi A4:** `docs/PRODUCTION_DEPLOYMENT_GUIDE.pdf`
+- **Environment Template:** `.env.production.example`
+
+```bash
+# Cetak ulang panduan deployment ke PDF
+uv run scripts/md_to_pdf.py docs/PRODUCTION_DEPLOYMENT_GUIDE.md
+```

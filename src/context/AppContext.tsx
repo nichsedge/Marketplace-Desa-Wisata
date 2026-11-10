@@ -22,7 +22,8 @@ export type PageRoute =
   | 'product-detail'
   | 'cart'
   | 'dashboard'
-  | 'auth';
+  | 'auth'
+  | 'verify';
 
 interface ToastState {
   message: string;
@@ -159,6 +160,18 @@ const getInitialPage = (): PageRoute => {
   if (hash === 'paket-wisata' || pageParam === 'paket-wisata' || pathname === '/paket-wisata' || pathname.startsWith('/paket-wisata')) return 'paket-wisata';
   if (hash === 'desa-detail' || pageParam === 'desa-detail' || pathname === '/desa-detail' || pathname.startsWith('/desa-detail')) return 'desa-detail';
   if (hash === 'cart' || pageParam === 'cart' || pathname === '/cart' || pathname.startsWith('/cart')) return 'cart';
+  if (
+    hash === 'verify' ||
+    hash === 'cek-pesanan' ||
+    pageParam === 'verify' ||
+    pageParam === 'cek-pesanan' ||
+    pathname === '/cek-pesanan' ||
+    pathname.startsWith('/cek-pesanan') ||
+    pathname === '/verify' ||
+    pathname.startsWith('/verify')
+  ) {
+    return 'verify';
+  }
 
   return 'home';
 };
@@ -266,7 +279,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
     if (typeof window !== 'undefined') {
       try {
-        const cleanPath = route === 'home' ? '/' : route === 'auth' ? '/login' : `/${route}`;
+        const cleanPath = route === 'home' ? '/' : route === 'auth' ? '/login' : route === 'verify' ? '/cek-pesanan' : `/${route}`;
         window.history.pushState({ route, productId, villageId }, '', cleanPath);
       } catch {
         // ignore navigation history error

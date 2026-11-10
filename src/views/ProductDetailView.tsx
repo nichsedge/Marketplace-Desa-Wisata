@@ -26,15 +26,18 @@ import {
   MessageCircle,
   Play,
   Video,
-  ImageIcon
+  ImageIcon,
+  AlertCircle
 } from 'lucide-react';
 import { WHATSAPP_PHONE, formatWhatsAppUrl, createProductWhatsAppMessage } from '../utils/whatsapp';
 import { parseVideoUrl } from '../utils/video';
 import { getLocalizedProduct } from '../i18n/productTranslations';
+import { checkBookingConflict } from '../utils/availability';
 
 export const ProductDetailView: React.FC = () => {
   const { 
     products, 
+    orders,
     selectedProductId, 
     navigateTo, 
     addToCart, 
@@ -107,10 +110,16 @@ export const ProductDetailView: React.FC = () => {
 
   const categoryBadge = getCategoryBadge(product.category, language);
   const isHomestay = product.category === 'homestay' || product.category === 'penginapan-lokal';
+  const isBookingProduct = isHomestay || product.category === 'paket-wisata' || product.category === 'wisata-alam';
   const nights = isHomestay ? calculateNights(bookingDateStart, bookingDateEnd) : 1;
   const totalPrice = isHomestay
     ? activePrice * quantity * nights
     : activePrice * quantity;
+
+  // Real-time Availability & Overbooking Guard
+  const availability = isBookingProduct
+    ? checkBookingConflict(product.id, bookingDateStart, isHomestay ? bookingDateEnd : bookingDateStart, orders)
+    : { hasConflict: false, bookedRanges: [], statusText: '' };
 
   // Deduplicate gallery images so main image doesn't repeat
   const allGalleryImages = Array.from(new Set([product.image, ...(product.gallery || [])]));
@@ -134,6 +143,16 @@ export const ProductDetailView: React.FC = () => {
   };
 
   const handleAddToCart = () => {
+    if (availability.hasConflict) {
+      showToast(
+        language === 'en'
+          ? 'Selected date is already booked! Please select another date.'
+          : 'Tanggal yang dipilih sudah penuh/dipesan! Silakan pilih tanggal lain.',
+        'error'
+      );
+      return;
+    }
+
     const combinedNotes = [
       selectedPackage ? `[Paket Terpilih: ${selectedPackage.name}]` : '',
       specialNotes
@@ -156,6 +175,16 @@ export const ProductDetailView: React.FC = () => {
   };
 
   const handleOrderViaWhatsApp = () => {
+    if (availability.hasConflict) {
+      showToast(
+        language === 'en'
+          ? 'Selected date is already booked! Please select another date.'
+          : 'Tanggal yang dipilih sudah penuh/dipesan! Silakan pilih tanggal lain.',
+        'error'
+      );
+      return;
+    }
+
     const combinedNotes = [
       selectedPackage ? `Pilihan Paket: ${selectedPackage.name} (Rp ${selectedPackage.price.toLocaleString('id-ID')} ${selectedPackage.unit})` : '',
       specialNotes
@@ -726,6 +755,26 @@ export const ProductDetailView: React.FC = () => {
                       </div>
                     )}
                   </div>
+
+                  {/* Overbooking Guard Conflict Alert */}
+                  {availability.hasConflict ? (
+                    <div className="p-3 bg-rose-50 border border-rose-200 rounded-xl flex items-start gap-2 text-xs text-rose-800 animate-pulse">
+                      <AlertCircle className="w-4 h-4 text-rose-600 shrink-0 mt-0.5" />
+                      <div className="space-y-0.5">
+                        <span className="font-bold block">Tanggal Sudah Dipesan (Overbooked)</span>
+                        <p className="text-[11px] text-rose-700 leading-tight">
+                          {language === 'en'
+                            ? `This slot is already booked (${availability.conflictingRange?.startDate} to ${availability.conflictingRange?.endDate}). Please choose different dates.`
+                            : `Tanggal ini telah dibooking oleh wisatawan lain (${availability.conflictingRange?.startDate} s/d ${availability.conflictingRange?.endDate}). Silakan pilih rentang tanggal lain.`}
+                        </p>
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="flex items-center gap-1.5 text-[11px] text-emerald-800 font-semibold bg-emerald-50/70 border border-emerald-200/80 p-2 rounded-xl">
+                      <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                      <span>{language === 'en' ? 'Dates available & ready to book' : 'Tanggal tersedia & siap dibooking'}</span>
+                    </div>
+                  )}
                 </div>
               )}
 
@@ -821,18 +870,28 @@ export const ProductDetailView: React.FC = () => {
             <div className="space-y-2.5 pt-2">
               <button
                 onClick={handleOrderViaWhatsApp}
-                className="w-full py-4 bg-emerald-800 hover:bg-emerald-900 text-white font-extrabold rounded-2xl text-xs sm:text-sm shadow-xl transition-all hover:scale-[1.02] flex items-center justify-center gap-2 border-2 border-amber-300 cursor-pointer"
+                disabled={availability.hasConflict}
+                className={`w-full py-4 text-white font-extrabold rounded-2xl text-xs sm:text-sm shadow-xl transition-all flex items-center justify-center gap-2 border-2 ${
+                  availability.hasConflict
+                    ? 'bg-stone-400 border-stone-300 cursor-not-allowed opacity-80'
+                    : 'bg-emerald-800 hover:bg-emerald-900 border-amber-300 hover:scale-[1.02] cursor-pointer'
+                }`}
               >
                 <MessageCircle className="w-5 h-5 fill-white text-emerald-800" />
-                <span>{t('detail.directOrderWa')}</span>
+                <span>{availability.hasConflict ? (language === 'en' ? 'Dates Overbooked / Full' : 'Slot Penuh / Sudah Dipesan') : t('detail.directOrderWa')}</span>
               </button>
 
               <button
                 onClick={handleAddToCart}
-                className="w-full py-3 bg-amber-100 hover:bg-amber-200 text-amber-950 font-bold rounded-2xl text-xs border border-amber-300 transition-colors flex items-center justify-center gap-2 cursor-pointer"
+                disabled={availability.hasConflict}
+                className={`w-full py-3 font-bold rounded-2xl text-xs border transition-colors flex items-center justify-center gap-2 ${
+                  availability.hasConflict
+                    ? 'bg-stone-100 border-stone-200 text-stone-400 cursor-not-allowed'
+                    : 'bg-amber-100 hover:bg-amber-200 text-amber-950 border-amber-300 cursor-pointer'
+                }`}
               >
                 <ShoppingBag className="w-4 h-4 text-emerald-800" />
-                <span>{t('detail.addToCart')}</span>
+                <span>{availability.hasConflict ? (language === 'en' ? 'Not Available' : 'Tidak Tersedia') : t('detail.addToCart')}</span>
               </button>
 
               <button

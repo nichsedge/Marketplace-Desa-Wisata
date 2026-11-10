@@ -25,11 +25,19 @@ import {
   Sparkles,
   MessageCircle,
   Loader2,
-  AlertCircle
+  AlertCircle,
+  Truck,
+  PackageCheck
 } from 'lucide-react';
 import { WHATSAPP_PHONE, formatWhatsAppUrl, createCartWhatsAppMessage } from '../utils/whatsapp';
 import { getLocalizedProduct } from '../i18n/productTranslations';
 import { createMidtransSnapToken, openSnapPaymentModal, loadSnapScript } from '../utils/midtrans';
+import { 
+  calculateShipping, 
+  SHIPPING_ZONES, 
+  ShippingZoneId, 
+  hasPhysicalItems 
+} from '../utils/shipping';
 
 export const CartView: React.FC = () => {
   const { 
@@ -76,8 +84,15 @@ export const CartView: React.FC = () => {
     }
   }, [completedOrder]);
 
+  // Smart Shipping State for Physical Products
+  const requiresShipping = hasPhysicalItems(cart);
+  const [shippingZoneId, setShippingZoneId] = useState<ShippingZoneId>('bandung_raya');
+  const [shippingAddress, setShippingAddress] = useState<string>('');
+
+  const shippingResult = calculateShipping(cart, shippingZoneId);
+  const effectiveShippingFee = requiresShipping ? shippingResult.shippingFee : 0;
   const serviceFee = 0;
-  const grandTotal = cartTotal;
+  const grandTotal = cartTotal + effectiveShippingFee;
 
   const handleCheckoutSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -85,6 +100,16 @@ export const CartView: React.FC = () => {
     if (!customerName || !customerPhone) {
       showToast(
         language === 'en' ? 'Please fill in your name and phone number.' : 'Silakan lengkapi nama dan nomor WhatsApp.',
+        'error'
+      );
+      return;
+    }
+
+    if (requiresShipping && !shippingAddress.trim()) {
+      showToast(
+        language === 'en'
+          ? 'Please enter your shipping delivery address.'
+          : 'Silakan isi alamat tujuan pengiriman barang fisik Anda.',
         'error'
       );
       return;
@@ -107,6 +132,16 @@ export const CartView: React.FC = () => {
             name: nights > 1 ? `${itemProd.title} (${nights} malam)` : itemProd.title,
           };
         });
+
+        // Add shipping line item if physical products present
+        if (requiresShipping && effectiveShippingFee > 0) {
+          items.push({
+            id: 'shipping-charge',
+            price: effectiveShippingFee,
+            quantity: 1,
+            name: `Ongkir: ${shippingResult.zone.name} (${shippingResult.courierName})`,
+          });
+        }
 
         const { token } = await createMidtransSnapToken({
           orderId,
@@ -135,6 +170,9 @@ export const CartView: React.FC = () => {
                 midtransTransactionId: result.transaction_id,
                 midtransPaymentType: result.payment_type,
                 midtransPdfUrl: result.pdf_url,
+                shippingZone: requiresShipping ? shippingResult.zone.name : undefined,
+                shippingFee: effectiveShippingFee,
+                shippingAddress: requiresShipping ? shippingAddress : undefined,
               }
             );
             setCompletedOrder(order);
@@ -154,6 +192,9 @@ export const CartView: React.FC = () => {
                 midtransTransactionId: result.transaction_id,
                 midtransPaymentType: result.payment_type,
                 midtransPdfUrl: result.pdf_url,
+                shippingZone: requiresShipping ? shippingResult.zone.name : undefined,
+                shippingFee: effectiveShippingFee,
+                shippingAddress: requiresShipping ? shippingAddress : undefined,
               }
             );
             setCompletedOrder(order);
@@ -421,6 +462,63 @@ export const CartView: React.FC = () => {
                 </div>
               </div>
 
+              {/* Smart Shipping & Delivery Section for Physical Items */}
+              {requiresShipping && (
+                <div className="p-4 bg-emerald-50/50 rounded-2xl border border-emerald-200/80 space-y-3">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <span className="p-1.5 rounded-lg bg-emerald-800 text-amber-200">
+                        <Truck className="w-4 h-4" />
+                      </span>
+                      <div>
+                        <h4 className="text-xs font-bold text-stone-900">
+                          {language === 'en' ? 'Shipping Destination & Courier' : 'Zona Pengiriman Produk Fisik'}
+                        </h4>
+                        <p className="text-[10px] text-stone-500">
+                          {language === 'en'
+                            ? `Est. weight: ${(shippingResult.totalGrams / 1000).toFixed(1)} kg (${shippingResult.billableKg} kg billable)`
+                            : `Est. berat: ${(shippingResult.totalGrams / 1000).toFixed(1)} kg (${shippingResult.billableKg} kg terhitung)`}
+                        </p>
+                      </div>
+                    </div>
+                    <span className="text-[10px] font-extrabold px-2 py-0.5 rounded-full bg-emerald-200/60 text-emerald-900">
+                      {shippingResult.courierName}
+                    </span>
+                  </div>
+
+                  <div>
+                    <label className="text-[11px] font-bold text-stone-700 block mb-1">
+                      {language === 'en' ? 'Select Destination Area*' : 'Pilih Wilayah Tujuan Pengiriman*'}
+                    </label>
+                    <select
+                      value={shippingZoneId}
+                      onChange={(e) => setShippingZoneId(e.target.value as ShippingZoneId)}
+                      className="w-full p-2.5 bg-white border border-stone-200 rounded-xl text-xs font-semibold focus:outline-none focus:ring-2 focus:ring-emerald-600"
+                    >
+                      {Object.values(SHIPPING_ZONES).map((z) => (
+                        <option key={z.id} value={z.id}>
+                          {z.name} — {formatRupiah(calculateShipping(cart, z.id).shippingFee)} ({z.estimatedDays})
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+
+                  <div>
+                    <label className="text-[11px] font-bold text-stone-700 block mb-1">
+                      {language === 'en' ? 'Full Delivery Address*' : 'Alamat Lengkap Pengiriman (Nama Jalan, No. Rumah, RT/RW, Kota, Kode Pos)*'}
+                    </label>
+                    <textarea
+                      required
+                      rows={2}
+                      value={shippingAddress}
+                      onChange={(e) => setShippingAddress(e.target.value)}
+                      placeholder={language === 'en' ? 'e.g., Jl. Dago Asri No. 12, Bandung 40135' : 'Contoh: Jl. Dipatiukur No. 84, RT 02/RW 05, Bandung 40132'}
+                      className="w-full p-2.5 bg-white border border-stone-200 rounded-xl text-xs font-medium focus:outline-none focus:ring-2 focus:ring-emerald-600"
+                    />
+                  </div>
+                </div>
+              )}
+
               {/* Payment Methods Selection */}
               <div className="space-y-2">
                 <div className="flex items-center justify-between">
@@ -533,6 +631,15 @@ export const CartView: React.FC = () => {
                   <span>{language === 'en' ? 'Products & Services Subtotal:' : 'Subtotal Produk & Layanan:'}</span>
                   <span className="font-bold text-stone-900">{formatRupiah(cartTotal)}</span>
                 </div>
+                {requiresShipping && (
+                  <div className="flex justify-between text-stone-600">
+                    <span className="flex items-center gap-1.5">
+                      <Truck className="w-3.5 h-3.5 text-emerald-700" />
+                      <span>{language === 'en' ? `Shipping (${shippingResult.zone.name}):` : `Ongkir (${shippingResult.zone.name}):`}</span>
+                    </span>
+                    <span className="font-bold text-emerald-800">{formatRupiah(effectiveShippingFee)}</span>
+                  </div>
+                )}
                 <div className="flex justify-between text-stone-600">
                   <span>{language === 'en' ? 'Village Platform Maintenance Fee:' : 'Biaya Pemeliharaan Platform Desa:'}</span>
                   <span className="font-bold text-stone-900">{formatRupiah(serviceFee)}</span>
@@ -759,6 +866,21 @@ export const CartView: React.FC = () => {
               >
                 <Printer className="w-4 h-4" />
                 <span>{language === 'en' ? 'Print / Save as PDF (Official Receipt)' : 'Cetak / Simpan PDF (Resi Resmi)'}</span>
+              </button>
+
+              <button
+                onClick={() => {
+                  const targetId = completedOrder.id;
+                  setCompletedOrder(null);
+                  navigateTo('verify');
+                  if (typeof window !== 'undefined') {
+                    window.history.pushState({}, '', `/cek-pesanan?orderId=${encodeURIComponent(targetId)}`);
+                  }
+                }}
+                className="w-full py-2.5 bg-emerald-50 hover:bg-emerald-100 border border-emerald-300 text-emerald-900 font-bold rounded-2xl text-xs flex items-center justify-center gap-1.5 transition-colors"
+              >
+                <ShieldCheck className="w-4 h-4 text-emerald-700" />
+                <span>{language === 'en' ? 'Verify Ticket Authenticity at Gate' : 'Cek Status Validitas di Gerbang'}</span>
               </button>
 
               <button

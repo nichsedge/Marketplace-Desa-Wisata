@@ -111,6 +111,9 @@ export interface Order {
   midtransTransactionId?: string;
   midtransPaymentType?: string;
   midtransPdfUrl?: string;
+  shippingZone?: string;
+  shippingFee?: number;
+  shippingAddress?: string;
 }
 
 export interface InteractionEvent {
