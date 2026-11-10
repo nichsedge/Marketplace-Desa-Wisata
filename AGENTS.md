@@ -111,6 +111,9 @@ bun run dev
 
 # Client Real Data Pipeline (Clean TSV & WebP Image Compression)
 uv run scripts/process_client_data.py
+
+# Documentation Markdown to PDF Export
+uv run scripts/md_to_pdf.py docs/PANDUAN_SIMULASI_MIDTRANS.md
 ```
 
 ---

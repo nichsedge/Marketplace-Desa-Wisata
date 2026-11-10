@@ -123,3 +123,14 @@ uv run scripts/process_client_data.py
    uv run scripts/process_client_data.py
    ```
 4. **Verifikasi:** Jalankan `bun run lint && bun run build` dan periksa laporan kurasi terbaru di `docs/MEDIA_CURATION_TRACKER.md`.
+
+---
+
+## 📄 Ekspor Dokumen Markdown ke PDF (Publication-Grade A4)
+
+Untuk mencetak dokumen panduan atau dokumentasi Markdown menjadi file PDF rapi standar A4 (desain editorial Saba Lembang):
+
+```bash
+uv run scripts/md_to_pdf.py docs/PANDUAN_SIMULASI_MIDTRANS.md
+```
+Output otomatis disimpan ke file `.pdf` yang sesuai (contoh: `docs/PANDUAN_SIMULASI_MIDTRANS.pdf`).
