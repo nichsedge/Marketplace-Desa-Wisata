@@ -80,6 +80,9 @@
     - `functions/api/orders.ts` (Cloudflare Pages Function native dengan direct `context.env.DB` binding).
     - Dev server middleware di `vite.config.ts` untuk pengujian lokal (`/api/orders`).
   - *Auto Webhook Sync:* Webhook Midtrans otomatis memperbarui status transaksi menjadi `selesai` langsung ke database cloud D1/SQLite.
+- **Multi-Village Revenue Split & Financial Settlement Ledger:**
+  - *Formula Bagi Hasil Otomatis:* 94.3% Hak Kas Desa/UMKM Mitra, 5% Kas Pengelolaan BUMDes Bersama Kawasan, 0.7% MDR Payment Gateway.
+  - *Audit & Rekapitulasi:* `src/utils/finance.ts` dan Tab "Buku Kas & Bagi Hasil" di Dasbor (`SellerDashboardView.tsx`) dengan filter desa, rekap rekening kas resmi, status pencairan (`siap_cair` vs `sudah_ditransfer`), dan tombol ekspor CSV/Excel.
 - **Midtrans Payment Gateway (Snap API Sandbox):**
   - **Arsitektur Zero-Lock-In:**
     - *Vercel Serverless Function:* `api/midtrans-token.ts` (Server Key aman di `.env`, tidak bocor ke client JS bundle) & `api/midtrans-notification.ts` (Webhook HTTP handler dengan verifikasi SHA-512 signature).
@@ -127,6 +130,9 @@ uv run scripts/test_webhook.py
 
 # End-to-End Persistent Order Creation & Webhook Pipeline Test
 uv run scripts/test_order_pipeline.py
+
+# Multi-Village Revenue Split & Financial Settlement Audit
+uv run scripts/test_finance_ledger.py
 ```
 
 ---

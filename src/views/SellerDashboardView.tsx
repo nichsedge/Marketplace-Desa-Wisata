@@ -47,8 +47,22 @@ import {
   Activity,
   Play,
   Video,
-  Star
+  Star,
+  Wallet,
+  Download,
+  CreditCard,
+  Coins,
+  FileSpreadsheet,
+  CheckCheck,
+  Receipt
 } from 'lucide-react';
+import { 
+  calculateFinancialSummary, 
+  VILLAGE_BANK_ACCOUNTS, 
+  markOrderAsDisbursed, 
+  markOrderAsPendingPayout, 
+  exportLedgerToCsv 
+} from '../utils/finance';
 
 export const SellerDashboardView: React.FC = () => {
   const { 
@@ -73,12 +87,13 @@ export const SellerDashboardView: React.FC = () => {
     t
   } = useApp();
 
-  const [activeTab, setActiveTab] = useState<'feed' | 'profile' | 'orders' | 'analytics'>('feed');
+  const [activeTab, setActiveTab] = useState<'feed' | 'profile' | 'orders' | 'analytics' | 'finance'>('feed');
   const [feedCategoryFilter, setFeedCategoryFilter] = useState<ProductCategory | 'all'>('all');
   
   // Current active village for PIC
-  const activeVillageId = currentUser?.picVillageId || currentUser?.villageName ? 
-    (villages.find(v => v.name === currentUser?.villageName || v.id === currentUser?.picVillageId)?.id || 'des-01') : 'des-01';
+  const isSuperAdmin = currentUser?.picVillageId === 'all' || currentUser?.username === 'admin.lembang';
+  const activeVillageId = isSuperAdmin ? 'all' : (currentUser?.picVillageId || currentUser?.villageName ? 
+    (villages.find(v => v.name === currentUser?.villageName || v.id === currentUser?.picVillageId)?.id || 'des-01') : 'des-01');
   
   const currentVillage = villages.find(v => v.id === activeVillageId) || villages[0];
   const villageProducts = products.filter(p => p.villageId === currentVillage.id);
@@ -87,6 +102,11 @@ export const SellerDashboardView: React.FC = () => {
     : villageProducts.filter(p => p.category === feedCategoryFilter);
 
   const analyticsStats = getVillageAnalytics(currentVillage.id);
+
+  // Financial Ledger state
+  const [selectedFinanceVillage, setSelectedFinanceVillage] = useState<string>(isSuperAdmin ? 'all' : currentVillage.id);
+  const [financeRefreshKey, setFinanceRefreshKey] = useState<number>(0);
+  const financeSummary = calculateFinancialSummary(orders, selectedFinanceVillage);
 
   // Edit village profile state
   const [editVillageName, setEditVillageName] = useState(currentVillage.name);
@@ -596,6 +616,18 @@ export const SellerDashboardView: React.FC = () => {
         >
           <Activity className="w-4 h-4 text-amber-400" />
           <span>Analitik & Interaksi Pengunjung</span>
+        </button>
+
+        <button
+          onClick={() => setActiveTab('finance')}
+          className={`px-4 py-2.5 rounded-xl text-xs font-bold transition-all flex items-center gap-2 cursor-pointer ${
+            activeTab === 'finance'
+              ? 'bg-emerald-800 text-amber-200 shadow-sm'
+              : 'bg-white text-stone-700 border border-stone-200 hover:bg-stone-50'
+          }`}
+        >
+          <Coins className="w-4 h-4 text-amber-400" />
+          <span>Buku Kas & Bagi Hasil ({financeSummary.transactions.length})</span>
         </button>
       </div>
 
@@ -1138,6 +1170,265 @@ export const SellerDashboardView: React.FC = () => {
                 </div>
               ))}
             </div>
+          </div>
+        </div>
+      )}
+
+      {/* ========================================================== */}
+      {/* TAB 5: BUKU KAS & REVENUE SPLIT LEDGER (PRODUCTION READY)  */}
+      {/* ========================================================== */}
+      {activeTab === 'finance' && (
+        <div className="space-y-6">
+          {/* Header Bar */}
+          <div className="bg-white p-6 rounded-3xl border border-stone-200 shadow-sm flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+            <div>
+              <div className="flex items-center gap-2">
+                <span className="p-2 rounded-xl bg-amber-100 text-amber-800">
+                  <Coins className="w-5 h-5 text-amber-700" />
+                </span>
+                <h3 className="font-bold text-stone-900 text-base sm:text-lg font-serif-title">
+                  Buku Kas & Rekapitulasi Bagi Hasil Desa
+                </h3>
+              </div>
+              <p className="text-xs text-stone-500 mt-1 max-w-2xl">
+                Alur transparansi keuangan multi-desa: <strong>94.3%</strong> hak bersih kas desa/kelompok tani, <strong>5%</strong> kas pengembangan BUMDes Kawasan, dan <strong>0.7%</strong> MDR payment gateway.
+              </p>
+            </div>
+
+            <div className="flex flex-wrap items-center gap-2 w-full sm:w-auto">
+              {/* CSV Export Button */}
+              <button
+                onClick={() => {
+                  const csvData = exportLedgerToCsv(financeSummary);
+                  const blob = new Blob([csvData], { type: 'text/csv;charset=utf-8;' });
+                  const url = URL.createObjectURL(blob);
+                  const link = document.createElement('a');
+                  link.href = url;
+                  link.setAttribute('download', `rekap_finansial_${selectedFinanceVillage}_${new Date().toISOString().slice(0, 10)}.csv`);
+                  document.body.appendChild(link);
+                  link.click();
+                  document.body.removeChild(link);
+                }}
+                className="px-3.5 py-2 rounded-xl border border-stone-200 bg-white hover:bg-stone-50 text-stone-700 font-bold text-xs flex items-center gap-1.5 shadow-2xs transition-all cursor-pointer"
+              >
+                <FileSpreadsheet className="w-4 h-4 text-emerald-700" />
+                <span>Unduh CSV / Excel</span>
+              </button>
+
+              <button
+                onClick={() => window.print()}
+                className="px-3.5 py-2 rounded-xl bg-emerald-800 hover:bg-emerald-900 text-amber-200 font-bold text-xs flex items-center gap-1.5 shadow-2xs transition-all cursor-pointer"
+              >
+                <Download className="w-4 h-4" />
+                <span>Cetak Laporan Kas</span>
+              </button>
+            </div>
+          </div>
+
+          {/* Super Admin Village Filter Tabs (If Super Admin) */}
+          {isSuperAdmin && (
+            <div className="bg-white p-3.5 rounded-2xl border border-stone-200 shadow-xs flex items-center gap-2 overflow-x-auto">
+              <span className="text-xs font-bold text-stone-500 shrink-0 px-2 flex items-center gap-1">
+                <Building2 className="w-3.5 h-3.5 text-stone-400" />
+                <span>Filter Desa:</span>
+              </span>
+              <button
+                onClick={() => setSelectedFinanceVillage('all')}
+                className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all shrink-0 cursor-pointer ${
+                  selectedFinanceVillage === 'all'
+                    ? 'bg-emerald-800 text-amber-200 shadow-xs'
+                    : 'bg-stone-100 text-stone-700 hover:bg-stone-200'
+                }`}
+              >
+                Semua Kawasan (6 Desa)
+              </button>
+              {villages.map((v) => (
+                <button
+                  key={v.id}
+                  onClick={() => setSelectedFinanceVillage(v.id)}
+                  className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all shrink-0 cursor-pointer ${
+                    selectedFinanceVillage === v.id
+                      ? 'bg-emerald-800 text-amber-200 shadow-xs'
+                      : 'bg-stone-100 text-stone-700 hover:bg-stone-200'
+                  }`}
+                >
+                  {v.name.replace('Desa Wisata ', '')}
+                </button>
+              ))}
+            </div>
+          )}
+
+          {/* 4 Financial Stat Metric Cards */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div className="bg-white p-5 rounded-2xl border border-stone-200 shadow-xs space-y-1.5">
+              <span className="text-[10px] font-bold text-stone-400 uppercase tracking-wider block">1. Total Omzet Kotor</span>
+              <p className="text-xl sm:text-2xl font-black text-stone-900">{formatRupiah(financeSummary.totalGross)}</p>
+              <p className="text-[11px] text-stone-500 flex items-center gap-1">
+                <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
+                <span>{financeSummary.settledOrdersCount} transaksi lunas</span>
+              </p>
+            </div>
+
+            <div className="bg-white p-5 rounded-2xl border border-stone-200 shadow-xs space-y-1.5">
+              <span className="text-[10px] font-bold text-amber-800 uppercase tracking-wider block">2. Kas Kawasan BUMDes (5%)</span>
+              <p className="text-xl sm:text-2xl font-black text-amber-800">{formatRupiah(financeSummary.totalPlatformFee)}</p>
+              <p className="text-[11px] text-stone-500">Dana promosi & server</p>
+            </div>
+
+            <div className="bg-white p-5 rounded-2xl border border-stone-200 shadow-xs space-y-1.5">
+              <span className="text-[10px] font-bold text-stone-400 uppercase tracking-wider block">3. Biaya Gateway (0.7%)</span>
+              <p className="text-xl sm:text-2xl font-black text-stone-600">{formatRupiah(financeSummary.totalGatewayFee)}</p>
+              <p className="text-[11px] text-stone-500">MDR Midtrans resmi</p>
+            </div>
+
+            <div className="bg-gradient-to-br from-emerald-800 to-emerald-950 p-5 rounded-2xl text-white shadow-sm space-y-1.5 col-span-2 md:col-span-1">
+              <span className="text-[10px] font-bold text-amber-300 uppercase tracking-wider block">4. Hak Bersih Desa (94.3%)</span>
+              <p className="text-xl sm:text-2xl font-black text-amber-300">{formatRupiah(financeSummary.totalNetPayout)}</p>
+              <div className="flex items-center justify-between text-[11px] text-emerald-200 pt-1 border-t border-emerald-700/60">
+                <span>Siap Ditransfer:</span>
+                <span className="font-extrabold text-amber-200">{formatRupiah(financeSummary.readyForPayoutAmount)}</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Village Bank Account Info Banner */}
+          {selectedFinanceVillage !== 'all' && VILLAGE_BANK_ACCOUNTS[selectedFinanceVillage] && (
+            <div className="bg-emerald-50/70 border border-emerald-200/80 p-5 rounded-2xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-xl bg-emerald-800 text-amber-300 flex items-center justify-center shrink-0">
+                  <CreditCard className="w-5 h-5" />
+                </div>
+                <div>
+                  <div className="flex items-center gap-2">
+                    <h4 className="font-bold text-stone-900 text-sm">
+                      Rekening Kas Resmi: {VILLAGE_BANK_ACCOUNTS[selectedFinanceVillage].villageName}
+                    </h4>
+                    <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-200/60 text-emerald-900">
+                      Terverifikasi
+                    </span>
+                  </div>
+                  <p className="text-xs text-stone-600 mt-0.5">
+                    <strong>{VILLAGE_BANK_ACCOUNTS[selectedFinanceVillage].bankName}</strong> — No. Rek: <span className="font-mono font-bold text-stone-900">{VILLAGE_BANK_ACCOUNTS[selectedFinanceVillage].accountNumber}</span> a.n. <strong>{VILLAGE_BANK_ACCOUNTS[selectedFinanceVillage].accountHolder}</strong>
+                  </p>
+                </div>
+              </div>
+
+              <div className="text-left sm:text-right shrink-0">
+                <span className="text-[10px] uppercase font-bold text-stone-500 block">Bendahara Desa / PIC</span>
+                <p className="text-xs font-bold text-stone-800">
+                  {VILLAGE_BANK_ACCOUNTS[selectedFinanceVillage].picName} ({VILLAGE_BANK_ACCOUNTS[selectedFinanceVillage].picPhone})
+                </p>
+              </div>
+            </div>
+          )}
+
+          {/* Revenue Split Transactions Table */}
+          <div className="bg-white rounded-3xl border border-stone-200 shadow-xs overflow-hidden">
+            <div className="p-5 border-b border-stone-100 flex items-center justify-between">
+              <div>
+                <h4 className="font-bold text-stone-900 text-sm flex items-center gap-2">
+                  <Receipt className="w-4 h-4 text-emerald-700" />
+                  <span>Rincian Pembagian Hasil per Transaksi Lunas</span>
+                </h4>
+                <p className="text-xs text-stone-500 mt-0.5">
+                  Daftar transaksi yang telah terkonfirmasi lunas melalui Midtrans maupun Direct WhatsApp Deal.
+                </p>
+              </div>
+              <span className="text-xs font-bold text-stone-600 bg-stone-100 px-3 py-1 rounded-full">
+                {financeSummary.transactions.length} Transaksi
+              </span>
+            </div>
+
+            {financeSummary.transactions.length > 0 ? (
+              <div className="overflow-x-auto">
+                <table className="w-full text-left text-xs">
+                  <thead className="bg-stone-50/80 border-b border-stone-200 text-stone-600 uppercase text-[10px] font-extrabold tracking-wider">
+                    <tr>
+                      <th className="py-3.5 px-4">No. Order / Waktu</th>
+                      <th className="py-3.5 px-4">Desa Wisata</th>
+                      <th className="py-3.5 px-4">Pemesan</th>
+                      <th className="py-3.5 px-4 text-right">Omzet Kotor</th>
+                      <th className="py-3.5 px-4 text-right">Fee Kawasan (5%)</th>
+                      <th className="py-3.5 px-4 text-right">MDR (0.7%)</th>
+                      <th className="py-3.5 px-4 text-right">Hak Bersih Desa</th>
+                      <th className="py-3.5 px-4 text-center">Status Pencairan</th>
+                      <th className="py-3.5 px-4 text-center">Aksi Bendahara</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-stone-100">
+                    {financeSummary.transactions.map((tx) => (
+                      <tr key={tx.orderId} className="hover:bg-amber-50/30 transition-colors">
+                        <td className="py-3 px-4">
+                          <span className="font-mono font-bold text-stone-900 block">{tx.orderId}</span>
+                          <span className="text-[10px] text-stone-400 block">{tx.createdAt}</span>
+                        </td>
+                        <td className="py-3 px-4 font-semibold text-stone-800">
+                          {tx.villageName}
+                        </td>
+                        <td className="py-3 px-4">
+                          <span className="font-bold text-stone-900 block">{tx.customerName}</span>
+                          <span className="text-[10px] text-stone-400">{tx.paymentType}</span>
+                        </td>
+                        <td className="py-3 px-4 text-right font-bold text-stone-900">
+                          {formatRupiah(tx.grossAmount)}
+                        </td>
+                        <td className="py-3 px-4 text-right text-amber-800 font-semibold">
+                          -{formatRupiah(tx.platformFee)}
+                        </td>
+                        <td className="py-3 px-4 text-right text-stone-500 font-mono">
+                          -{formatRupiah(tx.gatewayFee)}
+                        </td>
+                        <td className="py-3 px-4 text-right font-extrabold text-emerald-800 text-sm">
+                          {formatRupiah(tx.netVillagePayout)}
+                        </td>
+                        <td className="py-3 px-4 text-center">
+                          {tx.status === 'sudah_ditransfer' ? (
+                            <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-emerald-100 text-emerald-800 text-[10px] font-extrabold">
+                              <CheckCheck className="w-3 h-3 text-emerald-600" />
+                              <span>Sudah Ditransfer</span>
+                            </span>
+                          ) : (
+                            <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-amber-100 text-amber-900 text-[10px] font-extrabold">
+                              <Clock className="w-3 h-3 text-amber-700" />
+                              <span>Siap Dicairkan</span>
+                            </span>
+                          )}
+                        </td>
+                        <td className="py-3 px-4 text-center">
+                          <button
+                            onClick={() => {
+                              if (tx.status === 'sudah_ditransfer') {
+                                markOrderAsPendingPayout(tx.orderId);
+                              } else {
+                                markOrderAsDisbursed(tx.orderId);
+                              }
+                              setFinanceRefreshKey((k) => k + 1);
+                            }}
+                            className={`px-3 py-1 rounded-xl text-[11px] font-bold border transition-all cursor-pointer ${
+                              tx.status === 'sudah_ditransfer'
+                                ? 'bg-stone-50 hover:bg-stone-100 text-stone-600 border-stone-200'
+                                : 'bg-emerald-700 hover:bg-emerald-800 text-white border-emerald-800 shadow-2xs'
+                            }`}
+                          >
+                            {tx.status === 'sudah_ditransfer' ? 'Batal Status' : 'Tandai Transfer'}
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            ) : (
+              <div className="p-12 text-center space-y-3">
+                <div className="w-12 h-12 rounded-full bg-stone-100 text-stone-400 mx-auto flex items-center justify-center">
+                  <Coins className="w-6 h-6" />
+                </div>
+                <h5 className="font-bold text-stone-800 text-sm">Belum Ada Transaksi Lunas</h5>
+                <p className="text-xs text-stone-500 max-w-md mx-auto">
+                  Transaksi pesanan wisatawan yang telah diselesaikan (lunas via Midtrans atau dikonfirmasi deal oleh admin) akan otomatis muncul pada pembukuan kas ini.
+                </p>
+              </div>
+            )}
           </div>
         </div>
       )}

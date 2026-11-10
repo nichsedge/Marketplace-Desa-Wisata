@@ -92,7 +92,7 @@ export interface CartItem {
   notes?: string;
 }
 
-export type OrderStatus = 'menunggu' | 'diproses' | 'selesai' | 'dibatalkan';
+export type OrderStatus = 'menunggu' | 'menunggu_pembayaran' | 'diproses' | 'selesai' | 'dibatalkan' | 'challenge' | 'gagal';
 
 export interface Order {
   id: string;

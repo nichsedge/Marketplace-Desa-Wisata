@@ -169,3 +169,24 @@ Untuk menjamin pesanan tidak hilang saat berganti peramban atau perangkat dan st
 # Menjalankan simulasi penuh pembuatan order, cek DB, kirim webhook SHA-512, dan verifikasi status lunas:
 uv run scripts/test_order_pipeline.py
 ```
+
+---
+
+## 💰 Multi-Village Revenue Split & Buku Kas Bagi Hasil Desa
+
+Platform interdesa Saba Lembang menerapkan model pembagian hasil transparan untuk 6 desa wisata:
+- **Formula Bagi Hasil Transaksi:**
+  - **94.3% Hak Bersih Desa:** Masuk langsung ke rekening BUMDes / kelompok tani desa terkait.
+  - **5.0% Kas BUMDes Kawasan:** Alokasi bersama untuk promosi terpadu, pemeliharaan server, dan customer service kawasan.
+  - **0.7% MDR Payment Gateway:** Biaya resmi pemrosesan QRIS Midtrans.
+- **Fitur Dasbor Finansial:**
+  - Tab *"Buku Kas & Bagi Hasil"* di dasbor Admin Desa & Super Admin Kawasan (`SellerDashboardView.tsx`).
+  - Rekapitulasi otomatis transaksi lunas, total omzet kotor, fee kawasan, dan hak bersih per desa.
+  - Direktori rekening bank kas desa terverifikasi (Bank BJB, BRI, Mandiri, BCA).
+  - Pelacakan status pencairan dana (`siap_cair` vs `sudah_ditransfer`) oleh bendahara kawasan.
+  - Ekspor laporan pembukuan kas ke format **CSV / Excel** untuk lampiran sidang dan audit keuangan.
+
+### 🧪 Audit Perhitungan Revenue Split via CLI:
+```bash
+uv run scripts/test_finance_ledger.py
+```
