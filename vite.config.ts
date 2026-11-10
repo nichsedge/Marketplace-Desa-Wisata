@@ -1,6 +1,7 @@
 import tailwindcss from '@tailwindcss/vite';
 import react from '@vitejs/plugin-react';
 import path from 'path';
+import crypto from 'crypto';
 import {defineConfig, loadEnv} from 'vite';
 
 export default defineConfig(({mode}) => {
@@ -91,6 +92,72 @@ export default defineConfig(({mode}) => {
                   res.statusCode = response.status;
                   res.setHeader('Content-Type', 'application/json');
                   res.end(JSON.stringify(data));
+                } catch (err: any) {
+                  res.statusCode = 500;
+                  res.setHeader('Content-Type', 'application/json');
+                  res.end(JSON.stringify({error: err?.message || 'Server error'}));
+                }
+              });
+            } else {
+              res.statusCode = 405;
+              res.end('Method Not Allowed');
+            }
+          });
+
+          server.middlewares.use('/api/midtrans-notification', async (req, res) => {
+            if (req.method === 'POST') {
+              let raw = '';
+              req.on('data', (chunk: Buffer) => {
+                raw += chunk.toString();
+              });
+              req.on('end', async () => {
+                try {
+                  const payload = raw ? JSON.parse(raw) : {};
+                  const {
+                    order_id,
+                    status_code,
+                    gross_amount,
+                    signature_key,
+                    transaction_status,
+                    fraud_status,
+                    payment_type,
+                    transaction_id,
+                    settlement_time,
+                  } = payload;
+
+                  if (!order_id || !status_code || !gross_amount || !signature_key) {
+                    res.statusCode = 400;
+                    res.setHeader('Content-Type', 'application/json');
+                    res.end(JSON.stringify({error: 'Missing required webhook parameters'}));
+                    return;
+                  }
+
+                  const rawSignature = `${order_id}${status_code}${gross_amount}${serverKey}`;
+                  const expected = crypto.createHash('sha512').update(rawSignature).digest('hex');
+
+                  if (signature_key.toLowerCase() !== expected.toLowerCase()) {
+                    res.statusCode = 403;
+                    res.setHeader('Content-Type', 'application/json');
+                    res.end(JSON.stringify({error: 'Invalid SHA-512 signature'}));
+                    return;
+                  }
+
+                  const isSettled = transaction_status === 'settlement' || (transaction_status === 'capture' && fraud_status !== 'challenge');
+
+                  res.statusCode = 200;
+                  res.setHeader('Content-Type', 'application/json');
+                  res.end(JSON.stringify({
+                    status: 'OK',
+                    message: 'Notification verified in local dev middleware',
+                    data: {
+                      orderId: order_id,
+                      transactionId: transaction_id,
+                      paymentType: payment_type,
+                      transactionStatus: transaction_status,
+                      isSettled,
+                      settlementTime: settlement_time || null,
+                    },
+                  }));
                 } catch (err: any) {
                   res.statusCode = 500;
                   res.setHeader('Content-Type', 'application/json');

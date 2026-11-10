@@ -134,3 +134,22 @@ Untuk mencetak dokumen panduan atau dokumentasi Markdown menjadi file PDF rapi s
 uv run scripts/md_to_pdf.py docs/PANDUAN_SIMULASI_MIDTRANS.md
 ```
 Output otomatis disimpan ke file `.pdf` yang sesuai (contoh: `docs/PANDUAN_SIMULASI_MIDTRANS.pdf`).
+
+---
+
+## 🔒 Midtrans Webhook Engine & Verifikasi SHA-512 (Production Ready)
+
+Untuk menangani notifikasi pembayaran riil dari Midtrans secara asinkron tanpa bergantung pada peramban pengunjung:
+- **Endpoint Vercel:** `api/midtrans-notification.ts`
+- **Endpoint Cloudflare Pages:** `functions/api/midtrans-notification.ts`
+- **Dev Server Middleware:** Terintegrasi di `vite.config.ts` untuk pengujian lokal (`/api/midtrans-notification`).
+- **Keamanan Signature:** Memverifikasi hash `SHA512(order_id + status_code + gross_amount + ServerKey)` dengan proteksi *timing attacks* (`crypto.timingSafeEqual`). Request palsu otomatis ditolak dengan `403 Forbidden`.
+
+### 🧪 Simulasi Webhook via CLI:
+```bash
+# Uji coba payload Midtrans (Settlement, Expired, dan Anti-Spoof Tampered Attack)
+uv run scripts/test_webhook.py
+
+# Atau tembak ke endpoint custom / production
+uv run scripts/test_webhook.py https://sabalembang.id/api/midtrans-notification
+```
