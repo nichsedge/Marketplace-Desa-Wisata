@@ -73,6 +73,13 @@
 - **Aset Gambar & Video Lokal:** Seluruh aset foto katalog produk dan galeri desa tersimpan lokal di `public/images/`. Video lokal terkompresi tersimpan di `public/videos/` dan mendukung embed eksternal YouTube / Vimeo.
 - **Bilingual Support (ID/EN):** Menggunakan kamus i18n terstruktur di `src/i18n/translations.ts` dengan toggle bahasa di Navbar & Footer tanpa perlu library pihak ketiga berlebih.
 - **Visitor Funnel Tracking (Opsi A - Hybrid Deal Confirmation):** Pelacakan aktivitas pengunjung berbasis client-side `localStorage` + integrasi GA4 (`trackProductTap`, `trackSearchQuery`, `trackWhatsAppClick`, `trackDealCompleted`). Admin Desa mengonfirmasi pesanan lunas langsung di dasbor sehingga konversi dan omzet terhitung otomatis tanpa butuh server backend berbayar.
+- **Persistent Database & Storage Layer (Cloudflare D1 & SQLite):**
+  - *Skema Database D1 / SQLite:* `db/schema.sql` (tabel `orders` & `order_items` dengan foreign key cascade dan index).
+  - *Unified Orders API:*
+    - `api/orders.ts` (Vercel Serverless Function dengan fallback ke Cloudflare D1 REST API atau local persistent store).
+    - `functions/api/orders.ts` (Cloudflare Pages Function native dengan direct `context.env.DB` binding).
+    - Dev server middleware di `vite.config.ts` untuk pengujian lokal (`/api/orders`).
+  - *Auto Webhook Sync:* Webhook Midtrans otomatis memperbarui status transaksi menjadi `selesai` langsung ke database cloud D1/SQLite.
 - **Midtrans Payment Gateway (Snap API Sandbox):**
   - **Arsitektur Zero-Lock-In:**
     - *Vercel Serverless Function:* `api/midtrans-token.ts` (Server Key aman di `.env`, tidak bocor ke client JS bundle) & `api/midtrans-notification.ts` (Webhook HTTP handler dengan verifikasi SHA-512 signature).
@@ -117,6 +124,9 @@ uv run scripts/md_to_pdf.py docs/PANDUAN_SIMULASI_MIDTRANS.md
 
 # Midtrans Webhook SHA-512 Notification Simulator
 uv run scripts/test_webhook.py
+
+# End-to-End Persistent Order Creation & Webhook Pipeline Test
+uv run scripts/test_order_pipeline.py
 ```
 
 ---

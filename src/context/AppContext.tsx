@@ -11,6 +11,7 @@ import {
   trackDealCompleted, 
   calculateAnalyticsStats 
 } from '../utils/analytics';
+import { syncOrderToCloud, fetchOrdersFromCloud } from '../services/orderService';
 
 export type PageRoute =
   | 'home'
@@ -286,6 +287,43 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     };
   }, []);
 
+  // Sync orders with Cloud / Persistent DB on mount
+  useEffect(() => {
+    fetchOrdersFromCloud()
+      .then((cloudOrders) => {
+        if (Array.isArray(cloudOrders) && cloudOrders.length > 0) {
+          setOrders((prev) => {
+            const map = new Map<string, Order>();
+            prev.forEach((o) => map.set(o.id, o));
+            cloudOrders.forEach((co: any) => {
+              const existing = map.get(co.id);
+              map.set(co.id, {
+                id: co.id,
+                customerName: co.customer_name || existing?.customerName || 'Wisatawan',
+                customerPhone: co.customer_phone || existing?.customerPhone || '',
+                customerEmail: co.customer_email || existing?.customerEmail || '',
+                totalAmount: Number(co.total_amount) || existing?.totalAmount || 0,
+                status: co.status || existing?.status || 'menunggu_pembayaran',
+                paymentMethod: co.payment_source || existing?.paymentMethod || 'Midtrans',
+                createdAt: co.created_at || existing?.createdAt || '',
+                villageId: co.village_id || existing?.villageId,
+                villageName: existing?.villageName || co.village_id,
+                source: co.payment_source === 'direct_wa' ? 'direct_wa' : 'midtrans_gateway',
+                midtransTransactionId: co.midtrans_tx_id || existing?.midtransTransactionId,
+                midtransPaymentType: co.midtrans_payment_type || existing?.midtransPaymentType,
+                items: existing?.items || [],
+                notes: co.notes || existing?.notes,
+              });
+            });
+            return Array.from(map.values());
+          });
+        }
+      })
+      .catch(() => {
+        // Fallback gracefully to mock data
+      });
+  }, []);
+
   const resetFilters = () => {
     setSearchQuery('');
     setCategoryFilter('all');
@@ -392,6 +430,11 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
     setOrders(prev => [newOrder, ...prev]);
     clearCart();
+
+    // Async sync to cloud persistence (Cloudflare D1 / Local Serverless DB)
+    syncOrderToCloud(newOrder).catch(err => {
+      console.warn('[AppContext] Order background sync notice:', err);
+    });
     showToast(
       language === 'id'
         ? newOrder.status === 'selesai'

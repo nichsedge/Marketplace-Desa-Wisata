@@ -25,3 +25,8 @@ test_server_key_api_key.txt
 
 *.pyc
 
+# Local runtime database files
+data/*.json
+data/*.db
+data/*.sqlite*
+

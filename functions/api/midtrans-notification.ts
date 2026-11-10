@@ -4,6 +4,7 @@
 interface Env {
   MIDTRANS_SERVER_KEY?: string;
   VITE_MIDTRANS_IS_PRODUCTION?: string;
+  DB?: any;
 }
 
 const CORS_HEADERS = {
@@ -66,6 +67,31 @@ export async function onRequestPost(context: { request: Request; env: Env }) {
     }
 
     const isSettled = transaction_status === 'settlement' || transaction_status === 'capture';
+    const internalStatus = isSettled
+      ? 'selesai'
+      : transaction_status === 'pending'
+      ? 'menunggu_pembayaran'
+      : transaction_status === 'expire' || transaction_status === 'cancel'
+      ? 'dibatalkan'
+      : 'gagal';
+
+    if (context.env.DB) {
+      try {
+        const now = new Date().toISOString();
+        await context.env.DB.prepare(
+          `UPDATE orders
+           SET status = ?, settlement_time = COALESCE(?, settlement_time),
+               midtrans_tx_id = COALESCE(?, midtrans_tx_id),
+               midtrans_payment_type = COALESCE(?, midtrans_payment_type),
+               updated_at = ?
+           WHERE id = ?`
+        )
+          .bind(internalStatus, settlement_time || null, transaction_id || null, payment_type || null, now, order_id)
+          .run();
+      } catch (dbErr) {
+        console.error('[Cloudflare D1 Webhook Update Error]', dbErr);
+      }
+    }
 
     return new Response(
       JSON.stringify({

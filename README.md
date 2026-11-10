@@ -153,3 +153,19 @@ uv run scripts/test_webhook.py
 # Atau tembak ke endpoint custom / production
 uv run scripts/test_webhook.py https://sabalembang.id/api/midtrans-notification
 ```
+
+---
+
+## 🗄️ Database Cloudflare D1 & Persistent Orders API (Production Ready)
+
+Untuk menjamin pesanan tidak hilang saat berganti peramban atau perangkat dan status pembayaran tersinkronisasi secara persisten:
+- **Skema SQL:** `db/schema.sql` (standar SQLite / Cloudflare D1 untuk `orders` dan `order_items`).
+- **Endpoint Vercel:** `api/orders.ts` (Mendukung query parameter `orderId` dan `villageId`, otomatis sinkron ke Cloudflare D1 REST API atau local persistent store).
+- **Endpoint Cloudflare Pages:** `functions/api/orders.ts` (Direct binding ke `env.DB` native D1 database).
+- **Client Service:** `src/services/orderService.ts` (Sinkronisasi otomatis saat checkout dan saat app dimuat).
+
+### 🧪 Uji Coba End-to-End Pipeline (Order $\rightarrow$ D1 $\rightarrow$ Webhook Auto-Settlement):
+```bash
+# Menjalankan simulasi penuh pembuatan order, cek DB, kirim webhook SHA-512, dan verifikasi status lunas:
+uv run scripts/test_order_pipeline.py
+```

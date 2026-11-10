@@ -212,7 +212,63 @@ export default async function handler(
 
     console.log(`[Midtrans Webhook Verified] Order: ${order_id} | Status: ${transaction_status} -> ${internalStatus} | TX ID: ${transaction_id}`);
 
-    // 3. Response Berhasil ke Midtrans (Midtrans memerlukan respons 200 OK segera)
+    // 3. Update Database (Cloudflare D1 / Local Storage)
+    const now = new Date().toISOString();
+    const isD1Configured = !!(
+      process.env.CLOUDFLARE_ACCOUNT_ID &&
+      process.env.CLOUDFLARE_DATABASE_ID &&
+      process.env.CLOUDFLARE_API_TOKEN
+    );
+
+    if (isD1Configured) {
+      try {
+        const accountId = process.env.CLOUDFLARE_ACCOUNT_ID;
+        const databaseId = process.env.CLOUDFLARE_DATABASE_ID;
+        const apiToken = process.env.CLOUDFLARE_API_TOKEN;
+        const d1Url = `https://api.cloudflare.com/client/v4/accounts/${accountId}/d1/database/${databaseId}/query`;
+        await fetch(d1Url, {
+          method: 'POST',
+          headers: {
+            Authorization: `Bearer ${apiToken}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            sql: `UPDATE orders
+                  SET status = ?, settlement_time = COALESCE(?, settlement_time),
+                      midtrans_tx_id = COALESCE(?, midtrans_tx_id),
+                      midtrans_payment_type = COALESCE(?, midtrans_payment_type),
+                      updated_at = ?
+                  WHERE id = ?`,
+            params: [internalStatus, settlement_time || null, transaction_id || null, payment_type || null, now, order_id],
+          }),
+        });
+      } catch (dbErr) {
+        console.error('[D1 Webhook Update Error]', dbErr);
+      }
+    } else {
+      // Local persistent DB update
+      try {
+        const fs = await import('fs');
+        const path = await import('path');
+        const localPath = path.resolve(process.cwd(), 'data', 'local_orders.json');
+        if (fs.existsSync(localPath)) {
+          const dbData = JSON.parse(fs.readFileSync(localPath, 'utf-8'));
+          const target = dbData.orders.find((o: any) => o.id === order_id);
+          if (target) {
+            target.status = internalStatus;
+            if (settlement_time) target.settlement_time = settlement_time;
+            if (transaction_id) target.midtrans_tx_id = transaction_id;
+            if (payment_type) target.midtrans_payment_type = payment_type;
+            target.updated_at = now;
+            fs.writeFileSync(localPath, JSON.stringify(dbData, null, 2));
+          }
+        }
+      } catch (localDbErr) {
+        console.error('[Local DB Webhook Update Error]', localDbErr);
+      }
+    }
+
+    // 4. Response Berhasil ke Midtrans (Midtrans memerlukan respons 200 OK segera)
     sendJson(200, {
       status: 'OK',
       message: 'Notification received and signature verified successfully',
