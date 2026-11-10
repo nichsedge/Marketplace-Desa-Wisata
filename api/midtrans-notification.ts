@@ -220,6 +220,10 @@ export default async function handler(
       process.env.CLOUDFLARE_API_TOKEN
     );
 
+    let resolvedVillageId = 'des-01';
+    let resolvedCustomerName = 'Wisatawan';
+    let resolvedCustomerPhone = '08123456789';
+
     if (isD1Configured) {
       try {
         const accountId = process.env.CLOUDFLARE_ACCOUNT_ID;
@@ -242,6 +246,20 @@ export default async function handler(
             params: [internalStatus, settlement_time || null, transaction_id || null, payment_type || null, now, order_id],
           }),
         });
+
+        // Retrieve village ID for WA notification
+        const orderRes = await fetch(d1Url, {
+          method: 'POST',
+          headers: { Authorization: `Bearer ${apiToken}`, 'Content-Type': 'application/json' },
+          body: JSON.stringify({ sql: `SELECT village_id, customer_name, customer_phone FROM orders WHERE id = ? LIMIT 1`, params: [order_id] })
+        });
+        const orderData: any = await orderRes.json();
+        const row = orderData?.result?.[0]?.results?.[0];
+        if (row) {
+          resolvedVillageId = row.village_id || resolvedVillageId;
+          resolvedCustomerName = row.customer_name || resolvedCustomerName;
+          resolvedCustomerPhone = row.customer_phone || resolvedCustomerPhone;
+        }
       } catch (dbErr) {
         console.error('[D1 Webhook Update Error]', dbErr);
       }
@@ -261,6 +279,10 @@ export default async function handler(
             if (payment_type) target.midtrans_payment_type = payment_type;
             target.updated_at = now;
             fs.writeFileSync(localPath, JSON.stringify(dbData, null, 2));
+
+            resolvedVillageId = target.village_id || resolvedVillageId;
+            resolvedCustomerName = target.customer_name || resolvedCustomerName;
+            resolvedCustomerPhone = target.customer_phone || resolvedCustomerPhone;
           }
         }
       } catch (localDbErr) {
@@ -268,7 +290,38 @@ export default async function handler(
       }
     }
 
-    // 4. Response Berhasil ke Midtrans (Midtrans memerlukan respons 200 OK segera)
+    // 4. Automated WhatsApp Dispatch to Village Admin
+    let waDispatchInfo: any = null;
+    if (isSettled) {
+      try {
+        const { formatAdminOrderNotification, dispatchWhatsAppNotification } = await import('./lib/whatsappDispatcher');
+        const villageAdminPhones: Record<string, string> = {
+          'des-01': '6281220763734', // Suntenjaya - Kang Asep
+          'des-03': '6282133449988', // Cikole - Kang Dadan
+          'des-04': '6285722337711', // Jayagiri - Teh Eni
+          'des-05': '6281809115544', // Wangunsari - Kang Sandi
+          'des-07': '6281233447788', // Gudangkahuripan - Teh Rina
+          'des-08': '6281388996655', // Sukajaya - Kang Wawan
+        };
+
+        const targetAdminPhone = villageAdminPhones[resolvedVillageId] || '6287893771381';
+        const msg = formatAdminOrderNotification({
+          orderId: order_id,
+          villageId: resolvedVillageId,
+          customerName: resolvedCustomerName,
+          customerPhone: resolvedCustomerPhone,
+          totalAmount: Math.round(Number(gross_amount)),
+          paymentType: payment_type,
+          settlementTime: settlement_time,
+        });
+
+        waDispatchInfo = await dispatchWhatsAppNotification(targetAdminPhone, msg);
+      } catch (waErr) {
+        console.error('[WA Dispatch Error]', waErr);
+      }
+    }
+
+    // 5. Response Berhasil ke Midtrans (Midtrans memerlukan respons 200 OK segera)
     sendJson(200, {
       status: 'OK',
       message: 'Notification received and signature verified successfully',
@@ -281,6 +334,7 @@ export default async function handler(
         isSettled,
         settlementTime: settlement_time || null,
         note,
+        waDispatch: waDispatchInfo,
       },
     });
   } catch (err: any) {

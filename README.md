@@ -190,3 +190,19 @@ Platform interdesa Saba Lembang menerapkan model pembagian hasil transparan untu
 ```bash
 uv run scripts/test_finance_ledger.py
 ```
+
+---
+
+## 📲 Automated WhatsApp Notification Dispatcher (Production Ready)
+
+Notifikasi otomatis ke nomor HP pengelola desa seketika pembayaran terkonfirmasi lunas di server:
+- **Engine Serverless:** `api/lib/whatsappDispatcher.ts`
+- **Integrasi Webhook:** Terpanggil otomatis saat webhook Midtrans memverifikasi status `settlement`.
+- **Dukungan Gateway:** Fonnte, Wablas, Generic HTTP Webhook, dan mode simulasi dev tanpa token.
+- **Normalisasi Nomor:** Konversi otomatis nomor lokal `08...` ke format internasional `628...`.
+- **Integrasi UI Dasbor:** Tombol instan *"Resi WA"* di tab Buku Kas dan Pesanan untuk mengirim link E-Ticket digital langsung ke nomor WhatsApp pembeli.
+
+### 🧪 Simulasi Notifikasi WhatsApp via CLI:
+```bash
+uv run scripts/test_whatsapp_dispatcher.py
+```

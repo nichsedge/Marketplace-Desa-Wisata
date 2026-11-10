@@ -164,6 +164,19 @@ export default defineConfig(({mode}) => {
                     console.error('Local order update failed', e);
                   }
 
+                  let waDispatch: any = null;
+                  if (isSettled) {
+                    const targetPhone = '6281220763734'; // Kang Asep (Suntenjaya)
+                    const sampleMsg = `🔔 *NOTIFIKASI PESANAN LUNAS (SABA LEMBANG)*\nOrder: ${order_id}\nTotal: Rp ${Number(gross_amount).toLocaleString('id-ID')}\nStatus: Lunas / Terverifikasi (Midtrans Settlement)`;
+                    waDispatch = {
+                      success: true,
+                      targetPhone,
+                      mode: 'simulation',
+                      directWaLink: `https://wa.me/${targetPhone}?text=${encodeURIComponent(sampleMsg)}`,
+                      messagePreview: sampleMsg,
+                    };
+                  }
+
                   res.statusCode = 200;
                   res.setHeader('Content-Type', 'application/json');
                   res.end(JSON.stringify({
@@ -176,6 +189,7 @@ export default defineConfig(({mode}) => {
                       transactionStatus: transaction_status,
                       isSettled,
                       settlementTime: settlement_time || null,
+                      waDispatch,
                     },
                   }));
                 } catch (err: any) {

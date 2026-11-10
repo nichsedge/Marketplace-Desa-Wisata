@@ -83,6 +83,10 @@
 - **Multi-Village Revenue Split & Financial Settlement Ledger:**
   - *Formula Bagi Hasil Otomatis:* 94.3% Hak Kas Desa/UMKM Mitra, 5% Kas Pengelolaan BUMDes Bersama Kawasan, 0.7% MDR Payment Gateway.
   - *Audit & Rekapitulasi:* `src/utils/finance.ts` dan Tab "Buku Kas & Bagi Hasil" di Dasbor (`SellerDashboardView.tsx`) dengan filter desa, rekap rekening kas resmi, status pencairan (`siap_cair` vs `sudah_ditransfer`), dan tombol ekspor CSV/Excel.
+- **Automated WhatsApp Notification Dispatcher:**
+  - *Engine:* `api/lib/whatsappDispatcher.ts` mendukung Fonnte, Wablas, dan mode simulasi zero-cost lokal.
+  - *Auto-Trigger:* Webhook Midtrans settlement otomatis menembak pesan WA rincian pesanan lunas ke HP Admin Desa terkait dan link E-Ticket ke wisatawan.
+  - *Aksi Cepat Dasbor:* Tombol kirim resi WA di Dasbor Admin Desa dan Pesanan Masuk.
 - **Midtrans Payment Gateway (Snap API Sandbox):**
   - **Arsitektur Zero-Lock-In:**
     - *Vercel Serverless Function:* `api/midtrans-token.ts` (Server Key aman di `.env`, tidak bocor ke client JS bundle) & `api/midtrans-notification.ts` (Webhook HTTP handler dengan verifikasi SHA-512 signature).
@@ -133,6 +137,9 @@ uv run scripts/test_order_pipeline.py
 
 # Multi-Village Revenue Split & Financial Settlement Audit
 uv run scripts/test_finance_ledger.py
+
+# Automated WhatsApp Notification Dispatcher Simulation
+uv run scripts/test_whatsapp_dispatcher.py
 ```
 
 ---
