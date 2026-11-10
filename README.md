@@ -74,6 +74,7 @@ Platform telah terintegrasi dengan payment gateway resmi **Midtrans Snap (Sandbo
   - **Local Development Middleware (`vite.config.ts`):** Pengujian lokal saat `bun run dev` langsung terhubung ke Midtrans Sandbox tanpa perlu server backend eksternal.
 - **E-Ticket Otomatis:** Setelah simulasi pembayaran berhasil, status transaksi langsung tercatat **Lunas**, memicu pelacakan konversi otomatis, dan membuka E-Ticket resmi siap cetak.
 - **Backup Manual WhatsApp:** Opsi konfirmasi langsung via WhatsApp Admin Desa tetap tersedia sebagai alternatif.
+- **Panduan Uji Coba Pembayaran:** Langkah simulasi pembayaran online dan cetak tiket dapat dilihat di [docs/PANDUAN_SIMULASI_MIDTRANS.md](docs/PANDUAN_SIMULASI_MIDTRANS.md).
 
 ## 📦 Aset Visual Lokal & Avatar Standar WhatsApp
 Seluruh foto katalog produk, homestay, dan lanskap 7 desa aktif tersimpan secara lokal di folder `public/images/`. Untuk avatar profil Admin Desa, pembeli, ulasan, dan testimoni, sistem menerapkan avatar default *"no profile picture"* ala WhatsApp (`/images/default-avatar.svg` via komponen `<UserAvatar />`) yang bersih dan seragam, tanpa menggunakan foto wajah stok/dummy.
